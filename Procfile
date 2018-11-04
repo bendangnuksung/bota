@@ -1,1 +1,1 @@
-worker: python3 first.py
+web: python first.py runserver 0.0.0.0:5000
