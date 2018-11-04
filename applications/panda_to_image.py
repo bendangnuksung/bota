@@ -2,7 +2,7 @@ import imgkit
 import random
 import pandas
 import os
-import cv2
+from PIL import Image
 
 
 css = """
@@ -53,8 +53,8 @@ def DataFrame_to_image(data, css=css, outputfile="out.png", format="png"):
 	print(fn)
 	try:
 		os.remove(fn)
-	except:
-		None
+	except Exception:
+		pass
 	text_file = open(fn, "a")
 
 	# write the CSS
@@ -69,9 +69,12 @@ def DataFrame_to_image(data, css=css, outputfile="out.png", format="png"):
 
 	imgkit.from_file(fn, outputfile, options=imgkitoptions)
 	os.remove(fn)
-	img = cv2.imread(outputfile)
-	img = cv2.resize(img, (int(img.shape[1]/1.2), int(img.shape[0]/1.2)))
-	cv2.imwrite(outputfile, img)
+
+	img = Image.open(outputfile)
+	width, height = img.size
+	img = img.resize((int(width/1.2), int(height/1.2)), Image.ANTIALIAS)
+	img.save(outputfile)
+
 	return outputfile
 
 
