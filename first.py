@@ -6,47 +6,33 @@
 
 import discord
 import sys
-import dota2api
 import pandas as pd
-from panda_to_image import DataFrame_to_image
-from constant import dota2_api_key, GAME_MODE, discord_token
-from signup import signup
-from profile_info import profile
-
-
-dota_api = dota2api.Initialise(dota2_api_key)
+from constant import discord_token
+from applications.signup import signup
+from applications.profile_info import profile
+from applications.top_games import get_top_games
 
 
 client = discord.Client()
 
 
-def get_top_games(length=10):
-	game_list = dota_api.get_top_live_games()
-	game_list = game_list['game_list']
-	results = []
-	results.append(['Radiant', 'Dire', 'Avg MMR', 'Game Mode', 'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead'])
-	for game in game_list:
-		avg_mmr = game['average_mmr']
-		game_mode = GAME_MODE[game['game_mode']]
-		game_time = game['game_time']
-		hour, sec = game_time // 60, game_time % 60
-		game_time = str(hour) + ":" +str(sec)
-		n_spectators = int(game['spectators'])
-		r_team_name = "Unknown"
-		d_team_name = "Unknown"
-		gold_lead = f"Radiant:{game['radiant_lead']}" if int(game['radiant_lead']) > 0 else f"Dire:{abs(int(game['radiant_lead']))}"
-		r_kills = game['radiant_score']
-		d_kills = game['dire_score']
-		if 'team_name_radiant' in game:
-			r_team_name = game['team_name_radiant']
-		if 'team_name_dire' in game:
-			d_team_name = game['team_name_dire']
-		results.append([r_team_name, d_team_name, avg_mmr, game_mode, n_spectators, game_time, r_kills, d_kills, gold_lead])
-	results = [results[0]] + sorted(results[1:], key =lambda x: (x[4]), reverse=True)
-	results = results[:length]
-	results = pd.DataFrame(results[1:], columns=results[0])
-	result = DataFrame_to_image(results)
-	return result
+commands_list = {'!top_games': 'Shows top 9 Live Games',
+				 '!signup your_username your_steamID': 'Registers your steamID with the username for fast profile view',
+				 '!profile your_username': 'Shows your profile stats with the registered username',
+				 '!profile steamID': 'Shows your profile stats given steamID'}
+
+
+def get_help():
+	help_string = []
+	head = '**Below are the commands to use DOTA BOT:**\n'
+	help_string.append(head)
+	for key, value in commands_list.items():
+		command = '**'+key+'**'
+		command_help = '*' + value + '*'
+		full = command + '\t:\t' + command_help
+		help_string.append(full)
+	help_string = "\n".join(help_string)
+	return help_string
 
 
 @client.event # event decorator/wrapper
@@ -58,25 +44,24 @@ async def on_ready():
 async def on_message(message):
 	print(f"{message.channel}: {message.author}: {message.author.name}: {message.content}")
 
-	if 'member_count' == message.content:
-		for guild in guilds:
-			guild = client.get_guild(guild)
-			await message.channel.send(f"{guild.name}: {guild.member_count}")
+	if '!help' == message.content:
+		help_string = get_help()
+		await message.channel.send(help_string)
 
-	elif 'top_games' == message.content:
+	elif '!top_games' == message.content:
 		result = get_top_games()
 		await message.channel.send(f"Getting Top Live Spectacting Games")
 		await message.channel.send('Top Games: ', file=discord.File(f'{result}'))
 
-	elif 'signup' in message.content:
+	elif '!signup' in message.content:
 		result = signup(message.content)
 		await message.channel.send(result)
 
-	elif 'profile' in message.content.split()[0]:
+	elif '!profile' in message.content.split()[0]:
 		result = profile(message.content)
 		await message.channel.send(result)		
 
-	elif "hi dota_info" in message.content.lower():
+	elif "@dota_info" in message.content.lower():
 		await message.channel.send(f"Hello {message.author.name}")
 
 	elif "exit" in message.content.lower():

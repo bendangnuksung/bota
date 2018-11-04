@@ -47,7 +47,6 @@ def signup(query):
 	r = user.sign_up(id, user_name)
 	return r
 
-
 if __name__ == "__main__":
 	r = signup('12345 ben')
 	print(r)

@@ -71,9 +71,9 @@ def get_profile(name=None, id=0):
 	head = f"{name}'s profile:\n"
 	body = ""
 	for key, val in json_data.items():
-		body += f"{key}: {val}\n"
+		body += f"**{key}**: *{val}*\n"
 	win, lose = get_win_lose(id)
-	result = head + body + "win: " + str(win) + "\n" + "lose: " + str(lose)
+	result = head + body + "**win**: " + str(win) + "\n" + "**lose:** " + str(lose)
 	return result
 
 
