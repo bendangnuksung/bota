@@ -68,7 +68,7 @@ def get_profile(name=None, id=0):
 	response = requests.get(url)
 	json_data = json.loads(response.text)
 	json_data = clean_profile(json_data)
-	head = f"{name}'s profile:\n"
+	head = f"**{name}'s profile:**\n"
 	body = ""
 	for key, val in json_data.items():
 		body += f"**{key}**: *{val}*\n"
@@ -81,7 +81,10 @@ def profile(query):
 	query = query.split()
 	val = query[1]
 	val = val.strip()
-	val = eval(val)
+	try:
+		val = eval(val)
+	except Exception:
+		pass
 	if type(val) == int:
 		r = get_profile(id=val)
 	else:
