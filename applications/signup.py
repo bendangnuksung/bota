@@ -41,7 +41,7 @@ user = User()
 
 
 def signup(query):
-	query = query.split(' ')
+	query = query.split()
 	id = query[1]
 	user_name = query[2]
 	r = user.sign_up(id, user_name)
