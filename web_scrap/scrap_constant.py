@@ -2,7 +2,7 @@
 browser_headers = {'user-agent': 'Mozilla/5.0'}
 
 
-##### heroes Info constant
+##### character_images Info constant
 heroes_pre_url = 'https://www.dotabuff.com/heroes/'
 heros_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-warden', 'axe', 'bane', 'batrider',
                'beastmaster', 'bloodseeker', 'bounty-hunter', 'brewmaster', 'bristleback', 'broodmother',
@@ -31,7 +31,8 @@ section_column_wanted = {'Worst Versus':    ['Hero', 'Disadvantage', 'Win Rate',
 
 #### Current trends constant
 heroes_trend_url = 'https://www.dotabuff.com/heroes/trends'
-heroes_trend_columns = ['hero', 'win_rate_start', 'win_rate_current', 'win_rate_change', 'win_rate_trend',
-                        'pick_rate_start', 'pick_rate_current', 'pick_rate_change', 'pick_rate_trend']
+heroes_trend_columns = ['Hero', 'WR:Start', 'WR:Current', 'WR:Change', 'WR:Trend',
+                        'PR:Start', 'PR:Current', 'PR:Change', 'PR:Trend']
 trend_attribute_key_name = 'data-value'
+heroes_trend_image_path = 'web_scrap/data/current_trend/current_trend.png'
 

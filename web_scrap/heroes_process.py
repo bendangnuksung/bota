@@ -26,7 +26,7 @@ def get_heroes_section(section_name, html):
     return rows, headers
 
 
-def scrap_heroes(url):
+def scrap_heroes_info(url):
     r = requests.get(url, headers=scrap_constant.browser_headers)
     html = r.text
     sections = scrap_constant.heroes_section_wanted

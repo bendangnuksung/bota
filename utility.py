@@ -3,6 +3,9 @@ import random
 import pandas
 import os
 from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
+import six
 
 
 css = """
@@ -50,7 +53,6 @@ def DataFrame_to_image(data, css=css, outputfile="out.png", format="png"):
 	*format: output format, as supported by IMGKit. Default is "png"
 	'''
 	fn = str(random.random()*100000000).split(".")[0] + ".html"
-	print(fn)
 	try:
 		os.remove(fn)
 	except Exception:
@@ -78,8 +80,33 @@ def DataFrame_to_image(data, css=css, outputfile="out.png", format="png"):
 	return outputfile
 
 
+def render_mpl_table(data, title=None, col_width=3.0, row_height=0.8, font_size=16, header_color='#40466e',
+					 row_colors=['#f1f1f2', 'w'], edge_color='w', bbox=[0, 0, 1, 1],
+					 header_columns=0,ax=None, **kwargs):
+	if ax is None:
+		size = (np.array(data.shape[::-1]) + np.array([0, 1])) * np.array([col_width, row_height])
+		fig, ax = plt.subplots(figsize=size)
+		if title is not None:
+			fig.suptitle(title, fontsize=22)
+		# plt.close(fig)
+		ax.axis('off')
+
+	mpl_table = ax.table(cellText=data.values, bbox=bbox, colLabels=data.columns, **kwargs)
+	mpl_table.auto_set_font_size(False)
+	mpl_table.set_fontsize(font_size)
+
+	for k, cell in six.iteritems(mpl_table._cells):
+		cell.set_edgecolor(edge_color)
+		if k[0] == 0 or k[1] < header_columns:
+			cell.set_text_props(weight='bold', color='w')
+			cell.set_facecolor(header_color)
+		else:
+			cell.set_facecolor(row_colors[k[0]%len(row_colors) ])
+	plt.savefig('foo.png')
+	return ax
+
+
 if __name__ == "__main__":
-	import numpy as np
 	a = np.ones([10,9])
 	a = pandas.DataFrame(a[1:], columns=['Radiant', 'Dire', 'Avg MMR', 'Game Mode', 'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead'])
 	r = DataFrame_to_image(a, outputfile='test.png')
