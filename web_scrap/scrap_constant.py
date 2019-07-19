@@ -2,7 +2,7 @@
 browser_headers = {'user-agent': 'Mozilla/5.0'}
 
 
-##### character_images Info constant
+##### character_icons Info constant
 heroes_pre_url = 'https://www.dotabuff.com/heroes/'
 heros_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-warden', 'axe', 'bane', 'batrider',
                'beastmaster', 'bloodseeker', 'bounty-hunter', 'brewmaster', 'bristleback', 'broodmother',
@@ -29,10 +29,19 @@ section_column_wanted = {'Worst Versus':    ['Hero', 'Disadvantage', 'Win Rate',
                          'Most Used Items': ['Item', 'Matches', 'Win Rate']}
 
 
-#### Current trends constant
+##### Current trends constant
 heroes_trend_url = 'https://www.dotabuff.com/heroes/trends'
 heroes_trend_columns = ['Hero', 'WR:Start', 'WR:Current', 'WR:Change', 'WR:Trend',
                         'PR:Start', 'PR:Current', 'PR:Change', 'PR:Trend']
 trend_attribute_key_name = 'data-value'
 heroes_trend_image_path = 'web_scrap/data/current_trend/current_trend.png'
+
+
+##### Matplot icon display settings
+icons_path = 'web_scrap/data/character_icons/'
+icon_x           = -0.1
+icon_y           = 0.75
+icon_width       = 0.2
+icon_height      = 0.05
+icon_height_diff = 0.07
 

@@ -1,6 +1,6 @@
 import pandas as pd
 import dota2api
-from applications.panda_to_image import DataFrame_to_image
+from utility import DataFrame_to_image
 from constant import GAME_MODE, dota2_api_key
 
 dota_api = dota2api.Initialise(dota2_api_key)

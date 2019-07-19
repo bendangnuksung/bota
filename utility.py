@@ -6,7 +6,11 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 import six
+from matplotlib.cbook import get_sample_data
+from web_scrap import scrap_constant
+import os
 
+repo_abs_path = os.path.dirname(os.path.realpath(__file__))
 
 css = """
 <style type=\"text/css\">
@@ -80,9 +84,26 @@ def DataFrame_to_image(data, css=css, outputfile="out.png", format="png"):
 	return outputfile
 
 
-def render_mpl_table(data, title=None, col_width=3.0, row_height=0.8, font_size=16, header_color='#40466e',
+def get_icon_path(heroes_list):
+	icon_paths = []
+	for hero in heroes_list:
+		hero = hero.lower().strip()
+		hero = hero.replace(' ', '-')
+		hero_icon_path = os.path.join(*[repo_abs_path, scrap_constant.icons_path, hero + '.png'])
+		icon_paths.append(hero_icon_path)
+	return icon_paths
+
+
+def get_icon_axis(icon_index):
+	x, y, width, height = scrap_constant.icon_x, scrap_constant.icon_y, scrap_constant.icon_width, scrap_constant.icon_height
+	y = y - (scrap_constant.icon_height_diff * icon_index)
+	return [x, y, width, height]
+
+
+def render_mpl_table(data, icon_list=[], title=None, col_width=3.0, row_height=1.2, font_size=16, header_color='#40466e',
 					 row_colors=['#f1f1f2', 'w'], edge_color='w', bbox=[0, 0, 1, 1],
 					 header_columns=0,ax=None, **kwargs):
+
 	if ax is None:
 		size = (np.array(data.shape[::-1]) + np.array([0, 1])) * np.array([col_width, row_height])
 		fig, ax = plt.subplots(figsize=size)
@@ -90,6 +111,15 @@ def render_mpl_table(data, title=None, col_width=3.0, row_height=0.8, font_size=
 			fig.suptitle(title, fontsize=22)
 		# plt.close(fig)
 		ax.axis('off')
+
+	if len(icon_list):
+		for i, icon_path in enumerate(icon_list):
+			image = plt.imread(get_sample_data(icon_path))
+			icon_axis = get_icon_axis(i)
+			newax = fig.add_axes(icon_axis, anchor='NE', zorder=-1)
+			newax.imshow(image)
+			newax.axis('off')
+
 
 	mpl_table = ax.table(cellText=data.values, bbox=bbox, colLabels=data.columns, **kwargs)
 	mpl_table.auto_set_font_size(False)

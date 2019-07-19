@@ -1,7 +1,8 @@
 from web_scrap.heroes_process import get_current_hero_trends
 from web_scrap.scrap_constant import heroes_trend_image_path
 import pandas as pd
-from utility import render_mpl_table
+from utility import render_mpl_table, get_icon_path
+import numpy as np
 
 
 def round_df_digits(df):
@@ -12,15 +13,15 @@ def round_df_digits(df):
 def get_current_trend():
     current_trend_dataframe = get_current_hero_trends()
     current_trend_dataframe = current_trend_dataframe[:10]
-    alphabetic_df = current_trend_dataframe[current_trend_dataframe.columns[0]]
+    hero_name_df = current_trend_dataframe[current_trend_dataframe.columns[0]]
     numeric_df = current_trend_dataframe[current_trend_dataframe.columns[1:]]
     numeric_df = round_df_digits(numeric_df)
-    current_trend_dataframe = pd.concat([alphabetic_df, numeric_df], axis=1)
-    # image_path = DataFrame_to_image(current_trend_dataframe, outputfile=heroes_trend_image_path)
+    heroes_list = hero_name_df.values.tolist()
+    icon_path_list = get_icon_path(heroes_list)
+    current_trend_dataframe = pd.concat([hero_name_df, numeric_df], axis=1)
+
     title = 'Current Heroes Trend \nWR: Win Rate, PR: Pick Rate'
-    table = render_mpl_table(current_trend_dataframe, header_columns=0, col_width=2.0,
-                             title=title)
-    # return image_path
+    table = render_mpl_table(current_trend_dataframe, icon_list=icon_path_list, header_columns=0, col_width=2.0, title=title)
 
 
 if __name__ == '__main__':
