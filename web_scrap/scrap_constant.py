@@ -31,8 +31,9 @@ section_column_wanted = {'Worst Versus':    ['Hero', 'Disadvantage', 'Win Rate',
 
 ##### Current trends constant
 heroes_trend_url = 'https://www.dotabuff.com/heroes/trends'
-heroes_trend_columns = ['Hero', 'WR:Start', 'WR:Current', 'WR:Change', 'WR:Trend',
-                        'PR:Start', 'PR:Current', 'PR:Change', 'PR:Trend']
+heroes_trend_columns = ['Hero', 'WR:Old', 'WR:New', 'WR:Change', 'WR:Trend',
+                        'PR:Old', 'PR:New', 'PR:Change', 'PR:Trend']
+heros_unwanted_columns = ['WR:Trend', 'PR:Trend']
 trend_attribute_key_name = 'data-value'
 heroes_trend_image_path = 'web_scrap/data/current_trend/current_trend.png'
 

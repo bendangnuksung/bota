@@ -108,7 +108,7 @@ def render_mpl_table(data, icon_list=[], title=None, col_width=3.0, row_height=1
 		size = (np.array(data.shape[::-1]) + np.array([0, 1])) * np.array([col_width, row_height])
 		fig, ax = plt.subplots(figsize=size)
 		if title is not None:
-			fig.suptitle(title, fontsize=22)
+			fig.suptitle(title, fontsize=font_size+6)
 		# plt.close(fig)
 		ax.axis('off')
 

@@ -50,6 +50,7 @@ def get_current_hero_trends():
     total_columns = len(scrap_constant.heroes_trend_columns)
     trend_list = np.reshape(trend_list, (len(trend_list) // total_columns, total_columns))
     panda_result = pd.DataFrame(trend_list, columns=scrap_constant.heroes_trend_columns)
+    panda_result = panda_result.drop(scrap_constant.heros_unwanted_columns, axis=1)
     return panda_result
 
 

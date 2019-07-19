@@ -20,8 +20,13 @@ def get_current_trend():
     icon_path_list = get_icon_path(heroes_list)
     current_trend_dataframe = pd.concat([hero_name_df, numeric_df], axis=1)
 
-    title = 'Current Heroes Trend \nWR: Win Rate, PR: Pick Rate'
-    table = render_mpl_table(current_trend_dataframe, icon_list=icon_path_list, header_columns=0, col_width=2.0, title=title)
+    title = 'Current Heroes Trend \n\nWR: Win Rate                              PR: Pick Rate'
+    table = render_mpl_table(current_trend_dataframe, icon_list=icon_path_list, header_columns=0, col_width=2.6,
+                             title=title, font_size=20)
+
+
+def get_counter_hero(hero):
+    pass
 
 
 if __name__ == '__main__':

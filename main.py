@@ -10,6 +10,7 @@ from constant import discord_token
 from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
+from web_scrap.scrap import get_current_trend
 
 client = discord.Client()
 
@@ -60,6 +61,11 @@ async def on_message(message):
 
     elif "@dota_info" in message.content.lower():
         await message.channel.send(f"Hello {message.author.name}")
+
+    elif "!trend" in message.content:
+        get_current_trend()
+        await message.channel.send(f"Getting this week Heroes Trend")
+        await message.channel.send('Current Trend: ', file=discord.File(f'foo.png'))
 
     elif "exit" in message.content.lower():
         await client.close()
