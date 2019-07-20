@@ -39,7 +39,7 @@ heroes_trend_image_path = 'web_scrap/data/current_trend/current_trend.png'
 
 
 ##### Matplot icon display settings
-icons_path = 'web_scrap/data/character_icons/'
+icons_path = 'data/character_icons/'
 icon_x           = -0.1
 icon_y           = 0.75
 icon_width       = 0.2

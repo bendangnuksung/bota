@@ -1,33 +1,44 @@
+import os
 
+REPO_PATH = os.path.dirname(os.path.realpath(__file__))
+
+# Current Trend
+CT_IMAGE_PATH = 'data/temp_images/current_trend.png'
+CT_IMAGE_PATH = os.path.join(REPO_PATH, CT_IMAGE_PATH)
+CT_IMAGE_UPDATE_TIME_THRESHOLD = 600 # 600 sec
+
+# top live game
+TLG_IMAGE_PATH = 'data/temp_images/top_live_games.png'
+TLG_IMAGE_PATH = os.path.join(REPO_PATH, TLG_IMAGE_PATH)
+TLG_IMAGE_UPDATE_TIME_THRESHOLD = 30 # 30 sec
+
+TLG_CUSTOM_COLUMNS = ['Radiant', 'Dire', 'Avg MMR', 'Game Mode', 'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead']
+KEYWORD_AVERAGE_MMR = 'average_mmr'
+KEYWORD_GAME_MODE = 'game_mode'
+KEYWORD_GAME_TIME = 'game_time'
+KEYWORD_SPECTATORS = 'spectators'
+KEYWORD_RADIANT_LEAD = 'radiant_lead'
+KEYWORD_RADIANT_SCORE = 'radiant_score'
+KEYWORD_DIRE_SCORE = 'dire_score'
+KEYWORD_RADIANT_TEAM = 'team_name_radiant'
+KEYWORD_DIRE_TEAM = 'team_name_dire'
+
+
+# Dota 2 API constant
 rank_tier = ['herald', 'Guardian', 'Crusader', 'Archon','Legend', 'Ancient','Divine', 'Immortal']
 
 discord_token = "NTAxMTAwOTQ1NDA1Mzc4NTYy.DqUeoQ.pxwwUuubokrUHgdO2WNFi1uhrFs"
 
 dota2_api_key = "A1AE7829A07BB76C29353946D1BDBC4F"
 
-GAME_MODE = {0 :'Unknown',
-1:'All Pick',
-2:'Captain’s Mode',
-3:'Random Draft',
-4:'Single Draft',
-5:'All Random',
-6:'Intro',
-7:'Diretide',
-8:'Reverse Captain’s Mode',
-9:'The Greeviling',
-10:'Tutorial',
-11:'Mid Only',
-12:'Least Played',
-13:'New Player Pool',
-14:'Compendium Matchmaking',
-15:'Custom',
-16:'Captains Draft',
-17:'Balanced Draft',
-18:'Ability Draft',
-19:'Event (?)',
-20:'All Random Death Match',
-21:'Solo Mid 1 vs 1',
-22:'Ranked All Pick'}
+client_id = 501100945405378562
+
+GAME_MODE = {0 :'Unknown', 				1:'All Pick', 			2:'Captain’s Mode', 		3:'Random Draft',
+			 4:'Single Draft', 			5:'All Random',			6:'Intro', 					7:'Diretide',
+			 8:'Reverse Captain’s Mode',9:'The Greeviling', 	10:'Tutorial', 				11:'Mid Only',
+			 12:'Least Played', 		13:'New Player Pool', 	14:'Compendium Matchmaking',15:'Custom',
+			 16:'Captains Draft',		17:'Balanced Draft',    18:'Ability Draft', 		19:'Event (?)',
+			 20:'All Random Death Match',21:'Solo Mid 1 vs 1',  22:'Ranked All Pick'}
 
 
 COUNTRIES = {
@@ -281,3 +292,37 @@ COUNTRIES = {
 	'ZM': 'ZAMBIA',
 	'ZW': 'ZIMBABWE',
 }
+
+css = """
+<style type=\"text/css\">
+table {
+color: #FAFAFA;
+font-family: Helvetica, Arial, sans-serif;
+width: 1300px;
+border-collapse:
+collapse; 
+border-spacing: 0;
+}
+
+td, th {
+border: 1px solid transparent; /* No more visible border */
+height: 30px;
+}
+
+th {
+background: #363636; /* Darken header a bit */
+font-weight: bold;
+font-size: 25;
+}
+
+td {
+background: #5a6372;
+text-align: center;
+font-size: 20;
+}
+
+table tr:nth-child(odd) td{
+background-color: #5a6372;
+}
+</style>
+"""

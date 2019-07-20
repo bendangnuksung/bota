@@ -1,53 +1,22 @@
 import imgkit
 import random
 import pandas
-import os
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 import six
 from matplotlib.cbook import get_sample_data
 from web_scrap import scrap_constant
+from constant import css, TLG_IMAGE_PATH, CT_IMAGE_PATH
 import os
+from datetime import datetime
+import re
+
 
 repo_abs_path = os.path.dirname(os.path.realpath(__file__))
 
-css = """
-<style type=\"text/css\">
-table {
-color: #FAFAFA;
-font-family: Helvetica, Arial, sans-serif;
-width: 1300px;
-border-collapse:
-collapse; 
-border-spacing: 0;
-}
 
-td, th {
-border: 1px solid transparent; /* No more visible border */
-height: 30px;
-}
-
-th {
-background: #363636; /* Darken header a bit */
-font-weight: bold;
-font-size: 25;
-}
-
-td {
-background: #5a6372;
-text-align: center;
-font-size: 20;
-}
-
-table tr:nth-child(odd) td{
-background-color: #5a6372;
-}
-</style>
-"""
-
-
-def DataFrame_to_image(data, css=css, outputfile="out.png", format="png"):
+def DataFrame_to_image(data, css=css, outputfile=TLG_IMAGE_PATH, format="png"):
 	'''
 	For rendering a Pandas DataFrame as an image.
 	data: a pandas DataFrame
@@ -88,6 +57,7 @@ def get_icon_path(heroes_list):
 	icon_paths = []
 	for hero in heroes_list:
 		hero = hero.lower().strip()
+		hero = re.sub('[^a-z- ]', '', hero)
 		hero = hero.replace(' ', '-')
 		hero_icon_path = os.path.join(*[repo_abs_path, scrap_constant.icons_path, hero + '.png'])
 		icon_paths.append(hero_icon_path)
@@ -100,10 +70,9 @@ def get_icon_axis(icon_index):
 	return [x, y, width, height]
 
 
-def render_mpl_table(data, icon_list=[], title=None, col_width=3.0, row_height=1.2, font_size=16, header_color='#40466e',
-					 row_colors=['#f1f1f2', 'w'], edge_color='w', bbox=[0, 0, 1, 1],
-					 header_columns=0,ax=None, **kwargs):
-
+def render_mpl_table(data, icon_list=[], title=None, image_path=CT_IMAGE_PATH, col_width=3.0, row_height=1.2,
+					 font_size=16, header_color='#40466e', row_colors=['#f1f1f2', 'w'],
+					 edge_color='w', bbox=[0, 0, 1, 1], header_columns=0,ax=None, **kwargs):
 	if ax is None:
 		size = (np.array(data.shape[::-1]) + np.array([0, 1])) * np.array([col_width, row_height])
 		fig, ax = plt.subplots(figsize=size)
@@ -120,7 +89,6 @@ def render_mpl_table(data, icon_list=[], title=None, col_width=3.0, row_height=1
 			newax.imshow(image)
 			newax.axis('off')
 
-
 	mpl_table = ax.table(cellText=data.values, bbox=bbox, colLabels=data.columns, **kwargs)
 	mpl_table.auto_set_font_size(False)
 	mpl_table.set_fontsize(font_size)
@@ -132,8 +100,25 @@ def render_mpl_table(data, icon_list=[], title=None, col_width=3.0, row_height=1
 			cell.set_facecolor(header_color)
 		else:
 			cell.set_facecolor(row_colors[k[0]%len(row_colors) ])
-	plt.savefig('foo.png')
-	return ax
+	plt.savefig(image_path)
+	return image_path
+
+
+def is_file_old(file_path, sec_threshold):
+	'''
+	Check if file is older than given threshold
+	:param file_path:
+	:param sec_threshold:
+	:return:
+	'''
+	if not os.path.isfile(file_path):
+		# No file at all, so creating new
+		return True
+	current_ctime = datetime.now().timestamp()
+	file_ctime = os.path.getmtime(file_path)
+	if (current_ctime - file_ctime) < sec_threshold:
+		return False
+	return True
 
 
 if __name__ == "__main__":

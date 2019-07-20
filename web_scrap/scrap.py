@@ -1,8 +1,7 @@
 from web_scrap.heroes_process import get_current_hero_trends
-from web_scrap.scrap_constant import heroes_trend_image_path
 import pandas as pd
-from utility import render_mpl_table, get_icon_path
-import numpy as np
+from utility import render_mpl_table, get_icon_path, is_file_old
+from constant import CT_IMAGE_PATH, CT_IMAGE_UPDATE_TIME_THRESHOLD
 
 
 def round_df_digits(df):
@@ -11,6 +10,9 @@ def round_df_digits(df):
 
 
 def get_current_trend():
+    if not is_file_old(CT_IMAGE_PATH, CT_IMAGE_UPDATE_TIME_THRESHOLD):
+        return CT_IMAGE_PATH
+
     current_trend_dataframe = get_current_hero_trends()
     current_trend_dataframe = current_trend_dataframe[:10]
     hero_name_df = current_trend_dataframe[current_trend_dataframe.columns[0]]
