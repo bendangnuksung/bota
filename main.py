@@ -10,13 +10,12 @@ from constant import discord_token, client_id
 from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
-from web_scrap.scrap import get_current_trend
+from web_scrap.scrap import get_current_trend, get_counter_hero
 
 client = discord.Client()
 
 commands_list = {'!top_games': 'Shows top 9 Live Games',
-                 '!signup  username  steamID': 'Registers your steamID with the username for fast profile view',
-                 '!profile  username': 'Shows your profile stats with the registered username',
+                 '!counter HeroName': 'Shows Heroes which counter the given hero name',
                  '!profile  steamID': 'Shows your profile stats given steamID',
                  '!trend': 'Shows current heroes trend'}
 
@@ -68,6 +67,16 @@ async def on_message(message):
         image_path = get_current_trend()
         await message.channel.send(f"Getting this week Heroes Trend")
         await message.channel.send('Current Trend: ', file=discord.File(image_path))
+
+    elif "!counter" in message.content:
+        found, hero_name, image_path = get_counter_hero(message.content)
+        if not found:
+            if hero_name != '':
+                await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+            else:
+                await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+        else:
+            await message.channel.send(f'Heroes to Counter **{hero_name}**: ', file=discord.File(image_path))
 
     elif "exit" in message.content.lower():
         await client.close()

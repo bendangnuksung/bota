@@ -4,22 +4,22 @@ browser_headers = {'user-agent': 'Mozilla/5.0'}
 
 ##### character_icons Info constant
 heroes_pre_url = 'https://www.dotabuff.com/heroes/'
-heros_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-warden', 'axe', 'bane', 'batrider',
+heroes_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-warden', 'axe', 'bane', 'batrider',
                'beastmaster', 'bloodseeker', 'bounty-hunter', 'brewmaster', 'bristleback', 'broodmother',
                'centaur-warrunner', 'chaos-knight', 'chen', 'clinkz', 'clockwerk', 'crystal-maiden', 'dark-seer',
                'dark-willow', 'dazzle', 'death-prophet', 'disruptor', 'doom', 'dragon-knight', 'drow-ranger',
                'earth-spirit', 'earthshaker', 'elder-titan', 'ember-spirit', 'enchantress', 'enigma', 'faceless-void',
-               'grimstroke', 'gyrocopter', 'huskar', 'invoker', 'io', 'jakiro', 'juggernaut', 'keeper-of-the-light',
-               'kunkka', 'legion-commander', 'leshrac', 'lich', 'lifestealer', 'lina', 'lion', 'lone-druid', 'luna',
-               'lycan', 'magnus', 'mars', 'medusa', 'meepo', 'mirana', 'monkey-king', 'morphling', 'naga-siren',
-               'natures-prophet', 'necrophos', 'night-stalker', 'nyx-assassin', 'ogre-magi', 'omniknight', 'oracle',
-               'outworld-devourer', 'pangolier', 'phantom-assassin', 'phantom-lancer', 'phoenix', 'puck', 'pudge',
-               'pugna', 'queen-of-pain', 'razor', 'riki', 'rubick', 'sand-king', 'shadow-demon', 'shadow-fiend',
-               'shadow-shaman', 'silencer', 'skywrath-mage', 'sladar', 'slark', 'sniper', 'spectre', 'spirit-breaker',
-               'storm-spirit', 'sven', 'techies', 'templar-assassin', 'terrorblade', 'tidehunter', 'timbersaw',
-               'tinker', 'tiny', 'treant-protector', 'troll-warlord', 'tusk', 'underlord', 'undying', 'ursa',
-               'vengeful-spirit', 'venomancer', 'viper', 'visage', 'warlock', 'weaver', 'windranger',
-               'winter-wyvern', 'witch-doctor', 'wraith-king', 'zeus']
+                'grimstroke', 'gyrocopter', 'huskar', 'invoker', 'io', 'jakiro', 'juggernaut', 'keeper-of-the-light',
+                'kunkka', 'legion-commander', 'leshrac', 'lich', 'lifestealer', 'lina', 'lion', 'lone-druid', 'luna',
+                'lycan', 'magnus', 'mars', 'medusa', 'meepo', 'mirana', 'monkey-king', 'morphling', 'naga-siren',
+                'natures-prophet', 'necrophos', 'night-stalker', 'nyx-assassin', 'ogre-magi', 'omniknight', 'oracle',
+                'outworld-devourer', 'pangolier', 'phantom-assassin', 'phantom-lancer', 'phoenix', 'puck', 'pudge',
+                'pugna', 'queen-of-pain', 'razor', 'riki', 'rubick', 'sand-king', 'shadow-demon', 'shadow-fiend',
+                'shadow-shaman', 'silencer', 'skywrath-mage', 'sladar', 'slark', 'sniper', 'spectre', 'spirit-breaker',
+                'storm-spirit', 'sven', 'techies', 'templar-assassin', 'terrorblade', 'tidehunter', 'timbersaw',
+                'tinker', 'tiny', 'treant-protector', 'troll-warlord', 'tusk', 'underlord', 'undying', 'ursa',
+                'vengeful-spirit', 'venomancer', 'viper', 'visage', 'warlock', 'weaver', 'windranger',
+                'winter-wyvern', 'witch-doctor', 'wraith-king', 'zeus']
 
 
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']
@@ -39,7 +39,8 @@ heroes_trend_image_path = 'web_scrap/data/current_trend/current_trend.png'
 
 
 ##### Matplot icon display settings
-icons_path = 'data/character_icons/'
+icons_path_small = 'data/character_icons/'
+icons_path_big   = 'data/character_icons_big/'
 icon_x           = -0.1
 icon_y           = 0.75
 icon_width       = 0.2

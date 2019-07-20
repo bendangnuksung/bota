@@ -3,6 +3,21 @@ from web_scrap import scrap_constant
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup as bs
+import os
+import difflib
+
+
+def find_hero_name(hero):
+    found_hero = False
+    hero = hero.lower().strip()
+    hero = re.sub('[^a-z- ]', '', hero)
+    hero = hero.replace(' ', '-')
+    close_matches = difflib.get_close_matches(hero, scrap_constant.heroes_names)
+    if not len(close_matches):
+        return found_hero, ''
+    if hero == close_matches[0]:
+        return True, close_matches[0]
+    return False, close_matches[0]
 
 
 def reshape_heroes_result(results, section_name):
@@ -26,7 +41,8 @@ def get_heroes_section(section_name, html):
     return rows, headers
 
 
-def scrap_heroes_info(url):
+def scrap_heroes_info(hero_name):
+    url = os.path.join(scrap_constant.heroes_pre_url, hero_name)
     r = requests.get(url, headers=scrap_constant.browser_headers)
     html = r.text
     sections = scrap_constant.heroes_section_wanted

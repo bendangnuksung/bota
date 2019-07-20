@@ -2,6 +2,21 @@ import os
 
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
 
+# Counter Hero
+COUNTER_HERO_IMAGE_PATH = 'data/counter_heroes/'
+COUNTER_HERO_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_HERO_IMAGE_PATH)
+COUNTER_HERO_UPDATE_TIME_THRESHOLD = 604800 # 1 week
+COUNTER_BG_IMAGE_PATH = 'data/background/counter_backgound.jpg'
+COUNTER_BG_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_BG_IMAGE_PATH)
+COUNTER_BG_SHAPE = (400, 800)
+COUNTER_ICON_SHAPE = (60, 96)
+COUNTER_MAIN_HERO_COORDS = [305, 340]
+COUNTER_START_COORDS = [25, 70]
+COUNTER_WIDTH_DIST = 30
+COUNTER_HEIGHT_DIST = 100
+COUNTER_MAX_COLUMN = 5
+
+
 # Current Trend
 CT_IMAGE_PATH = 'data/temp_images/current_trend.png'
 CT_IMAGE_PATH = os.path.join(REPO_PATH, CT_IMAGE_PATH)

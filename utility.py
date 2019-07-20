@@ -53,13 +53,17 @@ def DataFrame_to_image(data, css=css, outputfile=TLG_IMAGE_PATH, format="png"):
 	return outputfile
 
 
-def get_icon_path(heroes_list):
+def get_icon_path(heroes_list, icon_size='small'):
+	if icon_size == 'small':
+		icon_directory = scrap_constant.icons_path_small
+	else:
+		icon_directory = scrap_constant.icons_path_big
 	icon_paths = []
 	for hero in heroes_list:
 		hero = hero.lower().strip()
 		hero = re.sub('[^a-z- ]', '', hero)
 		hero = hero.replace(' ', '-')
-		hero_icon_path = os.path.join(*[repo_abs_path, scrap_constant.icons_path, hero + '.png'])
+		hero_icon_path = os.path.join(*[repo_abs_path, icon_directory, hero + '.png'])
 		icon_paths.append(hero_icon_path)
 	return icon_paths
 
