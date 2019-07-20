@@ -6,7 +6,7 @@
 
 import discord
 import sys
-from constant import discord_token
+from constant import discord_token, client_id
 from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
@@ -17,7 +17,8 @@ client = discord.Client()
 commands_list = {'!top_games': 'Shows top 9 Live Games',
                  '!signup  username  steamID': 'Registers your steamID with the username for fast profile view',
                  '!profile  username': 'Shows your profile stats with the registered username',
-                 '!profile  steamID': 'Shows your profile stats given steamID'}
+                 '!profile  steamID': 'Shows your profile stats given steamID',
+                 '!trend': 'Shows current heroes trend'}
 
 
 def get_help():
@@ -47,9 +48,9 @@ async def on_message(message):
         await message.channel.send(help_string)
 
     elif '!top_games' == message.content:
-        result = get_top_games()
+        image_path = get_top_games()
         await message.channel.send(f"Getting Top Live Spectacting Games")
-        await message.channel.send('Top Games: ', file=discord.File(f'{result}'))
+        await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
     elif '!signup' in message.content:
         result = signup(message.content)
@@ -59,8 +60,9 @@ async def on_message(message):
         result = profile(message.content)
         await message.channel.send(result)
 
-    elif "@dota_info" in message.content.lower():
-        await message.channel.send(f"Hello {message.author.name}")
+    elif f"<@!{client_id}>" in message.content:
+        await message.channel.send(f"Hello {message.author.name},"
+                                   f" Please type    **!help**    for more options")
 
     elif "!trend" in message.content:
         get_current_trend()
