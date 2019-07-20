@@ -65,9 +65,9 @@ async def on_message(message):
                                    f" Please type    **!help**    for more options")
 
     elif "!trend" in message.content:
-        get_current_trend()
+        image_path = get_current_trend()
         await message.channel.send(f"Getting this week Heroes Trend")
-        await message.channel.send('Current Trend: ', file=discord.File(f'foo.png'))
+        await message.channel.send('Current Trend: ', file=discord.File(image_path))
 
     elif "exit" in message.content.lower():
         await client.close()
