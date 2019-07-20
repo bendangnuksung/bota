@@ -58,7 +58,7 @@ def make_counter_hero_image(hero_image_path, counter_heros_image_path):
 
 def get_counter_hero(query):
     query = query.split()
-    hero = query[1]
+    hero = ' '.join(query[1:])
     hero = hero.strip()
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
