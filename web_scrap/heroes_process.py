@@ -71,7 +71,7 @@ def get_current_hero_trends():
 
 
 if __name__ == '__main__':
-    r = get_current_hero_trends()
+    r = scrap_heroes_info('alchemist')
     print(r)
 
 

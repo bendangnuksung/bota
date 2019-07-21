@@ -16,6 +16,13 @@ COUNTER_WIDTH_DIST = 30
 COUNTER_HEIGHT_DIST = 100
 COUNTER_MAX_COLUMN = 5
 
+# Hero Good against
+GOOD_HERO_IMAGE_PATH = 'data/good_against_heroes/'
+GOOD_HERO_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_HERO_IMAGE_PATH)
+GOOD_BG_IMAGE_PATH = 'data/background/good_against_background.jpg'
+GOOD_BG_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_BG_IMAGE_PATH)
+
+
 
 # Current Trend
 CT_IMAGE_PATH = 'data/temp_images/current_trend.png'

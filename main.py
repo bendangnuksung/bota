@@ -10,7 +10,7 @@ from constant import discord_token, client_id
 from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
-from web_scrap.scrap import get_current_trend, get_counter_hero
+from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against
 
 client = discord.Client()
 
@@ -76,7 +76,17 @@ async def on_message(message):
             else:
                 await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
         else:
-            await message.channel.send(f'Heroes to Counter **{hero_name}**: ', file=discord.File(image_path))
+            await message.channel.send(f'**{hero_name}** is bad against: ', file=discord.File(image_path))
+
+    elif "!good" in message.content:
+        found, hero_name, image_path = get_good_against(message.content)
+        if not found:
+            if hero_name != '':
+                await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+            else:
+                await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+        else:
+            await message.channel.send(f'**{hero_name}** is good against: ', file=discord.File(image_path))
 
     elif "exit" in message.content.lower():
         await client.close()
