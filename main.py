@@ -15,10 +15,13 @@ from web_scrap.scrap import get_skill_build
 
 client = discord.Client()
 
-commands_list = {'!top_games': 'Shows top 9 Live Games',
+commands_list = {'!top_games'       : 'Shows top 9 Live Games',
                  '!counter HeroName': 'Shows Heroes which counter the given hero name',
+                 '!good HeroName'   : '(Opposite of !counter) Shows Heroes which di-counter the given hero name',
+                 '!skill or !talent or !build HeroName': 'Shows most popular & win rate talent/skill build',
                  '!profile  steamID': 'Shows your profile stats given steamID',
-                 '!trend': 'Shows current heroes trend'}
+                 '!trend'           : 'Shows current heroes trend',
+                 }
 
 
 def get_help():
