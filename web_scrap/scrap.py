@@ -108,7 +108,6 @@ async def get_skill_build(query, hero=None):
         hero = ' '.join(query[1:])
         hero = hero.strip()
     found_hero, hero_name = find_hero_name(hero)
-
     if not found_hero:
         return False, hero_name, ''
 
@@ -117,7 +116,7 @@ async def get_skill_build(query, hero=None):
     if not is_file_old(guide_image_path, constant.GUIDE_THRESHOLD_IMAGE_UPDATE):
         return True, hero_name, guide_image_path
 
-    url = constant.GUIDE_URL.replace('<hero_name>', hero)
+    url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
 
     talent_filename = hero + '_talent.png'
     talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
@@ -125,6 +124,7 @@ async def get_skill_build(query, hero=None):
 
     skill_filename = hero + '_skill.png'
     skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
+
     await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
 
     talent_image = cv2.imread(talent_screenshot_path)
@@ -148,6 +148,6 @@ async def get_skill_build(query, hero=None):
 
 
 if __name__ == '__main__':
-    print(get_counter_hero('!good ursa'))
-    print(get_good_against('!good ursa'))
-    print(get_skill_build('!good invoker'))
+    # print(get_counter_hero('!good ursa'))
+    # print(get_good_against('!good ursa'))
+    print(get_skill_build('!good witch doctor'))

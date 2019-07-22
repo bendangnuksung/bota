@@ -6,7 +6,7 @@
 
 import discord
 import sys
-from constant import discord_token, client_id
+from constant import discord_token, client_id, MAX_MESSAGE_WORD_LENGTH
 from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
@@ -44,36 +44,39 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    message_string = message.content
+    message_string = message_string.lower().strip()
+    message_word_length = len(message_string.split())
     print(f"{message.channel}: {message.author}: {message.author.name}: {message.content}")
-
-    if '!help' == message.content:
+    
+    if '!help' == message_string:
         help_string = get_help()
         await message.channel.send(help_string)
 
-    elif '!top_games' == message.content:
+    elif '!top_games' == message_string:
         image_path = get_top_games()
         await message.channel.send(f"Getting Top Live Spectacting Games")
         await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
-    elif '!signup' in message.content:
-        result = signup(message.content)
+    elif '!signup' in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+        result = signup(message_string)
         await message.channel.send(result)
 
-    elif '!profile' in message.content.split()[0]:
-        result = profile(message.content)
+    elif '!profile' in message_string.split()[0]:
+        result = profile(message_string)
         await message.channel.send(result)
 
-    elif f"<@!{client_id}>" in message.content:
+    elif f"<@!{client_id}>" in message_string:
         await message.channel.send(f"Hello {message.author.name},"
                                    f" Please type    **!help**    for more options")
 
-    elif "!trend" in message.content:
+    elif "!trend" in message_string and message_word_length < (MAX_MESSAGE_WORD_LENGTH - 2):
         image_path = get_current_trend()
         await message.channel.send(f"Getting this week Heroes Trend")
         await message.channel.send('Current Trend: ', file=discord.File(image_path))
 
-    elif "!counter" in message.content:
-        found, hero_name, image_path = get_counter_hero(message.content)
+    elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+        found, hero_name, image_path = get_counter_hero(message_string)
         if not found:
             if hero_name != '':
                 await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
@@ -82,8 +85,8 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name}** is bad against: ', file=discord.File(image_path))
 
-    elif "!good" in message.content:
-        found, hero_name, image_path = get_good_against(message.content)
+    elif "!good" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+        found, hero_name, image_path = get_good_against(message_string)
         if not found:
             if hero_name != '':
                 await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
@@ -92,8 +95,9 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name}** is good against: ', file=discord.File(image_path))
 
-    elif "!skill" in message.content or "!talent" in message.content or "!build" in message.content:
-        found, hero_name, image_path = await get_skill_build(message.content)
+    elif ("!skill" in message_string or "!talent" in message_string or "!build" in message_string) \
+            and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+        found, hero_name, image_path = await get_skill_build(message_string)
         if not found:
             if hero_name != '':
                 await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
@@ -102,7 +106,7 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name}** most popular Skill/Talent build: ', file=discord.File(image_path))
 
-    elif "exit" in message.content.lower():
+    elif "exit" in message_string.lower():
         await client.close()
         sys.exit()
 
