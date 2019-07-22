@@ -125,7 +125,23 @@ def is_file_old(file_path, sec_threshold):
 	return True
 
 
+def crop_image(image, coords):
+	'''
+	:param image: numpy image
+	:param coords: <list> [xmin, ymin, xmax, ymax]
+	:return:
+	'''
+	cropped_image = image[coords[1]: coords[3], coords[0]: coords[2]]
+	return cropped_image
+
+
 if __name__ == "__main__":
+	import cv2, constant
+	image = cv2.imread('/home/ben/personal/discord-dota-bot/data/temp_images/ursa_skill.png')
+	new_image = crop_image(image, constant.SKILL_CROP_COORDS)
+	cv2.imwrite('/home/ben/personal/discord-dota-bot/web_scrap/skill.jpg', new_image)
+	exit()
+
 	a = np.ones([10,9])
 	a = pandas.DataFrame(a[1:], columns=['Radiant', 'Dire', 'Avg MMR', 'Game Mode', 'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead'])
 	r = DataFrame_to_image(a, outputfile='test.png')

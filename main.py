@@ -11,6 +11,7 @@ from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
 from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against
+from web_scrap.scrap import get_skill_build
 
 client = discord.Client()
 
@@ -87,6 +88,16 @@ async def on_message(message):
                 await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
         else:
             await message.channel.send(f'**{hero_name}** is good against: ', file=discord.File(image_path))
+
+    elif "!skill" in message.content or "!talent" in message.content or "!build" in message.content:
+        found, hero_name, image_path = await get_skill_build(message.content)
+        if not found:
+            if hero_name != '':
+                await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+            else:
+                await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+        else:
+            await message.channel.send(f'**{hero_name}** most popular Skill/Talent build: ', file=discord.File(image_path))
 
     elif "exit" in message.content.lower():
         await client.close()

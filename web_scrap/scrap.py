@@ -1,12 +1,13 @@
 from web_scrap.heroes_process import get_current_hero_trends, find_hero_name, scrap_heroes_info
 import pandas as pd
-from utility import render_mpl_table, get_icon_path, is_file_old
+from utility import render_mpl_table, get_icon_path, is_file_old, crop_image
 from constant import CT_IMAGE_PATH, CT_IMAGE_UPDATE_TIME_THRESHOLD
 import constant
 import os
 import cv2
-from PIL import Image, ImageEnhance
 import numpy as np
+import asyncio
+from web_scrap.web_screenshot import get_screenshot
 
 
 def round_df_digits(df):
@@ -101,8 +102,52 @@ def get_good_against(query):
     return True, hero_name, image_path
 
 
+async def get_skill_build(query, hero=None):
+    if hero is None:
+        query = query.split()
+        hero = ' '.join(query[1:])
+        hero = hero.strip()
+    found_hero, hero_name = find_hero_name(hero)
+
+    if not found_hero:
+        return False, hero_name, ''
+
+    guide_image_path = os.path.join(constant.GUIDE_SAVE_PATH, hero_name + '.png')
+
+    if not is_file_old(guide_image_path, constant.GUIDE_THRESHOLD_IMAGE_UPDATE):
+        return True, hero_name, guide_image_path
+
+    url = constant.GUIDE_URL.replace('<hero_name>', hero)
+
+    talent_filename = hero + '_talent.png'
+    talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
+    await get_screenshot(constant.TALENT_SELECTOR, url, talent_screenshot_path)
+
+    skill_filename = hero + '_skill.png'
+    skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
+    await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
+
+    talent_image = cv2.imread(talent_screenshot_path)
+    talent_crop = crop_image(talent_image, constant.TALENT_CROP_COORDS)
+
+    skill_image = cv2.imread(skill_screenshot_path)
+    skill_crop = crop_image(skill_image, constant.SKILL_CROP_COORDS)
+
+    hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
+    hero_icon = cv2.imread(hero_icon_path)
+    background_image = cv2.imread(constant.GUIDE_BACKGROUND_PATH)
+    background_image = cv2.resize(background_image, (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
+    background_image[constant.GUIDE_HERO_ICON_X_Y[0]: constant.GUIDE_HERO_ICON_X_Y[0] + hero_icon.shape[0],
+                     constant.GUIDE_HERO_ICON_X_Y[1]: constant.GUIDE_HERO_ICON_X_Y[1] + hero_icon.shape[1]] = hero_icon
+    background_image = add_border_to_image(background_image, bordersize=10, rgb=[0, 0, 0])
+    background_image = cv2.resize(background_image,
+                                  (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
+    final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
+    cv2.imwrite(guide_image_path, final_image)
+    return True, hero_name, guide_image_path
+
+
 if __name__ == '__main__':
     print(get_counter_hero('!good ursa'))
     print(get_good_against('!good ursa'))
-
-
+    print(get_skill_build('!good invoker'))

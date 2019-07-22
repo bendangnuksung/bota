@@ -2,6 +2,33 @@ import os
 
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
 
+TEMP_IMAGE_PATH = 'data/temp_images'
+TEMP_IMAGE_PATH = os.path.join(REPO_PATH, TEMP_IMAGE_PATH)
+
+# icon Path
+ICON_PATH_SMALL = 'data/character_icons/'
+ICON_PATH_BIG   = 'data/character_icons_big/'
+ICON_PATH_SMALL = os.path.join(REPO_PATH, ICON_PATH_SMALL)
+ICON_PATH_BIG   = os.path.join(REPO_PATH, ICON_PATH_BIG)
+
+# Talent, Skill screenshot coords
+GUIDE_BACKGROUND_PATH = 'data/background/build_background.jpg'
+GUIDE_BACKGROUND_SHAPE = [80, 800]
+GUIDE_HERO_ICON_X_Y = [4, 336]
+GUIDE_BACKGROUND_PATH = os.path.join(REPO_PATH, GUIDE_BACKGROUND_PATH)
+GUIDE_THRESHOLD_IMAGE_UPDATE = 604800 # 1 week
+GUIDE_SAVE_PATH = 'data/guide_build'
+GUIDE_SAVE_PATH = os.path.join(REPO_PATH, GUIDE_SAVE_PATH)
+
+GUIDE_URL = 'https://www.dotabuff.com/heroes/<hero_name>/builds'
+
+TALENT_SELECTOR = 'body > div.container-outer.seemsgood > div.container-inner.container-inner-content > div.content-inner > div.row-12.hero-abilities > div.col-8 > section:nth-child(1) > article > table'
+TALENT_CROP_COORDS = [0, 125, 800, -135] # xmin, ymin, xmax, ymax
+
+SKILL_SELECTOR = 'body > div.container-outer.seemsgood > div.container-inner.container-inner-content > div.content-inner > div:nth-child(2) > div:nth-child(5) > div.build > section > article'
+SKILL_CROP_COORDS = [0, 165, 800, -168] # xmin, ymin, xmax, ymax
+
+
 # Counter Hero
 COUNTER_HERO_IMAGE_PATH = 'data/counter_heroes/'
 COUNTER_HERO_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_HERO_IMAGE_PATH)
@@ -21,8 +48,6 @@ GOOD_HERO_IMAGE_PATH = 'data/good_against_heroes/'
 GOOD_HERO_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_HERO_IMAGE_PATH)
 GOOD_BG_IMAGE_PATH = 'data/background/good_against_background.jpg'
 GOOD_BG_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_BG_IMAGE_PATH)
-
-
 
 # Current Trend
 CT_IMAGE_PATH = 'data/temp_images/current_trend.png'
