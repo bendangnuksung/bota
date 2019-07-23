@@ -12,6 +12,31 @@ ICON_PATH_BIG   = 'data/character_icons_big/'
 ICON_PATH_SMALL = os.path.join(REPO_PATH, ICON_PATH_SMALL)
 ICON_PATH_BIG   = os.path.join(REPO_PATH, ICON_PATH_BIG)
 
+
+# Item Guide
+DOTABUFF_URL = 'https://www.dotabuff.com'
+DOTABUFF_PLAYER_URL = 'https://www.dotabuff.com/players/'
+ITEM_URL = 'https://www.dotabuff.com/heroes/<hero_name>/guides'
+
+ITEM_FIRST_STAGE_TAG = ['div', {'class': 'r-stats-grid'}]
+ITEM_PLAYER_NAME_ID_TAG = ['div', {'class': 'kv kv-larger kv-small-margin'}]
+ITEM_BUILD_TAG = ["div", {"class": "top-right"}]
+ITEM_BUILD_TIME_TAG = ['div', {'class': 'time time-below'}]
+ITEM_BUILD_ITEM_TAG = ['img', {'class': 'image-item image-medicon'}]
+ITEM_PLAYER_RANK_INFO_TAG = ['div', {'class': 'rank-tier-wrapper'}]
+
+ITEM_KEYWORD_ITEM_BUILD = 'item_build'
+ITEM_KEYWORD_PLAYER_ID = 'player_id'
+ITEM_KEYWORD_PLAYER_NAME = 'player_name'
+ITEM_KEYWORD_TITLE = 'title'
+ITEM_KEYWORD_ITEM = 'item'
+ITEM_KEYWORD_TIME_TAKEN = 'time'
+ITEM_KEYWORD_RANK = 'rank'
+ITEM_KEYWORD_RANK_MEDAl = 'medal'
+
+ITEM_RANK_PRE_CHAR = '#'
+
+
 # Talent, Skill screenshot coords
 GUIDE_BACKGROUND_PATH = 'data/background/build_background.jpg'
 GUIDE_BACKGROUND_SHAPE = [80, 800]
