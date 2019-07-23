@@ -1,4 +1,34 @@
 import cv2
+from PIL import Image, ImageDraw, ImageFont
+import numpy as np
+import constant
+
+
+def display(img):
+    import matplotlib.pyplot as plt
+    plt.imshow(img)
+    plt.show()
+
+
+def add_border_to_image(im, bordersize=5, rgb=[45, 33, 31]):
+    border = cv2.copyMakeBorder(im, top=bordersize, bottom=bordersize, left=bordersize, right=bordersize,
+                                borderType=cv2.BORDER_CONSTANT, value=rgb)
+    return border
+
+
+def write_text(image, text, pos, font_scale=0.55, linetype=1, fontcolor= (255, 255, 255), font=cv2.FONT_HERSHEY_DUPLEX):
+    cv2.putText(image, text, pos, font, font_scale, fontcolor, linetype)
+
+
+def write_text_pil(image, text, pos, cv2_image=True, size=20, fontcolor=(255,255,255), font=constant.FONT_ROBOTO_PATH):
+    # if cv2_image:
+    #     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = Image.fromarray(image)
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype(font, size=size)
+    draw.text(pos, text, fill=fontcolor, font=font)
+    image = np.array(image)
+    return image
 
 
 def transparentOverlay(src, overlay, pos=(0, 0), scale=1):
@@ -38,3 +68,16 @@ def addImageWatermark(LogoImage, MainImage, pos, opacity=100):
     # apply the overlay
     cv2.addWeighted(overlay, opacity, output, 1 - opacity, 0, output)
     return output
+
+
+if __name__ == '__main__':
+    logo = '/home/ben/personal/discord-dota-bot/data/medals/immortal-10.png'
+    bg = '/home/ben/personal/discord-dota-bot/data/background/items_background_final_1.jpg'
+    logo = cv2.imread(logo, -1)
+    logo = cv2.resize(logo, (100, 100))
+    bg = cv2.imread(bg)
+    c = addImageWatermark(logo, bg, (50, 90))
+    display(c)
+    exit()
+
+
