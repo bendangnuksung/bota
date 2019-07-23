@@ -6,17 +6,46 @@ REPO_PATH = os.path.dirname(os.path.realpath(__file__))
 TEMP_IMAGE_PATH = 'data/temp_images'
 TEMP_IMAGE_PATH = os.path.join(REPO_PATH, TEMP_IMAGE_PATH)
 
+
+DOTABUFF_URL = 'https://www.dotabuff.com'
+DOTABUFF_PLAYER_URL = 'https://www.dotabuff.com/players/'
+
+FONT_ROBOTO_PATH = os.path.join(REPO_PATH, 'font/Roboto-Regular.ttf')
+
 # icon Path
 ICON_PATH_SMALL = 'data/character_icons/'
 ICON_PATH_BIG   = 'data/character_icons_big/'
 ICON_PATH_SMALL = os.path.join(REPO_PATH, ICON_PATH_SMALL)
 ICON_PATH_BIG   = os.path.join(REPO_PATH, ICON_PATH_BIG)
 
+ITEM_ICON_PATH = 'data/items'
+ITEM_ICON_PATH = os.path.join(REPO_PATH, ITEM_ICON_PATH)
+
+
+# Medals
+MEDAL_IMAGE_PATH = 'data/medals'
+MEDAL_IMAGE_PATH = os.path.join(REPO_PATH, MEDAL_IMAGE_PATH)
+MEDAL_NAMES = ['immortal', 'divine', 'ancient', 'legend']
+MEDAL_IMMORTAL_UNDER = {5000: 'immortal.png', 100: 'immortal-100.png', 10:'immortal-10.png'}
+MEDAL_NUMBERING = {'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6, 'vii': 7}
+MEDAL_SHAPE = [85, 85]
+
+MEDAL_RANK_START_X_Y_PERCENTAGE = [.70, .30]
+
+MEDAL_ITEM_X_Y = [50, 90]
+MEDAL_ITEM_HEIGHT_DIFF = 100
+
 
 # Item Guide
-DOTABUFF_URL = 'https://www.dotabuff.com'
-DOTABUFF_PLAYER_URL = 'https://www.dotabuff.com/players/'
+ITEM_IMAGE_PATH = 'data/items_build/'
+ITEM_IMAGE_PATH = os.path.join(REPO_PATH, ITEM_IMAGE_PATH)
 ITEM_URL = 'https://www.dotabuff.com/heroes/<hero_name>/guides'
+
+ITEM_BACKGROUND_IMAGE = 'data/background/items_background.jpg'
+ITEM_BACKGROUND_IMAGE = os.path.join(REPO_PATH, ITEM_BACKGROUND_IMAGE)
+ITEM_BACKGROUND_IMAGE_SHAPE = [600, 1070]
+
+ITEM_THRESHOLD_UPDATE = 86400 # 1 day
 
 ITEM_FIRST_STAGE_TAG = ['div', {'class': 'r-stats-grid'}]
 ITEM_PLAYER_NAME_ID_TAG = ['div', {'class': 'kv kv-larger kv-small-margin'}]
@@ -24,7 +53,10 @@ ITEM_BUILD_TAG = ["div", {"class": "top-right"}]
 ITEM_BUILD_TIME_TAG = ['div', {'class': 'time time-below'}]
 ITEM_BUILD_ITEM_TAG = ['img', {'class': 'image-item image-medicon'}]
 ITEM_PLAYER_RANK_INFO_TAG = ['div', {'class': 'rank-tier-wrapper'}]
+ITEM_REGION_FIRST_TAG = ['div', {'class': 'kv kv-label'}]
+ITEM_REGION_FIRST_TAG_CHILD_NO = 4
 
+ITEM_KEYWORD_REGION = 'region'
 ITEM_KEYWORD_ITEM_BUILD = 'item_build'
 ITEM_KEYWORD_PLAYER_ID = 'player_id'
 ITEM_KEYWORD_PLAYER_NAME = 'player_name'
@@ -35,6 +67,10 @@ ITEM_KEYWORD_RANK = 'rank'
 ITEM_KEYWORD_RANK_MEDAl = 'medal'
 
 ITEM_RANK_PRE_CHAR = '#'
+
+ITEM_WRITE_PLAYER_NAME_X_Y = []
+
+ITEM_ICON_SHAPE = (88, 62)
 
 
 # Talent, Skill screenshot coords

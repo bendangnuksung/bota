@@ -11,6 +11,7 @@ from constant import css, TLG_IMAGE_PATH, CT_IMAGE_PATH
 import os
 from datetime import datetime
 import re
+import constant
 
 
 repo_abs_path = os.path.dirname(os.path.realpath(__file__))
@@ -133,6 +134,29 @@ def crop_image(image, coords):
 	'''
 	cropped_image = image[coords[1]: coords[3], coords[0]: coords[2]]
 	return cropped_image
+
+
+def get_medal_image_path(medal_name, rank=None):
+	medal_list = medal_name.split()
+	if len(medal_list) > 1:
+		medal_name = medal_list[0].strip()
+		medal_no = constant.MEDAL_NUMBERING[medal_list[1].strip()]
+		medal_image_path = os.path.join(constant.MEDAL_IMAGE_PATH, medal_name + '-' + str(medal_no) + '.png')
+		return medal_image_path
+	else:
+		medal_name = medal_name.strip()
+		if rank is None or not len(rank):
+			medal_image_path = os.path.join(constant.MEDAL_IMAGE_PATH, medal_name + '.png')
+		else:
+			rank = int(rank)
+			if rank <= 10:
+				medal_name = constant.MEDAL_IMMORTAL_UNDER[10]
+			elif rank <= 100:
+				medal_name = constant.MEDAL_IMMORTAL_UNDER[100]
+			else:
+				medal_name = constant.MEDAL_IMMORTAL_UNDER[5000]
+			medal_image_path = os.path.join(constant.MEDAL_IMAGE_PATH, medal_name)
+		return medal_image_path
 
 
 if __name__ == "__main__":

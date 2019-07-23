@@ -1,3 +1,4 @@
+from image_processing import add_border_to_image
 from web_scrap.heroes_process import get_current_hero_trends, find_hero_name, scrap_heroes_info
 import pandas as pd
 from utility import render_mpl_table, get_icon_path, is_file_old, crop_image
@@ -6,8 +7,8 @@ import constant
 import os
 import cv2
 import numpy as np
-import asyncio
 from web_scrap.web_screenshot import get_screenshot
+from web_scrap.items_process import scrap_item_info
 
 
 def round_df_digits(df):
@@ -32,12 +33,6 @@ def get_current_trend():
     image_path = render_mpl_table(current_trend_dataframe, icon_list=icon_path_list, header_columns=0, col_width=2.6,
                              title=title, font_size=20)
     return image_path
-
-
-def add_border_to_image(im, bordersize=5, rgb=[45, 33, 31]):
-    border = cv2.copyMakeBorder(im, top=bordersize, bottom=bordersize, left=bordersize, right=bordersize,
-                                borderType=cv2.BORDER_CONSTANT, value=rgb)
-    return border
 
 
 def make_hero_images(main_hero_image_path, heroes_image_path, bg_path):
@@ -145,6 +140,23 @@ async def get_skill_build(query, hero=None):
     final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
     cv2.imwrite(guide_image_path, final_image)
     return True, hero_name, guide_image_path
+
+
+def get_item_build(query, hero=None):
+    if hero is None:
+        query = query.split()
+        hero = ' '.join(query[1:])
+        hero = hero.strip()
+    found_hero, hero_name = find_hero_name(hero)
+    if not found_hero:
+        return False, hero_name, ''
+
+    item_build_path = os.path.join(constant.ITEM_IMAGE_PATH, hero_name + '.png')
+
+    if not is_file_old(item_build_path, constant.ITEM_THRESHOLD_UPDATE):
+        return True, hero_name, item_build_path
+
+    item_build_info = scrap_item_info(hero_name)
 
 
 if __name__ == '__main__':
