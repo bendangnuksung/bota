@@ -8,7 +8,7 @@ import os
 import cv2
 import numpy as np
 from web_scrap.web_screenshot import get_screenshot
-from web_scrap.items_process import scrap_item_info
+from web_scrap.items_process import scrap_item_info, make_item_image
 
 
 def round_df_digits(df):
@@ -157,6 +157,9 @@ def get_item_build(query, hero=None):
         return True, hero_name, item_build_path
 
     item_build_info = scrap_item_info(hero_name)
+    item_image = make_item_image(item_build_info, hero_name)
+    cv2.imwrite(item_build_path, item_image)
+    return True, hero_name, item_build_path
 
 
 if __name__ == '__main__':

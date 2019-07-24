@@ -27,7 +27,8 @@ MEDAL_IMAGE_PATH = 'data/medals'
 MEDAL_IMAGE_PATH = os.path.join(REPO_PATH, MEDAL_IMAGE_PATH)
 MEDAL_NAMES = ['immortal', 'divine', 'ancient', 'legend']
 MEDAL_IMMORTAL_UNDER = {5000: 'immortal.png', 100: 'immortal-100.png', 10:'immortal-10.png'}
-MEDAL_NUMBERING = {'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6, 'vii': 7}
+MEDAL_NUMBERING = {'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6, 'vii': 7,
+				   '1': 1, '2': 2,  '3': 3,    '4': 4, '5': 5, '6': 6,   '7': 7}
 MEDAL_SHAPE = [85, 85]
 
 MEDAL_RANK_START_X_Y_PERCENTAGE = [.70, .30]
@@ -66,11 +67,29 @@ ITEM_KEYWORD_TIME_TAKEN = 'time'
 ITEM_KEYWORD_RANK = 'rank'
 ITEM_KEYWORD_RANK_MEDAl = 'medal'
 
+MAX_CHAR_PLAYER_NAME = 12
+MAX_CHAR_REGION      = 8
+
+PLAYER_NAME_FONT_SIZE = 25
+PLAYER_ID_FONT_SIZE   = 25
+REGION_FONT_SIZE      = 25
+TIME_FONT_SIZE = 18
+
+PLAYER_NAME_START_LEFT = 160
+PLAYER_ID_START_LEFT   = 330
+REGION_START_LEFT      = 480
+ITEM_START_LEFT = 600
+TIME_START_TOP = -10
+
+
 ITEM_RANK_PRE_CHAR = '#'
 
 ITEM_WRITE_PLAYER_NAME_X_Y = []
 
-ITEM_ICON_SHAPE = (88, 62)
+ITEM_ICON_SHAPE = (68, 45)
+
+ITEM_HERO_ICON_PLACEMENT_TOP = 5
+ITEM_HERO_ICON_PLACEMENT_LEFT = 30
 
 
 # Talent, Skill screenshot coords
