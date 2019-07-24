@@ -89,7 +89,7 @@ ITEM_NAMES = ['abyssal-blade', 'aegis-of-the-immortal', 'aeon-disk', 'aether-len
               'talisman-of-evasion', 'tango', 'tango-shared', 'tombstone', 'tome-of-knowledge', 'town-portal-scroll',
               'traditional-crackers', 'tranquil-boots', 'tranquil-boots-active', 'travel-boots-tinker',
               'travel-slippers', 'ultimate-orb', 'urn-of-shadows', 'vanguard', 'veil-of-discord', 'vitality-booster',
-              'vladmir', 'void-stone', 'ward-dispenser-sentry', 'wind-lace', 'winter-cake', 'winter-coal',
+              'vladmir', 'vladmirs-offering', 'void-stone', 'ward-dispenser-sentry', 'wind-lace', 'winter-cake', 'winter-coal',
               'winter-coco', 'winter-cookie', 'winter-greevil-chewy', 'winter-greevil-garbage', 'winter-greevil-treat',
               'winter-ham', 'winter-kringle', 'winter-mushroom', 'winter-skates', 'winter-snowball', 'winter-stocking',
               'winter-woolies', 'wraith-band', 'yasha', 'yasha-and-kaya']
