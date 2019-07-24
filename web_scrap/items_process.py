@@ -57,9 +57,10 @@ def make_item_image(infos, hero_name):
 
         # write Rank in medals
         rank = str(rank)
-        rank_position = (X + int(medal_image.shape[1] * constant.MEDAL_RANK_START_X_Y_PERCENTAGE[1]),
-                         Y + int(medal_image.shape[0] * constant.MEDAL_RANK_START_X_Y_PERCENTAGE[0]))
-        bg_image = write_text_pil(bg_image, rank, rank_position)
+        if rank != '' and rank is not None:
+            rank_position = (X + int(medal_image.shape[1] * constant.MEDAL_RANK_START_X_Y_PERCENTAGE[1]),
+                             Y + int(medal_image.shape[0] * constant.MEDAL_RANK_START_X_Y_PERCENTAGE[0]))
+            bg_image = write_text_pil(bg_image, rank, rank_position)
 
         # write other info to bg
         player_name = info[constant.ITEM_KEYWORD_PLAYER_NAME][:constant.MAX_CHAR_PLAYER_NAME]
@@ -155,7 +156,7 @@ def scrap_item_info(hero_name):
                     result[constant.ITEM_KEYWORD_RANK_MEDAl] = rank_medal
         else:
             rank_medal = rank_title.replace('rank: ', '')
-            result[constant.ITEM_KEYWORD_RANK] = 'None'
+            result[constant.ITEM_KEYWORD_RANK] = ''
             result[constant.ITEM_KEYWORD_RANK_MEDAl] = rank_medal
 
         final_result.append(result)
