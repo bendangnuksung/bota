@@ -6,7 +6,7 @@ import utility
 import os
 import re
 import cv2
-from image_processing import addImageWatermark, write_text, write_text_pil, add_border_to_image
+from image_processing import addImageWatermark, write_text_pil, add_border_to_image
 import difflib
 
 
@@ -78,6 +78,8 @@ def make_item_image(infos, hero_name):
         # Write and add items
         for j, (time, raw_item_name) in enumerate(info[constant.ITEM_KEYWORD_ITEM_BUILD].items()):
             # icon
+            if j + 1 > constant.MAX_ITEM:
+                break
             item_found, item_name = find_item(raw_item_name)
             item_icon_path = os.path.join(constant.ITEM_ICON_PATH, item_name + '.png')
             item_icon_image = cv2.imread(item_icon_path)
@@ -164,7 +166,7 @@ def scrap_item_info(hero_name):
 
 
 if __name__ == '__main__':
-    rs = scrap_item_info('legion-commander')
+    rs = scrap_item_info('juggernaut')
     for r in rs:
         print(r)
     # rs = [{'player_name': 'Hope', 'player_id': '245655553', 'item_build': {'15:52': 'Battle Fury', '20:38': 'Manta Style', '26:18': 'Eye of Skadi', '31:13': 'Butterfly', '36:54': 'Abyssal Blade', '48:35': 'Assault Cuirass'}, 'region': 'SE Asia', 'rank': '20', 'medal': 'ancient vii'},

@@ -8,15 +8,20 @@ import difflib
 
 
 def find_hero_name(hero):
-    found_hero = False
     hero = hero.lower().strip()
     hero = re.sub('[^a-z- ]', '', hero)
     hero = hero.replace(' ', '-')
     close_matches = difflib.get_close_matches(hero, scrap_constant.heroes_names)
     if not len(close_matches):
-        return found_hero, ''
+        if hero in scrap_constant.heroes_name_alternative:
+            hero_name = scrap_constant.heroes_name_alternative[hero]
+            return True, hero_name
+        return False, ''
     if hero == close_matches[0]:
         return True, close_matches[0]
+    if hero in scrap_constant.heroes_name_alternative:
+        hero_name = scrap_constant.heroes_name_alternative[hero]
+        return True, hero_name
     return False, close_matches[0]
 
 
@@ -71,7 +76,8 @@ def get_current_hero_trends():
 
 
 if __name__ == '__main__':
-    r = scrap_heroes_info('alchemist')
+    # r = scrap_heroes_info('alchemist')
+    r = find_hero_name('brood')
     print(r)
 
 
