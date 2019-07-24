@@ -106,18 +106,18 @@ async def get_skill_build(query, hero=None):
     if not found_hero:
         return False, hero_name, ''
 
-    guide_image_path = os.path.join(constant.GUIDE_SAVE_PATH, hero_name + '.png')
+    guide_image_path = os.path.join(constant.GUIDE_SAVE_PATH, hero_name + '.jpg')
 
     if not is_file_old(guide_image_path, constant.GUIDE_THRESHOLD_IMAGE_UPDATE):
         return True, hero_name, guide_image_path
 
     url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
 
-    talent_filename = hero + '_talent.png'
+    talent_filename = hero + '_talent.jpg'
     talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
     await get_screenshot(constant.TALENT_SELECTOR, url, talent_screenshot_path)
 
-    skill_filename = hero + '_skill.png'
+    skill_filename = hero + '_skill.jpg'
     skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
 
     await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
@@ -151,18 +151,21 @@ def get_item_build(query, hero=None):
     if not found_hero:
         return False, hero_name, ''
 
-    item_build_path = os.path.join(constant.ITEM_IMAGE_PATH, hero_name + '.png')
+    item_build_path = os.path.join(constant.ITEM_IMAGE_PATH, hero_name + '.jpg')
 
     if not is_file_old(item_build_path, constant.ITEM_THRESHOLD_UPDATE):
         return True, hero_name, item_build_path
 
     item_build_info = scrap_item_info(hero_name)
     item_image = make_item_image(item_build_info, hero_name)
-    cv2.imwrite(item_build_path, item_image)
+    cv2.imwrite(item_build_path, item_image, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
     return True, hero_name, item_build_path
 
 
 if __name__ == '__main__':
     # print(get_counter_hero('!good ursa'))
     # print(get_good_against('!good ursa'))
-    print(get_skill_build('!good witch doctor'))
+    import asyncio
+    print(asyncio.get_event_loop().run_until_complete(get_skill_build('!good witch doctor')))
+    # print(get_skill_build('!good witch doctor'))
+    print(get_item_build('!good ursa'))
