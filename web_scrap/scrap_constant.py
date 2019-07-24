@@ -22,6 +22,32 @@ heroes_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-
                 'winter-wyvern', 'witch-doctor', 'wraith-king', 'zeus']
 
 
+heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa':'ancient-apparition', 'am':'anti-mage',
+                           'arc' :'arc-warden', 'bat': 'batrider', 'bm': 'beastmaster', 'bs':'bloodseeker',
+                           'bh':'bounty-hunter', 'panda': 'brewmaster', 'bb': 'bristleback', 'brood': 'broodmother',
+                           'centaur': 'centaur-warrunner', 'ck': 'chaos-knight', 'clock': 'clockwerk',
+                           'cm': 'crystal-maiden', 'seer':'dark-seer', 'ds':'dark-seer', 'willow': 'dark-willow',
+                           'dp': 'death-prophet', 'thrall': 'disruptor', 'dk': 'dragon-knight', 'drow': 'drow-ranger',
+                           'es': 'earthshaker', 'et': 'elder-titan', 'ench': 'enchantress', 'enchan': 'enchantress',
+                           'fv': 'faceless-void', 'grim': 'grimstroke','gs': 'grimstroke', 'gyro':'gyrocopter', 'kael': 'invoker',
+                           'wisp': 'io', 'jk': 'jakiro', 'jugg': 'juggernaut', 'kotl':'keeper-of-the-light',
+                           'lc': 'legion-commander', 'lesh': 'leshrac', 'ls': 'lifestealer', 'naix': 'lifestealer',
+                           'ld': 'lone-druid', 'wolf': 'lycan', 'mag': 'magnus', 'potm': 'mirana', 'mk': 'monkey-king',
+                           'morp': 'morphling', 'morph': 'morphling', 'naga': 'naga-siren', 'siren': 'naga-siren',
+                           'np': 'natures-prophet', 'furion': 'natures-prophet', 'necro': 'necrophos',
+                           'ns': 'night-stalker', 'balanar': 'night-stalker', 'nyx': 'nyx-assassin', 'ogre': 'ogre-magi',
+                           'omni': 'omniknight', 'od': 'outworld-devourer', 'pango': 'pangolier', 'pa':'phantom-assassin',
+                           'pl': 'phantom-lancer', 'qop': 'queen-of-pain', 'sk': 'sand-king', 'sd': 'shadow-demon',
+                           'sf': 'shadow-fiend', 'ss': 'shadow-shaman', 'silence': 'silencer', 'sky': 'skywrath-mage',
+                           'sb': 'spirit-breaker', 'breaker': 'spirit-breaker', 'barathrum': 'spirit-breaker',
+                           'storm': 'storm-spirit', 'techie': 'techies', 'ta': 'templar-assassin',
+                           'templar': 'templar-assassin', 'tb': 'terrorblade', 'terror': 'terrorblade',
+                           'tide':'tidehunter', 'timber': 'timbersaw', 'tp': 'treant-protector',
+                           'treant': 'treant-protector', 'troll': 'troll-warlord', 'vs': 'vengeful-spirit',
+                           'veno': 'venomancer', 'wr': 'windranger', 'winter': 'winter-wyvern', 'ww': 'winter-wyvern',
+                           'wd': 'witch-doctor', 'wk': 'wraith-king'}
+
+
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']
 section_column_count = {'Worst Versus': 4, 'Best Versus': 4, 'Most Used Items': 3}
 section_column_wanted = {'Worst Versus':    ['Hero', 'Disadvantage', 'Win Rate', 'Matches'],
