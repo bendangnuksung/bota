@@ -51,6 +51,7 @@ ITEM_THRESHOLD_UPDATE = 86400 # 1 day
 ITEM_FIRST_STAGE_TAG = ['div', {'class': 'r-stats-grid'}]
 ITEM_PLAYER_NAME_ID_TAG = ['div', {'class': 'kv kv-larger kv-small-margin'}]
 ITEM_BUILD_TAG = ["div", {"class": "top-right"}]
+ITEM_MATCH_ID_TAG = ['a', {'class': 'button button-small'}]
 ITEM_BUILD_TIME_TAG = ['div', {'class': 'time time-below'}]
 ITEM_BUILD_ITEM_TAG = ['img', {'class': 'image-item image-medicon'}]
 ITEM_PLAYER_RANK_INFO_TAG = ['div', {'class': 'rank-tier-wrapper'}]
@@ -60,6 +61,7 @@ ITEM_REGION_FIRST_TAG_CHILD_NO = 4
 ITEM_KEYWORD_REGION = 'region'
 ITEM_KEYWORD_ITEM_BUILD = 'item_build'
 ITEM_KEYWORD_PLAYER_ID = 'player_id'
+ITEM_KEYWORD_MATCH_ID = 'match_id'
 ITEM_KEYWORD_PLAYER_NAME = 'player_name'
 ITEM_KEYWORD_TITLE = 'title'
 ITEM_KEYWORD_ITEM = 'item'
@@ -69,16 +71,18 @@ ITEM_KEYWORD_RANK_MEDAl = 'medal'
 
 MAX_ITEM = 6
 
-MAX_CHAR_PLAYER_NAME = 12
+MAX_CHAR_PLAYER_NAME = 11
 MAX_CHAR_REGION      = 8
 
 PLAYER_NAME_FONT_SIZE = 25
 PLAYER_ID_FONT_SIZE   = 25
+MATCH_ID_FONT_SIZE    = 25
 REGION_FONT_SIZE      = 25
 TIME_FONT_SIZE = 18
 
 PLAYER_NAME_START_LEFT = 160
 PLAYER_ID_START_LEFT   = 330
+PLAYER_MATCH_ID_START_LEFT = 310
 REGION_START_LEFT      = 480
 ITEM_START_LEFT = 600
 TIME_START_TOP = -10
@@ -94,7 +98,7 @@ ITEM_HERO_ICON_PLACEMENT_TOP = 5
 ITEM_HERO_ICON_PLACEMENT_LEFT = 30
 
 
-# Talent, Skill screenshot coords
+# Talent, Skill screenshot coords, matchID
 GUIDE_BACKGROUND_PATH = 'data/background/build_background.jpg'
 GUIDE_BACKGROUND_SHAPE = [80, 800]
 GUIDE_HERO_ICON_X_Y = [4, 336]
