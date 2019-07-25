@@ -67,9 +67,9 @@ def make_item_image(infos, hero_name):
         player_name_pos = (X + constant.PLAYER_NAME_START_LEFT, Y + (medal_image.shape[0] // 3))
         bg_image = write_text_pil(bg_image, player_name, player_name_pos, size=constant.PLAYER_NAME_FONT_SIZE)
 
-        player_id = info[constant.ITEM_KEYWORD_PLAYER_ID]
-        player_id_pos = (X + constant.PLAYER_ID_START_LEFT, Y + (medal_image.shape[0] // 3))
-        bg_image = write_text_pil(bg_image, player_id, player_id_pos, size=constant.PLAYER_ID_FONT_SIZE)
+        match_id = info[constant.ITEM_KEYWORD_MATCH_ID]
+        match_id_pos = (X + constant.PLAYER_MATCH_ID_START_LEFT, Y + (medal_image.shape[0] // 3))
+        bg_image = write_text_pil(bg_image, match_id, match_id_pos, size=constant.MATCH_ID_FONT_SIZE)
 
         region = info[constant.ITEM_KEYWORD_REGION][:constant.MAX_CHAR_REGION]
         region_pos = (X + constant.REGION_START_LEFT, Y + (medal_image.shape[0] // 3))
@@ -120,6 +120,13 @@ def scrap_item_info(hero_name):
             result[constant.ITEM_KEYWORD_PLAYER_NAME] = player.string
             result[constant.ITEM_KEYWORD_PLAYER_ID]   = player.attrs['href'].split('/')[-1]
             break
+
+        # Get Match ID
+        match_tag = item.find_all(constant.ITEM_MATCH_ID_TAG[0], constant.ITEM_MATCH_ID_TAG[1])[0]
+        match_id = match_tag.attrs['href']
+        match_id = match_id.split('?')[0]
+        match_id = match_id.split('/')[-1]
+        result[constant.ITEM_KEYWORD_MATCH_ID] = match_id
 
         # Get item build by the Player
         item_builds = item.find_all(constant.ITEM_BUILD_TAG[0], constant.ITEM_BUILD_TAG[1])
@@ -175,5 +182,5 @@ if __name__ == '__main__':
     #         {'player_name': 'qing', 'player_id': '196043199', 'item_build': {'10:52': 'Power Treads', '16:17': 'Battle Fury', '20:49': 'Manta Style', '25:15': 'Eye of Skadi', '29:55': 'Butterfly', '32:55': 'Skull Basher'}, 'region': 'Europe West', 'rank': '2453', 'medal': 'immortal'},
     #         {'player_name': 'Agressif', 'player_id': '130416036', 'item_build': {'15:47': 'Battle Fury', '21:21': 'Manta Style', '24:18': 'Eye of Skadi', '29:11': 'Butterfly', '36:07': 'Abyssal Blade', '37:19': 'Black King Bar'}, 'region': 'China', 'rank': '125', 'medal': 'immortal'}]
     info = rs
-    image = make_item_image(info, 'meepo')
+    image = make_item_image(info, 'juggernaut')
     display(image)
