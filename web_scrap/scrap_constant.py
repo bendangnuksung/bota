@@ -22,7 +22,7 @@ heroes_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-
                 'winter-wyvern', 'witch-doctor', 'wraith-king', 'zeus']
 
 
-heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa':'ancient-apparition', 'am':'anti-mage',
+heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancient-apparition', 'am':'anti-mage',
                            'arc' :'arc-warden', 'bat': 'batrider', 'bm': 'beastmaster', 'bs':'bloodseeker',
                            'bh':'bounty-hunter', 'panda': 'brewmaster', 'bb': 'bristleback', 'brood': 'broodmother',
                            'centaur': 'centaur-warrunner', 'ck': 'chaos-knight', 'clock': 'clockwerk',
@@ -45,7 +45,10 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa':'ancient
                            'tide':'tidehunter', 'timber': 'timbersaw', 'tp': 'treant-protector',
                            'treant': 'treant-protector', 'troll': 'troll-warlord', 'vs': 'vengeful-spirit',
                            'veno': 'venomancer', 'wr': 'windranger', 'winter': 'winter-wyvern', 'ww': 'winter-wyvern',
-                           'wd': 'witch-doctor', 'wk': 'wraith-king'}
+                           'wd': 'witch-doctor', 'wk': 'wraith-king', 'admiral': 'kunkka', 'venge': 'vengeful-spirit',
+                           'rhasta': 'shadow-shaman', 'bara': 'spirit-breaker', 'bounty': 'bounty-hunter',
+                           'bristle': 'bristleback', 'void': 'faceless-void', 'legion': 'legion-commander',
+                           'monkey': 'monkey-king'}
 
 
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']
