@@ -54,7 +54,7 @@ async def on_message(message):
         help_string = get_help()
         await message.channel.send(help_string)
 
-    elif '!top_game' or '!top game' == message_string:
+    elif '!top_game' == message_string or '!top game' == message_string:
         image_path = get_top_games()
         await message.channel.send(f"Getting Top Live Spectacting Games")
         await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
