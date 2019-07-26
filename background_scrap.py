@@ -42,7 +42,16 @@ if args['mode'] == 2 or args['mode'] == '2':
 
 
 # UST 00:00 == IST 05:30
-schedule.every().day.at(args['time']).do(update_images)
+# Twice a day: 12 Hours apart
+arg_time_1 = args['time']
+arg_time_1_split = arg_time_1.split(':')
+arg_time_2_h = str((int(arg_time_1_split[0]) + 12) % 24)
+arg_time_2_h = '0' + arg_time_2_h if len(arg_time_2_h) == 1 else arg_time_2_h
+arg_time_2 = str(arg_time_2_h) + ':' + arg_time_1_split[1]
+
+
+schedule.every().day.at(arg_time_1).do(update_images)
+schedule.every().day.at(arg_time_2).do(update_images)
 
 while True:
     schedule.run_pending()
