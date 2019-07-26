@@ -46,6 +46,16 @@ def make_item_image(infos, hero_name):
         rank = info[constant.ITEM_KEYWORD_RANK]
 
         medal_image_path = utility.get_medal_image_path(medal, rank)
+
+        # Top players should be either immortal or divine medals if not skip it
+        flag_divine_immortal_medal = False
+        for wanted_medal in constant.ITEM_TOP_PLAYERS_MEDALS:
+            if wanted_medal in medal:
+                flag_divine_immortal_medal = True
+                break
+        if not flag_divine_immortal_medal:
+            continue
+
         medal_image = cv2.imread(medal_image_path, -1)
         medal_image = cv2.resize(medal_image, (constant.MEDAL_SHAPE[1], constant.MEDAL_SHAPE[0]))
         X = constant.MEDAL_ITEM_X_Y[0]

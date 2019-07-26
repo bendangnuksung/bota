@@ -15,10 +15,10 @@ from web_scrap.scrap import get_skill_build, get_item_build
 
 client = discord.Client()
 
-commands_list = {'!top_games'       : 'Shows top 9 Live Games',
+commands_list = {'!top_game'       : 'Shows top 9 Live Games',
                  '!counter HeroName': 'Shows Heroes which counter the given hero name',
                  '!good HeroName'   : '(Opposite of !counter) Shows Heroes which di-counter the given hero name',
-                 '!skill or !talent or !build HeroName': 'Shows most popular & win rate talent/skill build',
+                 '!skill or !talent HeroName': 'Shows most popular & win rate talent/skill build',
                  '!item HeroName'   : 'Shows current meta item build by Top Rank Players',
                  '!profile  steamID': 'Shows your profile stats given steamID',
                  '!trend'           : 'Shows current heroes trend',
@@ -54,7 +54,7 @@ async def on_message(message):
         help_string = get_help()
         await message.channel.send(help_string)
 
-    elif '!top_games' == message_string:
+    elif '!top_game' or '!top game' == message_string:
         image_path = get_top_games()
         await message.channel.send(f"Getting Top Live Spectacting Games")
         await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
@@ -96,7 +96,7 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name.upper()}** is good against: ', file=discord.File(image_path))
 
-    elif ("!skill" in message_string or "!talent" in message_string or "!build" in message_string) \
+    elif ("!skill" in message_string or "!talent" in message_string) \
             and message_word_length < MAX_MESSAGE_WORD_LENGTH:
         found, hero_name, image_path = await get_skill_build(message_string)
         if not found:

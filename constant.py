@@ -25,7 +25,7 @@ ITEM_ICON_PATH = os.path.join(REPO_PATH, ITEM_ICON_PATH)
 # Medals
 MEDAL_IMAGE_PATH = 'data/medals'
 MEDAL_IMAGE_PATH = os.path.join(REPO_PATH, MEDAL_IMAGE_PATH)
-MEDAL_NAMES = ['immortal', 'divine', 'ancient', 'legend']
+MEDAL_NAMES = ['immortal', 'divine', 'ancient', 'legend', 'archon', 'crusader', 'guardian', 'herald']
 MEDAL_IMMORTAL_UNDER = {5000: 'immortal.png', 100: 'immortal-100.png', 10:'immortal-10.png'}
 MEDAL_NUMBERING = {'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6, 'vii': 7,
 				   '1': 1, '2': 2,  '3': 3,    '4': 4, '5': 5, '6': 6,   '7': 7}
@@ -69,9 +69,11 @@ ITEM_KEYWORD_TIME_TAKEN = 'time'
 ITEM_KEYWORD_RANK = 'rank'
 ITEM_KEYWORD_RANK_MEDAl = 'medal'
 
+ITEM_TOP_PLAYERS_MEDALS = ['immortal', 'divine']
+
 MAX_ITEM = 6
 
-MAX_CHAR_PLAYER_NAME = 11
+MAX_CHAR_PLAYER_NAME = 10
 MAX_CHAR_REGION      = 8
 
 PLAYER_NAME_FONT_SIZE = 25
