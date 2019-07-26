@@ -1,5 +1,27 @@
 import os
 
+# Private keys
+DISCORD_TOKEN = "NTAxMTAwOTQ1NDA1Mzc4NTYy.DqUeoQ.pxwwUuubokrUHgdO2WNFi1uhrFs"
+DOTA2_API_KEY = "A1AE7829A07BB76C29353946D1BDBC4F"
+DISCORD_CLIENT_ID = 501100945405378562
+
+# Twitch
+DOTA_2_GAME_ID = '29595'
+TWITCH_URL = 'https://www.twitch.tv/'
+TWITCH_DOTA_2_STREAM_URL = 'https://api.twitch.tv/helix/streams?game_id='
+TWITCH_CLIENT_IDS = ['jzkbprff40iqj646a697cyrvl0zt2m6', '4uru37mlvtyw5oh36vcrmk48c4zd9a',
+              		 'tvwccwbiuiphij0bwvireq1084etsa', 'qfq9rqvixs16e8gzj7pdtoa3ycxkt8']
+
+TWITCH_KEYWORD_CLIENT_ID = 'client-id'
+TWITCH_KEYWORD_USER_NAME = 'user_name'
+TWITCH_KEYWORD_DATA = 'data'
+TWITCH_KEYWORD_VIEWER_COUNT = 'viewer_count'
+TWITCH_KEYWORD_TITLE = 'title'
+TWITCH_KEYWORD_LANGUAGE = 'language'
+
+
+
+# General
 MAX_MESSAGE_WORD_LENGTH = 5
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -162,12 +184,6 @@ KEYWORD_DIRE_TEAM = 'team_name_dire'
 
 # Dota 2 API constant
 rank_tier = ['herald', 'Guardian', 'Crusader', 'Archon','Legend', 'Ancient','Divine', 'Immortal']
-
-discord_token = "NTAxMTAwOTQ1NDA1Mzc4NTYy.DqUeoQ.pxwwUuubokrUHgdO2WNFi1uhrFs"
-
-dota2_api_key = "A1AE7829A07BB76C29353946D1BDBC4F"
-
-client_id = 501100945405378562
 
 GAME_MODE = {0 :'Unknown', 				1:'All Pick', 			2:'Captain’s Mode', 		3:'Random Draft',
 			 4:'Single Draft', 			5:'All Random',			6:'Intro', 					7:'Diretide',

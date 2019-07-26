@@ -1,12 +1,12 @@
 import pandas as pd
 import dota2api
 from utility import DataFrame_to_image, is_file_old
-from constant import GAME_MODE, dota2_api_key
+from constant import GAME_MODE, DOTA2_API_KEY
 import constant
 import os
 from datetime import datetime
 
-dota_api = dota2api.Initialise(dota2_api_key)
+dota_api = dota2api.Initialise(DOTA2_API_KEY)
 
 
 def get_top_games(length=10):

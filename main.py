@@ -6,7 +6,7 @@
 
 import discord
 import sys
-from constant import discord_token, client_id, MAX_MESSAGE_WORD_LENGTH
+from constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, MAX_MESSAGE_WORD_LENGTH
 from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
@@ -22,6 +22,7 @@ commands_list = {'!top_game'       : 'Shows top 9 Live Games',
                  '!item HeroName'   : 'Shows current meta item build by Top Rank Players',
                  '!profile  steamID': 'Shows your profile stats given steamID',
                  '!trend'           : 'Shows current heroes trend',
+                 '!stream'          : 'Shows Top 8 Twitch stream'
                  }
 
 
@@ -67,7 +68,7 @@ async def on_message(message):
         result = profile(message_string)
         await message.channel.send(result)
 
-    elif f"<@!{client_id}>" in message_string:
+    elif f"<@!{DISCORD_CLIENT_ID}>" in message_string:
         await message.channel.send(f"Hello {message.author.name},"
                                    f" Please type    **!help**    for more options")
 
@@ -117,9 +118,14 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:', file=discord.File(image_path))
 
+    elif "!stream" in message_string:
+        from web_scrap.twitch_process import get_dota2_top_stream
+        result = get_dota2_top_stream()
+        await message.channel.send(result)
+
     elif "exit" in message_string.lower():
         await client.close()
         sys.exit()
 
 
-client.run(discord_token)
+client.run(DISCORD_TOKEN)
