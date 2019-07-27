@@ -50,8 +50,12 @@ async def on_message(message):
     message_string = message_string.lower().strip()
     message_word_length = len(message_string.split())
     print(f"{message.channel}: {message.author}: {message.author.name}: {message.content}")
+
+    if client.user == message.author:
+        # Ignore all message passed by the our bot
+        pass
     
-    if '!help' == message_string:
+    elif '!help' == message_string:
         help_string = get_help()
         await message.channel.send(help_string)
 
@@ -118,7 +122,7 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:', file=discord.File(image_path))
 
-    elif "!stream" in message_string:
+    elif "!stream" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
         from web_scrap.twitch_process import get_dota2_top_stream
         result = get_dota2_top_stream()
         await message.channel.send(result)

@@ -48,7 +48,11 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'wd': 'witch-doctor', 'wk': 'wraith-king', 'admiral': 'kunkka', 'venge': 'vengeful-spirit',
                            'rhasta': 'shadow-shaman', 'bara': 'spirit-breaker', 'bounty': 'bounty-hunter',
                            'bristle': 'bristleback', 'void': 'faceless-void', 'legion': 'legion-commander',
-                           'monkey': 'monkey-king'}
+                           'monkey': 'monkey-king', 'antimage': 'anti-mage', 'apparition': 'ancient-apparition',
+                           'ancient': 'ancient-apparition', 'beast':'beastmaster', 'blood': 'bloodseeker',
+                           'brew': 'brewmaster', 'chaos': 'chaos-knight', 'ember': 'ember-spirit',
+                           'queen': 'queen-of-pain', 'sandking': 'sand-king', 'shadowfiend': 'shadow-fiend',
+                           'skywrath': 'skywrath-mage', 'trollwarlord': 'troll-warlord'}
 
 
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']
