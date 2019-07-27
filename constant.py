@@ -5,6 +5,9 @@ DISCORD_TOKEN = "NTAxMTAwOTQ1NDA1Mzc4NTYy.DqUeoQ.pxwwUuubokrUHgdO2WNFi1uhrFs"
 DOTA2_API_KEY = "A1AE7829A07BB76C29353946D1BDBC4F"
 DISCORD_CLIENT_ID = 501100945405378562
 
+# Profile Info
+PLAYER_URL_BASE = 'https://www.dotabuff.com/players/'
+
 # Twitch
 DOTA_2_GAME_ID = '29595'
 TWITCH_URL = 'https://www.twitch.tv/'
@@ -47,7 +50,7 @@ ITEM_ICON_PATH = os.path.join(REPO_PATH, ITEM_ICON_PATH)
 # Medals
 MEDAL_IMAGE_PATH = 'data/medals'
 MEDAL_IMAGE_PATH = os.path.join(REPO_PATH, MEDAL_IMAGE_PATH)
-MEDAL_NAMES = ['immortal', 'divine', 'ancient', 'legend', 'archon', 'crusader', 'guardian', 'herald']
+MEDAL_NAMES = ['immortal', 'divine', 'ancient', 'legend', 'archon', 'crusader', 'guardian', 'herald', 'uncalibrated']
 MEDAL_IMMORTAL_UNDER = {5000: 'immortal.png', 100: 'immortal-100.png', 10:'immortal-10.png'}
 MEDAL_NUMBERING = {'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6, 'vii': 7,
 				   '1': 1, '2': 2,  '3': 3,    '4': 4, '5': 5, '6': 6,   '7': 7}
