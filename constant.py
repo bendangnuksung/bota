@@ -1,5 +1,10 @@
 import os
 
+# General
+MAX_MESSAGE_WORD_LENGTH = 5
+REPO_PATH = os.path.dirname(os.path.realpath(__file__))
+
+
 # Private keys
 DISCORD_TOKEN = "NTAxMTAwOTQ1NDA1Mzc4NTYy.DqUeoQ.pxwwUuubokrUHgdO2WNFi1uhrFs"
 DOTA2_API_KEY = "A1AE7829A07BB76C29353946D1BDBC4F"
@@ -7,6 +12,12 @@ DISCORD_CLIENT_ID = 501100945405378562
 
 # Profile Info
 PLAYER_URL_BASE = 'https://www.dotabuff.com/players/'
+
+# Steam User json file
+STEAM_USER_FILE_PATH = 'data/steam_user/steam_user.json'
+STEAM_USER_FILE_PATH = os.path.join(REPO_PATH, STEAM_USER_FILE_PATH)
+NEW_USER_FILE_PATH_CSV = 'data/steam_user/new_steam_user.csv'
+NEW_USER_FILE_PATH_CSV = os.path.join(REPO_PATH, NEW_USER_FILE_PATH_CSV)
 
 # Twitch
 DOTA_2_GAME_ID = '29595'
@@ -22,11 +33,6 @@ TWITCH_KEYWORD_VIEWER_COUNT = 'viewer_count'
 TWITCH_KEYWORD_TITLE = 'title'
 TWITCH_KEYWORD_LANGUAGE = 'language'
 
-
-
-# General
-MAX_MESSAGE_WORD_LENGTH = 5
-REPO_PATH = os.path.dirname(os.path.realpath(__file__))
 
 TEMP_IMAGE_PATH = 'data/temp_images'
 TEMP_IMAGE_PATH = os.path.join(REPO_PATH, TEMP_IMAGE_PATH)

@@ -10,6 +10,10 @@ import numpy as np
 from web_scrap.web_screenshot import get_screenshot
 from web_scrap.items_process import scrap_item_info, make_item_image
 from web_scrap.profile_process import scrap_profile_info
+from applications.steam_user import User
+
+
+steam_user = User()
 
 
 def round_df_digits(df):
@@ -163,14 +167,40 @@ def get_item_build(query, hero=None):
     return True, hero_name, item_build_path
 
 
+def is_id(id):
+    flag = False
+    try:
+        test = int(id)
+        flag = True
+    except Exception:
+        pass
+    return flag
+
+
 def get_profile(query):
     query = query.split()
     id = ' '.join(query[1:])
     id = id.strip()
-    profile_info_string = scrap_profile_info(id)
+
+    if is_id(id):
+        profile_info_string = scrap_profile_info(id)
+    else:
+        user_name = id
+        flag, id = steam_user.get_id(user_name)
+        if not flag:
+            return False, user_name, 2, ''
+        profile_info_string = scrap_profile_info(id)
     if profile_info_string == '':
-        return False, id, ''
-    return True, id, profile_info_string
+        return False, id, 1, ''
+    return True, id, 1, profile_info_string
+
+
+def save_id(query):
+    query = query.split()
+    user_name = query[1].strip()
+    id = query[2].strip()
+    flag, status = steam_user.add_user(user_name, id)
+    return user_name, id, flag, status
 
 
 if __name__ == '__main__':

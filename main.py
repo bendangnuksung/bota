@@ -11,7 +11,7 @@ from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
 from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against
-from web_scrap.scrap import get_skill_build, get_item_build, get_profile
+from web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
 
 client = discord.Client()
 
@@ -21,6 +21,9 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        `eg: !top_g
                  '!skill or !talent HeroName': 'Shows most popular & win rate talent/skill build        `eg: !skill meepo`',
                  '!item HeroName'   : 'Shows current meta item build by Top Rank Players        `eg: !item kotl`',
                  '!profile  steamID': 'Shows your profile stats given steamID        `eg: !profile 116585378`',
+                 '!save Alias steamID': 'Saves your steamID under Alias name, and call by Alias name.\n'
+                                       '        \
+                                       First **--->** `!save midone 116585378`  Then **--->** `!profile midone`',
                  '!trend'           : 'Shows current heroes trend        `eg: trend`',
                  '!stream'          : 'Shows Top 8 Twitch stream        `eg: !stream`'
                  }
@@ -55,7 +58,7 @@ async def on_message(message):
         # Ignore all message passed by the our bot
         pass
     
-    elif '!help' == message_string:
+    elif '!help' == message_string or '--help' == message_string:
         help_string = get_help()
         await message.channel.send(help_string)
 
@@ -64,17 +67,25 @@ async def on_message(message):
         await message.channel.send(f"Getting Top Live Spectacting Games")
         await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
-    elif '!signup' in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
-        result = signup(message_string)
-        await message.channel.send(result)
-
     elif '!profile' in message_string.split()[0]:
-        flag, id, result = get_profile(message_string)
+        # mode = 0 searching by ID, mode = 1 searching by Alias name(user name)
+        flag, id, mode, result = get_profile(message_string)
         if not flag:
-            await message.channel.send(f'Could not find any profile under: **{id}**')
+            if mode == 1:
+                await message.channel.send(f'Could not find any profile under: **{id}**')
+            else:
+                await message.channel.send(f'Could not find any Alias name : **{id}**')
         else:
-            await message.channel.send(f"____**{id}**____'s Profile:")
+            if mode == 1:
+                await message.channel.send(f"____**{id}**____'s Profile:")
             await message.channel.send(result)
+
+    elif '!save' in message_string.split()[0]:
+        user_name, id, flag, status = save_id(message_string)
+        if flag:
+            await message.channel.send(f'**{id}** saved under the alias: {user_name}')
+        else:
+            await message.channel.send(f'**Failed to save, reason: {status}')
 
     elif f"<@!{DISCORD_CLIENT_ID}>" in message_string:
         await message.channel.send(f"Hello {message.author.name},"
