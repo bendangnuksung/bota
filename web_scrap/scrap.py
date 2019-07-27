@@ -9,6 +9,7 @@ import cv2
 import numpy as np
 from web_scrap.web_screenshot import get_screenshot
 from web_scrap.items_process import scrap_item_info, make_item_image
+from web_scrap.profile_process import scrap_profile_info
 
 
 def round_df_digits(df):
@@ -160,6 +161,16 @@ def get_item_build(query, hero=None):
     item_image = make_item_image(item_build_info, hero_name)
     cv2.imwrite(item_build_path, item_image, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
     return True, hero_name, item_build_path
+
+
+def get_profile(query):
+    query = query.split()
+    id = ' '.join(query[1:])
+    id = id.strip()
+    profile_info_string = scrap_profile_info(id)
+    if profile_info_string == '':
+        return False, id, ''
+    return True, id, profile_info_string
 
 
 if __name__ == '__main__':

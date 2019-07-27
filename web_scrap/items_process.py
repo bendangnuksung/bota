@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup as bs
-import requests
+
+from utility import get_html_text
 from web_scrap import scrap_constant
 import constant
 import utility
@@ -106,12 +107,6 @@ def make_item_image(infos, hero_name):
             bg_image = write_text_pil(bg_image, time, (item_time_x, item_time_y), size=constant.TIME_FONT_SIZE)
     return bg_image
     # display(bg_image)
-
-
-def get_html_text(url):
-    r = requests.get(url, headers=scrap_constant.browser_headers)
-    html_text = r.text
-    return html_text
 
 
 def scrap_item_info(hero_name):

@@ -1,6 +1,7 @@
 import imgkit
 import random
 import pandas
+import requests
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
@@ -159,6 +160,12 @@ def get_medal_image_path(medal_name, rank=None):
 		return medal_image_path
 
 
+def get_html_text(url):
+	r = requests.get(url, headers=scrap_constant.browser_headers)
+	html_text = r.text
+	return html_text
+
+
 if __name__ == "__main__":
 	import cv2, constant
 	image = cv2.imread('/home/ben/personal/discord-dota-bot/data/temp_images/ursa_skill.png')
@@ -170,3 +177,5 @@ if __name__ == "__main__":
 	a = pandas.DataFrame(a[1:], columns=['Radiant', 'Dire', 'Avg MMR', 'Game Mode', 'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead'])
 	r = DataFrame_to_image(a, outputfile='test.png')
 	print(r)
+
+

@@ -11,30 +11,30 @@ from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
 from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against
-from web_scrap.scrap import get_skill_build, get_item_build
+from web_scrap.scrap import get_skill_build, get_item_build, get_profile
 
 client = discord.Client()
 
-commands_list = {'!top_game'       : 'Shows top 9 Live Games',
-                 '!counter HeroName': 'Shows Heroes which counter the given hero name',
-                 '!good HeroName'   : '(Opposite of !counter) Shows Heroes which di-counter the given hero name',
-                 '!skill or !talent HeroName': 'Shows most popular & win rate talent/skill build',
-                 '!item HeroName'   : 'Shows current meta item build by Top Rank Players',
-                 '!profile  steamID': 'Shows your profile stats given steamID',
-                 '!trend'           : 'Shows current heroes trend',
-                 '!stream'          : 'Shows Top 8 Twitch stream'
+commands_list = {'!top_game'        : 'Shows top 9 Live Games        `eg: !top_game`',
+                 '!counter HeroName': 'Shows Heroes which counter the given hero name        `eg: !counter am`',
+                 '!good HeroName'   : 'Opposite of !counter command. Good against.        `eg: !good axe`',
+                 '!skill or !talent HeroName': 'Shows most popular & win rate talent/skill build        `eg: !skill meepo`',
+                 '!item HeroName'   : 'Shows current meta item build by Top Rank Players        `eg: !item kotl`',
+                 '!profile  steamID': 'Shows your profile stats given steamID        `eg: !profile 116585378`',
+                 '!trend'           : 'Shows current heroes trend        `eg: trend`',
+                 '!stream'          : 'Shows Top 8 Twitch stream        `eg: !stream`'
                  }
 
 
 def get_help():
     help_string = []
-    head = '**Below are the commands to use DOTA BOT:**\n'
+    head = '```css\nBelow are the commands to use DOTA BOT:```'
     help_string.append(head)
     for key, value in commands_list.items():
         command = '**' + key + '**'
         command_help = '*' + value + '*'
         full = command + '\t:\t' + command_help
-        help_string.append(full)
+        help_string.append(full + '\n')
     help_string = "\n".join(help_string)
     return help_string
 
@@ -69,8 +69,12 @@ async def on_message(message):
         await message.channel.send(result)
 
     elif '!profile' in message_string.split()[0]:
-        result = profile(message_string)
-        await message.channel.send(result)
+        flag, id, result = get_profile(message_string)
+        if not flag:
+            await message.channel.send(f'Could not find any profile under: **{id}**')
+        else:
+            await message.channel.send(f"____**{id}**____'s Profile:")
+            await message.channel.send(result)
 
     elif f"<@!{DISCORD_CLIENT_ID}>" in message_string:
         await message.channel.send(f"Hello {message.author.name},"
