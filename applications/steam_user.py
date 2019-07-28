@@ -25,7 +25,7 @@ class User():
         with open(self.new_user_csv_path, 'r') as f:
             reader = csv.reader(f)
             for line in reader:
-                new_user_dict[line[0]] = line[1]
+                new_user_dict[line[0].strip()] = line[1].strip()
         self.user_info.update(new_user_dict)
         self._write_json(self.user_info)
         os.remove(self.new_user_csv_path)
