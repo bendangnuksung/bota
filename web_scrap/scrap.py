@@ -190,6 +190,7 @@ def get_profile(query):
         if not flag:
             return False, user_name, 2, ''
         profile_info_string = scrap_profile_info(id)
+        return True, id, 2, profile_info_string
     if profile_info_string == '':
         return False, id, 1, ''
     return True, id, 1, profile_info_string
@@ -204,6 +205,8 @@ def save_id(query):
 
 
 if __name__ == '__main__':
+    print(get_profile('!profile david'))
+    exit()
     # print(get_counter_hero('!good ursa'))
     # print(get_good_against('!good ursa'))
     import asyncio

@@ -15,17 +15,17 @@ from web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_i
 
 client = discord.Client()
 
-commands_list = {'!top_game'        : 'Shows top 9 Live Games        `eg: !top_game`',
-                 '!counter HeroName': 'Shows Heroes which counter the given hero name        `eg: !counter am`',
-                 '!good HeroName'   : 'Opposite of !counter command. Good against.        `eg: !good axe`',
-                 '!skill or !talent HeroName': 'Shows most popular & win rate talent/skill build        `eg: !skill meepo`',
-                 '!item HeroName'   : 'Shows current meta item build by Top Rank Players        `eg: !item kotl`',
-                 '!profile  steamID': 'Shows your profile stats given steamID        `eg: !profile 116585378`',
+commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top game`',
+                 '!counter HeroName': 'Shows Heroes which counter the given hero name        eg: `!counter am`',
+                 '!good HeroName'   : 'Opposite of !counter command. Good against.        eg: `!good axe`',
+                 '!skill or !talent HeroName': 'Shows most popular & win rate talent/skill build        eg:`!skill meepo`',
+                 '!item HeroName'   : 'Shows current meta item build by Top Rank Players        eg: `!item kotl`',
+                 '!profile  steamID': 'Shows your profile stats given steamID        eg: `!profile 116585378`',
                  '!save Alias steamID': 'Saves your steamID under Alias name, and call by Alias name.\n'
                                        '        \
                                        First **--->** `!save midone 116585378`  Then **--->** `!profile midone`',
-                 '!trend'           : 'Shows current heroes trend        `eg: trend`',
-                 '!stream'          : 'Shows Top 8 Twitch stream        `eg: !stream`'
+                 '!trend'           : 'Shows current heroes trend        eg: `!trend`',
+                 '!stream'          : 'Shows Top 8 Twitch stream        eg: `!stream`'
                  }
 
 
@@ -62,7 +62,8 @@ async def on_message(message):
         help_string = get_help()
         await message.channel.send(help_string)
 
-    elif '!top_game' == message_string or '!top game' == message_string:
+    elif ('!top_game' in message_string or '!top game' in message_string) and \
+         message_word_length < MAX_MESSAGE_WORD_LENGTH:
         image_path = get_top_games()
         await message.channel.send(f"Getting Top Live Spectacting Games")
         await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
