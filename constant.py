@@ -1,14 +1,8 @@
 import os
 
 # General
-MAX_MESSAGE_WORD_LENGTH = 5
+MAX_COMMAND_WORD_LENGTH = 5
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
-
-
-# Private keys
-DISCORD_TOKEN = "NTAxMTAwOTQ1NDA1Mzc4NTYy.DqUeoQ.pxwwUuubokrUHgdO2WNFi1uhrFs"
-DOTA2_API_KEY = "A1AE7829A07BB76C29353946D1BDBC4F"
-DISCORD_CLIENT_ID = 501100945405378562
 
 # Profile Info
 PLAYER_URL_BASE = 'https://www.dotabuff.com/players/'

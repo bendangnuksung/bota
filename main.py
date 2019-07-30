@@ -6,9 +6,8 @@
 
 import discord
 import sys
-from constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, MAX_MESSAGE_WORD_LENGTH
-from applications.signup import signup
-from applications.profile_info import profile
+from constant import MAX_COMMAND_WORD_LENGTH
+from private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID
 from applications.top_games import get_top_games
 from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
 from web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
@@ -69,7 +68,7 @@ async def on_message(message):
         await message.channel.send(help_string)
 
     elif ('!top_game' in message_string or '!top game' in message_string) and \
-         message_word_length < MAX_MESSAGE_WORD_LENGTH:
+         message_word_length < MAX_COMMAND_WORD_LENGTH:
         image_path = get_top_games()
         await message.channel.send(f"Getting Top Live Spectacting Games")
         await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
@@ -98,12 +97,12 @@ async def on_message(message):
         await message.channel.send(f"Hello {message.author.name},"
                                    f" Please type    **!help**    for more options")
 
-    elif "!trend" in message_string and message_word_length < (MAX_MESSAGE_WORD_LENGTH - 2):
+    elif "!trend" in message_string and message_word_length < (MAX_COMMAND_WORD_LENGTH - 2):
         image_path = get_current_trend()
         await message.channel.send(f"Getting this week Heroes Trend")
         await message.channel.send('Current Trend: ', file=discord.File(image_path))
 
-    elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+    elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
         found, hero_name, image_path = get_counter_hero(message_string)
         if not found:
             if hero_name != '':
@@ -113,7 +112,7 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name.upper()}** is bad against: ', file=discord.File(image_path))
 
-    elif "!good" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+    elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         found, hero_name, image_path = get_good_against(message_string)
         if not found:
             if hero_name != '':
@@ -124,7 +123,7 @@ async def on_message(message):
             await message.channel.send(f'**{hero_name.upper()}** is good against: ', file=discord.File(image_path))
 
     elif ("!skill" in message_string or "!talent" in message_string) \
-            and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+            and message_word_length < MAX_COMMAND_WORD_LENGTH:
         found, hero_name, image_path = await get_skill_build(message_string)
         if not found:
             if hero_name != '':
@@ -134,7 +133,7 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name.upper()}** most popular Skill/Talent build: ', file=discord.File(image_path))
 
-    elif "!item" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+    elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         found, hero_name, image_path = get_item_build(message_string)
         if not found:
             if hero_name != '':
@@ -144,12 +143,12 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:', file=discord.File(image_path))
 
-    elif "!twitch" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+    elif "!twitch" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
 
         result = get_dota2_top_stream()
         await message.channel.send(result)
 
-    elif "!reddit" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+    elif "!reddit" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         result_list, mode = get_reddit(message_string)
         await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**")
         for result in result_list:
