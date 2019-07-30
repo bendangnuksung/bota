@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+echo "making directory"
+cd data/
+mkdir background character_icons character_icons_big counter_heroes good_against_heroes
+mkdir guide_build items items_build medals steam_user temp_images
+cd ../
+
 sudo apt-get install libfontconfig1 libxrender1
 sudo apt-get install libjpeg-dev zlib1g-dev
 
@@ -30,8 +36,4 @@ python3 setup.py install
 cd ../
 rm -rf dota2api
 
-echo "making directory"
-cd data/
-mkdir background character_icons character_icons_big counter_heroes good_against_heroes
-mkdir guide_build items items_build medals steam_user temp_images
-cd ../
+

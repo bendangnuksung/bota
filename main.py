@@ -1,9 +1,3 @@
-# client ID 501100945405378562
-# token NTAxMTAwOTQ1NDA1Mzc4NTYy.DqUeoQ.pxwwUuubokrUHgdO2WNFi1uhrFs
-# permission 67648
-
-# https://discordapp.com/oauth2/authorize?client_id=501100945405378562&scope=bot&permissions=67648
-
 import discord
 import sys
 from constant import MAX_COMMAND_WORD_LENGTH
