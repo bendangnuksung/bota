@@ -10,6 +10,7 @@ import numpy as np
 from web_scrap.web_screenshot import get_screenshot
 from web_scrap.items_process import scrap_item_info, make_item_image
 from web_scrap.profile_process import scrap_profile_info
+from web_scrap.reddit_process import scrap_reddit_dota
 from applications.steam_user import User
 
 
@@ -204,7 +205,27 @@ def save_id(query):
     return user_name, id, flag, status
 
 
+def get_reddit(query):
+    query = query.split()
+    mode = constant.REDDIT_DEFAULT_MODE
+    top = constant.REDDIT_DEFAULT_TOP
+    if len(query) > 1:
+        user_given_mode = query[1]
+        # get modes from user if provided
+        if user_given_mode in constant.REDDIT_SORT_BY:
+            mode = user_given_mode
+        # Get top(n) from user if provided
+        if len(query) > 2:
+            if type(query[2]) == int:
+                top = int(query[2])
+    result = scrap_reddit_dota(sort_by=mode, top=top)
+    return result, mode
+
+
 if __name__ == '__main__':
+    print(get_reddit('!reddit'))
+    exit()
+    # print(save_id('!save sam 297066030'))
     print(get_profile('!profile david'))
     exit()
     # print(get_counter_hero('!good ursa'))

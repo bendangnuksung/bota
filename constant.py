@@ -19,6 +19,27 @@ STEAM_USER_FILE_PATH = os.path.join(REPO_PATH, STEAM_USER_FILE_PATH)
 NEW_USER_FILE_PATH_CSV = 'data/steam_user/new_steam_user.csv'
 NEW_USER_FILE_PATH_CSV = os.path.join(REPO_PATH, NEW_USER_FILE_PATH_CSV)
 
+
+# Reddit
+REDDIT_DOTA_URL = 'https://www.reddit.com/r/DotA2/'
+REDDIT_SORT_BY = ['new', 'controversial, top, rising', 'random', 'hot']
+REDDIT_DEFAULT_MODE = 'random'
+REDDIT_DEFAULT_TOP = 3
+REDDIT_MAX_POST_LIMIT = 6
+
+JSON_POSTFIX = '.json'
+REDDIT_URL = 'https://www.reddit.com'
+REDDIT_POST_BODY = 'selftext'
+REDDIT_POST_TITLE = 'title'
+REDDIT_POST_AUTHOR = 'author'
+REDDIT_POST_FLAIR = 'link_flair_text'
+REDDIT_POST_SCORE = 'score'
+REDDIT_POST_URL = 'permalink'
+REDDIT_POST_MEDIA_URL = 'url'
+REDDIT_BODY_MAX_CHARACTER = 300
+WEBPAGE_PRE_STRING = ['https://', 'http://']
+
+
 # Twitch
 DOTA_2_GAME_ID = '29595'
 TWITCH_URL = 'https://www.twitch.tv/'

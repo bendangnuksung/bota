@@ -10,8 +10,10 @@ from constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, MAX_MESSAGE_WORD_LENGTH
 from applications.signup import signup
 from applications.profile_info import profile
 from applications.top_games import get_top_games
-from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against
+from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
 from web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
+from web_scrap.twitch_process import get_dota2_top_stream
+
 
 client = discord.Client()
 
@@ -25,7 +27,11 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
                                        '        \
                                        First **--->** `!save midone 116585378`  Then **--->** `!profile midone`',
                  '!trend'           : 'Shows current heroes trend        eg: `!trend`',
-                 '!stream'          : 'Shows Top 8 Twitch stream        eg: `!stream`'
+                 '!twitch'          : 'Shows Top 8 Twitch stream        eg: `!twitch`',
+                 '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. You can specify your `SortBy` like below :\n'
+                                      '                       eg 1:   `!reddit`             : Gets a random post from  /r/DotA2/\n'
+                                      '                       eg 2:   `!reddit hot`   : Gets Top 3 hot post from  /r/DotA2/\n'
+                                      '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/\n'
                  }
 
 
@@ -138,10 +144,16 @@ async def on_message(message):
         else:
             await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:', file=discord.File(image_path))
 
-    elif "!stream" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
-        from web_scrap.twitch_process import get_dota2_top_stream
+    elif "!twitch" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+
         result = get_dota2_top_stream()
         await message.channel.send(result)
+
+    elif "!reddit" in message_string and message_word_length < MAX_MESSAGE_WORD_LENGTH:
+        result_list, mode = get_reddit(message_string)
+        await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**")
+        for result in result_list:
+            await message.channel.send(result)
 
     elif "exit" in message_string.lower():
         await client.close()
