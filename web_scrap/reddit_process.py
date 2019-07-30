@@ -22,13 +22,12 @@ def markdown_to_text(markdown_string):
     return text
 
 
-def make_dota2_url(sort_by):
+def make_dota2_url(sort_by, limit):
     if sort_by == 'hot':
-        url = os.path.join(REDDIT_DOTA_URL, JSON_POSTFIX)
+        url = os.path.join(REDDIT_DOTA_URL, JSON_POSTFIX) + '?limit=' + str(limit)
         return url
     url = os.path.join(REDDIT_DOTA_URL, sort_by)
     url = os.path.join(url, JSON_POSTFIX)
-
     return url
 
 
@@ -64,13 +63,16 @@ def pretty_reddit_text_to_list(dict_data):
 
 def scrap_reddit_dota(sort_by=REDDIT_DEFAULT_MODE, top=REDDIT_DEFAULT_TOP):
     top = top if top < REDDIT_MAX_POST_LIMIT else REDDIT_MAX_POST_LIMIT
-    url = make_dota2_url(sort_by)
-    r = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
-    datas = r.json()
     if sort_by == 'random':
         top = 1
+        url = make_dota2_url(sort_by, top-1)
+        r = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
+        datas = r.json()
         datas = datas[0]['data']['children']
     else:
+        url = make_dota2_url(sort_by, top-1)
+        r = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
+        datas = r.json()
         datas = datas['data']['children']
 
     result = []

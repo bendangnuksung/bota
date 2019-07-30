@@ -37,7 +37,7 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
 
 def get_help():
     help_string = []
-    head = '```css\nBelow are the commands to use DOTA BOT:```'
+    head = '```css\nBelow are the commands to use DOTA BOT: 😋```'
     help_string.append(head)
     for key, value in commands_list.items():
         command = '**' + key + '**'
