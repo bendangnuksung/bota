@@ -27,7 +27,7 @@ def make_dota2_url(sort_by, limit):
         url = os.path.join(REDDIT_DOTA_URL, JSON_POSTFIX) + '?limit=' + str(limit)
         return url
     url = os.path.join(REDDIT_DOTA_URL, sort_by)
-    url = os.path.join(url, JSON_POSTFIX)
+    url = os.path.join(url, JSON_POSTFIX) + '?limit=' + str(limit)
     return url
 
 
@@ -76,7 +76,7 @@ def scrap_reddit_dota(sort_by=REDDIT_DEFAULT_MODE, top=REDDIT_DEFAULT_TOP):
         datas = datas['data']['children']
 
     result = []
-    for i, data in enumerate(datas, 1):
+    for i, data in enumerate(datas):
         if i > top:
             break
         data = data['data']

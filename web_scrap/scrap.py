@@ -216,7 +216,7 @@ def get_reddit(query):
             mode = user_given_mode
         # Get top(n) from user if provided
         if len(query) > 2:
-            if type(query[2]) == int:
+            if query[2].isdigit():
                 top = int(query[2])
     result = scrap_reddit_dota(sort_by=mode, top=top)
     return result, mode
