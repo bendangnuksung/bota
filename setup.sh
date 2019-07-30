@@ -1,20 +1,37 @@
 #!/usr/bin/env bash
 
-cd /dotabot/
-pip3 install -r requirements.txt
-python3 -m pip install -U discord.py
+sudo apt-get install libfontconfig1 libxrender1
+sudo apt-get install libjpeg-dev zlib1g-dev
 
+echo "Installing requirements.txt"
+pip3 install -r requirements.txt
+
+echo "Installing  Rapptz/Discord "
+python3 -m pip install -U discord.py
+cd discord.py
+sudo pip3 install -r requirements.txt
+python3 setup.py install
+cd ..
+rm -rf discord.py
+
+echo "Setting Up wkhtmltox......"
 wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
 tar xf  wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
 cd wkhtmltox/bin/
-mv wkhtmltopdf  /usr/bin/wkhtmltopdf
-mv wkhtmltoimage  /usr/bin/wkhtmltoimage
+sudo mv wkhtmltopdf  /usr/bin/wkhtmltopdf
+sudo mv wkhtmltoimage  /usr/bin/wkhtmltoimage
 cd ../../
 rm -rf wkhtmltox*
 
-git clone https://github.com/joshuaduffy/dota2api.git`
+echo "Joshuaduffy Dota2api setup...."
+git clone https://github.com/joshuaduffy/dota2api.git
 cd dota2api
-python setup.py install
+python3 setup.py install
 cd ../
 rm -rf dota2api
 
+echo "making directory"
+cd data/
+mkdir background character_icons character_icons_big counter_heroes good_against_heroes
+mkdir guide_build items items_build medals steam_user temp_images
+cd ../
