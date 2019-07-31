@@ -3,10 +3,46 @@ from markdown import markdown
 import re
 import requests
 import os
+from datetime import datetime
 
 from constant import REDDIT_DOTA_URL, JSON_POSTFIX, REDDIT_URL, REDDIT_POST_BODY, REDDIT_POST_TITLE, REDDIT_POST_AUTHOR, \
     REDDIT_POST_FLAIR, REDDIT_POST_SCORE, REDDIT_POST_URL, REDDIT_POST_MEDIA_URL, REDDIT_BODY_MAX_CHARACTER, \
-    WEBPAGE_PRE_STRING, REDDIT_MAX_POST_LIMIT, REDDIT_DEFAULT_MODE, REDDIT_DEFAULT_TOP
+    WEBPAGE_PRE_STRING, REDDIT_MAX_POST_LIMIT, REDDIT_DEFAULT_MODE, REDDIT_DEFAULT_TOP, REDDIT_SORT_BY_REFRESH_SEC,\
+    REDDIT_SORT_BY
+
+
+class RedditCalls():
+    # For
+
+    def __init__(self):
+        self._set_timer_for_sortby()
+
+    def _set_timer_for_sortby(self):
+        self.values_and_timers = {}
+        for sortby in REDDIT_SORT_BY:
+            self.values_and_timers[sortby] = {'threshold_timer': REDDIT_SORT_BY_REFRESH_SEC[sortby]}
+
+    def get_reddit_json(self, url):
+        json_value = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
+        json_value = json_value.json()
+        return json_value
+
+    def get_json(self, url, sortby):
+        current_time = datetime.now()
+        start_time = self.values_and_timers[sortby].get('fetch_time')
+
+        if start_time is None or \
+                (current_time - start_time).total_seconds() > self.values_and_timers[sortby]['threshold_timer']:
+            json_value = self.get_reddit_json(url)
+            self.values_and_timers[sortby]['json'] = json_value
+            self.values_and_timers[sortby]['fetch_time'] = datetime.now()
+            return json_value
+
+        else:
+            return self.values_and_timers[sortby]['json']
+
+
+reddit = RedditCalls()
 
 
 def markdown_to_text(markdown_string):
@@ -66,13 +102,11 @@ def scrap_reddit_dota(sort_by=REDDIT_DEFAULT_MODE, top=REDDIT_DEFAULT_TOP):
     if sort_by == 'random':
         top = 1
         url = make_dota2_url(sort_by, top)
-        r = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
-        datas = r.json()
+        datas = reddit.get_json(url, sort_by)
         datas = datas[0]['data']['children']
     else:
         url = make_dota2_url(sort_by, top)
-        r = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
-        datas = r.json()
+        datas = reddit.get_json(url, sort_by)
         datas = datas['data']['children']
 
     result = []

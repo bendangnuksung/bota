@@ -17,6 +17,7 @@ NEW_USER_FILE_PATH_CSV = os.path.join(REPO_PATH, NEW_USER_FILE_PATH_CSV)
 # Reddit
 REDDIT_DOTA_URL = 'https://www.reddit.com/r/DotA2/'
 REDDIT_SORT_BY = ['new', 'controversial', 'top', 'rising', 'random', 'hot']
+REDDIT_SORT_BY_REFRESH_SEC = {'new': 5, 'controversial': 60, 'top': 300, 'rising': 60, 'random': 5, 'hot': 60}
 REDDIT_DEFAULT_MODE = 'random'
 REDDIT_DEFAULT_TOP = 3
 REDDIT_MAX_POST_LIMIT = 6
