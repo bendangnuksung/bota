@@ -23,7 +23,7 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
                                        First **--->** `!save midone 116585378`  Then **--->** `!profile midone`',
                  '!trend'           : 'Shows current heroes trend        eg: `!trend`',
                  '!twitch'          : 'Shows Top 8 Twitch stream        eg: `!twitch`',
-                 '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. You can specify your `SortBy` like below :\n'
+                 '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. Options: `new`, `controversial`, `top`, `rising`, `random`, `hot`:\n'
                                       '                       eg 1:   `!reddit`             : Gets a random post from  /r/DotA2/\n'
                                       '                       eg 2:   `!reddit hot`   : Gets Top 3 hot post from  /r/DotA2/\n'
                                       '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/\n'

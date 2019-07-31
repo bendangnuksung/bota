@@ -223,7 +223,7 @@ def get_reddit(query):
 
 
 if __name__ == '__main__':
-    print(get_reddit('!reddit'))
+    print(get_reddit('!reddit top'))
     exit()
     # print(save_id('!save sam 297066030'))
     print(get_profile('!profile david'))

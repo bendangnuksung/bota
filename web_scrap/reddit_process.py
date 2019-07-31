@@ -65,12 +65,12 @@ def scrap_reddit_dota(sort_by=REDDIT_DEFAULT_MODE, top=REDDIT_DEFAULT_TOP):
     top = top if top < REDDIT_MAX_POST_LIMIT else REDDIT_MAX_POST_LIMIT
     if sort_by == 'random':
         top = 1
-        url = make_dota2_url(sort_by, top-1)
+        url = make_dota2_url(sort_by, top)
         r = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
         datas = r.json()
         datas = datas[0]['data']['children']
     else:
-        url = make_dota2_url(sort_by, top-1)
+        url = make_dota2_url(sort_by, top)
         r = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
         datas = r.json()
         datas = datas['data']['children']
@@ -101,6 +101,6 @@ def scrap_reddit_dota(sort_by=REDDIT_DEFAULT_MODE, top=REDDIT_DEFAULT_TOP):
 
 
 if __name__ == '__main__':
-    r = scrap_reddit_dota()
+    r = scrap_reddit_dota('top')
     for x in r:
         print(x)
