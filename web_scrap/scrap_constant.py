@@ -1,6 +1,6 @@
 ##### General
 browser_headers = {'user-agent': 'Mozilla/5.0'}
-
+browser_headers_chrome = {'user-agent': 'Chrome/75.0.3770.80-1'}
 
 ##### character_icons Info constant
 heroes_pre_url = 'https://www.dotabuff.com/heroes/'

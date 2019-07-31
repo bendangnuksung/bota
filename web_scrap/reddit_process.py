@@ -4,6 +4,7 @@ import re
 import requests
 import os
 from datetime import datetime
+from web_scrap.scrap_constant import browser_headers_chrome
 
 from constant import REDDIT_DOTA_URL, JSON_POSTFIX, REDDIT_URL, REDDIT_POST_BODY, REDDIT_POST_TITLE, REDDIT_POST_AUTHOR, \
     REDDIT_POST_FLAIR, REDDIT_POST_SCORE, REDDIT_POST_URL, REDDIT_POST_MEDIA_URL, REDDIT_BODY_MAX_CHARACTER, \
@@ -23,7 +24,7 @@ class RedditCalls():
             self.values_and_timers[sortby] = {'threshold_timer': REDDIT_SORT_BY_REFRESH_SEC[sortby]}
 
     def get_reddit_json(self, url):
-        json_value = requests.get(url, headers={'user-agent': 'Mozilla/5.0'})
+        json_value = requests.get(url, headers=browser_headers_chrome)
         json_value = json_value.json()
         return json_value
 
