@@ -84,7 +84,7 @@ def pretty_reddit_text_to_list(dict_data):
                 index_string_len = len(str(i))
                 final_string += ' ' * (index_string_len + 3)
             if key == 'url':
-                final_string += f"`{key.upper()}`: <{value}>    \n"
+                final_string += f"`{key.upper()}`: <{value}>   "
             elif key == 'content':
                 final_string += f'`{key.upper()}:` '
                 if is_content_webpage(value):
@@ -93,7 +93,7 @@ def pretty_reddit_text_to_list(dict_data):
                     final_string += '\n'
                     final_string += '```fix' + "\n" + f"{value}" + '```'
             else:
-                final_string += f"`{key.upper()}:` {value}    \n"
+                final_string += f"`{key.upper()}:` {value}   "
         final_string_list.append(final_string)
     return final_string_list
 
@@ -129,8 +129,8 @@ def scrap_reddit_dota(sort_by=REDDIT_DEFAULT_MODE, top=REDDIT_DEFAULT_TOP):
                 content = content[:REDDIT_BODY_MAX_CHARACTER] + '.....'
         else:
             content = data[REDDIT_POST_MEDIA_URL]
-        result.append({'title': title, 'flair': flair,
-                       'score': score, 'url': url, 'content': content})
+        result.append({'title': title, 'score': score,
+                       'url': url, 'content': content})
     result = pretty_reddit_text_to_list(result)
     return result
 
