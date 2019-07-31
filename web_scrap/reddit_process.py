@@ -120,6 +120,8 @@ def scrap_reddit_dota(sort_by=REDDIT_DEFAULT_MODE, top=REDDIT_DEFAULT_TOP):
         author = data[REDDIT_POST_AUTHOR]
         score = data[REDDIT_POST_SCORE]
         url = REDDIT_URL + data[REDDIT_POST_URL]
+        url = url.split('/')[:7]
+        url = "/".join(url)
         content = data[REDDIT_POST_BODY]
         if content != '':
             content = markdown_to_text(content)
