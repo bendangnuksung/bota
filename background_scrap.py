@@ -1,6 +1,6 @@
 import schedule
 import time
-from web_scrap.scrap import get_item_build, get_skill_build
+from web_scrap.scrap import get_item_build, get_skill_build, get_current_trend
 from web_scrap.scrap_constant import heroes_names
 import asyncio
 from datetime import datetime
@@ -25,6 +25,7 @@ def update_images():
         print(f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}")
         loop.run_until_complete(get_skill_build('', hero=hero_name))
         get_item_build('', hero=hero_name)
+        get_current_trend()
     end = datetime.now()
     print("*"*80)
     print("Update Completed")

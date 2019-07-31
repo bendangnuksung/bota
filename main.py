@@ -1,11 +1,13 @@
 import discord
 import sys
 from constant import MAX_COMMAND_WORD_LENGTH
-from private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID
+from private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from applications.top_games import get_top_games
 from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
 from web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
 from web_scrap.twitch_process import get_dota2_top_stream
+from discord.utils import find
+import constant
 
 
 client = discord.Client()
@@ -43,8 +45,16 @@ def get_help():
 
 @client.event  # event decorator/wrapper
 async def on_ready():
+    await client.change_presence(activity=discord.Game(name="Dota2 | type '!help'"))
     print(f"Logged in as {client.user}")
 
+
+@client.event
+async def on_guild_join(guild):
+    general = find(lambda x: x.name == 'general',  guild.text_channels)
+    if general and general.permissions_for(guild.me).send_messages:
+        await general.send(f'Hello **{format(guild.name)}**✌✌!\n'
+                           f'Type   `!help`   to get list of commands to use.')
 
 @client.event
 async def on_message(message):
@@ -76,8 +86,7 @@ async def on_message(message):
             else:
                 await message.channel.send(f'Could not find any Alias name : **{id}**')
         else:
-            if mode == 1:
-                await message.channel.send(f"____**{id}**____'s Profile:")
+            await message.channel.send(f"____**{id}**____'s Profile:")
             await message.channel.send(result)
 
     elif '!save' in message_string.split()[0]:
@@ -86,10 +95,6 @@ async def on_message(message):
             await message.channel.send(f'**{id}** saved under the alias: {user_name}')
         else:
             await message.channel.send(f'**Failed to save, reason: {status}')
-
-    elif f"<@!{DISCORD_CLIENT_ID}>" in message_string:
-        await message.channel.send(f"Hello {message.author.name},"
-                                   f" Please type    **!help**    for more options")
 
     elif "!trend" in message_string and message_word_length < (MAX_COMMAND_WORD_LENGTH - 2):
         image_path = get_current_trend()
@@ -148,7 +153,15 @@ async def on_message(message):
         for result in result_list:
             await message.channel.send(result)
 
-    elif "exit" in message_string.lower():
+    elif f"{DISCORD_CLIENT_ID}" in message_string:
+        await message.channel.send(f"Hello {message.author.name}"
+                                   f" Please type    `!help`    for more options")
+
+    # Admin privilege
+    elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
+        await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
+
+    elif "!exit" in message_string.lower() and str(message.author) == ADMIN_ID:
         await client.close()
         sys.exit()
 
