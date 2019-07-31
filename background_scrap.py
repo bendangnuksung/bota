@@ -15,6 +15,14 @@ parser.add_argument('--mode', '-m', help='1: Update images once a day at given t
                                          '2: Update images now and returns back to mode 1',          default=1)
 args = vars(parser.parse_args())
 
+# UST 00:00 == IST 05:30
+# Twice a day: 12 Hours apart
+arg_time_1 = args['time']
+arg_time_1_split = arg_time_1.split(':')
+arg_time_2_h = str((int(arg_time_1_split[0]) + 12) % 24)
+arg_time_2_h = '0' + arg_time_2_h if len(arg_time_2_h) == 1 else arg_time_2_h
+arg_time_2 = str(arg_time_2_h) + ':' + arg_time_1_split[1]
+
 
 def update_images():
     print("*"*80)
@@ -43,16 +51,6 @@ if args['mode'] == 2 or args['mode'] == '2':
     print("Running One Time update:")
     update_images()
     print("Finished One Time update")
-
-
-# UST 00:00 == IST 05:30
-# Twice a day: 12 Hours apart
-arg_time_1 = args['time']
-arg_time_1_split = arg_time_1.split(':')
-arg_time_2_h = str((int(arg_time_1_split[0]) + 12) % 24)
-arg_time_2_h = '0' + arg_time_2_h if len(arg_time_2_h) == 1 else arg_time_2_h
-arg_time_2 = str(arg_time_2_h) + ':' + arg_time_1_split[1]
-
 
 schedule.every().day.at(arg_time_1).do(update_images)
 schedule.every().day.at(arg_time_2).do(update_images)
