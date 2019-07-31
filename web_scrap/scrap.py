@@ -59,10 +59,11 @@ def make_hero_images(main_hero_image_path, heroes_image_path, bg_path):
     return bg_image
 
 
-def get_counter_hero(query):
-    query = query.split()
-    hero = ' '.join(query[1:])
-    hero = hero.strip()
+def get_counter_hero(query, hero=None):
+    if hero is None:
+        query = query.split()
+        hero = ' '.join(query[1:])
+        hero = hero.strip()
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
         return False, hero_name, ''
@@ -81,10 +82,11 @@ def get_counter_hero(query):
     return True, hero_name, image_path
 
 
-def get_good_against(query):
-    query = query.split()
-    hero = ' '.join(query[1:])
-    hero = hero.strip()
+def get_good_against(query, hero=None):
+    if hero is None:
+        query = query.split()
+        hero = ' '.join(query[1:])
+        hero = hero.strip()
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
         return False, hero_name, ''

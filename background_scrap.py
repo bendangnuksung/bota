@@ -1,6 +1,6 @@
 import schedule
 import time
-from web_scrap.scrap import get_item_build, get_skill_build, get_current_trend
+from web_scrap.scrap import get_item_build, get_skill_build, get_current_trend, get_counter_hero, get_good_against
 from web_scrap.scrap_constant import heroes_names
 import asyncio
 from datetime import datetime
@@ -26,8 +26,11 @@ def update_images():
         loop.run_until_complete(get_skill_build('', hero=hero_name))
         get_item_build('', hero=hero_name)
         get_current_trend()
+        get_counter_hero('', hero=hero_name)
+        get_good_against('', hero=hero_name)
     end = datetime.now()
     print("*"*80)
+    print(f"Background Scrapping process starts at: {arg_time_1} and  {arg_time_2} everyday")
     print("Update Completed")
     print(f"Total Time taken: {((end-start).total_seconds()) / 60} min")
     print("Start time: ", start.strftime('%H:%M:%S'))
@@ -53,6 +56,8 @@ arg_time_2 = str(arg_time_2_h) + ':' + arg_time_1_split[1]
 
 schedule.every().day.at(arg_time_1).do(update_images)
 schedule.every().day.at(arg_time_2).do(update_images)
+
+print(f"Background Scrapping process starts at: {arg_time_1} and  {arg_time_2} everyday")
 
 while True:
     schedule.run_pending()

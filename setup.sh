@@ -6,8 +6,10 @@ mkdir background character_icons character_icons_big counter_heroes good_against
 mkdir guide_build items items_build medals steam_user temp_images
 cd ../
 
+sudo apt-get update
 sudo apt-get install libfontconfig1 libxrender1
 sudo apt-get install libjpeg-dev zlib1g-dev
+sudo apt-get install screen
 
 echo "Installing requirements.txt"
 pip3 install -r requirements.txt
