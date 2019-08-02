@@ -1,7 +1,7 @@
 import schedule
 import time
-from web_scrap.scrap import get_item_build, get_skill_build, get_current_trend, get_counter_hero, get_good_against
-from web_scrap.scrap_constant import heroes_names
+from bota.web_scrap.scrap import get_item_build, get_skill_build, get_current_trend, get_counter_hero, get_good_against
+from bota.web_scrap.scrap_constant import heroes_names
 import asyncio
 from datetime import datetime
 import argparse

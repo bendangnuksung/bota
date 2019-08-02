@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup as bs
 import requests
-import constant
-from web_scrap import scrap_constant
+from bota import constant
+from bota.web_scrap import scrap_constant
 import re
 
 

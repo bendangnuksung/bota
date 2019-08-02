@@ -1,13 +1,12 @@
 from bs4 import BeautifulSoup as bs
 
-from utility import get_html_text
-from web_scrap import scrap_constant
-import constant
-import utility
+from bota.utility import get_html_text
+from bota.web_scrap import scrap_constant
+from bota import constant, utility
 import os
 import re
 import cv2
-from image_processing import addImageWatermark, write_text_pil, add_border_to_image
+from bota.image_processing import addImageWatermark, write_text_pil, add_border_to_image
 import difflib
 
 

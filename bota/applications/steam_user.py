@@ -1,7 +1,7 @@
 import json
 import os
-from constant import STEAM_USER_FILE_PATH
-import constant
+from bota.constant import STEAM_USER_FILE_PATH
+from bota import constant
 import requests
 import csv
 

@@ -1,5 +1,5 @@
 import re, requests
-from web_scrap import scrap_constant
+from bota.web_scrap import scrap_constant
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup as bs
@@ -66,7 +66,7 @@ def get_current_hero_trends():
     html = r.text
     soup = bs(html, "html.parser")
     trend_list = [item[scrap_constant.trend_attribute_key_name]
-              for item in soup.find_all() if scrap_constant.trend_attribute_key_name in item.attrs]
+                  for item in soup.find_all() if scrap_constant.trend_attribute_key_name in item.attrs]
     trend_list = np.array(trend_list)
     total_columns = len(scrap_constant.heroes_trend_columns)
     trend_list = np.reshape(trend_list, (len(trend_list) // total_columns, total_columns))

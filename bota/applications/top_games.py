@@ -1,9 +1,9 @@
 import pandas as pd
 import dota2api
-from utility import DataFrame_to_image, is_file_old
-from constant import GAME_MODE
-from private_constant import DOTA2_API_KEY
-import constant
+from bota.utility import DataFrame_to_image, is_file_old
+from bota.constant import GAME_MODE
+from bota.private_constant import DOTA2_API_KEY
+from bota import constant
 
 dota_api = dota2api.Initialise(DOTA2_API_KEY)
 

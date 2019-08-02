@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 echo "making directory"
-cd data/
+cd bota/data/
 mkdir background character_icons character_icons_big counter_heroes good_against_heroes
 mkdir guide_build items items_build medals steam_user temp_images
-cd ../
+cd ../../
 
 sudo apt-get update
 sudo apt-get install libfontconfig1 libxrender1
@@ -37,5 +37,3 @@ cd dota2api
 python3 setup.py install
 cd ../
 rm -rf dota2api
-
-

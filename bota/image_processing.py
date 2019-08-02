@@ -1,7 +1,7 @@
 import cv2
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
-import constant
+from bota import constant
 
 
 def display(img):

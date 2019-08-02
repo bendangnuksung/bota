@@ -1,5 +1,5 @@
 import requests
-import constant
+from bota import constant
 
 
 def request_dota2_stream_json(url):
@@ -21,7 +21,7 @@ def pretty_stream_text_for_discord(datas):
     final_string = '```diff\n' \
                    '-TOP DOTA 2 TWITCH STREAMS```'
     for i, data in enumerate(datas, 1):
-        link = '<'+ constant.TWITCH_URL + data[constant.TWITCH_KEYWORD_USER_NAME] + '>'
+        link = '<' + constant.TWITCH_URL + data[constant.TWITCH_KEYWORD_USER_NAME] + '>'
         final_string += f'{i}. **{data[constant.TWITCH_KEYWORD_USER_NAME]}**' \
                         f'    `VIEWS:`{data[constant.TWITCH_KEYWORD_VIEWER_COUNT]}' \
                         f'   `TITLE:` {data[constant.TWITCH_KEYWORD_TITLE]}' \

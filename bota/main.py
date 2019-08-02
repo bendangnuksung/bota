@@ -1,14 +1,13 @@
 import discord
 import sys
-from constant import MAX_COMMAND_WORD_LENGTH
-from private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
-from applications.top_games import get_top_games
-from web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
-from web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
-from web_scrap.twitch_process import get_dota2_top_stream
+from bota.constant import MAX_COMMAND_WORD_LENGTH
+from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
+from bota.applications.top_games import get_top_games
+from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
+from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
+from bota.web_scrap.twitch_process import get_dota2_top_stream
 from discord.utils import find
-import constant
-
+from bota import constant
 
 client = discord.Client()
 

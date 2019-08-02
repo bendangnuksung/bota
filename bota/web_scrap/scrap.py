@@ -1,17 +1,17 @@
-from image_processing import add_border_to_image
-from web_scrap.heroes_process import get_current_hero_trends, find_hero_name, scrap_heroes_info
+from bota.image_processing import add_border_to_image
+from bota.web_scrap.heroes_process import get_current_hero_trends, find_hero_name, scrap_heroes_info
 import pandas as pd
-from utility import render_mpl_table, get_icon_path, is_file_old, crop_image
-from constant import CT_IMAGE_PATH, CT_IMAGE_UPDATE_TIME_THRESHOLD
-import constant
+from bota.utility import render_mpl_table, get_icon_path, is_file_old, crop_image
+from bota.constant import CT_IMAGE_PATH, CT_IMAGE_UPDATE_TIME_THRESHOLD
+from bota import constant
 import os
 import cv2
 import numpy as np
-from web_scrap.web_screenshot import get_screenshot
-from web_scrap.items_process import scrap_item_info, make_item_image
-from web_scrap.profile_process import scrap_profile_info
-from web_scrap.reddit_process import scrap_reddit_dota
-from applications.steam_user import User
+from bota.web_scrap.web_screenshot import get_screenshot
+from bota.web_scrap.items_process import scrap_item_info, make_item_image
+from bota.web_scrap.profile_process import scrap_profile_info
+from bota.web_scrap.reddit_process import scrap_reddit_dota
+from bota.applications.steam_user import User
 
 
 steam_user = User()
@@ -53,7 +53,7 @@ def make_hero_images(main_hero_image_path, heroes_image_path, bg_path):
         image = add_border_to_image(image)
         x, y = constant.COUNTER_START_COORDS
         x = x + ((i // constant.COUNTER_MAX_COLUMN) * constant.COUNTER_HEIGHT_DIST)
-        y = y + ((i % constant.COUNTER_MAX_COLUMN) * image.shape[1]) +\
+        y = y + ((i % constant.COUNTER_MAX_COLUMN) * image.shape[1]) + \
             ((i % constant.COUNTER_MAX_COLUMN) * constant.COUNTER_WIDTH_DIST)
         bg_image[x: x + image.shape[0], y: y + image.shape[1], :] = image
     return bg_image
@@ -139,9 +139,10 @@ async def get_skill_build(query, hero=None):
     hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
     hero_icon = cv2.imread(hero_icon_path)
     background_image = cv2.imread(constant.GUIDE_BACKGROUND_PATH)
-    background_image = cv2.resize(background_image, (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
+    background_image = cv2.resize(background_image, (
+    constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
     background_image[constant.GUIDE_HERO_ICON_X_Y[0]: constant.GUIDE_HERO_ICON_X_Y[0] + hero_icon.shape[0],
-                     constant.GUIDE_HERO_ICON_X_Y[1]: constant.GUIDE_HERO_ICON_X_Y[1] + hero_icon.shape[1]] = hero_icon
+    constant.GUIDE_HERO_ICON_X_Y[1]: constant.GUIDE_HERO_ICON_X_Y[1] + hero_icon.shape[1]] = hero_icon
     background_image = add_border_to_image(background_image, bordersize=10, rgb=[0, 0, 0])
     background_image = cv2.resize(background_image,
                                   (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))

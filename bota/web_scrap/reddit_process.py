@@ -4,9 +4,9 @@ import re
 import requests
 import os
 from datetime import datetime
-from web_scrap.scrap_constant import browser_headers_chrome
+from bota.web_scrap.scrap_constant import browser_headers_chrome
 
-from constant import REDDIT_DOTA_URL, JSON_POSTFIX, REDDIT_URL, REDDIT_POST_BODY, REDDIT_POST_TITLE, REDDIT_POST_AUTHOR, \
+from bota.constant import REDDIT_DOTA_URL, JSON_POSTFIX, REDDIT_URL, REDDIT_POST_BODY, REDDIT_POST_TITLE, REDDIT_POST_AUTHOR, \
     REDDIT_POST_FLAIR, REDDIT_POST_SCORE, REDDIT_POST_URL, REDDIT_POST_MEDIA_URL, REDDIT_BODY_MAX_CHARACTER, \
     WEBPAGE_PRE_STRING, REDDIT_MAX_POST_LIMIT, REDDIT_DEFAULT_MODE, REDDIT_DEFAULT_TOP, REDDIT_SORT_BY_REFRESH_SEC,\
     REDDIT_SORT_BY

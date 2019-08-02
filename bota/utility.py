@@ -7,13 +7,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import six
 from matplotlib.cbook import get_sample_data
-from web_scrap import scrap_constant
-from constant import css, TLG_IMAGE_PATH, CT_IMAGE_PATH
+from bota.web_scrap import scrap_constant
+from bota.constant import css, TLG_IMAGE_PATH, CT_IMAGE_PATH
+from bota import constant
 import os
 from datetime import datetime
 import re
-import constant
-
 
 repo_abs_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -167,7 +166,7 @@ def get_html_text(url):
 
 
 if __name__ == "__main__":
-	import cv2, constant
+	import cv2
 	image = cv2.imread('/home/ben/personal/discord-dota-bot/data/temp_images/ursa_skill.png')
 	new_image = crop_image(image, constant.SKILL_CROP_COORDS)
 	cv2.imwrite('/home/ben/personal/discord-dota-bot/web_scrap/skill.jpg', new_image)
