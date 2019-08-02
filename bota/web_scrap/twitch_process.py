@@ -1,11 +1,13 @@
 import requests
+
+import bota.private_constant
 from bota import constant
 
 
 def request_dota2_stream_json(url):
     response_flag = False
     response = {}
-    for client_id in constant.TWITCH_CLIENT_IDS:
+    for client_id in bota.private_constant.TWITCH_CLIENT_IDS:
         r = requests.get(url, headers={constant.TWITCH_KEYWORD_CLIENT_ID: str(client_id)})
         if r.status_code == 200:
             response = r

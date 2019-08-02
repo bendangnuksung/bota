@@ -16,10 +16,12 @@ Before setting up the environment we first need to get:
 1. Discord Token
 2. Discord Client ID
 3. Dota2 API key
-4. Discord User (Optional)
+4. Twitch Client ID
+5. Discord User (Optional)
 
 * To get `Discord Token` and `Discord Client ID` you can check [this](http://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
 * You can get your  `Dota2 API key` from [here](https://steamcommunity.com/dev/apikey)
+* To get `Twitch Client ID` you need to register an application in Twitch developer. You can follow [this](https://dev.twitch.tv/docs/v5#getting-a-client-id) 
 * You can get your `Discord User` by clicking on your profile in discord. It will look like `YourName#1234` eg: `bendang#3278`
 
 Once this is done you can assign all this key values in `bota/private_constant.py`.

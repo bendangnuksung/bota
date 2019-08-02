@@ -39,8 +39,6 @@ WEBPAGE_PRE_STRING = ['https://', 'http://']
 DOTA_2_GAME_ID = '29595'
 TWITCH_URL = 'https://www.twitch.tv/'
 TWITCH_DOTA_2_STREAM_URL = 'https://api.twitch.tv/helix/streams?game_id='
-TWITCH_CLIENT_IDS = ['jzkbprff40iqj646a697cyrvl0zt2m6', '4uru37mlvtyw5oh36vcrmk48c4zd9a',
-              		 'tvwccwbiuiphij0bwvireq1084etsa', 'qfq9rqvixs16e8gzj7pdtoa3ycxkt8']
 
 TWITCH_KEYWORD_CLIENT_ID = 'client-id'
 TWITCH_KEYWORD_USER_NAME = 'user_name'
