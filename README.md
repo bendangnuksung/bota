@@ -22,7 +22,7 @@ Before setting up the environment we first need to get:
 * You can get your  `Dota2 API key` from [here](https://steamcommunity.com/dev/apikey)
 * You can get your `Discord User` by clicking on your profile in discord. It will look like `YourName#1234` eg: `bendang#3278`
 
-Once this is done you can assign all this key values in `private_constant.py`.
+Once this is done you can assign all this key values in `bota/private_constant.py`.
 
 ### Install Requirements
 ```bash
