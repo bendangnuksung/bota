@@ -6,11 +6,13 @@ from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
 from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
 from bota.web_scrap.twitch_process import get_dota2_top_stream
+from bota.log_process import save_command_logs
 from discord.utils import find
 from bota import constant
 
 client = discord.Client()
 
+# This weird spacing is to pretty text in discord
 commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top game`',
                  '!counter HeroName': 'Shows Heroes which counter the given hero name        eg: `!counter am`',
                  '!good HeroName'   : 'Opposite of !counter command. Good against.        eg: `!good axe`',
@@ -57,27 +59,37 @@ async def on_guild_join(guild):
 
 @client.event
 async def on_message(message):
+    is_command_called = True
+    command_called = ""
     message_string = message.content
     message_string = message_string.lower().strip()
     message_word_length = len(message_string.split())
     print(f"{message.channel}: {message.author}: {message.author.name}: {message.content}")
 
     if client.user == message.author:
+        is_command_called = False
         # Ignore all message passed by the our bot
+        pass
+
+    elif message.author.bot:
+        # Ignore if message is from another Bot
+        is_command_called = False
         pass
     
     elif '!help' == message_string or '--help' == message_string:
+        command_called = "!help"
         help_string = get_help()
         await message.channel.send(help_string)
 
     elif ('!top_game' in message_string or '!top game' in message_string) and \
          message_word_length < MAX_COMMAND_WORD_LENGTH:
+        command_called = "!top_game"
         image_path = get_top_games()
         await message.channel.send(f"Getting Top Live Spectacting Games")
         await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
     elif '!profile' in message_string.split()[0]:
-        # mode = 0 searching by ID, mode = 1 searching by Alias name(user name)
+        command_called = "!profile"
         flag, id, mode, result = get_profile(message_string)
         if not flag:
             if mode == 1:
@@ -89,6 +101,7 @@ async def on_message(message):
             await message.channel.send(result)
 
     elif '!save' in message_string.split()[0]:
+        command_called = "!save"
         user_name, id, flag, status = save_id(message_string)
         if flag:
             await message.channel.send(f'**{id}** saved under the alias: {user_name}')
@@ -96,11 +109,13 @@ async def on_message(message):
             await message.channel.send(f'**Failed to save, reason: {status}')
 
     elif "!trend" in message_string and message_word_length < (MAX_COMMAND_WORD_LENGTH - 2):
+        command_called = "!trend"
         image_path = get_current_trend()
         await message.channel.send(f"Getting this week Heroes Trend")
         await message.channel.send('Current Trend: ', file=discord.File(image_path))
 
     elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        command_called = "!counter"
         found, hero_name, image_path = get_counter_hero(message_string)
         if not found:
             if hero_name != '':
@@ -111,6 +126,7 @@ async def on_message(message):
             await message.channel.send(f'**{hero_name.upper()}** is bad against: ', file=discord.File(image_path))
 
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        command_called = "!good"
         found, hero_name, image_path = get_good_against(message_string)
         if not found:
             if hero_name != '':
@@ -122,6 +138,7 @@ async def on_message(message):
 
     elif ("!skill" in message_string or "!talent" in message_string) \
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        command_called = "!skill"
         found, hero_name, image_path = await get_skill_build(message_string)
         if not found:
             if hero_name != '':
@@ -132,6 +149,7 @@ async def on_message(message):
             await message.channel.send(f'**{hero_name.upper()}** most popular Skill/Talent build: ', file=discord.File(image_path))
 
     elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        command_called = "!item"
         found, hero_name, image_path = get_item_build(message_string)
         if not found:
             if hero_name != '':
@@ -142,27 +160,37 @@ async def on_message(message):
             await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:', file=discord.File(image_path))
 
     elif "!twitch" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-
+        command_called = "!twitch"
         result = get_dota2_top_stream()
         await message.channel.send(result)
 
     elif "!reddit" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         result_list, mode = get_reddit(message_string)
+        command_called = f"!reddit {mode}"
         await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**")
         for result in result_list:
             await message.channel.send(result)
 
+    # Admin privilege
+    elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
+        command_called = "!get_user"
+        await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
+
+    elif "!exit" in message_string.lower() and str(message.author) == ADMIN_ID:
+        command_called = "!exit"
+        await client.close()
+        sys.exit()
+
+    # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:
         await message.channel.send(f"Hello {message.author.name}"
                                    f" Please type    `!help`    for more options")
 
-    # Admin privilege
-    elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
-        await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
+    else:
+        is_command_called = False
 
-    elif "!exit" in message_string.lower() and str(message.author) == ADMIN_ID:
-        await client.close()
-        sys.exit()
+    if is_command_called:
+        save_command_logs(message, command_called)
 
 
 client.run(DISCORD_TOKEN)

@@ -5,6 +5,8 @@ from bota import constant
 import requests
 import csv
 
+# Saving Users in Json atm, if user base grows will jump to SQL
+
 
 class User():
     def __init__(self, file_path=STEAM_USER_FILE_PATH, new_user_csv_path=constant.NEW_USER_FILE_PATH_CSV):

@@ -78,6 +78,10 @@ def get_icon_axis(icon_index):
 def render_mpl_table(data, icon_list=[], title=None, image_path=CT_IMAGE_PATH, col_width=3.0, row_height=1.2,
 					 font_size=16, header_color='#40466e', row_colors=['#f1f1f2', 'w'],
 					 edge_color='w', bbox=[0, 0, 1, 1], header_columns=0,ax=None, **kwargs):
+	"""
+	Given a panda datframe, converting to an table image.
+	If icon_list is provided, the corresponding hero icon will be appended to each row
+	"""
 	if ax is None:
 		size = (np.array(data.shape[::-1]) + np.array([0, 1])) * np.array([col_width, row_height])
 		fig, ax = plt.subplots(figsize=size)

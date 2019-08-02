@@ -13,6 +13,10 @@ STEAM_USER_FILE_PATH = os.path.join(REPO_PATH, STEAM_USER_FILE_PATH)
 NEW_USER_FILE_PATH_CSV = 'data/steam_user/new_steam_user.csv'
 NEW_USER_FILE_PATH_CSV = os.path.join(REPO_PATH, NEW_USER_FILE_PATH_CSV)
 
+# Log path
+COMMAND_USER_LOG_PATH = "data/logs/command_user_log.txt"
+COMMAND_USER_LOG_PATH = os.path.join(REPO_PATH, COMMAND_USER_LOG_PATH)
+
 
 # Reddit
 REDDIT_DOTA_URL = 'https://www.reddit.com/r/DotA2/'

@@ -3,7 +3,7 @@
 echo "making directory"
 cd bota/data/
 mkdir background character_icons character_icons_big counter_heroes good_against_heroes
-mkdir guide_build items items_build medals steam_user temp_images
+mkdir guide_build items items_build medals steam_user temp_images logs
 cd ../../
 
 sudo apt-get update
