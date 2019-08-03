@@ -6,7 +6,7 @@ from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
 from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
 from bota.web_scrap.twitch_process import get_dota2_top_stream
-from bota.log_process import save_command_logs
+from bota.log_process import save_command_logs, get_command_log_tail
 from discord.utils import find
 from bota import constant
 
@@ -175,6 +175,15 @@ async def on_message(message):
     elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
         command_called = "!get_user"
         await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
+
+    elif "!tail" in message_string and str(message.author) == ADMIN_ID:
+        n = 5
+        try:
+            n = message_string.split()[1]
+        except Exception:
+            pass
+        tail_log = get_command_log_tail(n)
+        await message.channel.send(tail_log)
 
     elif "!exit" in message_string.lower() and str(message.author) == ADMIN_ID:
         command_called = "!exit"

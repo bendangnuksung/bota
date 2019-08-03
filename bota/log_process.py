@@ -48,3 +48,13 @@ def save_command_logs(message, command_called):
 
     log_text = ",".join(info)
     command_logger.info(log_text)
+
+
+def get_command_log_tail(n):
+    lines = "Command Log Tail:\n"
+    path = COMMAND_USER_LOG_PATH
+    for i, line in enumerate(reversed(list(open(path)))):
+        if i >=n :
+            break
+        lines += line
+    return lines
