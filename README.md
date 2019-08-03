@@ -1,5 +1,5 @@
 # BOTA  
-BOT-A is a free Discord Dota 2 bot which provides comprehensive Information of every Dota 2 characters and exciting features for the community. Pull request are welcome and report any issues you find. <br/>  
+BOT-A is a free Discord Dota 2 bot which provides comprehensive Information of every Dota 2 characters and exciting features for the community. Pull request are welcome and report any issues you find. The Bot is still in beta so I don't expect it to be perfect. <br/>  
 **Website:** [https://bota.tech/](https://bota.tech/)<br/>
 [![Join Bota Server](https://i.imgur.com/oWXj1vI.png)](https://discord.gg/a7QYPWd)  [![Add Bota to your server](https://i.imgur.com/eBAIETS.jpg)](https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot)
 
