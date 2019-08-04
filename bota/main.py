@@ -24,11 +24,23 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
                                        First **--->** `!save midone 116585378`  Then **--->** `!profile midone`',
                  '!trend'           : 'Shows current heroes trend        eg: `!trend`',
                  '!twitch'          : 'Shows Top 8 Twitch stream        eg: `!twitch`',
+                 '!data'            : 'Shows Data Collection Source',
                  '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. Options: `new`, `controversial`, `top`, `rising`, `random`, `hot`:\n'
                                       '                       eg 1:   `!reddit`             : Gets a random post from  /r/DotA2/\n'
                                       '                       eg 2:   `!reddit hot`   : Gets Top 3 hot post from  /r/DotA2/\n'
-                                      '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/\n'
+                                      '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/\n',
+
+                 '**PS**'           : 'You can use short Hero Names, eg: `!counter shadow fiend` as eg: `!counter sf`',
+                 '**UPDATE**'       : 'Add Notable players in `!top game`'
                  }
+
+
+data_source_collection = "**DATA COLLECTION SOURCE**:\n" \
+                        "1. DotaBuff\n" \
+                        "2. Reddit\n" \
+                        "3. Twitch\n" \
+                        "4. Dota2 ProTracker\n" \
+                        "5. Dota2API"
 
 
 def get_help():
@@ -55,7 +67,7 @@ async def on_guild_join(guild):
     general = find(lambda x: x.name == 'general',  guild.text_channels)
     if general and general.permissions_for(guild.me).send_messages:
         await general.send(f'Hello **{format(guild.name)}**✌✌!\n'
-                           f'Type   `!help`   to get list of commands to use.')
+                           f'Type   `!help` or `!command`   to get list of commands to use.')
 
 @client.event
 async def on_message(message):
@@ -76,7 +88,7 @@ async def on_message(message):
         is_command_called = False
         pass
     
-    elif '!help' == message_string or '--help' == message_string:
+    elif '!help' == message_string or '--help' == message_string or '!command' in message_string:
         command_called = "!help"
         help_string = get_help()
         await message.channel.send(help_string)
@@ -171,29 +183,28 @@ async def on_message(message):
         for result in result_list:
             await message.channel.send(result)
 
+    elif "!data" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        await message.channel.send(data_source_collection)
+
     # Admin privilege
     elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
         command_called = "!get_user"
         await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
 
     elif "!tail" in message_string and str(message.author) == ADMIN_ID:
+        is_command_called = False
         n = 5
         try:
-            n = message_string.split()[1]
+            n = int(message_string.split()[1])
         except Exception:
             pass
         tail_log = get_command_log_tail(n)
         await message.channel.send(tail_log)
 
-    elif "!exit" in message_string.lower() and str(message.author) == ADMIN_ID:
-        command_called = "!exit"
-        await client.close()
-        sys.exit()
-
     # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:
         await message.channel.send(f"Hello {message.author.name}"
-                                   f" Please type    `!help`    for more options")
+                                   f" Please type    `!help`  or `!command`  for more options")
 
     else:
         is_command_called = False
