@@ -77,9 +77,9 @@ def get_top_games(length=10):
 	results = [results[0]] + sorted(results[1:], key =lambda x: (x[4]), reverse=True)
 	results = results[:length]
 	results = pd.DataFrame(results[1:], columns=results[0])
-	image_path = render_mpl_table(results, image_path=constant.TLG_IMAGE_PATH, header_columns=0, col_width=2.1,
-								  row_height=0.8, title='TOP LIVE GAMES', font_size=13, header_color='#4B4C51',
-								  row_colors=['#C0C0C0', '#A9A9A9'])
+	image_path = render_mpl_table(results, image_path=constant.TLG_IMAGE_PATH, header_columns=0, col_width=2.2,
+								  row_height=0.8, title='TOP LIVE GAMES', font_size=14, header_color='#4B4C51',
+								  row_colors=['#8c98b5', '#9dabcc'], edge_color='#464c5a')
 	# image_path = DataFrame_to_image(results)
 	image = cv2.imread(image_path)
 	image = image[:, int(image.shape[1]*.09): -(int(image.shape[1]*.07))]
