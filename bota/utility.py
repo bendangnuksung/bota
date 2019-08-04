@@ -110,6 +110,7 @@ def render_mpl_table(data, icon_list=[], title=None, image_path=CT_IMAGE_PATH, c
 		else:
 			cell.set_facecolor(row_colors[k[0]%len(row_colors) ])
 	plt.savefig(image_path)
+	plt.clf()
 	return image_path
 
 
