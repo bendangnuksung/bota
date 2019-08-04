@@ -52,7 +52,8 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'ancient': 'ancient-apparition', 'beast':'beastmaster', 'blood': 'bloodseeker',
                            'brew': 'brewmaster', 'chaos': 'chaos-knight', 'ember': 'ember-spirit',
                            'queen': 'queen-of-pain', 'sandking': 'sand-king', 'shadowfiend': 'shadow-fiend',
-                           'skywrath': 'skywrath-mage', 'trollwarlord': 'troll-warlord'}
+                           'skywrath': 'skywrath-mage', 'trollwarlord': 'troll-warlord', 'tw': 'troll-warlord',
+                           'lanaya': 'templar-assassin', 'nagasiren': 'naga-siren'}
 
 
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']

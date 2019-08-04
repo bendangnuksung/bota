@@ -17,6 +17,9 @@ NEW_USER_FILE_PATH_CSV = os.path.join(REPO_PATH, NEW_USER_FILE_PATH_CSV)
 COMMAND_USER_LOG_PATH = "data/logs/command_user_log.txt"
 COMMAND_USER_LOG_PATH = os.path.join(REPO_PATH, COMMAND_USER_LOG_PATH)
 
+# Dota 2 ProTracker
+D2PT_URL_LIVE_GAMES = "http://www.dota2protracker.com/livegames"
+
 
 # Reddit
 REDDIT_DOTA_URL = 'https://www.reddit.com/r/DotA2/'
@@ -197,7 +200,8 @@ TLG_IMAGE_PATH = 'data/temp_images/top_live_games.png'
 TLG_IMAGE_PATH = os.path.join(REPO_PATH, TLG_IMAGE_PATH)
 TLG_IMAGE_UPDATE_TIME_THRESHOLD = 30 # 30 sec
 
-TLG_CUSTOM_COLUMNS = ['Radiant', 'Dire', 'Avg MMR', 'Game Mode', 'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead']
+TLG_CUSTOM_COLUMNS = ['Notable Players', 'Radiant', 'Dire', 'Avg MMR', 'Game Mode',
+					  'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead']
 KEYWORD_AVERAGE_MMR = 'average_mmr'
 KEYWORD_GAME_MODE = 'game_mode'
 KEYWORD_GAME_TIME = 'game_time'
@@ -207,6 +211,7 @@ KEYWORD_RADIANT_SCORE = 'radiant_score'
 KEYWORD_DIRE_SCORE = 'dire_score'
 KEYWORD_RADIANT_TEAM = 'team_name_radiant'
 KEYWORD_DIRE_TEAM = 'team_name_dire'
+KEYWORD_MATCH_ID = "match_id"
 
 
 # Dota 2 API constant

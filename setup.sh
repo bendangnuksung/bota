@@ -6,8 +6,9 @@ mkdir background character_icons character_icons_big counter_heroes good_against
 mkdir guide_build items items_build medals steam_user temp_images logs
 cd ../../
 
-sudo apt-get install python3-pip
 sudo apt-get update
+sudo apt-get install python3-pip
+pip3 install -U "urllib3<1.25"
 sudo apt-get install libfontconfig1 libxrender1
 sudo apt-get install libjpeg-dev zlib1g-dev
 sudo apt-get install screen
