@@ -24,14 +24,10 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
                                        First **--->** `!save midone 116585378`  Then **--->** `!profile midone`',
                  '!trend'           : 'Shows current heroes trend        eg: `!trend`',
                  '!twitch'          : 'Shows Top 8 Twitch stream        eg: `!twitch`',
-                 '!data'            : 'Shows Data Collection Source',
                  '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. Options: `new`, `controversial`, `top`, `rising`, `random`, `hot`:\n'
                                       '                       eg 1:   `!reddit`             : Gets a random post from  /r/DotA2/\n'
                                       '                       eg 2:   `!reddit hot`   : Gets Top 3 hot post from  /r/DotA2/\n'
-                                      '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/\n',
-
-                 '**PS**'           : 'You can use short Hero Names, eg: `!counter shadow fiend` as eg: `!counter sf`',
-                 '**UPDATE**'       : 'Add Notable players in `!top game`'
+                                      '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/\n'
                  }
 
 
@@ -45,7 +41,9 @@ data_source_collection = "**DATA COLLECTION SOURCE**:\n" \
 
 def get_help():
     help_string = []
-    head = '```css\nBelow are the commands to use DOTA BOT: 😋```'
+    head = "```css\nBelow are the commands to use DOTA BOT: 😋```"
+    below_head = '```cs\n"UPDATE": Add Notable players in "!top game"\n"NOTE": Can use short Hero Names, "!counter anti mage" as "!counter am"```'
+    head = head + below_head
     help_string.append(head)
     for key, value in commands_list.items():
         command = '**' + key + '**'
@@ -183,8 +181,8 @@ async def on_message(message):
         for result in result_list:
             await message.channel.send(result)
 
-    elif "!data" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        await message.channel.send(data_source_collection)
+    # elif "!data" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+    #     await message.channel.send(data_source_collection)
 
     # Admin privilege
     elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
