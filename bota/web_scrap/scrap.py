@@ -12,9 +12,11 @@ from bota.web_scrap.items_process import scrap_item_info, make_item_image
 from bota.web_scrap.profile_process import scrap_profile_info
 from bota.web_scrap.reddit_process import scrap_reddit_dota
 from bota.applications.steam_user import User
+from bota.web_scrap.protracker_process import DotaProTracker
 
 
 steam_user = User()
+d2pt = DotaProTracker()
 
 
 def round_df_digits(df):
@@ -237,6 +239,19 @@ def get_reddit(query):
                 top = int(query[2])
     result = scrap_reddit_dota(sort_by=mode, top=top)
     return result, mode
+
+
+def get_protracker_hero(query):
+    query = query.split()
+    hero = ' '.join(query[1:])
+    hero = hero.strip()
+    found_hero, hero_name = find_hero_name(hero)
+    if not found_hero:
+        return False, hero_name, ''
+
+    result = d2pt.get_hero_details_from_d2pt(hero_name)
+    icon_path = get_icon_path([hero_name], icon_size='big')[0]
+    return True, hero_name, result, icon_path
 
 
 if __name__ == '__main__':

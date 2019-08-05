@@ -4,11 +4,12 @@ from bota.constant import MAX_COMMAND_WORD_LENGTH
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
-from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id
+from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id, get_protracker_hero
 from bota.web_scrap.twitch_process import get_dota2_top_stream
 from bota.log_process import save_command_logs, get_command_log_tail
 from discord.utils import find
 from bota import constant
+
 
 client = discord.Client()
 
@@ -24,6 +25,7 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
                                        First **--->** `!save midone 116585378`  Then **--->** `!profile midone`',
                  '!trend'           : 'Shows current heroes trend        eg: `!trend`',
                  '!twitch'          : 'Shows Top 8 Twitch stream        eg: `!twitch`',
+                 '!protrack HeroName': 'Shows hero played recently by Pros, plus shows `GOOD`  and  `BAD` heroes against it.  eg:`!protrack slark`',
                  '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. Options: `new`, `controversial`, `top`, `rising`, `random`, `hot`:\n'
                                       '                       eg 1:   `!reddit`             : Gets a random post from  /r/DotA2/\n'
                                       '                       eg 2:   `!reddit hot`   : Gets Top 3 hot post from  /r/DotA2/\n'
@@ -31,18 +33,11 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
                  }
 
 
-data_source_collection = "**DATA COLLECTION SOURCE**:\n" \
-                        "1. DotaBuff\n" \
-                        "2. Reddit\n" \
-                        "3. Twitch\n" \
-                        "4. Dota2 ProTracker\n" \
-                        "5. Dota2API"
-
-
 def get_help():
     help_string = []
     head = "```css\nBelow are the commands to use DOTA BOT: 😋```"
-    below_head = '```cs\n"UPDATE": Add Notable players in "!top game"\n"NOTE": Can use short Hero Names, "!counter anti mage" as "!counter am"```'
+    below_head = '```cs\n"UPDATE": Added new command  "!protrack HeroName"  ShoutOut to "dota2protracker.com" for providing API' \
+                 '\n"NOTE": Can use short Hero Names, "!counter anti mage" as "!counter am"```'
     head = head + below_head
     help_string.append(head)
     for key, value in commands_list.items():
@@ -181,6 +176,18 @@ async def on_message(message):
         for result in result_list:
             await message.channel.send(f'{result}')
 
+    elif "!protrack" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        command_called = "!protrack"
+        found, hero_name, result_string, icon_path = get_protracker_hero(message_string)
+        if not found:
+            if hero_name != '':
+                await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+            else:
+                await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+        else:
+            await message.channel.send(f'ProTracker Record from last **7** days,    Source:   **Dota2 ProTracker**\n'
+                                       f'{result_string}', file=discord.File(icon_path))
+
     # elif "!data" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
     #     await message.channel.send(data_source_collection)
 
@@ -188,6 +195,14 @@ async def on_message(message):
     elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
         command_called = "!get_user"
         await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
+
+    elif "!exit" in message_string and str(message.author) == ADMIN_ID:
+        message_split = message_string.split()
+        if len(message_split) > 1:
+            client_id = message_split[1]
+            if str(client_id) == str(DISCORD_CLIENT_ID):
+                await message.channel.send(f'Exiting client: {client_id}')
+                exit(0)
 
     elif "!tail" in message_string and str(message.author) == ADMIN_ID:
         is_command_called = False

@@ -22,7 +22,22 @@ COMMAND_USER_LOG_PATH = "data/logs/command_user_log.txt"
 COMMAND_USER_LOG_PATH = os.path.join(REPO_PATH, COMMAND_USER_LOG_PATH)
 
 # Dota 2 ProTracker
+D2PT_HERO_UPDATE_THRESHOLD = 600 # 10 min
+
 D2PT_URL_LIVE_GAMES = "http://www.dota2protracker.com/livegames"
+D2PT_HERO_BASE_URL = 'http://dota2protracker.com/api/hero/'
+D2PT_KEYWORD_META = 'meta'
+D2PT_KEYWORD_CROSS_META = 'cross_meta'
+D2PT_KEYWORD_RECENT_MATCH = 'recent_matches'
+D2PT_KEYWORD_GOOD_AGAINST = 'best_versus'
+D2PT_KEYWORD_BAD_AGAINST = 'worst_versus'
+
+WANTED_KEYS_RECENT_MATCHES = ['pro', 'matchid', 'mmr', 'won', 'time']
+RECENT_MATCHES_KEY_RENAME = {'pro': 'name', 'time': 'last played'}
+
+WANTED_KEYS_GOOD_AGAINST = ['name', 'won_against', 'lost_against']
+WANTED_KEYS_BAD_AGAINST = ['name', 'won_against', 'lost_against']
+
 
 
 # Reddit
