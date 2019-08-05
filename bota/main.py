@@ -12,6 +12,7 @@ from bota import constant
 
 
 client = discord.Client()
+GUILDS = []
 
 # This weird spacing is to pretty text in discord
 commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top game`',
@@ -29,16 +30,22 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
                  '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. Options: `new`, `controversial`, `top`, `rising`, `random`, `hot`:\n'
                                       '                       eg 1:   `!reddit`             : Gets a random post from  /r/DotA2/\n'
                                       '                       eg 2:   `!reddit hot`   : Gets Top 3 hot post from  /r/DotA2/\n'
-                                      '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/\n'
+                                      '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/',
+                 '!update'          : 'Shows any new update been made'
                  }
+
+
+LAST_UPDATE = "**UPDATES:**\n" \
+              "1. Added new command    `!protrack HeroName`    date: `06-Aug-2019`\n" \
+              "2. Added Notable hero in    `!top game`    date: `05-Aug-2019`"
 
 
 def get_help():
     help_string = []
     head = "```css\nBelow are the commands to use DOTA BOT: 😋```"
-    below_head = '```cs\n"UPDATE": Added new command  "!protrack HeroName"  ShoutOut to "dota2protracker.com" for providing API' \
+    post_head = '```cs\n"UPDATE": Added new command  "!protrack HeroName"  ShoutOut to "dota2protracker.com" for providing API' \
                  '\n"NOTE": Can use short Hero Names, "!counter anti mage" as "!counter am"```'
-    head = head + below_head
+    head = head + post_head
     help_string.append(head)
     for key, value in commands_list.items():
         command = '**' + key + '**'
@@ -46,11 +53,20 @@ def get_help():
         full = command + '\t:\t' + command_help
         help_string.append(full + '\n')
     help_string = "\n".join(help_string)
+    # help_string += "\nFor support please join: https://discord.gg/a7QYPWd"
     return help_string
+
+
+async def broadcast_message(msg):
+    global GUILDS
+    for guild in GUILDS:
+        await guild.text_channels[0].send(msg)
 
 
 @client.event  # event decorator/wrapper
 async def on_ready():
+    global GUILDS
+    GUILDS = client.guilds
     await client.change_presence(activity=discord.Game(name="Dota2 | type '!help'"))
     print(f"Logged in as {client.user}")
 
@@ -188,8 +204,8 @@ async def on_message(message):
             await message.channel.send(f'ProTracker Record from last **7** days,    Source:   **Dota2 ProTracker**\n'
                                        f'{result_string}', file=discord.File(icon_path))
 
-    # elif "!data" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-    #     await message.channel.send(data_source_collection)
+    elif "!update" in message_string and message_word_length < 2:
+        await message.channel.send(LAST_UPDATE)
 
     # Admin privilege
     elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
@@ -202,7 +218,15 @@ async def on_message(message):
             client_id = message_split[1]
             if str(client_id) == str(DISCORD_CLIENT_ID):
                 await message.channel.send(f'Exiting client: {client_id}')
-                exit(0)
+                sys.exit(0)
+
+    elif "!broadcast" in message_string and str(message.author) == ADMIN_ID:
+        message_split = message_string.split()
+        if len(message_split) > 1:
+            client_id = message_split[1]
+            if str(client_id) == str(DISCORD_CLIENT_ID):
+                message = " ".join(message_split[2:])
+                await broadcast_message(message)
 
     elif "!tail" in message_string and str(message.author) == ADMIN_ID:
         is_command_called = False
