@@ -42,8 +42,8 @@ def get_top_games(length=10):
 	:return: table image path
 	"""
 	# If TLG image already exist and hasnt been modified in given Threshold second return the same image
-	# if not is_file_old(constant.TLG_IMAGE_PATH, constant.TLG_IMAGE_UPDATE_TIME_THRESHOLD):
-	# 	return constant.TLG_IMAGE_PATH
+	if not is_file_old(constant.TLG_IMAGE_PATH, constant.TLG_IMAGE_UPDATE_TIME_THRESHOLD):
+		return constant.TLG_IMAGE_PATH
 
 	game_list = dota_api.get_top_live_games()
 	game_list = game_list['game_list']

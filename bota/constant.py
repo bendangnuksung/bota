@@ -203,7 +203,7 @@ CT_IMAGE_UPDATE_TIME_THRESHOLD = 86400 # 1 day
 # top live game
 TLG_IMAGE_PATH = 'data/temp_images/top_live_games.png'
 TLG_IMAGE_PATH = os.path.join(REPO_PATH, TLG_IMAGE_PATH)
-TLG_IMAGE_UPDATE_TIME_THRESHOLD = 30 # 30 sec
+TLG_IMAGE_UPDATE_TIME_THRESHOLD = 10 # 30 sec
 
 TLG_CUSTOM_COLUMNS = ['Notable Players', 'Radiant', 'Dire', 'Avg MMR', 'Game Mode',
 					  'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead']
