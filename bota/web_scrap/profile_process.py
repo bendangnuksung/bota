@@ -5,6 +5,10 @@ from bota.web_scrap import scrap_constant
 import re
 
 
+# Div class r-fluid line-graph sometimes different for others
+r_fluid_list = ['r-10', 'r-20', 'r-30', 'r-40', 'r-50']
+
+
 def get_rank_medal(player_soup):
     result = {}
     rank_info = player_soup.findAll(constant.ITEM_PLAYER_RANK_INFO_TAG[0], constant.ITEM_PLAYER_RANK_INFO_TAG[1])[0]
@@ -55,7 +59,13 @@ def get_most_played_heroes(soup, top=5):
         if i > top:
             break
         hero_name = row.find('div', {'class': "r-none-mobile"}).contents[0].string
-        others = row.find_all('div', {'class': 'r-fluid r-10 r-line-graph'})
+        others = None
+        for r_n in  r_fluid_list:
+            others = row.find_all('div', {'class': f'r-fluid {r_n} r-line-graph'})
+            if len(others):
+               break
+        if others is None:
+            continue
         total_matches = others[0].contents[1].contents[0]
         win_rate = others[1].contents[1].contents[0]
         kda = others[2].contents[1].contents[0]
@@ -190,6 +200,7 @@ def scrap_profile_info(profile_id):
 
 
 if __name__ == '__main__':
-    ids  = ['86753879', '86745912', '297066030']
-    r = (scrap_profile_info('86745912'))
-    print(r)
+    ids  = ['86753879', '86745912', '297066030', '46135920']
+    for id in ids:
+        r = (scrap_profile_info(id))
+        print(r)
