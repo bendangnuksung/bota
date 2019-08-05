@@ -32,9 +32,15 @@ def get_rank_medal(player_soup):
 
 def get_win_loss(soup):
     win_loss_info = soup.find('span', {'class': 'game-record'})
-    wins = win_loss_info.find('span', {'class': 'wins'}).string
-    loss = win_loss_info.find('span', {'class': 'losses'}).string
-    abandons = win_loss_info.find('span', {'class': 'abandons'}).string
+    wins = '0'
+    loss = '0'
+    abandons = '0'
+    try:
+        wins = win_loss_info.find('span', {'class': 'wins'}).string
+        loss = win_loss_info.find('span', {'class': 'losses'}).string
+        abandons = win_loss_info.find('span', {'class': 'abandons'}).string
+    except Exception:
+        pass
     return {'wins': wins, 'losses': loss, 'abandons': abandons}
 
 
@@ -200,7 +206,7 @@ def scrap_profile_info(profile_id):
 
 
 if __name__ == '__main__':
-    ids  = ['86753879', '86745912', '297066030', '46135920']
+    ids  = ['425327377', '86753879', '86745912', '297066030', '46135920']
     for id in ids:
         r = (scrap_profile_info(id))
         print(r)
