@@ -6,9 +6,9 @@ BOT-A is a free Discord Dota 2 bot which provides comprehensive Information of e
 ## Commands & Screenshots
 Commands can be found at at [here](https://bota.tech/index.html#table1-7)<br/>
 Screenshots:
-1. Command:  `!counter  morphling`  ![counter morphling](https://bota.tech/assets/images/counter-morph-full-818x415.png)
-2. Command:  `!item storm` ![item storm](https://bota.tech/assets/images/items-storm-1077x619.png)
-3. Command:  `!profile midone` ![profile](https://bota.tech/assets/images/profile-midone-1355x802.png)
+1. Command:  `!counter  morphling`  ![counter morphling](https://bota.tech/assets/images/counter-morph-full-818x41510.png)
+2. Command:  `!item storm` ![item storm](https://bota.tech/assets/images/items-storm-1077x61911.png)
+3. Command:  `!profile midone` ![profile](https://bota.tech/assets/images/profile-midone-1355x80213.png)
 
 ## Setup
 ### Pre-Requirements:
