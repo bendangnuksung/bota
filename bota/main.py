@@ -95,7 +95,7 @@ async def on_message(message):
          message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!top_game"
         image_path = get_top_games()
-        await message.channel.send(f"Getting Top Live Spectacting Games")
+        await message.channel.send(f"Getting Top Live Spectacting Games, Source: Dota2API, Dota2ProTracker")
         await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
     elif '!profile' in message_string.split()[0]:
@@ -107,7 +107,7 @@ async def on_message(message):
             else:
                 await message.channel.send(f'Could not find any Alias name : **{id}**')
         else:
-            await message.channel.send(f"____**{id}**____'s Profile:")
+            await message.channel.send(f"____**{id}**____'s Profile:, Source: DotaBuff")
             await message.channel.send(result)
 
     elif '!save' in message_string.split()[0]:
@@ -121,7 +121,7 @@ async def on_message(message):
     elif "!trend" in message_string and message_word_length < (MAX_COMMAND_WORD_LENGTH - 2):
         command_called = "!trend"
         image_path = get_current_trend()
-        await message.channel.send(f"Getting this week Heroes Trend")
+        await message.channel.send(f"Getting this week Heroes Trend, Source: DotaBuff")
         await message.channel.send('Current Trend: ', file=discord.File(image_path))
 
     elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
@@ -133,7 +133,7 @@ async def on_message(message):
             else:
                 await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
         else:
-            await message.channel.send(f'**{hero_name.upper()}** is bad against: ', file=discord.File(image_path))
+            await message.channel.send(f'**{hero_name.upper()}** is bad against, Source: DotaBuff ', file=discord.File(image_path))
 
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!good"
@@ -144,7 +144,7 @@ async def on_message(message):
             else:
                 await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
         else:
-            await message.channel.send(f'**{hero_name.upper()}** is good against: ', file=discord.File(image_path))
+            await message.channel.send(f'**{hero_name.upper()}** is good against, Source: DotaBuff ', file=discord.File(image_path))
 
     elif ("!skill" in message_string or "!talent" in message_string) \
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
@@ -156,7 +156,7 @@ async def on_message(message):
             else:
                 await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
         else:
-            await message.channel.send(f'**{hero_name.upper()}** most popular Skill/Talent build: ', file=discord.File(image_path))
+            await message.channel.send(f'**{hero_name.upper()}** most popular Skill/Talent build: , Source: DotaBuff', file=discord.File(image_path))
 
     elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!item"
@@ -167,19 +167,19 @@ async def on_message(message):
             else:
                 await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
         else:
-            await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:', file=discord.File(image_path))
+            await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, Source: DotaBuff', file=discord.File(image_path))
 
     elif "!twitch" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!twitch"
         result = get_dota2_top_stream()
-        await message.channel.send(result)
+        await message.channel.send(f'Source: Twitch{result}')
 
     elif "!reddit" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         result_list, mode = get_reddit(message_string)
         command_called = f"!reddit {mode}"
-        await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**")
+        await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**, Source: Reddit")
         for result in result_list:
-            await message.channel.send(result)
+            await message.channel.send(f'{result}')
 
     # elif "!data" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
     #     await message.channel.send(data_source_collection)

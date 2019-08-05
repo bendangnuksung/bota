@@ -48,4 +48,5 @@ sh stop_bota.sh
 1. [DotaBuff](https://www.dotabuff.com/)
 2. [Reddit](https://www.reddit.com/r/DotA2/)
 3. [Twitch](https://www.twitch.tv/)
-4. Dota2API
+4. [D2PT](http://www.dota2protracker.com/)
+5. Dota2API
