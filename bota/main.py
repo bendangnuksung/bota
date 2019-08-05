@@ -31,13 +31,14 @@ commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: `!top g
                                       '                       eg 1:   `!reddit`             : Gets a random post from  /r/DotA2/\n'
                                       '                       eg 2:   `!reddit hot`   : Gets Top 3 hot post from  /r/DotA2/\n'
                                       '                       eg 3:   `!reddit new`   : Gets Top 3 new post from    /r/DotA2/',
-                 '!update'          : 'Shows any new update been made'
+                 '!update'     : 'Shows any new   `Updates`   and   `BOT support`'
                  }
 
 
 LAST_UPDATE = "**UPDATES:**\n" \
               "1. Added new command    `!protrack HeroName`    date: `06-Aug-2019`\n" \
-              "2. Added Notable hero in    `!top game`    date: `05-Aug-2019`"
+              "2. Added Notable hero in    `!top game`    date: `05-Aug-2019`\n" \
+              "For more info and support please join: https://discord.gg/a7QYPWd"
 
 
 def get_help():
@@ -53,7 +54,6 @@ def get_help():
         full = command + '\t:\t' + command_help
         help_string.append(full + '\n')
     help_string = "\n".join(help_string)
-    # help_string += "\nFor support please join: https://discord.gg/a7QYPWd"
     return help_string
 
 
