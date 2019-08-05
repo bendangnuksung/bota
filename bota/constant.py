@@ -4,6 +4,10 @@ import os
 MAX_COMMAND_WORD_LENGTH = 5
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
 
+# Early Update time (Scrap data early by Threshold time i.e THRESHOLD_UPDATE_TIME - EARLY_BY )
+EARLY_BY = 3600 # Hour, Update early by an hour
+
+
 # Profile Info
 PLAYER_URL_BASE = 'https://www.dotabuff.com/players/'
 
@@ -173,7 +177,7 @@ SKILL_CROP_COORDS = [0, 165, 800, -168] # xmin, ymin, xmax, ymax
 # Counter Hero
 COUNTER_HERO_IMAGE_PATH = 'data/counter_heroes/'
 COUNTER_HERO_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_HERO_IMAGE_PATH)
-COUNTER_HERO_UPDATE_TIME_THRESHOLD = 604800 # 1 week
+COUNTER_HERO_UPDATE_TIME_THRESHOLD = 259200 # 3 days
 COUNTER_BG_IMAGE_PATH = 'data/background/counter_backgound.jpg'
 COUNTER_BG_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_BG_IMAGE_PATH)
 COUNTER_BG_SHAPE = (400, 800)
@@ -185,6 +189,7 @@ COUNTER_HEIGHT_DIST = 100
 COUNTER_MAX_COLUMN = 5
 
 # Hero Good against
+GOOD_HERO_UPDATE_TIME_THRESHOLD = 259200 # 3 days
 GOOD_HERO_IMAGE_PATH = 'data/good_against_heroes/'
 GOOD_HERO_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_HERO_IMAGE_PATH)
 GOOD_BG_IMAGE_PATH = 'data/background/good_against_background.jpg'
@@ -193,7 +198,7 @@ GOOD_BG_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_BG_IMAGE_PATH)
 # Current Trend
 CT_IMAGE_PATH = 'data/temp_images/current_trend.png'
 CT_IMAGE_PATH = os.path.join(REPO_PATH, CT_IMAGE_PATH)
-CT_IMAGE_UPDATE_TIME_THRESHOLD = 600 # 600 sec
+CT_IMAGE_UPDATE_TIME_THRESHOLD = 86400 # 1 day
 
 # top live game
 TLG_IMAGE_PATH = 'data/temp_images/top_live_games.png'

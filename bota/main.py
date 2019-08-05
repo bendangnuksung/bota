@@ -47,7 +47,7 @@ def get_help():
     help_string.append(head)
     for key, value in commands_list.items():
         command = '**' + key + '**'
-        command_help = '*' + value + '*'
+        command_help = value
         full = command + '\t:\t' + command_help
         help_string.append(full + '\n')
     help_string = "\n".join(help_string)

@@ -59,7 +59,7 @@ def make_hero_images(main_hero_image_path, heroes_image_path, bg_path):
     return bg_image
 
 
-def get_counter_hero(query, hero=None):
+def get_counter_hero(query, hero=None, early_update=False):
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -68,7 +68,11 @@ def get_counter_hero(query, hero=None):
     if not found_hero:
         return False, hero_name, ''
     image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + '.png')
-    if not is_file_old(image_path, constant.COUNTER_HERO_UPDATE_TIME_THRESHOLD):
+
+    threshold_update_time = constant.COUNTER_HERO_UPDATE_TIME_THRESHOLD
+    if early_update:
+        threshold_update_time = threshold_update_time - constant.EARLY_BY
+    if not is_file_old(image_path, threshold_update_time):
         return True, hero_name, image_path
 
     hero_info = scrap_heroes_info(hero_name)
@@ -82,7 +86,7 @@ def get_counter_hero(query, hero=None):
     return True, hero_name, image_path
 
 
-def get_good_against(query, hero=None):
+def get_good_against(query, hero=None, early_update=False):
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -91,7 +95,11 @@ def get_good_against(query, hero=None):
     if not found_hero:
         return False, hero_name, ''
     image_path = os.path.join(constant.GOOD_HERO_IMAGE_PATH, hero_name + '.png')
-    if not is_file_old(image_path, constant.COUNTER_HERO_UPDATE_TIME_THRESHOLD):
+
+    threshold_update_time = constant.GOOD_HERO_UPDATE_TIME_THRESHOLD
+    if early_update:
+        threshold_update_time = threshold_update_time - constant.EARLY_BY
+    if not is_file_old(image_path, threshold_update_time):
         return True, hero_name, image_path
 
     hero_info = scrap_heroes_info(hero_name)
@@ -105,7 +113,7 @@ def get_good_against(query, hero=None):
     return True, hero_name, image_path
 
 
-async def get_skill_build(query, hero=None):
+async def get_skill_build(query, hero=None, early_update=False):
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -116,7 +124,10 @@ async def get_skill_build(query, hero=None):
 
     guide_image_path = os.path.join(constant.GUIDE_SAVE_PATH, hero_name + '.jpg')
 
-    if not is_file_old(guide_image_path, constant.GUIDE_THRESHOLD_IMAGE_UPDATE):
+    threshold_update_time = constant.GUIDE_THRESHOLD_IMAGE_UPDATE
+    if early_update:
+        threshold_update_time = threshold_update_time - constant.EARLY_BY
+    if not is_file_old(guide_image_path, threshold_update_time):
         return True, hero_name, guide_image_path
 
     url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
@@ -151,7 +162,7 @@ async def get_skill_build(query, hero=None):
     return True, hero_name, guide_image_path
 
 
-def get_item_build(query, hero=None):
+def get_item_build(query, hero=None, early_update=False):
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -162,7 +173,10 @@ def get_item_build(query, hero=None):
 
     item_build_path = os.path.join(constant.ITEM_IMAGE_PATH, hero_name + '.jpg')
 
-    if not is_file_old(item_build_path, constant.ITEM_THRESHOLD_UPDATE):
+    threshold_update_time = constant.ITEM_THRESHOLD_UPDATE
+    if early_update:
+        threshold_update_time = threshold_update_time - constant.EARLY_BY
+    if not is_file_old(item_build_path, threshold_update_time):
         return True, hero_name, item_build_path
 
     item_build_info = scrap_item_info(hero_name)

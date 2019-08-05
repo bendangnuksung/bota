@@ -29,11 +29,11 @@ def update_images():
     print("UPDATING: ")
     loop = asyncio.get_event_loop()
     start = datetime.now()
+    get_current_trend()
     for i, hero_name in enumerate(heroes_names):
         print(f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}")
         loop.run_until_complete(get_skill_build('', hero=hero_name))
         get_item_build('', hero=hero_name)
-        get_current_trend()
         get_counter_hero('', hero=hero_name)
         get_good_against('', hero=hero_name)
     end = datetime.now()
