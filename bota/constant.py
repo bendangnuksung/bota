@@ -3,6 +3,8 @@ import os
 # General
 MAX_COMMAND_WORD_LENGTH = 5
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
+DEFAULT_EMBED_HEADER = {'name': 'Bota', 'icon_url': 'https://bota.tech/assets/images/bota-122x122.png',
+                        'url': 'https://github.com/bendangnuksung/bota'}
 
 # Early Update time (Scrap data early by Threshold time i.e THRESHOLD_UPDATE_TIME - EARLY_BY )
 EARLY_BY = 3600 # Hour, Update early by an hour

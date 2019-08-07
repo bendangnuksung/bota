@@ -4,6 +4,19 @@ import bota.private_constant
 from bota import constant
 
 
+twitch_language = {'english': "en", "dansk": 'da', "danish": "da", "deutsch": "de", "german": 'de',
+                   'español': 'es', 'espanol': 'es', 'spanish': 'es', 'français': 'fr',  'francais': 'fr', 'french': 'fr',
+                   'italiano': 'it', 'italian': 'it', 'magyar': 'hu', 'hungarian': 'hu', 'nederlands': 'nl',
+                   'netherland': 'nl', 'norsk': 'no', 'norwegian': 'no', 'polski': 'pl', 'polish': 'pl',
+                   'português': 'pt', 'portuguese': 'pt', 'română': 'ro', 'romana': 'ro', 'romanian': 'ro',
+                   'slovenčina': 'sk', 'slovak': 'sk', 'suomi': 'fi', 'finish': 'fi', 'svenska': 'sv', 'swedish': 'sv',
+                    'tiếng việt': 'vi', 'vietnamese': 'vi', 'türkçe': 'tr', 'turkce': 'tr', 'turkish': 'tr',
+                    'ceština': 'cs', 'czech': 'cs', 'eλληνικά': 'el', 'greek': 'el', 'български': 'bg', 'bulgarian': 'bg',
+                   'pусский': 'ru', 'slovenian': 'ru', 'russian': 'ru', 'العربية': 'ar', 'arabic': 'ar',
+                   'ภาษาไทย': 'th', 'thai': 'th', '中文': 'zh', 'chinese': 'zh', '中文 繁體': 'zh-hk', 'hong kong': 'zh-kh',
+                   '日本語': 'ja', 'japanese': 'ja', '한국어': 'ko', 'korean': 'ko', 'sign': 'asl'}
+
+
 def request_dota2_stream_json(url):
     response_flag = False
     response = {}
@@ -19,20 +32,31 @@ def request_dota2_stream_json(url):
     return response
 
 
-def pretty_stream_text_for_discord(datas):
-    final_string = '```diff\n' \
-                   '-TOP DOTA 2 TWITCH STREAMS```'
+def pretty_stream_text_for_discord(datas, language):
+    final_string = f"```diff\n-TOP DOTA 2 TWITCH STREAMS: LANGUAGE: {language}```\n"
     for i, data in enumerate(datas, 1):
-        link = '<' + constant.TWITCH_URL + data[constant.TWITCH_KEYWORD_USER_NAME] + '>'
+        link = constant.TWITCH_URL + data[constant.TWITCH_KEYWORD_USER_NAME]
         final_string += f'{i}. **{data[constant.TWITCH_KEYWORD_USER_NAME]}**' \
                         f'    `VIEWS:`{data[constant.TWITCH_KEYWORD_VIEWER_COUNT]}' \
                         f'   `TITLE:` {data[constant.TWITCH_KEYWORD_TITLE]}' \
-                        f' `LANG:` **{data[constant.TWITCH_KEYWORD_LANGUAGE].upper()}** \n`LINK`: {link}\n\n'
+                        f' `LANG:` **{data[constant.TWITCH_KEYWORD_LANGUAGE].upper()}**' \
+                        f'    **[LINK]({link})**\n\n'
     return final_string
 
 
-def get_dota2_top_stream(top=8):
+def get_dota2_top_stream(language=None, top=8):
     url = constant.TWITCH_DOTA_2_STREAM_URL + constant.DOTA_2_GAME_ID
+    language_used = 'ALL'
+    if language is not None:
+        if len(language) <= 3:
+            language_used = language
+            url += f"&language={language}"
+        else:
+            language = twitch_language.get(language)
+            if language is not None:
+                language_used = language
+                url += f"&language={language}"
+
     datas = request_dota2_stream_json(url)
     datas = datas[constant.TWITCH_KEYWORD_DATA]
     final_data = []
@@ -40,9 +64,10 @@ def get_dota2_top_stream(top=8):
         if i >= top:
             break
         final_data.append(data)
-    result_string = pretty_stream_text_for_discord(final_data)
+
+    result_string = pretty_stream_text_for_discord(final_data, language_used.upper())
     return result_string
 
 
 if __name__ == "__main__":
-    print(get_dota2_top_stream())
+    print(get_dota2_top_stream('english'))
