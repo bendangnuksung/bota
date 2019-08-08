@@ -65,3 +65,4 @@ docs/_build/
 *.swo
 .env
 dota2api
+bota/data
