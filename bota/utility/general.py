@@ -13,8 +13,9 @@ from bota import constant
 import os
 from datetime import datetime
 import re
+from bota.constant import REPO_PATH
 
-repo_abs_path = os.path.dirname(os.path.realpath(__file__))
+repo_abs_path = REPO_PATH
 
 
 def DataFrame_to_image(data, css=css, outputfile=TLG_IMAGE_PATH, format="png"):

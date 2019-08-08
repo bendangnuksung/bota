@@ -1,11 +1,11 @@
 import pandas as pd
 import dota2api
-from bota.utility import DataFrame_to_image, is_file_old
+from bota.utility.general import is_file_old
 from bota.constant import GAME_MODE
 from bota.web_scrap.scrap_constant import browser_headers_chrome
 from bota.private_constant import DOTA2_API_KEY
 from bota import constant
-from bota.utility import render_mpl_table
+from bota.utility.general import render_mpl_table
 import requests
 import cv2
 import random

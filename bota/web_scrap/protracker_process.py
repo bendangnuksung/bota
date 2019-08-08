@@ -2,6 +2,7 @@ import requests
 from bota.web_scrap import scrap_constant
 from bota import constant
 from datetime import datetime
+from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
 
 
 class DotaProTracker():
@@ -29,48 +30,6 @@ def get_d2pt_hero_json(heroname):
     json_data = requests.get(url, headers=scrap_constant.browser_headers)
     json_data = json_data.json()
     return json_data
-
-
-def cvt_dict_to_discord_pretty_text(value, spaces=18, rename_keys={}):
-    temp_string = ''
-    header_position = []
-    header_name = []
-    for i, dictionary in enumerate(value):
-        temp_string += f"{i + 1}. "
-        for j, (key_name, value) in enumerate(dictionary.items()):
-            # For 'hero name' allocatin the same number of space
-            # very bad practice of aligning for display purpose
-            if i == 0:
-                header_position.append(len(temp_string))
-                key_name = key_name if key_name not in rename_keys.keys() else rename_keys[key_name]
-                header_name.append(key_name)
-            if j == 0:
-                temp_val = f"{value}        "
-                remain_space = spaces - len(temp_val)
-                if remain_space > 0:
-                    temp_string += temp_val + (' ' * remain_space)
-                else:
-                    temp_string += temp_val[:spaces]
-            elif i != 0:
-                current_len = header_position[j] - len(temp_string.split('\n')[-1])
-                if current_len < 0:
-                    temp_string = temp_string[:current_len]
-                    temp_string += f"{value}        "
-                else:
-                    temp_string += ' ' * current_len + f"{value}        "
-            else:
-                temp_string += f"{value}        "
-        temp_string += "\n"
-    temp_header_str = ['*'] * 150
-    for position, header in zip(header_position, header_name):
-        temp_header_str[position:position + len(header)] = header.upper()
-    temp_header_str = ''.join(temp_header_str)
-    temp_header_str = temp_header_str.replace('*', ' ')
-    temp_header_str = temp_header_str.rstrip()
-    final_text = f"{temp_header_str}\n{temp_string}"
-
-    # embed into code eg: ```css\nfinal_text``` to make it look pretty
-    return final_text
 
 
 def clean_list_dict(matches, wanted_keys):

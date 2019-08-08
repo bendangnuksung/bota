@@ -1,8 +1,9 @@
 from bs4 import BeautifulSoup as bs
 
-from bota.utility import get_html_text
+from bota.utility.general import get_html_text
 from bota.web_scrap import scrap_constant
-from bota import constant, utility
+from bota import constant
+from bota.utility import general
 import os
 import re
 import cv2
@@ -45,7 +46,7 @@ def make_item_image(infos, hero_name):
         medal = info[constant.ITEM_KEYWORD_RANK_MEDAl]
         rank = info[constant.ITEM_KEYWORD_RANK]
 
-        medal_image_path = utility.get_medal_image_path(medal, rank)
+        medal_image_path = general.get_medal_image_path(medal, rank)
 
         # Top players should be either immortal or divine medals if not skip it
         flag_divine_immortal_medal = False
