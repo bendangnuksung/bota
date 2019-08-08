@@ -64,3 +64,4 @@ docs/_build/
 .DS_Store
 *.swo
 .env
+dota2api
