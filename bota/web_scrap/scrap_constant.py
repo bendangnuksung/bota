@@ -57,7 +57,12 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'wyvern': 'winter-wyvern', 'alch': 'alchemist', 'tuskar': 'tusk', 'jug': 'juggernaut',
                            'vengeful': 'vengeful-spirit', 'wraithking': 'wraith-king', 'skywrathmage': 'skywrath-mage',
                            'tider-hunter': 'tidehunter', 'jugger': 'juggernaut', 'sm': 'skywrath-mage',
-                           'enchant': 'enchantress', 'darkseer': 'dark-seer'}
+                           'enchant': 'enchantress', 'darkseer': 'dark-seer', 'windrunner': 'windranger',
+                           'spec': 'spectre', 'wraith': 'wraith-king', 'shaman': 'shadow-shaman', 'alc': 'alchemist',
+                           'warden': 'arc-warden', 'cent': 'centaur-warrunner', 'clinks': 'clinkz', 'clink': 'clinkz',
+                           'invo': 'invoker', 'titan': 'elder-titan', 'night': 'night-stalker',
+                           'nature': 'natures-prophet', 'natures':'natures-prophet', 'prophet': 'natures-prophet',
+                           'sladar': 'slardar'}
 
 
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']

@@ -215,7 +215,7 @@ GOOD_BG_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_BG_IMAGE_PATH)
 # Current Trend
 CT_IMAGE_PATH = 'data/temp_images/current_trend.png'
 CT_IMAGE_PATH = os.path.join(REPO_PATH, CT_IMAGE_PATH)
-CT_IMAGE_UPDATE_TIME_THRESHOLD = 86400 # 1 day
+CT_IMAGE_UPDATE_TIME_THRESHOLD = 36000 # 10 hour
 
 # top live game
 TLG_IMAGE_PATH = 'data/temp_images/top_live_games.png'

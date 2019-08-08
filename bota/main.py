@@ -6,6 +6,7 @@ from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
 from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id, get_protracker_hero
 from bota.web_scrap.twitch_process import get_dota2_top_stream
+from bota.web_scrap.TI.group_stage import get_group_stage
 from bota.log_process import save_command_logs, get_command_log_tail
 from discord.utils import find
 from bota import constant
@@ -223,6 +224,12 @@ async def on_message(message):
         else:
             await message.channel.send(f'ProTracker Record from last **7** days,    Source:   **Dota2 ProTracker**\n'
                                        f'{result_string}', file=discord.File(icon_path))
+
+    elif "!ti group" in message_string:
+        # Release it as soon the TI starts
+        command_called = '!ti group'
+        result_string = get_group_stage()
+        await message.channel.send('`TI9 GROUP STAGE`\n' + result_string)
 
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
