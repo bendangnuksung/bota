@@ -108,11 +108,13 @@ def get_latest_match(soup, top=5):
         game_mode_split = game_mode.split()
         game_mode_short = [x[0] for x in game_mode_split]
         game_mode_short = ''.join(game_mode_short).upper()
-        if len(str(game_type)) < 15:
+        print(game_type)
+        if len(str(game_type)) < 11:
             match_type = str(game_type)
+            match_type = match_type.split()[0]
             match_type = 'Tourney' if match_type == 'Tournament' else match_type
         else:
-            match_type = game_mode
+            match_type = game_mode.split()[0]
 
         duration = row.find('div', {'class': 'r-fluid r-125 r-line-graph r-duration'})
         duration = duration.find('div', {'class': 'r-body'}).contents[0]
@@ -139,7 +141,7 @@ def pretty_profile_text_for_discord(json_data, spaces=18):
 
             if key_1 == 'latest_match':
                 table = cvt_dict_to_discord_pretty_text(value, rename_keys={'duration': 'time', 'status':'w/l'}, spaces=15,
-                                                               custom_space={'w/l':4, 'type': 8, 'time': 7,
+                                                               custom_space={'w/l':4, 'type': 8, 'time': 8,
                                                                              'kda':8, 'win': 8, 'matches': 9})
             else:
                 table = cvt_dict_to_discord_pretty_text(value, rename_keys={'duration': 'time', 'status': 'w/l'},
@@ -216,7 +218,7 @@ def scrap_profile_info(profile_id):
 
 
 if __name__ == '__main__':
-    ids  = ['116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
+    ids  = ['237445135','116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
     for id in ids:
         r,link = (scrap_profile_info(id))
         print(r)
