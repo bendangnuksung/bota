@@ -34,8 +34,8 @@ D2PT_KEYWORD_RECENT_MATCH = 'recent_matches'
 D2PT_KEYWORD_GOOD_AGAINST = 'best_versus'
 D2PT_KEYWORD_BAD_AGAINST = 'worst_versus'
 
-WANTED_KEYS_RECENT_MATCHES = ['pro', 'matchid', 'mmr', 'won', 'time']
-RECENT_MATCHES_KEY_RENAME = {'pro': 'name', 'time': 'last played'}
+WANTED_KEYS_RECENT_MATCHES = ['pro', 'matchid', 'won', 'time']
+RECENT_MATCHES_KEY_RENAME = {'pro': 'name', 'time': 'played', 'won': 'w/l'}
 
 WANTED_KEYS_GOOD_AGAINST = ['name', 'won_against', 'lost_against']
 WANTED_KEYS_BAD_AGAINST = ['name', 'won_against', 'lost_against']

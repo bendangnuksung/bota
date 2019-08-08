@@ -30,7 +30,9 @@ def get_notable_hero_from_d2pt():
 
 		notable_players = notable_player_from_radiant + notable_player_from_dires
 		random.shuffle(notable_players)
-		notable_players = ",".join(notable_players[:2])
+		notable_players = notable_players[:2]
+		notable_players = [player[:10] for player in notable_players]
+		notable_players = ",".join(notable_players)
 		final_result[match_id] = notable_players
 	return final_result
 

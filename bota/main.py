@@ -129,15 +129,18 @@ async def on_message(message):
 
     elif '!profile' in message_string.split()[0]:
         command_called = "!profile"
-        flag, id, mode, result = get_profile(message_string)
+        flag, id, mode, result, medal_url = get_profile(message_string)
+        result_embed = embed_txt_message(result)
+        result_embed.set_author(name=f"**Profile: {id}**", url=f'https://www.dotabuff.com/players/{id}',
+                                icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        result_embed.set_thumbnail(url=medal_url)
         if not flag:
             if mode == 1:
                 await message.channel.send(f'Could not find any profile under: **{id}**')
             else:
                 await message.channel.send(f'Could not find any Alias name : **{id}**')
         else:
-            await message.channel.send(f"____**{id}**____'s Profile:, Source: DotaBuff")
-            await message.channel.send(result)
+            await message.channel.send(embed=result_embed)
 
     elif '!save' in message_string.split()[0]:
         command_called = "!save"
@@ -222,8 +225,13 @@ async def on_message(message):
             else:
                 await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
         else:
-            await message.channel.send(f'ProTracker Record from last **7** days,    Source:   **Dota2 ProTracker**\n'
-                                       f'{result_string}', file=discord.File(icon_path))
+            embed_msg = embed_txt_message(result_string)
+            embed_msg.set_author(name=f'**{hero_name.upper()}** Dota2ProTracker:', url='http://www.dota2protracker.com/',
+                                 icon_url=f'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/{hero_name}.png')
+            embed_msg.set_thumbnail(url=f'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/{hero_name}.png')
+            await message.channel.send(embed=embed_msg)
+            # await message.channel.send(f'ProTracker Record from last **7** days,    Source:   **Dota2 ProTracker**\n'
+            #                            f'{result_string}', file=discord.File(icon_path))
 
     elif "!ti group" in message_string:
         # Release it as soon the TI starts
@@ -269,11 +277,6 @@ async def on_message(message):
     elif f"{DISCORD_CLIENT_ID}" in message_string:
         await message.channel.send(f"Hello {message.author.name}"
                                    f" Please type    `!help`  or `!command`  for more options")
-
-    elif "!hi" in message_string:
-        my_test_string = "this happened - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) `#c5f015`"
-        embed_msg = discord.Embed(description=my_test_string, color=discord.Color.blue())
-        await  message.channel.send(embed=embed_msg)
 
     else:
         is_command_called = False

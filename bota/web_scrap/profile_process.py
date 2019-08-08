@@ -4,6 +4,7 @@ from bota import constant
 from bota.web_scrap import scrap_constant
 import re
 from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
+import os
 
 
 # Div class r-fluid line-graph sometimes different for others
@@ -132,8 +133,8 @@ def pretty_profile_text_for_discord(json_data, spaces=18):
             continue
         if type(value) != list:
             value = value.strip()
-            final_string += f"**{key_1.upper()}:**"
-            final_string += f"    {value}\n"
+            final_string += f"{key_1.upper()}:"
+            final_string += f"    **{value}**\n"
         else:
 
             if key_1 == 'latest_match':
@@ -195,8 +196,6 @@ def scrap_profile_info(profile_id):
     medal_info = get_rank_medal(soup)
     result.update(medal_info)
 
-    result['dotabuff'] = url
-
     most_played_heros = get_most_played_heroes(soup)
     result.update(most_played_heros)
 
@@ -210,6 +209,8 @@ def scrap_profile_info(profile_id):
         medal = get_medal_url(medal)
     else:
         medal = get_medal_url(medal, rank=medal_info['rank'])
+
+    string += f"**[DotaBuff]({url})**"
 
     return string, medal
 
