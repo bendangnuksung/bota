@@ -30,15 +30,15 @@ def heroes_dict():
           "id": 4
         },
         {
-          "name": "crystal_maiden",
-          "displayname": "crystal_maiden",
+          "name": "crystal-maiden",
+          "displayname": "crystal-maiden",
           "showname": "Crystal Maiden",
           "class": "int",
           "id": 5
         },
         {
-          "name": "drow_ranger",
-          "displayname": "drow_ranger",
+          "name": "drow-ranger",
+          "displayname": "drow-ranger",
           "showname": "Drow Ranger",
           "class": "agi",
           "id": 6
@@ -79,8 +79,8 @@ def heroes_dict():
           "id": 10
         },
         {
-          "name": "phantom_lancer",
-          "displayname": "phantom_lancer",
+          "name": "phantom-lancer",
+          "displayname": "phantom-lancer",
           "showname": "Phantom Lancer",
           "class": "agi",
           "id": 12
@@ -107,15 +107,15 @@ def heroes_dict():
           "id": 15
         },
         {
-          "name": "sand_king",
-          "displayname": "sand_king",
+          "name": "sand-king",
+          "displayname": "sand-king",
           "showname": "Sand King",
           "class": "str",
           "id": 16
         },
         {
-          "name": "storm_spirit",
-          "displayname": "storm_spirit",
+          "name": "storm-spirit",
+          "displayname": "storm-spirit",
           "showname": "Storm Spirit",
           "class": "int",
           "id": 17
@@ -184,8 +184,8 @@ def heroes_dict():
           "id": 26
         },
         {
-          "name": "shadow_shaman",
-          "displayname": "shadow_shaman",
+          "name": "shadow-shaman",
+          "displayname": "shadow-shaman",
           "showname": "Shadow Shaman",
           "class": "int",
           "id": 27
@@ -205,8 +205,8 @@ def heroes_dict():
           "id": 29
         },
         {
-          "name": "witch_doctor",
-          "displayname": "witch_doctor",
+          "name": "witch-doctor",
+          "displayname": "witch-doctor",
           "showname": "Witch Doctor",
           "class": "int",
           "id": 30
@@ -275,29 +275,29 @@ def heroes_dict():
           "id": 40
         },
         {
-          "name": "faceless_void",
-          "displayname": "faceless_void",
+          "name": "faceless-void",
+          "displayname": "faceless-void",
           "showname": "Faceless Void",
           "class": "agi",
           "id": 41
         },
         {
-          "name": "skeleton_king",
-          "displayname": "wraith_king",
+          "name": "skeleton-king",
+          "displayname": "wraith-king",
           "showname": "Wraith King",
           "class": "str",
           "id": 42
         },
         {
-          "name": "death_prophet",
-          "displayname": "death_prophet",
+          "name": "death-prophet",
+          "displayname": "death-prophet",
           "showname": "Death Prophet",
           "class": "int",
           "id": 43
         },
         {
-          "name": "phantom_assassin",
-          "displayname": "phantom_assassin",
+          "name": "phantom-assassin",
+          "displayname": "phantom-assassin",
           "showname": "Phantom Assassin",
           "class": "agi",
           "id": 44
@@ -310,8 +310,8 @@ def heroes_dict():
           "id": 45
         },
         {
-          "name": "templar_assassin",
-          "displayname": "templar_assassin",
+          "name": "templar-assassin",
+          "displayname": "templar-assassin",
           "showname": "Templar Assassin",
           "class": "agi",
           "id": 46
@@ -331,8 +331,8 @@ def heroes_dict():
           "id": 48
         },
         {
-          "name": "dragon_knight",
-          "displayname": "dragon_knight",
+          "name": "dragon-knight",
+          "displayname": "dragon-knight",
           "showname": "Dragon Knight",
           "class": "str",
           "id": 49
@@ -360,21 +360,21 @@ def heroes_dict():
         },
         {
           "name": "furion",
-          "displayname": "natures_prophet",
+          "displayname": "natures-prophet",
           "showname": "Nature's Prophet",
           "class": "int",
           "id": 53
         },
         {
-          "name": "life_stealer",
-          "displayname": "life_stealer",
+          "name": "life-stealer",
+          "displayname": "life-stealer",
           "showname": "Lifestealer",
           "class": "str",
           "id": 54
         },
         {
-          "name": "dark_seer",
-          "displayname": "dark_seer",
+          "name": "dark-seer",
+          "displayname": "dark-seer",
           "showname": "Dark Seer",
           "class": "int",
           "id": 55
@@ -408,8 +408,8 @@ def heroes_dict():
           "id": 59
         },
         {
-          "name": "night_stalker",
-          "displayname": "night_stalker",
+          "name": "night-stalker",
+          "displayname": "night-stalker",
           "showname": "Night Stalker",
           "class": "str",
           "id": 60
@@ -422,8 +422,8 @@ def heroes_dict():
           "id": 61
         },
         {
-          "name": "bounty_hunter",
-          "displayname": "bounty_hunter",
+          "name": "bounty-hunter",
+          "displayname": "bounty-hunter",
           "showname": "Bounty Hunter",
           "class": "agi",
           "id": 62
@@ -464,15 +464,15 @@ def heroes_dict():
           "id": 67
         },
         {
-          "name": "doom_bringer",
-          "displayname": "doom_bringer",
+          "name": "doom-bringer",
+          "displayname": "doom-bringer",
           "showname": "Doom",
           "class": "str",
           "id": 69
         },
         {
-          "name": "ancient_apparition",
-          "displayname": "ancient_apparition",
+          "name": "ancient-apparition",
+          "displayname": "ancient-apparition",
           "showname": "Ancient Apparition",
           "class": "int",
           "id": 68
@@ -485,8 +485,8 @@ def heroes_dict():
           "id": 70
         },
         {
-          "name": "spirit_breaker",
-          "displayname": "spirit_breaker",
+          "name": "spirit-breaker",
+          "displayname": "spirit-breaker",
           "showname": "Spirit Breaker",
           "class": "str",
           "id": 71
@@ -520,8 +520,8 @@ def heroes_dict():
           "id": 75
         },
         {
-          "name": "obsidian_destroyer",
-          "displayname": "outworld_destroyer",
+          "name": "obsidian-destroyer",
+          "displayname": "outworld-destroyer",
           "showname": "Outworld Devourer",
           "class": "int",
           "id": 76
@@ -541,22 +541,22 @@ def heroes_dict():
           "id": 78
         },
         {
-          "name": "shadow_demon",
-          "displayname": "shadow_demon",
+          "name": "shadow-demon",
+          "displayname": "shadow-demon",
           "showname": "Shadow Demon",
           "class": "int",
           "id": 79
         },
         {
-          "name": "lone_druid",
-          "displayname": "lone_druid",
+          "name": "lone-druid",
+          "displayname": "lone-druid",
           "showname": "Lone Druid",
           "class": "agi",
           "id": 80
         },
         {
-          "name": "chaos_knight",
-          "displayname": "chaos_knight",
+          "name": "chaos-knight",
+          "displayname": "chaos-knight",
           "showname": "Chaos Knight",
           "class": "str",
           "id": 81
@@ -576,8 +576,8 @@ def heroes_dict():
           "id": 83
         },
         {
-          "name": "ogre_magi",
-          "displayname": "ogre_magi",
+          "name": "ogre-magi",
+          "displayname": "ogre-magi",
           "showname": "Ogre Magi",
           "class": "int",
           "id": 84
@@ -604,22 +604,22 @@ def heroes_dict():
           "id": 87
         },
         {
-          "name": "nyx_assassin",
-          "displayname": "nyx_assassin",
+          "name": "nyx-assassin",
+          "displayname": "nyx-assassin",
           "showname": "Nyx Assassin",
           "class": "agi",
           "id": 88
         },
         {
-          "name": "naga_siren",
-          "displayname": "naga_siren",
+          "name": "naga-siren",
+          "displayname": "naga-siren",
           "showname": "Naga Siren",
           "class": "agi",
           "id": 89
         },
         {
-          "name": "keeper_of_the_light",
-          "displayname": "keeper_of_the_light",
+          "name": "keeper-of-the-light",
+          "displayname": "keeper-of-the-light",
           "showname": "Keeper of the Light",
           "class": "int",
           "id": 90
@@ -653,8 +653,8 @@ def heroes_dict():
           "id": 94
         },
         {
-          "name": "troll_warlord",
-          "displayname": "troll_warlord",
+          "name": "troll-warlord",
+          "displayname": "troll-warlord",
           "showname": "Troll Warlord",
           "class": "agi",
           "id": 95
@@ -695,8 +695,8 @@ def heroes_dict():
           "id": 100
         },
         {
-          "name": "skywrath_mage",
-          "displayname": "skywrath_mage",
+          "name": "skywrath-mage",
+          "displayname": "skywrath-mage",
           "showname": "Skywrath Mage",
           "class": "int",
           "id": 101
@@ -709,29 +709,29 @@ def heroes_dict():
           "id": 102
         },
         {
-          "name": "elder_titan",
-          "displayname": "elder_titan",
+          "name": "elder-titan",
+          "displayname": "elder-titan",
           "showname": "Elder Titan",
           "class": "str",
           "id": 103
         },
         {
-          "name": "legion_commander",
-          "displayname": "legion_commander",
+          "name": "legion-commander",
+          "displayname": "legion-commander",
           "showname": "Legion Commander",
           "class": "str",
           "id": 104
         },
         {
-          "name": "ember_spirit",
-          "displayname": "ember_spirit",
+          "name": "ember-spirit",
+          "displayname": "ember-spirit",
           "showname": "Ember Spirit",
           "class": "agi",
           "id": 106
         },
         {
-          "name": "earth_spirit",
-          "displayname": "earth_spirit",
+          "name": "earth-spirit",
+          "displayname": "earth-spirit",
           "showname": "Earth Spirit",
           "class": "str",
           "id": 107
@@ -765,29 +765,29 @@ def heroes_dict():
           "id": 105
         },
         {
-          "name": "winter_wyvern",
-          "displayname": "winter_wyvern",
+          "name": "winter-wyvern",
+          "displayname": "winter-wyvern",
           "showname": "Winter Wyvern",
           "class": "int",
           "id": 112
         },
         {
-          "name": "arc_warden",
-          "displayname": "arc_warden",
+          "name": "arc-warden",
+          "displayname": "arc-warden",
           "showname": "Arc Warden",
           "class": "agi",
           "id": 113
         },
         {
-          "name": "abyssal_underlord",
+          "name": "abyssal-underlord",
           "displayname": "underlord",
           "showname": "Underlord",
           "class": "str",
           "id": 108
         },
         {
-          "name": "monkey_king",
-          "displayname": "monkey_king",
+          "name": "monkey-king",
+          "displayname": "monkey-king",
           "showname": "Monkey King",
           "class": "agi",
           "id": 114
@@ -800,8 +800,8 @@ def heroes_dict():
           "id": 120
         },
         {
-          "name": "dark_willow",
-          "displayname": "dark_willow",
+          "name": "dark-willow",
+          "displayname": "dark-willow",
           "showname": "Dark Willow",
           "class": "int",
           "id": 119

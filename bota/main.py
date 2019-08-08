@@ -169,7 +169,7 @@ async def on_message(message):
         elif found:
             await message.channel.send(f'**{hero_name.upper()}** is bad against, Source: DotaBuff ', file=discord.File(image_path))
         if dv_valid:
-            await message.channel.send(f'Dotavoyance Record for last week,    Source:   **Dotavoyance.com**\n'
+            await message.channel.send(f'Dotavoyance stats for last week,    Source:   **Dotavoyance.com**\n'
                                        f'{dv_message}')
             await message.channel.send(f"Powered by **Dotavoyance.com** http://www.dotavoyance.com - Increase your game knowledge")
 
