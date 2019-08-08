@@ -3,6 +3,7 @@ import requests
 from bota import constant
 from bota.web_scrap import scrap_constant
 import re
+from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
 
 
 # Div class r-fluid line-graph sometimes different for others
@@ -89,9 +90,13 @@ def get_latest_match(soup, top=5):
         if i > top:
             break
         hero_name = row.find('a').contents[0].attrs['title']
+        hero_name_split = hero_name.split()
+        if len(hero_name) > 14 and len(hero_name_split) > 1:
+            hero_name = hero_name_split[0][0].upper() + hero_name_split[1][0].upper()
 
         result = row.find('div', {'class': 'r-fluid r-175 r-text-only r-right r-match-result'})
         status = result.find('a').attrs['class'][0]
+        status = status[0].upper()
         time = result.find('time').string
         if i == 1:
             last_played = time
@@ -103,7 +108,8 @@ def get_latest_match(soup, top=5):
         game_mode_short = [x[0] for x in game_mode_split]
         game_mode_short = ''.join(game_mode_short).upper()
         if len(str(game_type)) < 15:
-            match_type = str(game_type) + '-' + game_mode_short
+            match_type = str(game_type)
+            match_type = 'Tourney' if match_type == 'Tournament' else match_type
         else:
             match_type = game_mode
 
@@ -129,44 +135,41 @@ def pretty_profile_text_for_discord(json_data, spaces=18):
             final_string += f"**{key_1.upper()}:**"
             final_string += f"    {value}\n"
         else:
-            temp_string = ''
-            header_position = []
-            header_name = []
-            for i, dictionary in enumerate(value):
-                temp_string += f"{i + 1}. "
-                for j, (key_2, value) in enumerate(dictionary.items()):
-                    # For 'hero name' allocatin the same number of space
-                    # very bad practice of aligning for display purpose
-                    if i == 0:
-                        header_position.append(len(temp_string))
-                        header_name.append(key_2)
-                    if j == 0:
-                        temp_val = f"{value}        "
-                        remain_space = spaces - len(temp_val)
-                        if remain_space > 0:
-                            temp_string += temp_val + (' '*remain_space)
-                        else:
-                            temp_string += temp_val[:spaces]
-                    elif i != 0:
-                        current_len = header_position[j] - len(temp_string.split('\n')[-1])
-                        if current_len < 0:
-                            temp_string = temp_string[:current_len]
-                            temp_string += f"{value}        "
-                        else:
-                            temp_string += ' ' * current_len + f"{value}        "
-                    else:
-                        temp_string += f"{value}        "
-                temp_string += "\n"
-            temp_header_str = ['*']*150
-            for position, header in zip(header_position, header_name):
-                # print(position, position + len(header))
-                temp_header_str[position:position + len(header)] = header.upper()
-            temp_header_str = ''.join(temp_header_str)
-            temp_header_str = temp_header_str.replace('*', ' ')
-            temp_header_str = temp_header_str.rstrip()
+
+            if key_1 == 'latest_match':
+                table = cvt_dict_to_discord_pretty_text(value, rename_keys={'duration': 'time', 'status':'w/l'}, spaces=15,
+                                                               custom_space={'w/l':4, 'type': 8, 'time': 7,
+                                                                             'kda':8, 'win': 8, 'matches': 9})
+            else:
+                table = cvt_dict_to_discord_pretty_text(value, rename_keys={'duration': 'time', 'status': 'w/l'},
+                                                        spaces=17,
+                                                        custom_space={'w/l': 5, 'type': 12, 'time': 6,
+                                                                      'kda': 8, 'win': 8, 'matches': 9})
             final_string += f"**{key_1.replace('_', ' ').upper()}**\n"
-            final_string += f"```glsl\n{temp_header_str}\n{temp_string}```\n"
+            final_string += '```cs\n' + table + '```'
     return final_string
+
+
+def get_medal_url(medal, rank=None):
+    medals_url = 'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/medals_small/'
+
+    if medal == 'uncalibrated':
+        return medals_url + 'uncalibrated.png' + '?raw=true'
+    if rank is not None:
+        rank = int(rank)
+        if rank <= 10:
+            medal_name = constant.MEDAL_IMMORTAL_UNDER[10]
+        elif rank <= 100:
+            medal_name = constant.MEDAL_IMMORTAL_UNDER[100]
+        else:
+            medal_name = constant.MEDAL_IMMORTAL_UNDER[5000]
+        return medals_url + medal_name + '?raw=true'
+    else:
+        medal_name, medal_no = medal.split()
+        medal_no = constant.MEDAL_NUMBERING[medal_no]
+        medal_name = medal_name + '-' + str(medal_no)
+        medal_url = medals_url + (medal_name + '.png')
+        return medal_url + '?raw=true'
 
 
 def scrap_profile_info(profile_id):
@@ -202,11 +205,18 @@ def scrap_profile_info(profile_id):
 
     string = pretty_profile_text_for_discord(result)
 
-    return string
+    medal = medal_info['medal']
+    if medal_info['rank'] == '':
+        medal = get_medal_url(medal)
+    else:
+        medal = get_medal_url(medal, rank=medal_info['rank'])
+
+    return string, medal
 
 
 if __name__ == '__main__':
-    ids  = ['425327377', '86753879', '86745912', '297066030', '46135920']
+    ids  = ['116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
     for id in ids:
-        r = (scrap_profile_info(id))
+        r,link = (scrap_profile_info(id))
         print(r)
+        print(link)

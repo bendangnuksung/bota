@@ -201,19 +201,19 @@ def get_profile(query):
     query = query.split()
     id = ' '.join(query[1:])
     id = id.strip()
-
+    medal_url = ''
     if is_id(id):
-        profile_info_string = scrap_profile_info(id)
+        profile_info_string, medal_url = scrap_profile_info(id)
     else:
         user_name = id
         flag, id = steam_user.get_id(user_name)
         if not flag:
-            return False, user_name, 2, ''
-        profile_info_string = scrap_profile_info(id)
-        return True, id, 2, profile_info_string
+            return False, user_name, 2, '', medal_url
+        profile_info_string, medal_url = scrap_profile_info(id)
+        return True, id, 2, profile_info_string, medal_url
     if profile_info_string == '':
-        return False, id, 1, ''
-    return True, id, 1, profile_info_string
+        return False, id, 1, '', medal_url
+    return True, id, 1, profile_info_string, medal_url
 
 
 def save_id(query):
