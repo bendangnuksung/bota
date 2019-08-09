@@ -121,7 +121,7 @@ ITEM_BACKGROUND_IMAGE = 'data/background/items_background.jpg'
 ITEM_BACKGROUND_IMAGE = os.path.join(REPO_PATH, ITEM_BACKGROUND_IMAGE)
 ITEM_BACKGROUND_IMAGE_SHAPE = [600, 1070]
 
-ITEM_THRESHOLD_UPDATE = 86400 # 1 day
+ITEM_THRESHOLD_UPDATE = 43200 # 12 hour
 
 ITEM_FIRST_STAGE_TAG = ['div', {'class': 'r-stats-grid'}]
 ITEM_PLAYER_NAME_ID_TAG = ['div', {'class': 'kv kv-larger kv-small-margin'}]
@@ -180,7 +180,7 @@ GUIDE_BACKGROUND_PATH = 'data/background/build_background.jpg'
 GUIDE_BACKGROUND_SHAPE = [80, 800]
 GUIDE_HERO_ICON_X_Y = [4, 336]
 GUIDE_BACKGROUND_PATH = os.path.join(REPO_PATH, GUIDE_BACKGROUND_PATH)
-GUIDE_THRESHOLD_IMAGE_UPDATE = 604800 # 1 week
+GUIDE_THRESHOLD_IMAGE_UPDATE = 43200 # 12 hour
 GUIDE_SAVE_PATH = 'data/guide_build'
 GUIDE_SAVE_PATH = os.path.join(REPO_PATH, GUIDE_SAVE_PATH)
 
@@ -196,7 +196,7 @@ SKILL_CROP_COORDS = [0, 165, 800, -168] # xmin, ymin, xmax, ymax
 # Counter Hero
 COUNTER_HERO_IMAGE_PATH = 'data/counter_heroes/'
 COUNTER_HERO_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_HERO_IMAGE_PATH)
-COUNTER_HERO_UPDATE_TIME_THRESHOLD = 259200 # 3 days
+COUNTER_HERO_UPDATE_TIME_THRESHOLD = 43200 # 12 hour
 COUNTER_BG_IMAGE_PATH = 'data/background/counter_backgound.jpg'
 COUNTER_BG_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_BG_IMAGE_PATH)
 COUNTER_BG_SHAPE = (400, 800)
@@ -208,7 +208,7 @@ COUNTER_HEIGHT_DIST = 100
 COUNTER_MAX_COLUMN = 5
 
 # Hero Good against
-GOOD_HERO_UPDATE_TIME_THRESHOLD = 259200 # 3 days
+GOOD_HERO_UPDATE_TIME_THRESHOLD = 43200 # 12 hour
 GOOD_HERO_IMAGE_PATH = 'data/good_against_heroes/'
 GOOD_HERO_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_HERO_IMAGE_PATH)
 GOOD_BG_IMAGE_PATH = 'data/background/good_against_background.jpg'
@@ -217,12 +217,12 @@ GOOD_BG_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_BG_IMAGE_PATH)
 # Current Trend
 CT_IMAGE_PATH = 'data/temp_images/current_trend.png'
 CT_IMAGE_PATH = os.path.join(REPO_PATH, CT_IMAGE_PATH)
-CT_IMAGE_UPDATE_TIME_THRESHOLD = 36000 # 10 hour
+CT_IMAGE_UPDATE_TIME_THRESHOLD = 7200 # 2 hour
 
 # top live game
 TLG_IMAGE_PATH = 'data/temp_images/top_live_games.png'
 TLG_IMAGE_PATH = os.path.join(REPO_PATH, TLG_IMAGE_PATH)
-TLG_IMAGE_UPDATE_TIME_THRESHOLD = 10 # 30 sec
+TLG_IMAGE_UPDATE_TIME_THRESHOLD = 10 # 10 sec
 
 TLG_CUSTOM_COLUMNS = ['Notable Players', 'Radiant', 'Dire', 'Avg MMR', 'Game Mode',
 					  'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead']
