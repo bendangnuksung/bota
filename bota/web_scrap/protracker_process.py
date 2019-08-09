@@ -82,7 +82,7 @@ def get_d2pt_hero(hero_name, top=5):
     post_header = f"Mostly Played by: {notable_players_string}"
 
     heroname = os.path.basename(url)
-    url = 'http://www.dota2protracker.com/hero/' + heroname
+    url = 'http://www.dota2protracker.com/hero/' + heroname.replace(' ', '%20')
     link = f"**[Dota2ProTracker]({url})**"
 
     # Recent matches
@@ -127,11 +127,14 @@ def get_d2pt_hero(hero_name, top=5):
 
 if __name__ == "__main__":
     d2pt = DotaProTracker()
-    for i in range(2):
+    for heroname in scrap_constant.d2pt_hero_names:
         start = datetime.now()
-        r = d2pt.get_hero_details_from_d2pt('axe')
-        print((datetime.now() - start).total_seconds())
-        print(r)
+        print("*" * 30)
+        print(heroname)
+        r = d2pt.get_hero_details_from_d2pt(heroname)
+        # print((datetime.now() - start).total_seconds())
+
+        print(len(r))
 
     # start= datetime.now()
     # r = get_d2pt_hero("axe")
