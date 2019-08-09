@@ -5,6 +5,8 @@ MAX_COMMAND_WORD_LENGTH = 5
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
 DEFAULT_EMBED_HEADER = {'name': 'Bota', 'icon_url': 'https://bota.tech/assets/images/bota-122x122.png',
                         'url': 'https://github.com/bendangnuksung/bota'}
+DOTA2_LOGO_URL = 'https://seeklogo.com/images/D/dota-2-logo-A8CAC9B4C9-seeklogo.com.png'
+CHARACTER_ICONS_URL ='https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/'
 
 # Early Update time (Scrap data early by Threshold time i.e THRESHOLD_UPDATE_TIME - EARLY_BY )
 EARLY_BY = 3600 # Hour, Update early by an hour
@@ -25,7 +27,7 @@ COMMAND_USER_LOG_PATH = os.path.join(REPO_PATH, COMMAND_USER_LOG_PATH)
 
 # Dota 2 ProTracker
 D2PT_HERO_UPDATE_THRESHOLD = 600 # 10 min
-
+D2PT_WEBSITE_URL = 'http://www.dota2protracker.com/'
 D2PT_URL_LIVE_GAMES = "http://www.dota2protracker.com/livegames"
 D2PT_HERO_BASE_URL = 'http://dota2protracker.com/api/hero/'
 D2PT_KEYWORD_META = 'meta'

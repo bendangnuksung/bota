@@ -1,6 +1,7 @@
 import discord
 import sys
-from bota.constant import MAX_COMMAND_WORD_LENGTH
+from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
+from bota.help import HELP_FOOTER, LAST_UPDATE, get_help
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
@@ -10,42 +11,13 @@ from bota.web_scrap.TI.group_stage import get_group_stage
 from bota.log_process import save_command_logs, get_command_log_tail
 from discord.utils import find
 from bota import constant
-import asyncio
-
 
 client = discord.Client()
 GUILDS = []
 
-# This weird spacing is to pretty text in discord
-commands_list = {'!top_game'        : 'Shows top 9 Live Games        eg: **`!top game`**',
-                 '!counter HeroName': 'Shows Heroes which counter the given hero name        eg: **`!counter am`**',
-                 '!good HeroName'   : 'Opposite of !counter command. Good against.        eg: **`!good axe`**',
-                 '!skill': 'Shows most popular & win rate talent/skill build        eg:**`!skill meepo`**',
-                 '!item HeroName'   : 'Shows current meta item build by Top Rank Players        eg: **`!item kotl`**',
-                 '!profile  steamID': 'Shows your profile stats given steamID        eg: **`!profile 116585378`**',
-                 '!save Alias steamID': 'Saves your steamID under Alias name, and call by Alias name.\n'
-                                       '        \
-                                       First **--->** **`!save midone 116585378`**  Then **--->** **`!profile midone`**',
-                 '!trend'           : 'Shows current heroes trend        eg: `!trend`',
-                 '!twitch language' : '**`!twitch`** shows top 8 twitch stream,   eg2: **`!twitch en`** just shows top english streams',
-                 '!protrack HeroName': 'Shows hero played recently by Pros, plus shows `GOOD`  and  `BAD` heroes against it.  eg:**`!protrack slark`**',
-                 '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. Options: `new`, `controversial`, `top`, `rising`, `random`, `hot`:\n'
-                                      '                       eg 1:   **`!reddit`**             : Gets a random post from  /r/DotA2/\n'
-                                      '                       eg 2:   **`!reddit hot`**   : Gets Top 3 hot post from  /r/DotA2/\n'
-                                      '                       eg 3:   **`!reddit new`**   : Gets Top 3 new post from    /r/DotA2/',
-                 '!update'     : 'Shows any new   `Updates`   and   `BOT support`'
-                 }
 
-
-UPDATE_BLOCK = '```cs\n"UPDATE": Added Language option in twitch "!twitch en" "!twitch ru"```'
-NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage ---as---> !counter am"
-DOTA2_LOGO_URL = 'https://seeklogo.com/images/D/dota-2-logo-A8CAC9B4C9-seeklogo.com.png'
-
-LAST_UPDATE = "**UPDATES:**\n" \
-              "1. Added Language option in twitch    `!twitch en`    date: `07-Aug-2019`\n"\
-              "2. Added new command    `!protrack HeroName`    date: `06-Aug-2019`\n" \
-              "3. Added Notable hero in    `!top game`    date: `05-Aug-2019`\n" \
-              "For more info and support please join: https://discord.gg/a7QYPWd"
+def is_command_called_correctly(message, minlength, maxlength=constant.MAX_COMMAND_WORD_LENGTH, ):
+    pass
 
 
 def embed_txt_message(content, add_header=False, header=constant.DEFAULT_EMBED_HEADER, color=discord.Color.blue()):
@@ -53,23 +25,6 @@ def embed_txt_message(content, add_header=False, header=constant.DEFAULT_EMBED_H
     if add_header:
         embed_msg.set_author(name=header['name'], icon_url=header['icon_url'], url=header['url'])
     return embed_msg
-
-
-def get_help():
-    help_string = []
-    head = "```css\nBelow are the commands to use DOTA BOT: 😋```"
-    post_head = UPDATE_BLOCK
-    head = head + post_head
-    help_string.append(head)
-    body = []
-    for key, value in commands_list.items():
-        command = '**' + key + '**'
-        command_help = value
-        full = command + '\t:\t' + command_help
-        body.append(full + '\n')
-    help_string = help_string + body
-    help_string = "\n".join(help_string)
-    return help_string
 
 
 async def broadcast_message(msg):
@@ -94,6 +49,7 @@ async def on_guild_join(guild):
                            f'Type   `!help` or `!command`   to get list of commands to use.')
 
 
+# Where the commands gets executed
 @client.event
 async def on_message(message):
     is_command_called = True
@@ -103,22 +59,19 @@ async def on_message(message):
     message_word_length = len(message_string.split())
     print(f"{message.channel}: {message.author}: {message.author.name}: {message.content}")
 
+    # Ignore all message passed by the our bot
     if client.user == message.author:
         is_command_called = False
-        # Ignore all message passed by the our bot
-        pass
 
+    # Ignore if message is from another Bot
     elif message.author.bot:
-        # Ignore if message is from another Bot
         is_command_called = False
-        pass
     
     elif '!help' == message_string or '--help' == message_string or '!command' in message_string:
         command_called = "!help"
         help_string = get_help()
-        # await message.channel.send(help_string)
         embed_msg = embed_txt_message(help_string, add_header=True)
-        embed_msg.set_footer(text=NOTE, icon_url=DOTA2_LOGO_URL)
+        embed_msg.set_footer(text=HELP_FOOTER, icon_url=DOTA2_LOGO_URL)
         await  message.channel.send(embed=embed_msg)
 
     elif ('!top_game' in message_string or '!top game' in message_string) and \
@@ -130,11 +83,12 @@ async def on_message(message):
             await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
     elif '!profile' in message_string.split()[0]:
+
         command_called = "!profile"
         async with message.channel.typing():
             flag, id, mode, result, medal_url = get_profile(message_string)
         result_embed = embed_txt_message(result)
-        result_embed.set_author(name=f"**Profile: {id}**", url=f'https://www.dotabuff.com/players/{id}',
+        result_embed.set_author(name=f"**Profile: {id}**", url=f'{constant.PLAYER_URL_BASE}{id}',
                                 icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
         result_embed.set_thumbnail(url=medal_url)
         if not flag:
@@ -227,7 +181,7 @@ async def on_message(message):
         for result in result_list:
             await message.channel.send(f'{result}')
 
-    elif "!protrack" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+    elif "!pro" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!protrack"
         async with message.channel.typing():
             found, hero_name, result_string, icon_path = get_protracker_hero(message_string)
@@ -238,12 +192,11 @@ async def on_message(message):
                 await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
         else:
             embed_msg = embed_txt_message(result_string)
-            embed_msg.set_author(name=f'**{hero_name.upper()}** Dota2ProTracker:', url='http://www.dota2protracker.com/',
-                                 icon_url=f'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/{hero_name}.png')
-            embed_msg.set_thumbnail(url=f'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/{hero_name}.png')
+            embed_msg.set_author(name=f'**{hero_name.upper()}** Dota2ProTracker:', url=constant.D2PT_WEBSITE_URL,
+                                 icon_url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
+            embed_msg.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             await message.channel.send(embed=embed_msg)
-            # await message.channel.send(f'ProTracker Record from last **7** days,    Source:   **Dota2 ProTracker**\n'
-            #                            f'{result_string}', file=discord.File(icon_path))
+
 
     elif "!ti group" in message_string:
         # Release it as soon the TI starts
