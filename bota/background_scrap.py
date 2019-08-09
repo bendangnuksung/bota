@@ -47,8 +47,8 @@ if args['mode'] == 2 or args['mode'] == '2':
     print("Finished One Time update")
 
 
-for time in update_times:
-    schedule.every().day.at(time).do(update_images)
+for update_time in update_times:
+    schedule.every().day.at(update_time).do(update_images)
 
 print(f"Background Scrapping process starts at: {update_times} everyday")
 
