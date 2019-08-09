@@ -133,26 +133,26 @@ async def on_message(message):
         command_called = "!profile"
         async with message.channel.typing():
             flag, id, mode, result, medal_url = get_profile(message_string)
-            result_embed = embed_txt_message(result)
-            result_embed.set_author(name=f"**Profile: {id}**", url=f'https://www.dotabuff.com/players/{id}',
-                                    icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
-            result_embed.set_thumbnail(url=medal_url)
-            if not flag:
-                if mode == 1:
-                    await message.channel.send(f'Could not find any profile under: **{id}**')
-                else:
-                    await message.channel.send(f'Could not find any Alias name : **{id}**')
+        result_embed = embed_txt_message(result)
+        result_embed.set_author(name=f"**Profile: {id}**", url=f'https://www.dotabuff.com/players/{id}',
+                                icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        result_embed.set_thumbnail(url=medal_url)
+        if not flag:
+            if mode == 1:
+                await message.channel.send(f'Could not find any profile under: **{id}**')
             else:
-                await message.channel.send(embed=result_embed)
+                await message.channel.send(f'Could not find any Alias name : **{id}**')
+        else:
+            await message.channel.send(embed=result_embed)
 
     elif '!save' in message_string.split()[0]:
         command_called = "!save"
         async with message.channel.typing():
             user_name, id, flag, status = save_id(message_string)
-            if flag:
-                await message.channel.send(f'**{id}** saved under the alias: {user_name}')
-            else:
-                await message.channel.send(f'**Failed to save, reason: {status}')
+        if flag:
+            await message.channel.send(f'**{id}** saved under the alias: {user_name}')
+        else:
+            await message.channel.send(f'**Failed to save, reason: {status}')
 
     elif "!trend" in message_string and message_word_length < (MAX_COMMAND_WORD_LENGTH - 2):
         command_called = "!trend"
@@ -216,42 +216,43 @@ async def on_message(message):
         async with message.channel.typing():
             language = None if len(message_string.split()) <= 1 else message_string.split()[1]
             result = get_dota2_top_stream(language)
-            embed_msg = embed_txt_message(result)
-            await message.channel.send(embed=embed_msg)
+        embed_msg = embed_txt_message(result)
+        await message.channel.send(embed=embed_msg)
 
     elif "!reddit" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         async with message.channel.typing():
             result_list, mode = get_reddit(message_string)
-            command_called = f"!reddit {mode}"
-            await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**, Source: Reddit")
-            for result in result_list:
-                await message.channel.send(f'{result}')
+        command_called = f"!reddit {mode}"
+        await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**, Source: Reddit")
+        for result in result_list:
+            await message.channel.send(f'{result}')
 
     elif "!protrack" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!protrack"
         async with message.channel.typing():
             found, hero_name, result_string, icon_path = get_protracker_hero(message_string)
-            if not found:
-                if hero_name != '':
-                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
-                else:
-                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+        if not found:
+            if hero_name != '':
+                await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
             else:
-                embed_msg = embed_txt_message(result_string)
-                embed_msg.set_author(name=f'**{hero_name.upper()}** Dota2ProTracker:', url='http://www.dota2protracker.com/',
-                                     icon_url=f'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/{hero_name}.png')
-                embed_msg.set_thumbnail(url=f'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/{hero_name}.png')
-                await message.channel.send(embed=embed_msg)
-                # await message.channel.send(f'ProTracker Record from last **7** days,    Source:   **Dota2 ProTracker**\n'
-                #                            f'{result_string}', file=discord.File(icon_path))
+                await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+        else:
+            embed_msg = embed_txt_message(result_string)
+            embed_msg.set_author(name=f'**{hero_name.upper()}** Dota2ProTracker:', url='http://www.dota2protracker.com/',
+                                 icon_url=f'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/{hero_name}.png')
+            embed_msg.set_thumbnail(url=f'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/{hero_name}.png')
+            await message.channel.send(embed=embed_msg)
+            # await message.channel.send(f'ProTracker Record from last **7** days,    Source:   **Dota2 ProTracker**\n'
+            #                            f'{result_string}', file=discord.File(icon_path))
 
     elif "!ti group" in message_string:
         # Release it as soon the TI starts
         async with message.channel.typing():
             command_called = '!ti group'
-            async with message.channel.typing():
-                result_string = get_group_stage()
-                await message.channel.send('`TI9 GROUP STAGE`\n' + result_string)
+            result_string = get_group_stage()
+        result_string = embed_txt_message(result_string)
+        result_string.set_author(name='TI9 GROUP STAGE')
+        await message.channel.send(embed=result_string)
 
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
@@ -259,8 +260,7 @@ async def on_message(message):
     # Admin privilege
     elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
         command_called = "!get_user"
-        async with message.channel.typing():
-            await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
+        await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
 
     elif "!exit" in message_string and str(message.author) == ADMIN_ID:
         message_split = message_string.split()
