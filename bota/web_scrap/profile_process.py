@@ -181,7 +181,7 @@ def scrap_profile_info(profile_id):
     url = constant.PLAYER_URL_BASE + profile_id
     r = requests.get(url, headers=scrap_constant.browser_headers)
     if r.status_code != 200:
-        return ''
+        return '', ''
     html = r.text
     soup = bs(html, 'html.parser')
 
@@ -218,7 +218,7 @@ def scrap_profile_info(profile_id):
 
 
 if __name__ == '__main__':
-    ids  = ['237445135','116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
+    ids  = ['1234567890', '237445135','116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
     for id in ids:
         r,link = (scrap_profile_info(id))
         print(r)

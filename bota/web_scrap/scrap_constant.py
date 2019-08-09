@@ -62,7 +62,30 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'warden': 'arc-warden', 'cent': 'centaur-warrunner', 'clinks': 'clinkz', 'clink': 'clinkz',
                            'invo': 'invoker', 'titan': 'elder-titan', 'night': 'night-stalker',
                            'nature': 'natures-prophet', 'natures':'natures-prophet', 'prophet': 'natures-prophet',
-                           'sladar': 'slardar'}
+                           'sladar': 'slardar', 'maiden': 'crystal-maiden', 'invoke': 'invoker',
+                           'kaldr': 'ancient-apparition', 'magina': 'anti-mage', 'khan': 'axe', 'antropos': 'bane',
+                           'jinzakk': 'batrider', 'rexxar': 'beastmaster', 'strygwyr': 'bloodseeker',
+                           'gondar': 'bounty-hunter', 'nessaj': 'chaos-knight', 'holy knight': 'chen', 'bone': 'clinkz',
+                           'cw': 'clockwerk', 'rylai': 'crystal-maiden', 'ishkafel': 'dark-seer', 'priest': 'dazzle',
+                           'shadow priest': 'dazzle', 'krob': 'death-prophet', 'krobelus': 'death-prophet',
+                           'lucifer': 'doom', 'luci': 'doom', 'doom bringer': 'doom', 'davion': 'dragon-knight',
+                           'traxis': 'drow-ranger', 'shaker': 'earthshaker', 'chantress': 'enchantress',
+                           'darchrow': 'enigma', 'darkterror': 'faceless-void', 'aurel': 'gyrocopter',
+                           'scared warrior': 'huskar', 'voker': 'invoker', 'jak': 'jakiro', 'yunero': 'juggernaut',
+                           'keeper': 'keeper-of-the-light', 'ezalor': 'keeper-of-the-light', 'tormented soul': 'leshrac',
+                           'kelthuzad': 'lich', 'slayer': 'lina', 'demon witch': 'lion', 'bear': 'lone-druid',
+                           'druid': 'lone-druid', 'syllabear': 'lone-druid', 'moon': 'luna rider', 'lycanthrope': 'lycan',
+                           'magnataur': 'magnus', 'dusa': 'medusa', 'gorgon': 'medusa', 'geo': 'meepo', 'geomancer': 'meepo',
+                           'slithice': 'naga-siren', 'necrolyte': 'necrophos', 'nerub': 'nyx-assassin',
+                           'mortred': 'phantom-assasin', 'azwraith': 'phantom-lancer', 'faerie': 'puck', 'butcher': 'pudge',
+                           'oblivion': 'pugna', 'akasha': 'queen-of-pain', 'lightning': 'razor', 'stealth-assasin': 'riki',
+                           'magus': 'rubick', 'crix': 'sand-king', 'crixalis': 'sand-king', 'eredar': 'shadow-demon',
+                           'nevermore': 'shadow-fiend', 'nortrom': 'silencer', 'leoric': 'wraith-king', 'skeleton king':'wraith-king',
+                           'slar': 'slardar', 'murloc': 'slark', 'mercurial': 'spectre', 'kardel': 'sniper',
+                           'raijin': 'storm', 'rogue knight': 'sven', 'leviathan': 'tidehunter', 'rizzrak': 'timbersaw',
+                           'tink': 'tinker', 'stone giant': 'tiny', 'rooftrellen': 'treant-protector', 'dirge': 'undying',
+                           'ulfsaar': 'ursa', 'netherdrake': 'viper', 'necrolic': 'visage', 'alleria': 'windranger',
+                           'wind': 'windranger'}
 
 
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']

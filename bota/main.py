@@ -82,8 +82,11 @@ async def on_message(message):
             await message.channel.send(f"Getting Top Live Spectacting Games, Source: Dota2API, Dota2ProTracker")
             await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
-    elif '!profile' in message_string.split()[0]:
-
+    elif '!profile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        if message_word_length == 1:
+            msg = f'Please provide a STEAM ID or saved Username: eg: `!profile 116585378`'
+            await message.channel.send(msg)
+            return
         command_called = "!profile"
         async with message.channel.typing():
             flag, id, mode, result, medal_url = get_profile(message_string)
@@ -93,9 +96,12 @@ async def on_message(message):
         result_embed.set_thumbnail(url=medal_url)
         if not flag:
             if mode == 1:
-                await message.channel.send(f'Could not find any profile under: **{id}**')
+                msg = f'Could not find any profile under: **{id}**'
+                await message.channel.send(msg)
             else:
-                await message.channel.send(f'Could not find any Alias name : **{id}**')
+                msg = f'Could not find any Alias name : **{id}**, make sure you have saved your profile\n'
+                msg += f'You can save your profile using  `!save YourUserName SteamID` eg: `!save midone 116585378`'
+                await message.channel.send(msg)
         else:
             await message.channel.send(embed=result_embed)
 
