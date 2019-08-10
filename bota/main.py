@@ -125,55 +125,55 @@ async def on_message(message):
     elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!counter"
         async with message.channel.typing():
+            note = f"\n**NOTE**: Can use short Hero Names, `!counter anti mage`   as   `!counter am`"
             found, hero_name, image_path = get_counter_hero(message_string)
             if not found:
                 if hero_name != '':
-                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name {note}")
                 else:
-                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct {note}")
             else:
-                await message.channel.send(f'**{hero_name.upper()}** is bad against, Source: DotaBuff ', file=discord.File(image_path))
-            await  message.channel.send(f"**NOTE**: Can use short Hero Names, `!counter anti mage`   as   `!counter am`")
+                await message.channel.send(f'**{hero_name.upper()}** is bad against, Source: DotaBuff {note}', file=discord.File(image_path))
 
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!good"
         async with message.channel.typing():
+            note = f"\n**NOTE**: Can use short Hero Names, `!counter shadow fiend`   as   `!counter sf`"
             found, hero_name, image_path = get_good_against(message_string)
             if not found:
                 if hero_name != '':
-                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name{note}")
                 else:
-                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct{note}")
             else:
-                await message.channel.send(f'**{hero_name.upper()}** is good against, Source: DotaBuff ', file=discord.File(image_path))
-            await  message.channel.send(f"**NOTE**: Can use short Hero Names, `!counter shadow fiend`   as   `!counter sf`")
+                await message.channel.send(f'**{hero_name.upper()}** is good against, Source: DotaBuff {note}', file=discord.File(image_path))
 
     elif ("!skill" in message_string or "!talent" in message_string) \
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!skill"
         async with message.channel.typing():
+            note = f"\n**NOTE**: Can use short Hero Names, `!counter queen of pain`   as   `!counter qop`"
             found, hero_name, image_path = await get_skill_build(message_string)
             if not found:
                 if hero_name != '':
-                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name{note}")
                 else:
-                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct{note}")
             else:
-                await message.channel.send(f'**{hero_name.upper()}** most popular Skill/Talent build: , Source: DotaBuff', file=discord.File(image_path))
-            await  message.channel.send(f"**NOTE**: Can use short Hero Names, `!counter queen of pain`   as   `!counter qop`")
+                await message.channel.send(f'**{hero_name.upper()}** most popular Skill/Talent build: , Source: DotaBuff{note}', file=discord.File(image_path))
 
     elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!item"
         async with message.channel.typing():
+            note = f"\n**NOTE**: Can use short Hero Names, `!counter dragon knight`   as   `!counter dk`"
             found, hero_name, image_path = get_item_build(message_string)
             if not found:
                 if hero_name != '':
-                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+                    await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name{note}")
                 else:
-                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+                    await message.channel.send(f"Could not find hero, Please make sure the hero name is correct{note}")
             else:
-                await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, Source: DotaBuff', file=discord.File(image_path))
-            await  message.channel.send(f"**NOTE**: Can use short Hero Names, `!counter dragon knight`   as   `!counter dk`")
+                await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, Source: DotaBuff{note}', file=discord.File(image_path))
 
     elif "!twitch" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!twitch"
