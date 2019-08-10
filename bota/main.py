@@ -133,6 +133,7 @@ async def on_message(message):
                     await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
             else:
                 await message.channel.send(f'**{hero_name.upper()}** is bad against, Source: DotaBuff ', file=discord.File(image_path))
+            await  message.channel.send(f"**NOTE**: Can use short Hero Names, `!counter anti mage`   as   `!counter am`")
 
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!good"
@@ -145,6 +146,7 @@ async def on_message(message):
                     await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
             else:
                 await message.channel.send(f'**{hero_name.upper()}** is good against, Source: DotaBuff ', file=discord.File(image_path))
+            await  message.channel.send(f"**NOTE**: Can use short Hero Names, `!counter shadow fiend`   as   `!counter sf`")
 
     elif ("!skill" in message_string or "!talent" in message_string) \
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
@@ -158,6 +160,7 @@ async def on_message(message):
                     await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
             else:
                 await message.channel.send(f'**{hero_name.upper()}** most popular Skill/Talent build: , Source: DotaBuff', file=discord.File(image_path))
+            await  message.channel.send(f"**NOTE**: Can use short Hero Names, `!counter queen of pain`   as   `!counter qop`")
 
     elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!item"
@@ -170,6 +173,7 @@ async def on_message(message):
                     await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
             else:
                 await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, Source: DotaBuff', file=discord.File(image_path))
+            await  message.channel.send(f"**NOTE**: Can use short Hero Names, `!counter dragon knight`   as   `!counter dk`")
 
     elif "!twitch" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!twitch"

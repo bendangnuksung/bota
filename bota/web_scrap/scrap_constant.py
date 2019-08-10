@@ -85,7 +85,21 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'raijin': 'storm', 'rogue knight': 'sven', 'leviathan': 'tidehunter', 'rizzrak': 'timbersaw',
                            'tink': 'tinker', 'stone giant': 'tiny', 'rooftrellen': 'treant-protector', 'dirge': 'undying',
                            'ulfsaar': 'ursa', 'netherdrake': 'viper', 'necrolic': 'visage', 'alleria': 'windranger',
-                           'wind': 'windranger'}
+                           'wind': 'windranger', 'ancientapparition': 'ancient-apparition', 'arcwarden': 'arc-warden',
+                           'bountyhunter': 'bounty-hunter', 'centaurwarrunner': 'centaur-warrunner',
+                           'chaosknight': 'chaos-knight', 'crystalmaiden': 'crystal-maiden', 'darkwillow': 'dark-willow',
+                           'deathprophet': 'death-prophet', 'dragonknight': 'dragon-knight', 'drowranger': 'drow-ranger',
+                           'earthspirit': 'earth-spirit', 'eldertitan': 'elder-titan', 'emberspirit': 'ember-spirit',
+                           'facelessvoid': 'faceless-void', 'keeperofthelight': 'keeper-of-the-light',
+                           'legioncommander': 'legion-commander', 'lonedruid': 'lone-druid', 'monkeyking': 'monkey-king',
+                           'naturesprophet': 'natures-prophet', 'nightstalker': 'night-stalker',
+                           'nyxassassin': 'nyx-assassin', 'ogremagi': 'ogre-magi', 'outworlddevourer': 'outworld-devourer',
+                           'phantomassassin': 'phantom-assassin', 'phantomlancer': 'phantom-lancer',
+                           'queenofpain': 'queen-of-pain', 'shadowdemon': 'shadow-demon', 'shadowshaman': 'shadow-shaman',
+                           'spiritbreaker': 'spirit-breaker', 'stormspirit': 'storm-spirit',
+                           'templarassassin': 'templar-assassin', 'treantprotector': 'treant-protector',
+                           'vengefulspirit': 'vengeful-spirit', 'winterwyvern': 'winter-wyvern', 'witchdoctor': 'witch-doctor'
+                           }
 
 
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']
