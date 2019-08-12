@@ -4,6 +4,7 @@ from bota import constant
 from bota.web_scrap import scrap_constant
 import re
 from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
+import os
 
 
 # Div class r-fluid line-graph sometimes different for others
@@ -107,11 +108,13 @@ def get_latest_match(soup, top=5):
         game_mode_split = game_mode.split()
         game_mode_short = [x[0] for x in game_mode_split]
         game_mode_short = ''.join(game_mode_short).upper()
-        if len(str(game_type)) < 15:
+        print(game_type)
+        if len(str(game_type)) < 11:
             match_type = str(game_type)
+            match_type = match_type.split()[0]
             match_type = 'Tourney' if match_type == 'Tournament' else match_type
         else:
-            match_type = game_mode
+            match_type = game_mode.split()[0]
 
         duration = row.find('div', {'class': 'r-fluid r-125 r-line-graph r-duration'})
         duration = duration.find('div', {'class': 'r-body'}).contents[0]
@@ -132,13 +135,13 @@ def pretty_profile_text_for_discord(json_data, spaces=18):
             continue
         if type(value) != list:
             value = value.strip()
-            final_string += f"**{key_1.upper()}:**"
-            final_string += f"    {value}\n"
+            final_string += f"{key_1.upper()}:"
+            final_string += f"    **{value}**\n"
         else:
 
             if key_1 == 'latest_match':
                 table = cvt_dict_to_discord_pretty_text(value, rename_keys={'duration': 'time', 'status':'w/l'}, spaces=15,
-                                                               custom_space={'w/l':4, 'type': 8, 'time': 7,
+                                                               custom_space={'w/l':4, 'type': 8, 'time': 8,
                                                                              'kda':8, 'win': 8, 'matches': 9})
             else:
                 table = cvt_dict_to_discord_pretty_text(value, rename_keys={'duration': 'time', 'status': 'w/l'},
@@ -178,7 +181,7 @@ def scrap_profile_info(profile_id):
     url = constant.PLAYER_URL_BASE + profile_id
     r = requests.get(url, headers=scrap_constant.browser_headers)
     if r.status_code != 200:
-        return ''
+        return '', ''
     html = r.text
     soup = bs(html, 'html.parser')
 
@@ -195,8 +198,6 @@ def scrap_profile_info(profile_id):
     medal_info = get_rank_medal(soup)
     result.update(medal_info)
 
-    result['dotabuff'] = url
-
     most_played_heros = get_most_played_heroes(soup)
     result.update(most_played_heros)
 
@@ -211,11 +212,13 @@ def scrap_profile_info(profile_id):
     else:
         medal = get_medal_url(medal, rank=medal_info['rank'])
 
+    string += f"**[DotaBuff]({url})**"
+
     return string, medal
 
 
 if __name__ == '__main__':
-    ids  = ['116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
+    ids  = ['1234567890', '237445135','116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
     for id in ids:
         r,link = (scrap_profile_info(id))
         print(r)

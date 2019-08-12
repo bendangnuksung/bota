@@ -3,6 +3,7 @@ from bota.web_scrap import scrap_constant
 from bota import constant
 from datetime import datetime
 from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
+import os
 
 
 class DotaProTracker():
@@ -29,7 +30,7 @@ def get_d2pt_hero_json(heroname):
     url = constant.D2PT_HERO_BASE_URL + d2pt_hero_name
     json_data = requests.get(url, headers=scrap_constant.browser_headers)
     json_data = json_data.json()
-    return json_data
+    return json_data, url
 
 
 def clean_list_dict(matches, wanted_keys):
@@ -42,8 +43,26 @@ def clean_list_dict(matches, wanted_keys):
     return final_matches
 
 
+def shorten_and_replace_values(list_dict, keyword_and_len, replace_value={}):
+    final_list = []
+    for dictionary in list_dict:
+        temp_dict = dictionary
+        for key, length in keyword_and_len.items():
+            if key in dictionary:
+                temp_value = temp_dict[key]
+                temp_value = temp_value[:length]
+                temp_dict[key] = temp_value
+        for key in replace_value:
+            if key in dictionary:
+                for key_1, value in replace_value[key].items():
+                    if key_1 == str(temp_dict[key]):
+                        temp_dict[key] = replace_value[key][key_1]
+        final_list.append(temp_dict)
+    return final_list
+
+
 def get_d2pt_hero(hero_name, top=5):
-    json_data = get_d2pt_hero_json(hero_name)
+    json_data, url = get_d2pt_hero_json(hero_name)
     meta_data = json_data[constant.D2PT_KEYWORD_META]
     good_against_data = json_data[constant.D2PT_KEYWORD_CROSS_META][constant.D2PT_KEYWORD_GOOD_AGAINST][:top]
     bad_against_data = json_data[constant.D2PT_KEYWORD_CROSS_META][constant.D2PT_KEYWORD_BAD_AGAINST][:top]
@@ -62,42 +81,60 @@ def get_d2pt_hero(hero_name, top=5):
     header = f"**{hero_name.upper()}**      `Total Pick`: **{total_picked}**      `Won`: **{total_won}**      `Win Rate`: **{total_winrate}%**"
     post_header = f"Mostly Played by: {notable_players_string}"
 
-    recent_matches = clean_list_dict(recent_matches,constant.WANTED_KEYS_RECENT_MATCHES)
-    recent_matches_string = cvt_dict_to_discord_pretty_text(recent_matches, rename_keys=constant.RECENT_MATCHES_KEY_RENAME)
+    heroname = os.path.basename(url)
+    url = 'http://www.dota2protracker.com/hero/' + heroname.replace(' ', '%20')
+    link = f"**[Dota2ProTracker]({url})**"
 
+    # Recent matches
+    recent_matches = clean_list_dict(recent_matches,constant.WANTED_KEYS_RECENT_MATCHES)
+    recent_matches = shorten_and_replace_values(recent_matches, {'pro': 12, 'time':11}, {'won': {'False':'L', 'True': 'W'}})
+    recent_matches_string = cvt_dict_to_discord_pretty_text(recent_matches,
+                                                            rename_keys=constant.RECENT_MATCHES_KEY_RENAME, spaces=18,
+                                                            custom_space={'name': 13, 'matchid': 12, 'w/l': 4})
+    # Good against
     good_against_data_updated = []
     for data in good_against_data:
         temp = {}
         temp['hero 1'] = hero_name
-        temp['score'] = str(data['won_against']) + '    -    ' + str(data['lost_against'])
+        won_string = str(data['won_against']) + ' ' * (3 - (len(str(data['won_against']))))
+        lost_string = ' ' * (3 - (len(str(data['lost_against'])))) + str(data['lost_against'])
+        temp['score'] = won_string + '-' + lost_string
         temp['hero 2'] = data['name']
         good_against_data_updated.append(temp)
-    good_against_string = cvt_dict_to_discord_pretty_text(good_against_data_updated)
+    good_against_data_updated = shorten_and_replace_values(good_against_data_updated, {'hero 1': 14, 'hero 2': 14})
+    good_against_string = cvt_dict_to_discord_pretty_text(good_against_data_updated, spaces=15, custom_space={'score': 9})
 
+    # Bad against
     bad_against_data_updated = []
     for data in bad_against_data:
         temp = {}
         temp['hero 1'] = hero_name
-        temp['score'] = str(data['won_against']) + '    -    ' + str(data['lost_against'])
+        won_string = str(data['won_against']) + ' ' * (3 - (len(str(data['won_against']))))
+        lost_string = ' ' * (3 - (len(str(data['lost_against'])))) + str(data['lost_against'])
+        temp['score'] = won_string + '-' + lost_string
         temp['hero 2'] = data['name']
         bad_against_data_updated.append(temp)
-    bad_against_string = cvt_dict_to_discord_pretty_text(bad_against_data_updated)
+    bad_against_data_updated = shorten_and_replace_values(bad_against_data_updated, {'hero 1': 14, 'hero 2': 14})
+    bad_against_string = cvt_dict_to_discord_pretty_text(bad_against_data_updated, spaces=16, custom_space={'score': 9})
 
     body_1 = f"**Recent Matches**```glsl\n{recent_matches_string}```"
     body_2 = f"**Good Against**```glsl\n{good_against_string}```"
     body_3 = f"**Bad Against**```glsl\n{bad_against_string}```"
 
-    final_string = header + '\n' + post_header + '\n' + body_1 + body_2 + body_3
+    final_string = link + '\n' + header + '\n' + post_header + '\n' + body_1 + body_2 + body_3
     return final_string
 
 
 if __name__ == "__main__":
     d2pt = DotaProTracker()
-    for i in range(5):
+    for heroname in scrap_constant.d2pt_hero_names:
         start = datetime.now()
-        r = d2pt.get_hero_details_from_d2pt('axe')
-        print((datetime.now() - start).total_seconds())
-        print(r)
+        print("*" * 30)
+        print(heroname)
+        r = d2pt.get_hero_details_from_d2pt(heroname)
+        # print((datetime.now() - start).total_seconds())
+
+        print(len(r))
 
     # start= datetime.now()
     # r = get_d2pt_hero("axe")

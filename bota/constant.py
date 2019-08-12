@@ -5,6 +5,8 @@ MAX_COMMAND_WORD_LENGTH = 5
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
 DEFAULT_EMBED_HEADER = {'name': 'Bota', 'icon_url': 'https://bota.tech/assets/images/bota-122x122.png',
                         'url': 'https://github.com/bendangnuksung/bota'}
+DOTA2_LOGO_URL = 'https://seeklogo.com/images/D/dota-2-logo-A8CAC9B4C9-seeklogo.com.png'
+CHARACTER_ICONS_URL ='https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/'
 
 # Early Update time (Scrap data early by Threshold time i.e THRESHOLD_UPDATE_TIME - EARLY_BY )
 EARLY_BY = 3600 # Hour, Update early by an hour
@@ -25,7 +27,7 @@ COMMAND_USER_LOG_PATH = os.path.join(REPO_PATH, COMMAND_USER_LOG_PATH)
 
 # Dota 2 ProTracker
 D2PT_HERO_UPDATE_THRESHOLD = 600 # 10 min
-
+D2PT_WEBSITE_URL = 'http://www.dota2protracker.com/'
 D2PT_URL_LIVE_GAMES = "http://www.dota2protracker.com/livegames"
 D2PT_HERO_BASE_URL = 'http://dota2protracker.com/api/hero/'
 D2PT_KEYWORD_META = 'meta'
@@ -34,8 +36,8 @@ D2PT_KEYWORD_RECENT_MATCH = 'recent_matches'
 D2PT_KEYWORD_GOOD_AGAINST = 'best_versus'
 D2PT_KEYWORD_BAD_AGAINST = 'worst_versus'
 
-WANTED_KEYS_RECENT_MATCHES = ['pro', 'matchid', 'mmr', 'won', 'time']
-RECENT_MATCHES_KEY_RENAME = {'pro': 'name', 'time': 'last played'}
+WANTED_KEYS_RECENT_MATCHES = ['pro', 'matchid', 'won', 'time']
+RECENT_MATCHES_KEY_RENAME = {'pro': 'name', 'time': 'played', 'won': 'w/l'}
 
 WANTED_KEYS_GOOD_AGAINST = ['name', 'won_against', 'lost_against']
 WANTED_KEYS_BAD_AGAINST = ['name', 'won_against', 'lost_against']
@@ -119,7 +121,7 @@ ITEM_BACKGROUND_IMAGE = 'data/background/items_background.jpg'
 ITEM_BACKGROUND_IMAGE = os.path.join(REPO_PATH, ITEM_BACKGROUND_IMAGE)
 ITEM_BACKGROUND_IMAGE_SHAPE = [600, 1070]
 
-ITEM_THRESHOLD_UPDATE = 86400 # 1 day
+ITEM_THRESHOLD_UPDATE = 43200 # 12 hour
 
 ITEM_FIRST_STAGE_TAG = ['div', {'class': 'r-stats-grid'}]
 ITEM_PLAYER_NAME_ID_TAG = ['div', {'class': 'kv kv-larger kv-small-margin'}]
@@ -178,7 +180,7 @@ GUIDE_BACKGROUND_PATH = 'data/background/build_background.jpg'
 GUIDE_BACKGROUND_SHAPE = [80, 800]
 GUIDE_HERO_ICON_X_Y = [4, 336]
 GUIDE_BACKGROUND_PATH = os.path.join(REPO_PATH, GUIDE_BACKGROUND_PATH)
-GUIDE_THRESHOLD_IMAGE_UPDATE = 604800 # 1 week
+GUIDE_THRESHOLD_IMAGE_UPDATE = 43200 # 12 hour
 GUIDE_SAVE_PATH = 'data/guide_build'
 GUIDE_SAVE_PATH = os.path.join(REPO_PATH, GUIDE_SAVE_PATH)
 
@@ -194,7 +196,7 @@ SKILL_CROP_COORDS = [0, 165, 800, -168] # xmin, ymin, xmax, ymax
 # Counter Hero
 COUNTER_HERO_IMAGE_PATH = 'data/counter_heroes/'
 COUNTER_HERO_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_HERO_IMAGE_PATH)
-COUNTER_HERO_UPDATE_TIME_THRESHOLD = 259200 # 3 days
+COUNTER_HERO_UPDATE_TIME_THRESHOLD = 43200 # 12 hour
 COUNTER_BG_IMAGE_PATH = 'data/background/counter_backgound.jpg'
 COUNTER_BG_IMAGE_PATH = os.path.join(REPO_PATH, COUNTER_BG_IMAGE_PATH)
 COUNTER_BG_SHAPE = (400, 800)
@@ -206,7 +208,7 @@ COUNTER_HEIGHT_DIST = 100
 COUNTER_MAX_COLUMN = 5
 
 # Hero Good against
-GOOD_HERO_UPDATE_TIME_THRESHOLD = 259200 # 3 days
+GOOD_HERO_UPDATE_TIME_THRESHOLD = 43200 # 12 hour
 GOOD_HERO_IMAGE_PATH = 'data/good_against_heroes/'
 GOOD_HERO_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_HERO_IMAGE_PATH)
 GOOD_BG_IMAGE_PATH = 'data/background/good_against_background.jpg'
@@ -215,12 +217,12 @@ GOOD_BG_IMAGE_PATH = os.path.join(REPO_PATH, GOOD_BG_IMAGE_PATH)
 # Current Trend
 CT_IMAGE_PATH = 'data/temp_images/current_trend.png'
 CT_IMAGE_PATH = os.path.join(REPO_PATH, CT_IMAGE_PATH)
-CT_IMAGE_UPDATE_TIME_THRESHOLD = 36000 # 10 hour
+CT_IMAGE_UPDATE_TIME_THRESHOLD = 7200 # 2 hour
 
 # top live game
 TLG_IMAGE_PATH = 'data/temp_images/top_live_games.png'
 TLG_IMAGE_PATH = os.path.join(REPO_PATH, TLG_IMAGE_PATH)
-TLG_IMAGE_UPDATE_TIME_THRESHOLD = 10 # 30 sec
+TLG_IMAGE_UPDATE_TIME_THRESHOLD = 10 # 10 sec
 
 TLG_CUSTOM_COLUMNS = ['Notable Players', 'Radiant', 'Dire', 'Avg MMR', 'Game Mode',
 					  'Spectators', 'Time', 'R Kills', 'D Kills', 'Gold Lead']

@@ -10,18 +10,12 @@ from argparse import RawTextHelpFormatter
 parser = argparse.ArgumentParser(description='Script to scrap data everyday at a particular time',
                                  formatter_class=RawTextHelpFormatter,)
 
-parser.add_argument('--time', '-t', help='UST time at which update will take place. Format: HH:MM ', default='22:00')
+# parser.add_argument('--time', '-t', help='UST time at which update will take place. Format: HH:MM ', default='22:00')
 parser.add_argument('--mode', '-m', help='1: Update images once a day at given time \n'
                                          '2: Update images now and returns back to mode 1',          default=1)
 args = vars(parser.parse_args())
 
-# UST 00:00 == IST 05:30
-# Twice a day: 12 Hours apart
-arg_time_1 = args['time']
-arg_time_1_split = arg_time_1.split(':')
-arg_time_2_h = str((int(arg_time_1_split[0]) + 12) % 24)
-arg_time_2_h = '0' + arg_time_2_h if len(arg_time_2_h) == 1 else arg_time_2_h
-arg_time_2 = str(arg_time_2_h) + ':' + arg_time_1_split[1]
+update_times = ['00:00', '06:00', '12:00', '18:00']
 
 
 def update_images():
@@ -38,7 +32,7 @@ def update_images():
         get_good_against('', hero=hero_name)
     end = datetime.now()
     print("*"*80)
-    print(f"Background Scrapping process starts at: {arg_time_1} and  {arg_time_2} everyday")
+    print(f"Background Scrapping process starts at: {update_times} everyday")
     print("Update Completed")
     print(f"Total Time taken: {((end-start).total_seconds()) / 60} min")
     print("Start time: ", start.strftime('%H:%M:%S'))
@@ -52,10 +46,11 @@ if args['mode'] == 2 or args['mode'] == '2':
     update_images()
     print("Finished One Time update")
 
-schedule.every().day.at(arg_time_1).do(update_images)
-schedule.every().day.at(arg_time_2).do(update_images)
 
-print(f"Background Scrapping process starts at: {arg_time_1} and  {arg_time_2} everyday")
+for update_time in update_times:
+    schedule.every().day.at(update_time).do(update_images)
+
+print(f"Background Scrapping process starts at: {update_times} everyday")
 
 while True:
     schedule.run_pending()
