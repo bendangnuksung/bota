@@ -10,6 +10,7 @@ from bota.web_scrap.TI.group_stage import get_group_stage
 from bota.log_process import save_command_logs, get_command_log_tail
 from discord.utils import find
 from bota import constant
+import os
 
 from bota.utility.dotavoyance import Dotavoyance 
 
@@ -160,7 +161,7 @@ async def on_message(message):
     elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!counter"
         found, hero_name, image_path = get_counter_hero(message_string)
-        dv_valid, dv_message = dv.get_counters(message_string)
+        dv_valid, dv_img_path = dv.get_counters(message_string)
         if not found and not dv_valid:
             if hero_name != '':
                 await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
@@ -169,9 +170,10 @@ async def on_message(message):
         elif found:
             await message.channel.send(f'**{hero_name.upper()}** is bad against, Source: DotaBuff ', file=discord.File(image_path))
         if dv_valid:
-            await message.channel.send(f'Dotavoyance stats for last week,    Source:   **Dotavoyance.com**\n'
-                                       f'{dv_message}')
+            await message.channel.send(f'Dotavoyance stats for last week,    Source:   **Dotavoyance.com**\n', file=discord.File(dv_img_path))
             await message.channel.send(f"Powered by **Dotavoyance.com** http://www.dotavoyance.com - Increase your game knowledge")
+            if os.path.exists(dv_img_path):
+                os.remove(dv_img_path)
 
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!good"

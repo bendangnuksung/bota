@@ -62,7 +62,7 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'warden': 'arc-warden', 'cent': 'centaur-warrunner', 'clinks': 'clinkz', 'clink': 'clinkz',
                            'invo': 'invoker', 'titan': 'elder-titan', 'night': 'night-stalker',
                            'nature': 'natures-prophet', 'natures':'natures-prophet', 'prophet': 'natures-prophet',
-                           'sladar': 'slardar'}
+                           'sladar': 'slardar', 'zues': 'zeus'}
 
 
 heroes_section_wanted = ['Worst Versus', 'Best Versus', 'Most Used Items']

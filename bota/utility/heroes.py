@@ -149,8 +149,8 @@ def heroes_dict():
           "id": 21
         },
         {
-          "name": "zuus",
-          "displayname": "zuus",
+          "name": "zeus",
+          "displayname": "zeus",
           "showname": "Zeus",
           "class": "int",
           "id": 22
@@ -240,8 +240,8 @@ def heroes_dict():
           "id": 35
         },
         {
-          "name": "necrolyte",
-          "displayname": "necrolyte",
+          "name": "necrophos",
+          "displayname": "necrophos",
           "showname": "Necrophos",
           "class": "int",
           "id": 36
@@ -261,8 +261,8 @@ def heroes_dict():
           "id": 38
         },
         {
-          "name": "queenofpain",
-          "displayname": "queenofpain",
+          "name": "queen-of-pain",
+          "displayname": "queen-of-pain",
           "showname": "Queen of Pain",
           "class": "int",
           "id": 39
@@ -520,8 +520,8 @@ def heroes_dict():
           "id": 75
         },
         {
-          "name": "obsidian-destroyer",
-          "displayname": "outworld-destroyer",
+          "name": "obsidian-devourer",
+          "displayname": "outworld-devourer",
           "showname": "Outworld Devourer",
           "class": "int",
           "id": 76
