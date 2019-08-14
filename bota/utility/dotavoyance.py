@@ -3,6 +3,7 @@ from bota.web_scrap.heroes_process import find_hero_name
 from bota import constant
 import bota.web_scrap.heroes_process as bota_hp
 import bota.image_processing as bota_imp
+from bota.constant import REPO_PATH
 
 import numpy as np
 import cv2
@@ -79,10 +80,10 @@ class Dotavoyance():
         img_height, img_width = constant.DV_DEFAULT_IMAGE_HEIGHT, constant.DV_DEFAULT_IMAGE_WIDTH
         n_channels = constant.DV_NUM_CHANNELS
         transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
-        cv2.imwrite('bota/data/background/transparent.png', transparent_img)
+        cv2.imwrite(os.path.join(REPO_PATH, 'bota/data/background/transparent.png'), transparent_img)
 
-        img0 = cv2.imread('bota/data/background/transparent.png')
-        icon_dims = cv2.imread('bota/data/character_icons_big/axe.png').shape
+        img0 = cv2.imread(os.path.join(REPO_PATH, 'bota/data/background/transparent.png'))
+        icon_dims = cv2.imread(os.path.join(REPO_PATH, 'bota/data/character_icons_big/axe.png')).shape
         img0, header_height = self.write_counter_header(img0, num_heroes, icon_dims)
         res_count = 0
         curr_height = constant.DV_HEIGHT_BUFFER + header_height
@@ -115,7 +116,7 @@ class Dotavoyance():
                 name_found, bota_name = bota_hp.find_hero_name(curr_name)
                 if name_found:
                     res_hero_names.append(bota_name)
-                    img = cv2.imread('bota/data/character_icons_big/'+bota_name+'.png')
+                    img = cv2.imread(os.path.join(REPO_PATH, 'bota/data/character_icons_big/'+bota_name+'.png'))
                     img_h = img.shape[0]
                     img_w = img.shape[1]
                     img0[curr_height: img_h + curr_height, curr_width: img_w + curr_width, :] = img
