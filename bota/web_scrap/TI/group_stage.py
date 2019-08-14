@@ -24,11 +24,11 @@ def get_group_stage_table():
             prepared_cols = {}
             for j, column in enumerate(columns):
                 if j == 0:
-                    row_contents = row.contents[1].contents[0]
+                    row_contents = column.contents[0]
                     team_name = row_contents.attrs['data-highlightingclass']
                     prepared_cols[COLUMNS[j]] = team_name
                 else:
-                    prepared_cols[COLUMNS[j]] = row.contents[1].string
+                    prepared_cols[COLUMNS[j]] = column.contents[0].string
             prepared_row.append(prepared_cols)
         prepared_group_tables[GROUPS[i]] = prepared_row
     return prepared_group_tables
@@ -47,7 +47,7 @@ def get_group_stage():
         string_list = []
         for i, line in enumerate(split_value):
             if i == 0:
-                string_to_add = ' ' + line
+                string_to_add = '  ' + line
             elif i < 5:
                 string_to_add = '+ ' + line
             else:
