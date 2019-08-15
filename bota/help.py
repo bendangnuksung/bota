@@ -18,11 +18,12 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 
 # Update Block
-UPDATE_BLOCK = '```cs\n"UPDATE": Added TI9 commands, check Group Stage, Stats. Type `!ti`"```'
+UPDATE_BLOCK = '```cs\n"UPDATE": Added TI9 commands, check Group Stage, Stats. Type "!ti" for more details```'
 LAST_UPDATE = "**UPDATES:**\n" \
-              "1. Added Language option in twitch    `!twitch en`    date: `07-Aug-2019`\n"\
-              "2. Added new command    `!protrack HeroName`    date: `06-Aug-2019`\n" \
-              "3. Added Notable hero in    `!top game`    date: `05-Aug-2019`\n" \
+              "1. Added TI command,   `!ti`   date: `15-Aug-2019`\n" \
+              "2. Added Language option in twitch    `!twitch en`    date: `07-Aug-2019`\n"\
+              "3. Added new command    `!protrack HeroName`    date: `06-Aug-2019`\n" \
+              "4. Added Notable hero in    `!top game`    date: `05-Aug-2019`\n" \
               "For more info and support please join: https://discord.gg/a7QYPWd"
 
 

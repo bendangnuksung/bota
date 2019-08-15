@@ -125,7 +125,7 @@ async def on_message(message):
     elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!counter"
         async with message.channel.typing():
-            note = f"\n**NOTE**: Can use short Hero Names, `!counter anti mage`   as   `!counter am`"
+            note = f"\n**UPDATE**: Added TI9 commands, check Group Stage, Stats. Type **`!ti`** for more details"
             found, hero_name, image_path = get_counter_hero(message_string)
             if not found:
                 if hero_name != '':
@@ -139,7 +139,7 @@ async def on_message(message):
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!good"
         async with message.channel.typing():
-            note = f"\n**NOTE**: Can use short Hero Names, `!counter shadow fiend`   as   `!counter sf`"
+            note = f"\n**UPDATE**: Added TI9 commands, check Group Stage, Stats. Type **`!ti`** for more details"
             found, hero_name, image_path = get_good_against(message_string)
             if not found:
                 if hero_name != '':
@@ -154,7 +154,7 @@ async def on_message(message):
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!skill"
         async with message.channel.typing():
-            note = f"\n**NOTE**: Can use short Hero Names, `!counter queen of pain`   as   `!counter qop`"
+            note = f"\n**UPDATE**: Added TI9 commands, check Group Stage, Stats. Type **`!ti`** for more details"
             found, hero_name, image_path = await get_skill_build(message_string)
             if not found:
                 if hero_name != '':
@@ -169,7 +169,7 @@ async def on_message(message):
     elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!item"
         async with message.channel.typing():
-            note = f"\n**NOTE**: Can use short Hero Names, `!counter dragon knight`   as   `!counter dk`"
+            note = f"\n**UPDATE**: Added TI9 commands, check Group Stage, Stats. Type **`!ti`** for more details"
             found, hero_name, image_path = get_item_build(message_string)
             if not found:
                 if hero_name != '':
