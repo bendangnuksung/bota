@@ -1,4 +1,4 @@
-from bota.utility import heroes
+from bota.web_scrap.dotavoyance import heroes
 from bota.web_scrap.heroes_process import find_hero_name
 from bota import constant
 import bota.web_scrap.heroes_process as bota_hp
