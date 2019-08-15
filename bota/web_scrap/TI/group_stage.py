@@ -6,7 +6,7 @@ from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
 
 GROUP_STAGE_URL = 'https://liquipedia.net/dota2/The_International/2019'
 GROUPS = ['GROUP A', 'GROUP B']
-COLUMNS = ['team_name', 'w-l-d', 'points']
+COLUMNS = ['team_name', 'w-d-l', 'points']
 
 
 def get_group_stage_table():
@@ -38,7 +38,7 @@ def get_group_stage():
     prepared_group_tables = get_group_stage_table()
     pretty_groups = {}
     for table_name, table_value in prepared_group_tables.items():
-        pretty_text = cvt_dict_to_discord_pretty_text(table_value, spaces=20, custom_space={'w-l-d': 10, 'points': 5})
+        pretty_text = cvt_dict_to_discord_pretty_text(table_value, spaces=20, custom_space={'w-d-l': 10, 'points': 5})
         pretty_groups[table_name] = pretty_text
 
     # adding colour to text with ```diff```

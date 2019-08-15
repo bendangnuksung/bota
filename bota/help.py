@@ -39,6 +39,7 @@ COMMAND_LIST = {'!top game'        : 'Shows top 9 Live Games eg: **`!top game`**
                 '!trend'           : 'Shows current heroes trend  eg: `!trend`',
                 '!twitch language' : '**`!twitch`** shows top 8 twitch stream,   eg2: **`!twitch en`** just shows top english streams',
                 '!pro HeroName': 'Shows hero played recently by Pros, plus shows `GOOD`  and  `BAD` heroes against it.  eg:**`!protrack slark`**',
+                '!ti': 'Shows Group stage Table, TI9 stats,  eg:  `!ti group`   `!ti stat`',
                 '!reddit'          : 'Gets a reddit post from   **/r/DotA2**. Options: `new`, `controversial`, `top`, `rising`, `random`, `hot`:\n'
                                       '                       eg 1:   **`!reddit`** : Gets a random post from  /r/DotA2/\n'
                                       '                       eg 2:   **`!reddit hot`** : Gets Top 3 hot post from  /r/DotA2/\n'
