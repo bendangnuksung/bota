@@ -6,7 +6,7 @@ from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
 
 GROUP_STAGE_URL = 'https://liquipedia.net/dota2/The_International/2019'
 GROUPS = ['GROUP A', 'GROUP B']
-COLUMNS = ['team_name', 'w-l-d', 'points']
+COLUMNS = ['team_name', 'w-d-l', 'points']
 
 
 def get_group_stage_table():
