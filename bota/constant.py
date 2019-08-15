@@ -11,6 +11,9 @@ CHARACTER_ICONS_URL ='https://raw.githubusercontent.com/bendangnuksung/bota/mast
 # Early Update time (Scrap data early by Threshold time i.e THRESHOLD_UPDATE_TIME - EARLY_BY )
 EARLY_BY = 3600 # Hour, Update early by an hour
 
+# TI9
+TI_LOGO_URL = 'https://liquipedia.net/commons/images/thumb/f/fc/Ti9_teamcard_logo.png/147px-Ti9_teamcard_logo.png'
+
 
 # Profile Info
 PLAYER_URL_BASE = 'https://www.dotabuff.com/players/'

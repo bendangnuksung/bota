@@ -33,6 +33,7 @@ def get_group_stage_table():
         prepared_group_tables[GROUPS[i]] = prepared_row
     return prepared_group_tables
 
+
 def get_group_stage():
     prepared_group_tables = get_group_stage_table()
     pretty_groups = {}
@@ -52,8 +53,8 @@ def get_group_stage():
                 string_to_add = '+ ' + line
             else:
                 string_to_add = '- ' + line
-            if i == len(split_value) - 1:
-                string_to_add += 'Eliminate'
+            # if i == len(split_value) - 1:
+            #     string_to_add += 'Eliminate'
             string_list.append(string_to_add)
 
         join_string = "\n".join(string_list)

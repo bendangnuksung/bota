@@ -4,8 +4,8 @@ from bota.web_scrap.scrap_constant import browser_headers
 from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
 
 
-MOST_HEROES_PLAYED_URL = 'https://www.dotabuff.com/esports/leagues/9870-the-international-2018/heroes'
-PICK_BANS_URL = 'https://www.dotabuff.com/esports/leagues/9870-the-international-2018/picks'
+MOST_HEROES_PLAYED_URL = 'https://www.dotabuff.com/esports/leagues/10749-the-international-2019/heroes'
+PICK_BANS_URL = 'https://www.dotabuff.com/esports/leagues/10749-the-international-2019/picks'
 
 
 def scrap_most_played_heroes(top=10):
@@ -78,7 +78,31 @@ def get_pick_ban_heroes(top=10):
     return pick_ban
 
 
+def get_all_stats():
+    pick_ban_stats = get_pick_ban_heroes(top=5)
+    pick_ban_stats = cvt_dict_to_discord_pretty_text(pick_ban_stats, rename_keys={'pick win rate': 'p-win', 'ban_win_rate': 'b-win'},
+                                                     custom_space={'pick': 5, 'p-win':8, 'ban': 5, 'b-win': 7})
+    pick_ban_stats_string = f'**Pick/Ban Stats** ```cs\n{pick_ban_stats}```'
+
+    most_played_hero = scrap_most_played_heroes(top=5)
+    most_played_hero = cvt_dict_to_discord_pretty_text(most_played_hero, rename_keys={'matches': 'match', 'win rate': 'win %'},
+                                                       custom_space={'match': 7, 'win %': 8, 'kda': 5})
+    most_played_hero_string = f"**Most Played Heroes** ```cs\n{most_played_hero}```"
+
+    highest_kda_hero = get_high_kda_heroes(top=5)
+    highest_kda_hero = cvt_dict_to_discord_pretty_text(highest_kda_hero)
+    highest_kda_hero_string = f"**Highest KDA Heroes** ```cs\n{highest_kda_hero}```"
+
+    head = "**TI9 Stats** including TI qualifiers match \n"
+    final_string = head + pick_ban_stats_string + most_played_hero_string + highest_kda_hero_string
+
+    return final_string
+
+
 if __name__ == '__main__':
+    r = get_all_stats()
+    print(r)
+    exit()
     pick_ban = get_pick_ban_heroes()
     pick_ban = cvt_dict_to_discord_pretty_text(pick_ban)
     print(pick_ban)

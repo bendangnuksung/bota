@@ -7,7 +7,7 @@ from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
 from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id, get_protracker_hero
 from bota.web_scrap.twitch_process import get_dota2_top_stream
-from bota.web_scrap.TI.group_stage import get_group_stage
+from bota.web_scrap.TI import group_stage, help, stats
 from bota.log_process import save_command_logs, get_command_log_tail
 from discord.utils import find
 from bota import constant
@@ -213,15 +213,33 @@ async def on_message(message):
             embed_msg.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             await message.channel.send(embed=embed_msg)
 
+    elif "!ti" in message_string:
+        command_called = '!ti'
+        message_split = message_string.split()
+        if len(message_split) > 1 and 'group' in message_split[1]:
+            async with message.channel.typing():
+                command_called = '!ti group'
+                result_string = group_stage.get_group_stage()
+            result_string = embed_txt_message(result_string, color=discord.Color.purple())
+            result_string.set_thumbnail(url=constant.TI_LOGO_URL)
+            result_string.set_author(name='TI9 GROUP STAGE')
+            await message.channel.send(embed=result_string)
 
-    elif "!ti group" in message_string:
-        # Release it as soon the TI starts
-        async with message.channel.typing():
-            command_called = '!ti group'
-            result_string = get_group_stage()
-        result_string = embed_txt_message(result_string)
-        result_string.set_author(name='TI9 GROUP STAGE')
-        await message.channel.send(embed=result_string)
+        elif len(message_split) > 1 and 'stat' in message_split[1]:
+            async with message.channel.typing():
+                command_called = '!ti stat'
+                result_string = stats.get_all_stats()
+            result_string = embed_txt_message(result_string, color=discord.Color.purple())
+            result_string.set_thumbnail(url=constant.TI_LOGO_URL)
+            result_string.set_author(name='TI9 Hero Stats')
+            await message.channel.send(embed=result_string)
+
+        else:
+            result_string = help.help_message
+            result_string = embed_txt_message(result_string, color=discord.Color.purple())
+            result_string.set_thumbnail(url=constant.TI_LOGO_URL)
+            result_string.set_author(name='TI9 COMMANDS')
+            await message.channel.send(embed=result_string)
 
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
