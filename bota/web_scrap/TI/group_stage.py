@@ -38,7 +38,7 @@ def get_group_stage():
     prepared_group_tables = get_group_stage_table()
     pretty_groups = {}
     for table_name, table_value in prepared_group_tables.items():
-        pretty_text = cvt_dict_to_discord_pretty_text(table_value, spaces=20, custom_space={'w-l-d': 10, 'points': 5})
+        pretty_text = cvt_dict_to_discord_pretty_text(table_value, spaces=20, custom_space={'w-d-l': 10, 'points': 5})
         pretty_groups[table_name] = pretty_text
 
     # adding colour to text with ```diff```
