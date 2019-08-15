@@ -98,7 +98,7 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'queenofpain': 'queen-of-pain', 'shadowdemon': 'shadow-demon', 'shadowshaman': 'shadow-shaman',
                            'spiritbreaker': 'spirit-breaker', 'stormspirit': 'storm-spirit',
                            'templarassassin': 'templar-assassin', 'treantprotector': 'treant-protector',
-                           'vengefulspirit': 'vengeful-spirit', 'winterwyvern': 'winter-wyvern', 'witchdoctor': 'witch-doctor'
+                           'vengefulspirit': 'vengeful-spirit', 'winterwyvern': 'winter-wyvern', 'witchdoctor': 'witch-doctor', 'zues': 'zeus'
                            }
 
 

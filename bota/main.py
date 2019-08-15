@@ -43,7 +43,7 @@ async def on_ready():
 
 @client.event
 async def on_guild_join(guild):
-    general = find(lambda x: x.name == 'general',  guild.text_channels)
+    general = find(lambda x: x.name == 'general', guild.text_channels)
     if general and general.permissions_for(guild.me).send_messages:
         await general.send(f'Hello **{format(guild.name)}**✌✌!\n'
                            f'Type   `!help` or `!command`   to get list of commands to use.')
@@ -66,7 +66,7 @@ async def on_message(message):
     # Ignore if message is from another Bot
     elif message.author.bot:
         is_command_called = False
-    
+
     elif '!help' == message_string or '--help' == message_string or '!command' in message_string:
         command_called = "!help"
         help_string = get_help()
@@ -75,7 +75,7 @@ async def on_message(message):
         await  message.channel.send(embed=embed_msg)
 
     elif ('!top_game' in message_string or '!top game' in message_string) and \
-         message_word_length < MAX_COMMAND_WORD_LENGTH:
+            message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!top_game"
         async with message.channel.typing():
             image_path = get_top_games()
@@ -133,7 +133,8 @@ async def on_message(message):
                 else:
                     await message.channel.send(f"Could not find hero, Please make sure the hero name is correct {note}")
             else:
-                await message.channel.send(f'**{hero_name.upper()}** is bad against, Source: DotaBuff {note}', file=discord.File(image_path))
+                await message.channel.send(f'**{hero_name.upper()}** is bad against, Source: DotaBuff {note}',
+                                           file=discord.File(image_path))
 
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!good"
@@ -146,7 +147,8 @@ async def on_message(message):
                 else:
                     await message.channel.send(f"Could not find hero, Please make sure the hero name is correct{note}")
             else:
-                await message.channel.send(f'**{hero_name.upper()}** is good against, Source: DotaBuff {note}', file=discord.File(image_path))
+                await message.channel.send(f'**{hero_name.upper()}** is good against, Source: DotaBuff {note}',
+                                           file=discord.File(image_path))
 
     elif ("!skill" in message_string or "!talent" in message_string) \
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
@@ -160,7 +162,9 @@ async def on_message(message):
                 else:
                     await message.channel.send(f"Could not find hero, Please make sure the hero name is correct{note}")
             else:
-                await message.channel.send(f'**{hero_name.upper()}** most popular Skill/Talent build: , Source: DotaBuff{note}', file=discord.File(image_path))
+                await message.channel.send(
+                    f'**{hero_name.upper()}** most popular Skill/Talent build: , Source: DotaBuff{note}',
+                    file=discord.File(image_path))
 
     elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!item"
@@ -173,7 +177,9 @@ async def on_message(message):
                 else:
                     await message.channel.send(f"Could not find hero, Please make sure the hero name is correct{note}")
             else:
-                await message.channel.send(f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, Source: DotaBuff{note}', file=discord.File(image_path))
+                await message.channel.send(
+                    f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, Source: DotaBuff{note}',
+                    file=discord.File(image_path))
 
     elif "!twitch" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!twitch"

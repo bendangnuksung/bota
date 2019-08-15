@@ -237,6 +237,12 @@ KEYWORD_RADIANT_TEAM = 'team_name_radiant'
 KEYWORD_DIRE_TEAM = 'team_name_dire'
 KEYWORD_MATCH_ID = "match_id"
 
+# Dotavoyance Contants
+DV_DEFAULT_IMAGE_WIDTH = 1024
+DV_DEFAULT_IMAGE_HEIGHT = 1024 #768
+DV_NUM_CHANNELS = 4
+DV_HEIGHT_BUFFER = 10
+DV_COLUMN_BUFFER = 10
 
 # Dota 2 API constant
 rank_tier = ['herald', 'Guardian', 'Crusader', 'Archon','Legend', 'Ancient','Divine', 'Immortal']
