@@ -7,7 +7,7 @@ from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
 from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id, get_protracker_hero
 from bota.web_scrap.twitch_process import get_dota2_top_stream
-from bota.web_scrap.TI import group_stage, help, stats
+from bota.web_scrap.TI import group_stage, help, stats, matches
 from bota.log_process import save_command_logs, get_command_log_tail
 from discord.utils import find
 from bota import constant
@@ -233,6 +233,12 @@ async def on_message(message):
             result_string.set_thumbnail(url=constant.TI_LOGO_URL)
             result_string.set_author(name='TI9 Hero Stats')
             await message.channel.send(embed=result_string)
+
+        elif len(message_split) > 1 and 'match' in message_split[1]:
+            async with message.channel.typing():
+                command_called = '!ti stat'
+                result_string = matches.get_all_matches()
+            await message.channel.send(result_string)
 
         else:
             result_string = help.help_message
