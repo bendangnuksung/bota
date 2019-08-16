@@ -19,7 +19,7 @@ def get_live_contents(row):
     team_2 = row.contents[3].find('div', {'class': 'team team-2'})
     team_2 = team_2.contents[1].contents[0].contents[0].string
 
-    return {'series': series + ',' + bracket, 'game': game_no, 'team 1': team_1, 'team 2': team_2}
+    return {'series': series + ',' + bracket, 'team 1': team_1, 'team 2': team_2, 'game': game_no}
 
 
 def get_schedule_contents(row):
@@ -85,8 +85,8 @@ def get_all_matches():
 
         live_matches = get_upcoming_matches(is_live=True)
         live_matches = cvt_dict_to_discord_pretty_text(live_matches,
-                                                           custom_space={'series': 18, 'team 1': 18,
-                                                                         'team 2': 18, 'game': 8})
+                                                           custom_space={'series': 18, 'team 1': 20,
+                                                                         'team 2': 20, 'game': 10})
         final_string = f'{header}```cs\n{live_matches}```'
         return final_string
 
