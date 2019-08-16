@@ -7,7 +7,43 @@ from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
 GROUP_STAGE_MATCHES = 'https://www.dotabuff.com/esports/leagues/10749-the-international-2019/schedule'
 
 
-def get_upcoming_matches():
+def get_live_contents(row):
+    anchor = row.find('a')
+    series = anchor.string
+    game_no = row.contents[1].contents[0].string
+    game_no = game_no.replace('Live: ', '')
+    bracket = row.contents[1].contents[2].contents[0].contents[0].string
+    bracket = bracket.replace('TI9', '')
+    team_1 = row.contents[3].find('div', {'class': 'team team-1'})
+    team_1 = team_1.contents[1].contents[0].contents[0].string
+    team_2 = row.contents[3].find('div', {'class': 'team team-2'})
+    team_2 = team_2.contents[1].contents[0].contents[0].string
+
+    return {'series': series + ',' + bracket, 'game': game_no, 'team 1': team_1, 'team 2': team_2}
+
+
+def get_schedule_contents(row):
+    anchor = row.find('a')
+    series = anchor.string
+    bracket = row.contents[1].contents[0].string
+    time_str = str(row.contents[2].find('time').string)
+    date, time_others = time_str.split(',')
+    time = time_others.split()[1:]
+    time = date + ", " + " ".join(time)
+
+    team_1 = row.contents[4].find('div', {'class': 'team team-1'})
+    team_1 = team_1.contents[1].contents[0].contents[0].string
+    team_2 = row.contents[4].find('div', {'class': 'team team-2'})
+    team_2 = team_2.contents[1].contents[0].contents[0].string
+
+    return {'series': series + ', ' + bracket, 'team 1': team_1, 'team 2': team_2, 'time': time}
+
+
+def get_upcoming_matches(is_live=False):
+    header_name = 'Schedule'
+    if is_live:
+        header_name = 'Currently Live'
+
     upcoming_matches = []
     r = requests.get(url=GROUP_STAGE_MATCHES, headers=browser_headers)
     r = r.text
@@ -19,7 +55,7 @@ def get_upcoming_matches():
         headers = content.find_all('header')
         for header in headers:
             if header is not None:
-                if header.string == 'Schedule':
+                if header.string == header_name:
                     flag = True
                     group_stage_day_matches = content.find('tbody')
                     break
@@ -31,35 +67,40 @@ def get_upcoming_matches():
         if i % 3 != 0:
             continue
 
-        anchor = row.find('a')
-        series = anchor.string
-        bracket = row.contents[1].contents[0].string
-        time_str = str(row.contents[2].find('time').string)
-        date, time_others = time_str.split(',')
-        time = time_others.split()[1:]
-        time = date + ", " + " ".join(time)
+        if is_live:
+            live_content = get_live_contents(row)
+            upcoming_matches.append(live_content)
 
-        team_1 = row.contents[4].find('div', {'class': 'team team-1'})
-        team_1 = team_1.contents[1].contents[0].contents[0].string
-        team_2 = row.contents[4].find('div', {'class': 'team team-2'})
-        team_2 = team_2.contents[1].contents[0].contents[0].string
+        else:
+            schedule_contents = get_schedule_contents(row)
+            upcoming_matches.append(schedule_contents)
 
-        upcoming_matches.append({'series': series, 'bracket': bracket, 'team 1': team_1, 'team 2': team_2,
-                                 'time': time})
         # print(i,series, bracket, time, team_1, team_2)
     return upcoming_matches
 
 
 def get_all_matches():
-    header = '**Upcoming TI Matches**. Check your local timing from :\n' \
-             '<https://www.timeanddate.com/time/current-number-time-zones.html>\n'
-    upcoming_matches = get_upcoming_matches()
-    upcoming_matches = cvt_dict_to_discord_pretty_text(upcoming_matches,
-                                                       custom_space={'series': 7, 'bracket': 9, 'team 1': 18,
-                                                                     'team 2': 18, 'time':18})
+    try:
+        header = '**LIVE  TI  Matches**\nType **`!twitch english`**, **`!twitch russian`** to get top Twitch live streams'
 
-    final_string = f'{header}```cs\n{upcoming_matches}```'
-    return final_string
+        live_matches = get_upcoming_matches(is_live=True)
+        live_matches = cvt_dict_to_discord_pretty_text(live_matches,
+                                                           custom_space={'series': 18, 'team 1': 18,
+                                                                         'team 2': 18, 'game': 8})
+        final_string = f'{header}```cs\n{live_matches}```'
+        return final_string
+
+    except Exception:
+        header = '**Upcoming  TI  Matches**. Check your local timing from :\n' \
+                 '<https://www.timeanddate.com/time/current-number-time-zones.html>\n'
+
+        upcoming_matches = get_upcoming_matches(is_live=False)
+        upcoming_matches = cvt_dict_to_discord_pretty_text(upcoming_matches,
+                                                           custom_space={'series': 15, 'team 1': 18,
+                                                                         'team 2': 18, 'time':18})
+
+        final_string = f'{header}```cs\n{upcoming_matches}```'
+        return final_string
 
 
 if __name__ == '__main__':
