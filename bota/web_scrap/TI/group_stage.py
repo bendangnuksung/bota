@@ -17,7 +17,14 @@ def get_group_stage_table():
 
     prepared_group_tables = {}
     for i, group_table in enumerate(group_tables):
-        rows = group_table.find_all('tr', {'data-toggle-area-content': '1'})
+        temp_rows = group_table.find_all('tr')
+        highest_num = 0
+        for temp_row in temp_rows:
+            if 'data-toggle-area-content' in temp_row.attrs:
+                if int(temp_row.attrs['data-toggle-area-content']) > highest_num:
+                    highest_num = int(temp_row.attrs['data-toggle-area-content'])
+        highest_num = str(highest_num)
+        rows = group_table.find_all('tr', {'data-toggle-area-content': highest_num})
         prepared_row = []
         for row in rows:
             columns = row.find_all('td')
