@@ -90,11 +90,14 @@ def get_main_stage_table():
 
         try:
             team1 = main_table.find('td', {'class': 'TeamLeft'}).find('a').string
-            team2 = main_table.find('td', {'class': 'TeamRight'}).find_all('a')[1].string
         except Exception:
             team1 = main_table.find('td', {'class': 'TeamLeft'}).find('abbr').string
+        try:
+            team2 = main_table.find('td', {'class': 'TeamRight'}).find_all('a')[1].string
+        except Exception:
             team2 = main_table.find('td', {'class': 'TeamRight'}).find('abbr').string
 
+        print(date, round, team1, team2)
         prepared_main_tables.append({'date: utc': date, 'round': round, 'team 1': team1, 'team 2': team2})
 
     return prepared_main_tables
