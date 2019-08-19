@@ -70,6 +70,48 @@ def get_group_stage():
     return final_string
 
 
+def get_main_stage_table():
+    r = requests.get(url='https://liquipedia.net/dota2/The_International/2019', headers=browser_headers)
+    r = r.text
+    soup = bs(r, 'html.parser')
+    main_stage_table = soup.find_all('tbody')
+    main_stage_table = main_stage_table[64]
+    # group_tables = soup.find_all('table', {'class': 'table table-striped sortable match-card jquery-tablesorter'})
+
+    prepared_main_tables = []
+    for i, main_table in enumerate(main_stage_table.contents):
+        if i == 0:
+            continue
+        date = main_table.find('td', {'class': 'Date'}).contents[0].string
+        date = date.split(':')[:-1]
+        date = ':'.join(date)
+        round = main_table.find('td', {'class': 'Round'}).string
+        round = round.replace('Bracket', '')
+        round = round.replace('  ', ' ')
+        round = round.replace('s', '')
+
+        try:
+            team1 = main_table.find('td', {'class': 'TeamLeft'}).find('a').string
+            team2 = main_table.find('td', {'class': 'TeamRight'}).find_all('a')[1].string
+        except Exception:
+            team1 = main_table.find('td', {'class': 'TeamLeft'}).find('abbr').string
+            team2 = main_table.find('td', {'class': 'TeamRight'}).find('abbr').string
+
+        prepared_main_tables.append({'date: utc': date, 'round': round, 'team 1': team1, 'team 2': team2})
+
+    return prepared_main_tables
+
+
+def get_main_stage():
+    main_stage_table = get_main_stage_table()
+    time_zone_string = 'Check your Local timing from [here](https://www.timeanddate.com/time/current-number-time-zones.html) \n'
+    main_stage_table = cvt_dict_to_discord_pretty_text(main_stage_table, show_index=False,
+                                                       custom_space={'round': 12, 'team 1': 8, 'team 2': 8})
+    main_stage_table = f'{time_zone_string}```cs\n{main_stage_table}```'
+    return main_stage_table
+
+
 if __name__ == '__main__':
-    string = get_group_stage()
+    string = get_main_stage()
+    # string = get_group_stage()
     print(string)

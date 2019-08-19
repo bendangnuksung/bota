@@ -125,7 +125,7 @@ async def on_message(message):
     elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!counter"
         async with message.channel.typing():
-            note = f"\n**UPDATE**: Added TI9 commands, check Group Stage, Stats. Type **`!ti`** for more details"
+            note = f"\n**UPDATE**: Type **`!ti main`** to get TI main event schedule"
             found, hero_name, image_path = get_counter_hero(message_string)
             if not found:
                 if hero_name != '':
@@ -139,7 +139,7 @@ async def on_message(message):
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!good"
         async with message.channel.typing():
-            note = f"\n**UPDATE**: Added TI9 commands, check Group Stage, Stats. Type **`!ti`** for more details"
+            note = f"\n**UPDATE**: Type **`!ti main`** to get TI main event schedule"
             found, hero_name, image_path = get_good_against(message_string)
             if not found:
                 if hero_name != '':
@@ -154,7 +154,7 @@ async def on_message(message):
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!skill"
         async with message.channel.typing():
-            note = f"\n**UPDATE**: Added TI9 commands, check Group Stage, Stats. Type **`!ti`** for more details"
+            note = f"\n**UPDATE**: Type **`!ti main`** to get TI main event schedule"
             found, hero_name, image_path = await get_skill_build(message_string)
             if not found:
                 if hero_name != '':
@@ -169,7 +169,7 @@ async def on_message(message):
     elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!item"
         async with message.channel.typing():
-            note = f"\n**UPDATE**: Added TI9 commands, check Group Stage, Stats. Type **`!ti`** for more details"
+            note = f"\n**UPDATE**: Type **`!ti main`** to get TI main event schedule"
             found, hero_name, image_path = get_item_build(message_string)
             if not found:
                 if hero_name != '':
@@ -220,6 +220,7 @@ async def on_message(message):
             async with message.channel.typing():
                 command_called = '!ti group'
                 result_string = group_stage.get_group_stage()
+                result_string = 'Type **`!ti main`** to get TI Main Stage bracket and schedule\n' + result_string
             result_string = embed_txt_message(result_string, color=discord.Color.purple())
             result_string.set_thumbnail(url=constant.TI_LOGO_URL)
             result_string.set_author(name='TI9 GROUP STAGE')
@@ -235,10 +236,23 @@ async def on_message(message):
             await message.channel.send(embed=result_string)
 
         elif len(message_split) > 1 and 'match' in message_split[1]:
+            result_string = "Could not fetch Upcoming matches\nType  **`!ti main`** to get TI Main Stage bracket and schedule"
             async with message.channel.typing():
-                command_called = '!ti stat'
-                result_string = matches.get_all_matches()
+                try:
+                    command_called = '!ti match'
+                    result_string = matches.get_all_matches()
+                except Exception:
+                    pass
             await message.channel.send(result_string)
+
+        elif len(message_split) > 1 and 'main' in message_split[1]:
+            async with message.channel.typing():
+                command_called = '!ti main'
+                result_string = group_stage.get_main_stage()
+            result_string = embed_txt_message(result_string, color=discord.Color.purple())
+            result_string.set_thumbnail(url=constant.TI_LOGO_URL)
+            result_string.set_author(name='TI9 Main Stage Schedule')
+            await message.channel.send(embed=result_string)
 
         else:
             result_string = help.help_message

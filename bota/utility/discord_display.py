@@ -1,4 +1,4 @@
-def cvt_dict_to_discord_pretty_text(value, spaces=18, custom_space={}, rename_keys={}):
+def cvt_dict_to_discord_pretty_text(value, spaces=18, custom_space={}, rename_keys={}, show_index=True):
     """
     Given list of dictionaries pretties them for display purpose:
     eg: input: [{a:1, b:2}, {a:3, b:4]
@@ -15,7 +15,8 @@ def cvt_dict_to_discord_pretty_text(value, spaces=18, custom_space={}, rename_ke
     header_position = []
     header_name = []
     for i, dictionary in enumerate(value):
-        temp_string += f"{i + 1}. "
+        if show_index:
+            temp_string += f"{i + 1}. "
         for j, (key_name, value) in enumerate(dictionary.items()):
             # very bad practice of aligning for display purpose
             if i == 0:
