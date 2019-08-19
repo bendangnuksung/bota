@@ -74,12 +74,10 @@ def get_main_stage_table():
     r = requests.get(url='https://liquipedia.net/dota2/The_International/2019', headers=browser_headers)
     r = r.text
     soup = bs(r, 'html.parser')
-    main_stage_table = soup.find_all('tbody')
-    main_stage_table = main_stage_table[64]
-    # group_tables = soup.find_all('table', {'class': 'table table-striped sortable match-card jquery-tablesorter'})
+    main_stage_table = soup.find('table', {'class': 'table table-striped sortable match-card'})
 
     prepared_main_tables = []
-    for i, main_table in enumerate(main_stage_table.contents):
+    for i, main_table in enumerate(main_stage_table.contents[0].contents):
         if i == 0:
             continue
         date = main_table.find('td', {'class': 'Date'}).contents[0].string
