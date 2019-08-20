@@ -138,7 +138,7 @@ def get_main_stage_table():
 
 def get_main_stage():
     main_stage_table = get_main_stage_table()
-    time_zone_string = 'Check your Local timing from [here](https://www.timeanddate.com/time/current-number-time-zones.html) \n'
+    time_zone_string = 'Check your Local timing from [here](https://www.timeanddate.com/time/current-number-time-zones.html#loc-all) \n'
     main_stage_table = cvt_dict_to_discord_pretty_text(main_stage_table, show_index=False,
                                                        custom_space={'date: utc': 13, 'round': 12, 'score': 6, 'team 1': 8, 'team 2': 8})
     main_stage_table = f'{time_zone_string}```cs\n{main_stage_table}```'
