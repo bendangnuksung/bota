@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 from bota.web_scrap.scrap_constant import browser_headers
 from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
+import re
 
 
 GROUP_STAGE_URL = 'https://liquipedia.net/dota2/The_International/2019'
@@ -70,6 +71,20 @@ def get_group_stage():
     return final_string
 
 
+def clean_score_result(content):
+    score = None
+    try:
+        score = content.string
+        score = re.sub('[^0-9]', '', score)
+    except Exception:
+        try:
+            score = content
+            score = re.sub('[^0-9]', '', score)
+        except Exception:
+            pass
+    return score
+
+
 def get_main_stage_table():
     r = requests.get(url='https://liquipedia.net/dota2/The_International/2019', headers=browser_headers)
     r = r.text
@@ -83,10 +98,29 @@ def get_main_stage_table():
         date = main_table.find('td', {'class': 'Date'}).contents[0].string
         date = date.split(':')[:-1]
         date = ':'.join(date)
+        date, time = date.split()
+        date = 'AUG ' + date.split('-')[-1]
+        date = date + ' ' + time
+
         round = main_table.find('td', {'class': 'Round'}).string
         round = round.replace('Bracket', '')
         round = round.replace('  ', ' ')
         round = round.replace('s', '')
+
+        score = 'TBD'
+        try:
+            score_temp = main_table.find('td', {'class': 'Score'})
+            team_1_score = score_temp.contents[0]
+            team_1_score = clean_score_result(team_1_score)
+
+            team_2_score = score_temp.contents[1]
+            team_2_score = clean_score_result(team_2_score)
+
+            if team_1_score is not None and team_2_score is not None:
+                score = team_1_score + ':' + team_2_score
+
+        except Exception:
+            pass
 
         try:
             team1 = main_table.find('td', {'class': 'TeamLeft'}).find('a').string
@@ -97,8 +131,7 @@ def get_main_stage_table():
         except Exception:
             team2 = main_table.find('td', {'class': 'TeamRight'}).find('abbr').string
 
-        print(date, round, team1, team2)
-        prepared_main_tables.append({'date: utc': date, 'round': round, 'team 1': team1, 'team 2': team2})
+        prepared_main_tables.append({'date: utc': date, 'round': round, 'team 1': team1, 'score': score, 'team 2': team2})
 
     return prepared_main_tables
 
@@ -107,7 +140,7 @@ def get_main_stage():
     main_stage_table = get_main_stage_table()
     time_zone_string = 'Check your Local timing from [here](https://www.timeanddate.com/time/current-number-time-zones.html) \n'
     main_stage_table = cvt_dict_to_discord_pretty_text(main_stage_table, show_index=False,
-                                                       custom_space={'round': 12, 'team 1': 8, 'team 2': 8})
+                                                       custom_space={'date: utc': 13, 'round': 12, 'score': 6, 'team 1': 8, 'team 2': 8})
     main_stage_table = f'{time_zone_string}```cs\n{main_stage_table}```'
     return main_stage_table
 
