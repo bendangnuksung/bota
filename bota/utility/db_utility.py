@@ -5,7 +5,7 @@ import json
 
 
 class BotaDB:
-    def __init__(self, host, database, user, password):
+    def __init__(self, host=dbc.HOST_NAME, database=dbc.DATABASE_NAME, user=dbc.USER, password=dbc.PASSWORD):
         self.credentials_empty, self.credentials_empty_list = self._is_db_credentials_empty(host, database, user, password)
         if self.credentials_empty:
             print(f"DB credentials empty, \n{self.credentials_empty_list}")
@@ -44,9 +44,18 @@ class BotaDB:
                     final_value.append(value)
             self.cursor.execute(query, final_value)
             self.conn.commit()
-            return self.cursor.fetchall()
         except (Exception, psycopg2.DatabaseError) as error:
             print('ERROR:', error)
+
+        try:
+            return self.cursor.fetchall()
+        except Exception:
+            print("Cursor fetch: None")
+            return None
+
+    def is_unique_key_exist(self, table_name, column_name, column_value):
+        self.cursor.execute(f"SELECT {column_name} FROM {table_name} WHERE {column_name} = {column_value}")
+        return self.cursor.fetchone() is not None
 
     def make_write_query(self, table_name, dictionary):
         head = f'INSERT INTO {table_name} '
@@ -127,7 +136,7 @@ class BotaDB:
         """
         query, value = self.make_select_query(table_name, column_names, where_key)
         result = self.execute(query, value)
-        print(result)
+        return result
 
 
 if __name__ == '__main__':
@@ -135,9 +144,9 @@ if __name__ == '__main__':
                      user=dbc.USER, password=dbc.PASSWORD)
 
     # # Write DB
-    value = {dbc.COLUMN_USER_ID: 123456789, dbc.COLUMN_USER_NAME: 'dav#5585',
-             dbc.COLUMN_STEAM_ID: 297066030, dbc.COLUMN_LANGUAGE: 'en', dbc.COLUMN_OTHERS: {1:2}}
-    bota_db.write_single(dbc.TABLE_USER_INFO, value)
+    # value = {dbc.COLUMN_USER_ID: 123456789, dbc.COLUMN_USER_NAME: 'dav#5585',
+    #          dbc.COLUMN_STEAM_ID: 297066030, dbc.COLUMN_LANGUAGE: 'en', dbc.COLUMN_OTHERS: {1:2}}
+    # bota_db.write_single(dbc.TABLE_USER_INFO, value)
 
     # UPDATE DB
     # where_key = {dbc.COLUMN_USER_ID: 470624487331594244}
@@ -145,7 +154,10 @@ if __name__ == '__main__':
     # bota_db.update_single(dbc.TABLE_USER_INFO, value, where_key)
 
     # Select DB
-    # value = [dbc.COLUMN_STEAM_ID, dbc.COLUMN_USER_NAME, dbc.COLUMN_LANGUAGE, dbc.COLUMN_OTHERS]
-    # where_key = {dbc.COLUMN_USER_ID: 470624487331594244}
-    # bota_db.select_query(dbc.TABLE_USER_INFO, value, where_key)
+    value = [dbc.COLUMN_STEAM_ID, dbc.COLUMN_DISCORD_NAME, dbc.COLUMN_LANGUAGE, dbc.COLUMN_OTHERS]
+    where_key = {dbc.COLUMN_DISCORD_ID: 4706244873315942445}
+    r = bota_db.select_query(dbc.TABLE_USER_INFO, value, where_key)
+    print(r)
 
+    # Key exist
+    # print(bota_db.is_unique_key_exist(dbc.TABLE_USER_INFO, dbc.COLUMN_DISCORD_ID, 123456789))
