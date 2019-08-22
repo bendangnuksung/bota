@@ -4,8 +4,8 @@ from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
 from bota.help import HELP_FOOTER, LAST_UPDATE, get_help
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
-from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit
-from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, save_id, get_protracker_hero
+from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id, save_id_in_db
+from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, get_profile_from_db, get_protracker_hero
 from bota.web_scrap.twitch_process import get_dota2_top_stream
 from bota.web_scrap.TI import group_stage, help, stats, matches
 from bota.log_process import save_command_logs, get_command_log_tail
@@ -57,6 +57,8 @@ async def on_message(message):
     message_string = message.content
     message_string = message_string.lower().strip()
     message_word_length = len(message_string.split())
+    user_discord_id = message.author.id
+    user_name = message.author.name
     print(f"{message.channel}: {message.author}: {message.author.name}: {message.content}")
 
     # Ignore all message passed by the our bot
@@ -82,7 +84,7 @@ async def on_message(message):
             await message.channel.send(f"Getting Top Live Spectacting Games, Source: Dota2API, Dota2ProTracker")
             await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
-    elif '!profile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+    elif '!oldprofile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         if message_word_length == 1:
             msg = f'Please provide a STEAM ID or saved Username: eg: `!profile 116585378`'
             await message.channel.send(msg)
@@ -105,7 +107,34 @@ async def on_message(message):
         else:
             await message.channel.send(embed=result_embed)
 
+    elif '!profile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        command_called = "!profile"
+        async with message.channel.typing():
+            flag, mode, id, result, medal_url = get_profile_from_db(user_discord_id, message_string)
+        result_embed = embed_txt_message(result)
+        result_embed.set_author(name=f"**Profile: {id}**", url=f'{constant.PLAYER_URL_BASE}{id}',
+                                icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        result_embed.set_thumbnail(url=medal_url)
+        if not flag:
+            if mode == 1:
+                msg = f'Please save your Steam ID to get your profile\n'
+                await message.channel.send(msg)
+            elif mode == 2:
+                msg = f'Could not find any profile under the Steam ID:    **{id}**'
+                await message.channel.send(msg)
+            else:
+                msg = f'Could not find User:    **{id}**'
+                await message.channel.send(msg)
+        else:
+            await message.channel.send(embed=result_embed)
+
     elif '!save' in message_string.split()[0]:
+        command_called = "!save"
+        async with message.channel.typing():
+            steam_id, summary = save_id_in_db(user_discord_id, user_name,  message_string)
+        await message.channel.send(summary)
+
+    elif '!oldsave' in message_string.split()[0]:
         command_called = "!save"
         async with message.channel.typing():
             user_name, id, flag, status = save_id(message_string)

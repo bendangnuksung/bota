@@ -12,10 +12,13 @@ from bota.web_scrap.items_process import scrap_item_info, make_item_image
 from bota.web_scrap.profile_process import scrap_profile_info
 from bota.web_scrap.reddit_process import scrap_reddit_dota
 from bota.applications.steam_user import User
+from bota.applications.steam_user_db import UserDB, AliasDB
 from bota.web_scrap.protracker_process import DotaProTracker
 
 
 steam_user = User()
+user_db = UserDB()
+alias = AliasDB()
 d2pt = DotaProTracker()
 
 
@@ -214,6 +217,56 @@ def get_profile(query):
     if profile_info_string == '':
         return False, id, 1, '', medal_url
     return True, id, 1, profile_info_string, medal_url
+
+
+def get_profile_from_db(discord_id, query):
+    query = query.split()
+    medal_url = ''
+    if len(query) == 1:
+        mode = 1
+        steam_id, reason = user_db.get_steam_id(discord_id)
+        if steam_id == '':
+            return False, mode, steam_id, '', medal_url
+        profile_info_string, medal_url = scrap_profile_info(steam_id)
+        return True, mode, steam_id, profile_info_string, medal_url
+
+    else:
+        mode = 2
+        steam_id = ' '.join(query[1:])
+        steam_id = steam_id.strip()
+        if is_id(steam_id):
+            profile_info_string, medal_url = scrap_profile_info(steam_id)
+            return True, mode, steam_id, profile_info_string, medal_url
+        else:
+            mode = 3
+            alias_name = steam_id
+            alias_name = alias_name.strip()
+            steam_id, reason = alias.get_steam_id(alias_name)
+            if steam_id != '':
+                profile_info_string, medal_url = scrap_profile_info(steam_id)
+                return True, mode, alias_name, profile_info_string, medal_url
+            else:
+                return False, mode, alias_name, '', medal_url
+
+
+def save_id_in_db(discord_id, discord_name, query):
+    query = query.split()
+    if len(query) == 1:
+        summary = "Please provide your Steam ID, eg: `!save 86753879`"
+        return False, summary
+    steam_id = query[1].strip()
+    if not is_id(steam_id):
+        summary = "Please provide correct Steam ID, Steam ID is always numeric. eg: `!save 86753879` "
+        return False, summary
+    if user_db.is_discord_id_exist(discord_id):
+        flag, summary = user_db.update_steam_id(discord_id, steam_id)
+        if flag:
+            summary = f"Your Steam ID has been updated with {steam_id}"
+    else:
+        flag, summary = user_db.add_user(discord_id, discord_name, steam_id)
+        if flag:
+            summary = f"{steam_id} has been saved to your profile"
+    return True, summary
 
 
 def save_id(query):
