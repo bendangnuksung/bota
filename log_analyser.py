@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 DEFAULT_LOG_PATH = "bota/data/logs/command_user_log.txt"
-DEFAULT_LOG_PATH = "/home/ben/personal/bota/unsaved_logs/command_user_log.txt"
+DEFAULT_LOG_PATH = "unsaved_logs/command_user_log.txt"
 
 
 parser = argparse.ArgumentParser(description='Analyse Data from logs')
@@ -29,6 +29,7 @@ def analyse_command_logs():
     total_guild_calls = 0
     guild_info = {}
     command_called_counter = {}
+    users = {}
 
     for line in file.readlines():
         if 'INFO' not in line:
@@ -42,12 +43,12 @@ def analyse_command_logs():
             channel_name, guild_member_count, command_called, nsfw = logs.split(',')[:9]
             message = " ".join(logs.split(',')[9:])
 
+        users[author_id] = author
 
         if command_called not in command_called_counter:
             command_called_counter[command_called] = 1
         else:
             command_called_counter[command_called] += 1
-
 
         is_call_from_guild = True if len(guild_id) > 1 else False
 
@@ -65,8 +66,12 @@ def analyse_command_logs():
         guild_info[guild_id]['total_calls'] += 1
         guild_info[guild_id]['channels'].append(channel_name)
 
-    print(total_personal_calls)
-    print(total_guild_calls)
+    print("Total personal calls:", total_personal_calls)
+    print("Total guild calls:", total_guild_calls)
+    print("Total unique Guilds: ", len(guild_info))
+    print("Total unique Users: ", len(users))
+
+    exit()
 
     for cmd in command_called_counter:
         print(cmd, ':', command_called_counter[cmd])
