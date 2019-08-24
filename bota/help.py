@@ -63,3 +63,14 @@ def get_help():
     help_string = help_string + body
     help_string = "\n".join(help_string)
     return help_string
+
+
+PROFILE_HELP_STRING = "**To Save your own profile** \n" \
+                      "Step 1:   **`!save YourSteamID`**, eg:  **`!save 311360822`**\n" \
+                      "Step 2:   **`!profile`** \n" \
+                      "Reset :   To reset your SteamID, just type:  **`!save 52870512`**\n\n" \
+                      "**To Save someone else profile** \n" \
+                      "Step 1:   **`!save Name SteamID`**,  eg: **`!save anna 311360822`** \n" \
+                      "Step 2:   **`!profile anna`**\n" \
+                      "Reset :   To reset the SteamID for the user you created, type: **`!save anna 52870512`**"
+

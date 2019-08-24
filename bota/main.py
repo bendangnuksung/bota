@@ -1,7 +1,7 @@
 import discord
 import sys
 from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
-from bota.help import HELP_FOOTER, LAST_UPDATE, get_help
+from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id, save_id_in_db
@@ -109,21 +109,30 @@ async def on_message(message):
 
     elif '!profile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!profile"
+        if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
+            result_embed = embed_txt_message(PROFILE_HELP_STRING)
+            await message.channel.send(embed=result_embed)
+            return
+
         async with message.channel.typing():
-            flag, mode, id, result, medal_url = get_profile_from_db(user_discord_id, message_string)
+            flag, mode, steam_id, alias_name, result, medal_url = get_profile_from_db(user_discord_id, message_string)
+
         result_embed = embed_txt_message(result)
-        result_embed.set_author(name=f"**Profile: {id}**", url=f'{constant.PLAYER_URL_BASE}{id}',
+        result_embed.set_author(name=f"**Profile: {steam_id}**", url=f'{constant.PLAYER_URL_BASE}{steam_id}',
                                 icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
         result_embed.set_thumbnail(url=medal_url)
         if not flag:
             if mode == 1:
-                msg = f'Please save your Steam ID to get your profile\n'
+                msg = f'<@{user_discord_id}> Please save your Steam ID to get your profile, To save your profile:' \
+                      f' **`!save SteamID`** eg: **`!save 311360822`**\nPlease type  **`!profile help`**  for more help'
                 await message.channel.send(msg)
             elif mode == 2:
-                msg = f'Could not find any profile under the Steam ID:    **{id}**'
+                msg = f'<@{user_discord_id}> Could not find any profile under the Steam ID:    **{steam_id}**\n' \
+                      f'Please type  **`!profile help`**  for more help'
                 await message.channel.send(msg)
             else:
-                msg = f'Could not find User:    **{id}**'
+                msg = f'<@{user_discord_id}> Could not find User:   **{alias_name}**,  You can save a username by eg: ' \
+                      f' **`!save {alias_name} SteamID`** \nPlease type  **`!profile help`**  for more help'
                 await message.channel.send(msg)
         else:
             await message.channel.send(embed=result_embed)
@@ -135,13 +144,16 @@ async def on_message(message):
         await message.channel.send(summary)
 
     elif '!oldsave' in message_string.split()[0]:
+        """
+        Deprecated 
+        """
         command_called = "!save"
         async with message.channel.typing():
             user_name, id, flag, status = save_id(message_string)
         if flag:
-            await message.channel.send(f'**{id}** saved under the alias: {user_name}')
+            await message.channel.send(f'@{user_name} **{id}** saved under the alias: {user_name}')
         else:
-            await message.channel.send(f'**Failed to save, reason: {status}')
+            await message.channel.send(f'@{user_name} **Failed to save, reason: {status}')
 
     elif "!trend" in message_string and message_word_length < (MAX_COMMAND_WORD_LENGTH - 2):
         command_called = "!trend"

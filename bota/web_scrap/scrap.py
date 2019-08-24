@@ -226,9 +226,9 @@ def get_profile_from_db(discord_id, query):
         mode = 1
         steam_id, reason = user_db.get_steam_id(discord_id)
         if steam_id == '':
-            return False, mode, steam_id, '', medal_url
+            return False, mode, steam_id, '',  '', medal_url
         profile_info_string, medal_url = scrap_profile_info(steam_id)
-        return True, mode, steam_id, profile_info_string, medal_url
+        return True, mode, steam_id, '', profile_info_string, medal_url
 
     else:
         mode = 2
@@ -236,7 +236,7 @@ def get_profile_from_db(discord_id, query):
         steam_id = steam_id.strip()
         if is_id(steam_id):
             profile_info_string, medal_url = scrap_profile_info(steam_id)
-            return True, mode, steam_id, profile_info_string, medal_url
+            return True, mode, steam_id, '', profile_info_string, medal_url
         else:
             mode = 3
             alias_name = steam_id
@@ -244,29 +244,49 @@ def get_profile_from_db(discord_id, query):
             steam_id, reason = alias.get_steam_id(alias_name)
             if steam_id != '':
                 profile_info_string, medal_url = scrap_profile_info(steam_id)
-                return True, mode, alias_name, profile_info_string, medal_url
+                return True, mode, steam_id, alias_name, profile_info_string, medal_url
             else:
-                return False, mode, alias_name, '', medal_url
+                return False, mode, steam_id, alias_name, '', medal_url
 
 
 def save_id_in_db(discord_id, discord_name, query):
     query = query.split()
+    discord_id = int(discord_id)
     if len(query) == 1:
-        summary = "Please provide your Steam ID, eg: `!save 86753879`"
+        summary = "Please provide your Steam ID, eg: `!save 116585378`"
         return False, summary
-    steam_id = query[1].strip()
-    if not is_id(steam_id):
-        summary = "Please provide correct Steam ID, Steam ID is always numeric. eg: `!save 86753879` "
-        return False, summary
-    if user_db.is_discord_id_exist(discord_id):
-        flag, summary = user_db.update_steam_id(discord_id, steam_id)
-        if flag:
-            summary = f"Your Steam ID has been updated with {steam_id}"
+
+    elif len(query) == 2:
+        steam_id = query[1].strip()
+        if not is_id(steam_id):
+            return False, f"<@{discord_id}> Invalid Steam ID, eg: **`!save 116585378`**"
+        steam_id = int(steam_id)
+        is_id_exist = user_db.is_discord_id_exist(discord_id)
+        if is_id_exist:
+            flag, summary = user_db.update_steam_id(discord_id=discord_id, steam_id=steam_id)
+        else:
+            flag, summary = user_db.add_user(discord_id=discord_id, discord_name=discord_name, steam_id=steam_id)
+        if not flag:
+            summary = f"<@{discord_id}> " + summary
+        return flag, summary
+
     else:
-        flag, summary = user_db.add_user(discord_id, discord_name, steam_id)
-        if flag:
-            summary = f"{steam_id} has been saved to your profile"
-    return True, summary
+        alias_name = query[1:-1]
+        alias_name = " ".join(alias_name)
+        if len(alias_name) > 25:
+            return False, f"<@{discord_id}> **{alias_name}** is a very long name, Name should be under 25 characters"
+        steam_id = query[-1].strip()
+        if not is_id(steam_id):
+            return False, f"<@{discord_id}> Invalid Steam ID, eg: **`!save midone 116585378`**"
+        steam_id = int(steam_id)
+        is_alias_name_exist = alias.is_alias_name_exist(alias_name)
+        if is_alias_name_exist:
+            flag, summary = alias.update_steam_id(alias_name=alias_name, discord_id=discord_id, steam_id=steam_id)
+        else:
+            flag, summary = alias.add_alias_name(alias_name=alias_name, discord_id=discord_id, steam_id=steam_id)
+        if not flag:
+            summary = f"<@{discord_id}> " + summary
+        return flag, summary
 
 
 def save_id(query):
