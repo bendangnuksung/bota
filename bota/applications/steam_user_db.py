@@ -10,6 +10,7 @@ class UserDB():
         self.bota_db = BotaDB()
 
     def is_steam_id_valid(self, steam_id):
+        steam_id = str(steam_id)
         url = constant.PLAYER_URL_BASE + steam_id
         r = requests.get(url,  headers={'user-agent': 'Mozilla/5.0'})
         print(r.status_code)
