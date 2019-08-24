@@ -71,6 +71,5 @@ PROFILE_HELP_STRING = "**To Save your own profile** \n" \
                       "Step 1:   **`!save Name SteamID`**,  eg: **`!save anna 311360822`** \n" \
                       "Step 2:   **`!profile anna`**\n" \
                       "Reset :   To reset the SteamID for the user you created, type: **`!save anna 52870512`**\n\n" \
-                      "**To check profile without saving**\n" \
+                      "**To check profile without saving Steam ID**\n" \
                       "Step 1:   **`!profile SteamID`**,  eg:  **`!profile 311360822`**"
-

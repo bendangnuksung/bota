@@ -140,7 +140,9 @@ class AliasDB():
             return False, f"**{alias_name}** does not exist"
 
         saved_discord_id, _ = self.get_discord_id(alias_name)
-        if saved_discord_id != discord_id:
+        print(saved_discord_id)
+        print(type(saved_discord_id))
+        if saved_discord_id != discord_id and saved_discord_id is not None:
             return False, f"**{alias_name}** has already been taken by someone else, Use another name"
 
         where_key = {dbc.COLUMN_ALIAS_NAME: alias_name}
