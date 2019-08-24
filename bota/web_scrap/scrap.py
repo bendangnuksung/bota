@@ -1,7 +1,7 @@
 from bota.image_processing import add_border_to_image
 from bota.web_scrap.heroes_process import get_current_hero_trends, find_hero_name, scrap_heroes_info
 import pandas as pd
-from bota.utility.general import render_mpl_table, get_icon_path, is_file_old, crop_image
+from bota.utility.general import render_mpl_table, get_icon_path, is_file_old, crop_image, round_df_digits
 from bota.constant import CT_IMAGE_PATH, CT_IMAGE_UPDATE_TIME_THRESHOLD
 from bota import constant
 import os
@@ -20,11 +20,6 @@ steam_user = User()
 user_db = UserDB()
 alias = AliasDB()
 d2pt = DotaProTracker()
-
-
-def round_df_digits(df):
-    df = (df.astype(float).applymap('{:,.2f}'.format))
-    return df
 
 
 def get_current_trend():

@@ -85,6 +85,9 @@ async def on_message(message):
             await message.channel.send('Top Games: ', file=discord.File(f'{image_path}'))
 
     elif '!oldprofile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        """
+        Deprecated
+        """
         if message_word_length == 1:
             msg = f'Please provide a STEAM ID or saved Username: eg: `!profile 116585378`'
             await message.channel.send(msg)
@@ -110,14 +113,16 @@ async def on_message(message):
     elif '!profile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!profile"
         if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
-            result_embed = embed_txt_message(PROFILE_HELP_STRING)
+            result_embed = embed_txt_message(PROFILE_HELP_STRING, color=discord.Color.red())
+            result_embed.set_author(name="Profile Command Help")
+            result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
             await message.channel.send(embed=result_embed)
             return
 
         async with message.channel.typing():
             flag, mode, steam_id, alias_name, result, medal_url = get_profile_from_db(user_discord_id, message_string)
 
-        result_embed = embed_txt_message(result)
+        result_embed = embed_txt_message(result, color=discord.Color.green())
         result_embed.set_author(name=f"**Profile: {steam_id}**", url=f'{constant.PLAYER_URL_BASE}{steam_id}',
                                 icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
         result_embed.set_thumbnail(url=medal_url)
@@ -125,23 +130,36 @@ async def on_message(message):
             if mode == 1:
                 msg = f'<@{user_discord_id}> Please save your Steam ID to get your profile, To save your profile:' \
                       f' **`!save SteamID`** eg: **`!save 311360822`**\nPlease type  **`!profile help`**  for more help'
-                await message.channel.send(msg)
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
             elif mode == 2:
                 msg = f'<@{user_discord_id}> Could not find any profile under the Steam ID:    **{steam_id}**\n' \
                       f'Please type  **`!profile help`**  for more help'
-                await message.channel.send(msg)
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
             else:
                 msg = f'<@{user_discord_id}> Could not find User:   **{alias_name}**,  You can save a username by eg: ' \
                       f' **`!save {alias_name} SteamID`** \nPlease type  **`!profile help`**  for more help'
-                await message.channel.send(msg)
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
         else:
             await message.channel.send(embed=result_embed)
 
     elif '!save' in message_string.split()[0]:
+        if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
+            result_embed = embed_txt_message(PROFILE_HELP_STRING, color=discord.Color.red())
+            result_embed.set_author(name="Save Command Help")
+            result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+            await message.channel.send(embed=result_embed)
+            return
         command_called = "!save"
         async with message.channel.typing():
-            steam_id, summary = save_id_in_db(user_discord_id, user_name,  message_string)
-        await message.channel.send(summary)
+            flag, summary = save_id_in_db(user_discord_id, user_name,  message_string)
+        if not flag:
+            summary = embed_txt_message(summary, color=discord.Color.red())
+        else:
+            summary = embed_txt_message(summary, color=discord.Color.green())
+        await message.channel.send(embed=summary)
 
     elif '!oldsave' in message_string.split()[0]:
         """
