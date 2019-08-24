@@ -4,8 +4,8 @@ from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
 from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
-from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id, save_id_in_db
-from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile, get_profile_from_db, get_protracker_hero
+from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
+from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile_from_db, get_protracker_hero
 from bota.web_scrap.twitch_process import get_dota2_top_stream
 from bota.web_scrap.TI import group_stage, help, stats, matches
 from bota.log_process import save_command_logs, get_command_log_tail
@@ -94,7 +94,7 @@ async def on_message(message):
     elif '!profile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         command_called = "!profile"
         if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
-            result_embed = embed_txt_message(PROFILE_HELP_STRING, color=discord.Color.red())
+            result_embed = embed_txt_message(PROFILE_HELP_STRING, color=discord.Color.dark_blue())
             result_embed.set_author(name="Profile Command Help")
             result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
             await message.channel.send(embed=result_embed)

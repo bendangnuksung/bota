@@ -11,12 +11,10 @@ from bota.web_scrap.web_screenshot import get_screenshot
 from bota.web_scrap.items_process import scrap_item_info, make_item_image
 from bota.web_scrap.profile_process import scrap_profile_info
 from bota.web_scrap.reddit_process import scrap_reddit_dota
-from bota.applications.steam_user import User
 from bota.applications.steam_user_db import UserDB, AliasDB
 from bota.web_scrap.protracker_process import DotaProTracker
 
 
-steam_user = User()
 user_db = UserDB()
 alias = AliasDB()
 d2pt = DotaProTracker()
@@ -195,25 +193,6 @@ def is_id(id):
     return flag
 
 
-def get_profile(query):
-    query = query.split()
-    id = ' '.join(query[1:])
-    id = id.strip()
-    medal_url = ''
-    if is_id(id):
-        profile_info_string, medal_url = scrap_profile_info(id)
-    else:
-        user_name = id
-        flag, id = steam_user.get_id(user_name)
-        if not flag:
-            return False, user_name, 2, '', medal_url
-        profile_info_string, medal_url = scrap_profile_info(id)
-        return True, id, 2, profile_info_string, medal_url
-    if profile_info_string == '':
-        return False, id, 1, '', medal_url
-    return True, id, 1, profile_info_string, medal_url
-
-
 def get_profile_from_db(discord_id, query):
     query = query.split()
     medal_url = ''
@@ -284,14 +263,6 @@ def save_id_in_db(discord_id, discord_name, query):
         return flag, summary
 
 
-def save_id(query):
-    query = query.split()
-    user_name = query[1].strip()
-    id = query[2].strip()
-    flag, status = steam_user.add_user(user_name, id)
-    return user_name, id, flag, status
-
-
 def get_reddit(query):
     query = query.split()
     mode = constant.REDDIT_DEFAULT_MODE
@@ -326,8 +297,6 @@ if __name__ == '__main__':
     print(get_reddit('!reddit top'))
     exit()
     # print(save_id('!save sam 297066030'))
-    print(get_profile('!profile david'))
-    exit()
     # print(get_counter_hero('!good ursa'))
     # print(get_good_against('!good ursa'))
     import asyncio
