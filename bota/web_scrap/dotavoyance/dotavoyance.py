@@ -39,11 +39,21 @@ class Dotavoyance():
         return hero_info
 
     def parse_heroes(self, message_string):
+        message_string, sep, skill = message_string.partition('-')
         message_string = message_string.split()
         message_string = ' '.join(message_string[1:])
         message_string = message_string.strip()
         hero_strings = message_string.split(",")
-        return hero_strings
+        return hero_strings, skill
+
+    def get_sort_col(self, skill):
+        col_skill = {
+                'high': 'perc_win_top',
+                'med': 'perc_win_middle',
+                'low': 'perc_win_bottom',
+                '': 'perc_win_total'
+                }
+        return col_skill[skill]
 
     def get_hero_ids(self, hero_strings):
         num_heroes = 0
@@ -67,12 +77,85 @@ class Dotavoyance():
 
         return hero_ids, num_heroes
 
+    def get_meta(self, message_string):
+        num_heroes, skill = self.parse_heroes(message_string)
+        num_heroes = num_heroes[0]
+        sort_col = self.get_sort_col(skill)
+
+        req_str = "https://www.dotavoyance.com/overall"
+        r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
+        results = r.json()
+
+        week_results = results['last_week']
+        num_week_results = [d for d in week_results if int(d['num_heroes']) == int(num_heroes)]
+
+        return_results = []
+        for the_summary in num_week_results:
+            st = the_summary['summary_type']
+            this_result = {}
+            the_heroes = []
+            if "counter" not in st:
+                hero_ids = the_summary['heroes_index'].split("_")
+                for h_id in hero_ids:
+                    curr_name = self.find_by_id(h_id)[0]['displayname']
+                    name_found, bota_name = bota_hp.find_hero_name(curr_name)
+                    if name_found:
+                        the_heroes.append(bota_name)
+                the_summary['heroes'] = the_heroes
+                return_results.append(the_summary)
+
+        return True, return_results
+
+
+    ## Combos
+    def get_combos(self, message_string):
+        num_heroes, skill = self.parse_heroes(message_string)
+        num_heroes = num_heroes[0]
+        sort_col = self.get_sort_col(skill)
+
+        req_str = "https://www.dotavoyance.com/combos?numHeroes="+num_heroes+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:25%7D%7D&table_to_use=Last Week"
+        r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
+        results = r.json()
+
+        res_count = 0
+        hero_results = []
+        for res in results:
+            this_result = {}
+            res_count = res_count + 1
+            if res_count > 9:
+                break
+
+            hero_titles =[
+                    'hero_one',
+                    'hero_two',
+                    'hero_three',
+                    'hero_four',
+                    'hero_five',
+                    ]
+
+            res_hero_names = []
+            curr_width = 0
+            for nh in range(int(num_heroes)):
+                h_id = res[hero_titles[nh]]
+                curr_name = self.find_by_id(h_id)[0]['displayname']
+                name_found, bota_name = bota_hp.find_hero_name(curr_name)
+                if name_found:
+                    res_hero_names.append(bota_name)
+            
+            this_result['win_percentage'] = round((res[sort_col])*100)
+            this_result['heroes'] = res_hero_names
+            hero_results.append(this_result)
+
+        return True, hero_results
+
+
     ## Teammates
     def get_teammates(self, message_string):
-        hero_strings = self.parse_heroes(message_string)
+        hero_strings, skill = self.parse_heroes(message_string)
+        sort_col = self.get_sort_col(skill)
         hero_ids, num_heroes = self.get_hero_ids(hero_strings)
 
-        req_str = "https://www.dotavoyance.com/teammates?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column=perc_win_total&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:50%7D%7D&table_to_use=Last Week"
+        req_str = "https://www.dotavoyance.com/teammates?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:50%7D%7D&table_to_use=Last Week"
         r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
         results = r.json()
 
@@ -83,41 +166,30 @@ class Dotavoyance():
         hero_data = []
         for res in results:
             the_heroes = set(res['heroes_index'].split("_"))
-            the_perc = round((res['perc_win_total'])*100)
+            the_perc = round((res[sort_col])*100)
             tm_heroes = list(the_heroes - set(hero_ids))
             if len(tm_heroes) > 1:
                 print("Should not be more than 1")
             hero_info = self.find_by_id(tm_heroes[0])[0]
-            hero_info['win_perc'] = the_perc
+            hero_info['win_percentage'] = the_perc
             hero_data.append(hero_info)
             res_count = res_count + 1
             if res_count > 9:
                 break
 
+        img_good, hero_results = self.make_teammates_results(hero_data)
 
-        img_good, dv_img_path = self.make_teammates_image(hero_data)
+        return img_good, hero_results
 
-        return img_good, dv_img_path
-
-    def make_teammates_image(self, hero_data):
+    def make_teammates_results(self, hero_data):
         if len(hero_data) < 2:
             return False, ''
 
-        img_height, img_width = constant.DV_DEFAULT_IMAGE_HEIGHT, constant.DV_DEFAULT_IMAGE_WIDTH
-        n_channels = constant.DV_NUM_CHANNELS
-        transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
-        cv2.imwrite(os.path.join(REPO_PATH, 'data/background/transparent.png'), transparent_img)
-
-        img0 = cv2.imread(os.path.join(REPO_PATH, 'data/background/transparent.png'))
-        icon_dims = cv2.imread(os.path.join(REPO_PATH, 'data/character_icons_big/axe.png')).shape
-        img0, header_height = self.write_counter_header(img0, 1, icon_dims)
-        curr_height = constant.DV_HEIGHT_BUFFER + header_height
-
         res_count = 0
+        hero_results = []
         for hd in hero_data:
+            this_result = {}
             res_count = res_count + 1
-            max_img_h = 0
-            img_save_name = hd['displayname']
             
             res_hero_names = []
             curr_width = 0
@@ -125,54 +197,40 @@ class Dotavoyance():
             name_found, bota_name = bota_hp.find_hero_name(curr_name)
             if name_found:
                 res_hero_names.append(bota_name)
-                img = cv2.imread(os.path.join(REPO_PATH, 'data/character_icons_big/'+bota_name+'.png'))
-                img_h = img.shape[0]
-                img_w = img.shape[1]
-                img0[curr_height: img_h + curr_height, curr_width: img_w + curr_width, :] = img
-                curr_width = curr_width + img_w
-                max_img_h = max([img_h, max_img_h])
             
-            img0 = self.write_counter_row(img0, 0, res_count, icon_dims, hd['win_perc'], 1)
-            curr_height = curr_height + max_img_h + constant.DV_HEIGHT_BUFFER
+            this_result['win_percentage'] = hd['win_percentage']
+            this_result['heroes'] = res_hero_names
+            hero_results.append(this_result)
             
-
-        dv_img_path = '/tmp/team_' + img_save_name + '.png'
-        cv2.imwrite(dv_img_path, img0)
-
-        return True, dv_img_path
+        return True, hero_results
 
     ## Counters
     def get_counters(self, message_string):
-        hero_strings = self.parse_heroes(message_string)
+        hero_strings, skill = self.parse_heroes(message_string)
+        sort_col = self.get_sort_col(skill)
         hero_ids, num_heroes = self.get_hero_ids(hero_strings)
 
-        req_str = "https://www.dotavoyance.com/explore?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column=perc_win_total&sort_direction=-1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:50%7D%7D&table_to_use=Last Week"
+        req_str = "https://www.dotavoyance.com/explore?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column="+sort_col+"&sort_direction=-1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:50%7D%7D&table_to_use=Last Week"
         r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
         results = r.json()
 
         if len(hero_strings) != num_heroes:
             return False, ''
 
-        img_good, dv_img_path = self.make_counters_image(results, num_heroes)
+        img_good, hero_results = self.make_counters_results(results, num_heroes, hero_ids, sort_col)
 
-        return img_good, dv_img_path
+        return img_good, hero_results
 
-    def make_counters_image(self, response_json, num_heroes):
+    
+    def make_counters_results(self, response_json, num_heroes, curr_hero_ids, sort_col):
         if response_json['versus_results'] == []:
             return False, ''
 
-        img_height, img_width = constant.DV_DEFAULT_IMAGE_HEIGHT, constant.DV_DEFAULT_IMAGE_WIDTH
-        n_channels = constant.DV_NUM_CHANNELS
-        transparent_img = np.zeros((img_height, img_width, n_channels), dtype=np.uint8)
-        cv2.imwrite(os.path.join(REPO_PATH, 'data/background/transparent.png'), transparent_img)
-
-        img0 = cv2.imread(os.path.join(REPO_PATH, 'data/background/transparent.png'))
-        icon_dims = cv2.imread(os.path.join(REPO_PATH, 'data/character_icons_big/axe.png')).shape
-        img0, header_height = self.write_counter_header(img0, num_heroes, icon_dims)
         res_count = 0
-        curr_height = constant.DV_HEIGHT_BUFFER + header_height
+        hero_results = []
 
         for res in response_json['versus_results']:
+            this_result = {}
             max_img_h = 0
             img_save_name = res['heroes_index']
             res_count = res_count + 1
@@ -181,7 +239,7 @@ class Dotavoyance():
 
             
             the_side = 'a'
-            if res['heroes_index'] == res['heroes_a_index']:
+            if str(res['hero_a_one']) in curr_hero_ids:
                 the_side = 'b'
 
             hero_titles =[
@@ -200,38 +258,11 @@ class Dotavoyance():
                 name_found, bota_name = bota_hp.find_hero_name(curr_name)
                 if name_found:
                     res_hero_names.append(bota_name)
-                    img = cv2.imread(os.path.join(REPO_PATH, 'data/character_icons_big/'+bota_name+'.png'))
-                    img_h = img.shape[0]
-                    img_w = img.shape[1]
-                    img0[curr_height: img_h + curr_height, curr_width: img_w + curr_width, :] = img
-                    curr_width = curr_width + img_w
-                    max_img_h = max([img_h, max_img_h])
-                
-            img0 = self.write_counter_row(img0, 0, res_count, icon_dims, round((1.0-res['perc_win_total'])*100), num_heroes)
-            curr_height = curr_height + max_img_h + constant.DV_HEIGHT_BUFFER
             
+            this_result['win_percentage'] = round((1.0-res[sort_col])*100)
+            this_result['heroes'] = res_hero_names
+            hero_results.append(this_result)
 
-        dv_img_path = '/tmp/counter_' + img_save_name + '.png'
-        cv2.imwrite(dv_img_path, img0)
-
-        return True, dv_img_path
-
-    def write_counter_header(self, the_image, num_heroes, icon_dims):
-        img_h = icon_dims[0]
-        img_w = icon_dims[1]
-        text_pos = (num_heroes*img_w + constant.DV_COLUMN_BUFFER, img_h/2)
-        the_text = "Win %"
-        the_image = bota_imp.write_text_pil(the_image, the_text, text_pos, size=constant.PLAYER_NAME_FONT_SIZE)       
-
-        return the_image, img_h
-
-    def write_counter_row(self, the_image, col_index, row_index, icon_dims, the_text_value, num_heroes):
-        img_h = icon_dims[0]
-        img_w = icon_dims[1]
-        text_pos = ((num_heroes + col_index)*img_w + constant.DV_COLUMN_BUFFER, img_h/4 + (img_h+constant.DV_HEIGHT_BUFFER)*row_index)
-        the_text = str(the_text_value)
-        the_image = bota_imp.write_text_pil(the_image, the_text, text_pos, size=constant.PLAYER_NAME_FONT_SIZE)       
-
-        return the_image
+        return True, hero_results
 
 
