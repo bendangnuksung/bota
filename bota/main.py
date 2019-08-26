@@ -50,7 +50,358 @@ async def on_guild_join(guild):
                            f'Type   `!help` or `!command`   to get list of commands to use.')
 
 
-# Where the commands gets executed
+def add_footer_requested_by_username(embed, message):
+    user_discord_id = message.author.id
+    user = message.guild.get_member(user_discord_id)
+    embed.set_footer(text=f'Requested by {message.author.name}', icon_url=user.avatar_url)
+    return embed
+
+
+#################################################################################################
+"""
+Below lies the Definition of all commands from on_message()
+"""
+
+
+async def cmd_help(message):
+    command_called = '!help'
+    help_string = get_help()
+    embed_msg = embed_txt_message(help_string, add_header=True)
+    embed_msg.set_footer(text=HELP_FOOTER, icon_url=DOTA2_LOGO_URL)
+    await  message.channel.send(embed=embed_msg)
+    return True, command_called
+
+
+async def cmd_top_game(message):
+    command_called = '!top game'
+    async with message.channel.typing():
+        image_path = get_top_games()
+        msg = "Top Live Games: Dota2API, Dota2ProTracker"
+        embed = discord.Embed(color=discord.Color.green())
+        embed.title = msg
+        image_file = discord.File(image_path, os.path.basename(image_path))
+        embed.add_field(name="Source:", value=('[Dota2API](https://demodota2api.readthedocs.io/en/latest/#)  '
+                                               '[Dota2ProTracker](http://www.dota2protracker.com)'))
+        embed.set_image(url=f"attachment://{image_file.filename}")
+        embed = add_footer_requested_by_username(embed, message)
+        await message.channel.send(embed=embed, file=image_file)
+    return True, command_called
+
+
+async def cmd_trend(message):
+    command_called = '!trend'
+    async with message.channel.typing():
+        image_path = get_current_trend()
+        msg = "Current Heroes Trend"
+        desc = "Weekly Heroes Trend: Win Rate and Pick Rate"
+        embed = discord.Embed(description=desc, color=discord.Color.green())
+        embed.title = msg
+        image_file = discord.File(image_path, os.path.basename(image_path))
+        embed.add_field(name="Source:", value=('[DotaBuff](https://www.dotabuff.com/heroes/trends)'))
+        embed.set_image(url=f"attachment://{image_file.filename}")
+        embed = add_footer_requested_by_username(embed, message)
+        await message.channel.send(embed=embed, file=image_file)
+    return True, command_called
+
+
+async def cmd_reddit(message, message_string):
+    async with message.channel.typing():
+        result_list, mode = get_reddit(message_string)
+    command_called = f"!reddit {mode}"
+    await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**, Source: Reddit")
+    for result in result_list:
+        await message.channel.send(f'{result}')
+    return True, command_called
+
+
+async def cmd_protracker(message, message_string):
+    command_called = '!protrack'
+    async with message.channel.typing():
+        found, hero_name, result_string, icon_path = get_protracker_hero(message_string)
+    if not found:
+        if hero_name != '':
+            await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+        else:
+            await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+        return False, command_called
+    else:
+        embed_msg = embed_txt_message(result_string)
+        embed_msg.set_author(name=f'**{hero_name.upper()}** Dota2ProTracker:', url=constant.D2PT_WEBSITE_URL,
+                             icon_url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
+        embed_msg.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
+        embed_msg = add_footer_requested_by_username(embed_msg, message)
+        await message.channel.send(embed=embed_msg)
+        return True, command_called
+
+
+async def cmd_counter(message, message_string):
+    command_called = '!counter'
+    async with message.channel.typing():
+        note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
+        found, hero_name, image_path = get_counter_hero(message_string)
+        if not found:
+            if hero_name != '':
+                msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
+            else:
+                msg = f"Could not find hero, Please make sure the hero name is correct {note}"
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
+            return False, command_called
+        else:
+            desc = f'**{hero_name.upper()}** is bad against, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
+            title = f"{hero_name.upper()} is countered by:"
+            embed = discord.Embed(description=desc, color=discord.Color.red(), title=title)
+            image_file = discord.File(image_path, os.path.basename(image_path))
+            embed.set_image(url=f"attachment://{image_file.filename}")
+            embed.add_field(name="Update:", value=(note))
+            embed = add_footer_requested_by_username(embed, message)
+            await message.channel.send(embed=embed, file=image_file)
+            return True, command_called
+
+
+async def cmd_item(message, message_string):
+    command_called = '!item'
+    async with message.channel.typing():
+        note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
+        found, hero_name, image_path = get_item_build(message_string)
+        if not found:
+            if hero_name != '':
+                msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
+            else:
+                msg = f"Could not find hero, Please make sure the hero name is correct {note}"
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
+            return False, command_called
+        else:
+            desc = f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/guides)'
+            title = f"{hero_name.upper()} Item Build:"
+            embed = discord.Embed(description=desc, color=discord.Color.blurple(), title=title)
+            image_file = discord.File(image_path, os.path.basename(image_path))
+            embed.set_image(url=f"attachment://{image_file.filename}")
+            embed.add_field(name="Update:", value=(note))
+            embed = add_footer_requested_by_username(embed, message)
+            await message.channel.send(embed=embed, file=image_file)
+            return True, command_called
+
+
+async def cmd_good(message, message_string):
+    command_called = '!good'
+    async with message.channel.typing():
+        note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
+        found, hero_name, image_path = get_good_against(message_string)
+        if not found:
+            if hero_name != '':
+                msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
+            else:
+                msg = f"Could not find hero, Please make sure the hero name is correct {note}"
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
+            return False, command_called
+        else:
+            desc = f'**{hero_name.upper()}** is bad against, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
+            title = f"{hero_name.upper()} counters:"
+            embed = discord.Embed(description=desc, color=discord.Color.green(), title=title)
+            image_file = discord.File(image_path, os.path.basename(image_path))
+            embed.set_image(url=f"attachment://{image_file.filename}")
+            embed.add_field(name="Update:", value=(note))
+            embed = add_footer_requested_by_username(embed, message)
+            await message.channel.send(embed=embed, file=image_file)
+            return True, command_called
+
+
+async def cmd_skill(message, message_string):
+    command_called = '!skill'
+    async with message.channel.typing():
+        note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
+        found, hero_name, image_path = await get_skill_build(message_string)
+        if not found:
+            if hero_name != '':
+                msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
+            else:
+                msg = f"Could not find hero, Please make sure the hero name is correct {note}"
+                msg = embed_txt_message(msg, color=discord.Color.red())
+                await message.channel.send(embed=msg)
+            return False, command_called
+        else:
+            desc = f'**{hero_name.upper()}** most popular Skill/Talent build, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name})'
+            title = f"{hero_name.upper()} Skill/Talent buildt:"
+            embed = discord.Embed(description=desc, color=discord.Color.blurple(), title=title)
+            image_file = discord.File(image_path, os.path.basename(image_path))
+            embed.set_image(url=f"attachment://{image_file.filename}")
+            embed.add_field(name="Update:", value=(note))
+            embed = add_footer_requested_by_username(embed, message)
+            await message.channel.send(embed=embed, file=image_file)
+            return True, command_called
+
+
+async def cmd_twitch(message, message_string):
+    command_called = '!twitch'
+    async with message.channel.typing():
+        language = None if len(message_string.split()) <= 1 else message_string.split()[1]
+        result = get_dota2_top_stream(language)
+    embed_msg = embed_txt_message(result)
+    embed_msg = add_footer_requested_by_username(embed_msg, message)
+    await message.channel.send(embed=embed_msg)
+    return True, command_called
+
+
+async def cmd_save(message, message_string, message_word_length, user_discord_id, user_discord_name):
+    if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
+        result_embed = embed_txt_message(PROFILE_HELP_STRING, color=discord.Color.red())
+        result_embed.set_author(name="Save Command Help")
+        result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        await message.channel.send(embed=result_embed)
+        return
+    async with message.channel.typing():
+        flag, summary = save_id_in_db(user_discord_id, user_discord_name, message_string)
+    if not flag:
+        summary = embed_txt_message(summary, color=discord.Color.red())
+    else:
+        summary = embed_txt_message(summary, color=discord.Color.green())
+    summary = add_footer_requested_by_username(summary, message)
+    await message.channel.send(embed=summary)
+
+
+async def cmd_profile(message, message_string, message_word_length, user_discord_id):
+    command_called = '!profile'
+    if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
+        result_embed = embed_txt_message(PROFILE_HELP_STRING, color=discord.Color.dark_blue())
+        result_embed.set_author(name="Profile Command Help")
+        result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        await message.channel.send(embed=result_embed)
+        return True, command_called
+
+    async with message.channel.typing():
+        try:
+            flag, mode, steam_id, alias_name, result, medal_url = get_profile_from_db(user_discord_id, message_string)
+        except:
+            msg = 'Could not fetch your profile. Please make sure your profile is public'
+            msg = embed_txt_message(msg, color=discord.Color.red())
+            await message.channel.send(embed=msg)
+            return False, command_called
+
+    result_embed = embed_txt_message(result, color=discord.Color.green())
+    result_embed.set_author(name=f"**Profile: {steam_id}**", url=f'{constant.PLAYER_URL_BASE}{steam_id}',
+                            icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+    result_embed.set_thumbnail(url=medal_url)
+    if not flag:
+        if mode == 1:
+            msg = f'<@{user_discord_id}> Please save your Steam ID to get your profile, To save your profile:' \
+                  f' **`!save SteamID`** eg: **`!save 311360822`**\nPlease type  **`!profile help`**  for more help'
+            msg = embed_txt_message(msg, color=discord.Color.red())
+            await message.channel.send(embed=msg)
+        elif mode == 2:
+            msg = f'<@{user_discord_id}> Could not find any profile under the Steam ID:    **{steam_id}**\n' \
+                  f'Please type  **`!profile help`**  for more help'
+            msg = embed_txt_message(msg, color=discord.Color.red())
+            await message.channel.send(embed=msg)
+        else:
+            msg = f'<@{user_discord_id}> Could not find User:   **{alias_name}**,  You can save a username by eg: ' \
+                  f' **`!save {alias_name} SteamID`** \nPlease type  **`!profile help`**  for more help'
+            msg = embed_txt_message(msg, color=discord.Color.red())
+            await message.channel.send(embed=msg)
+        return False, command_called
+    else:
+        result_embed = add_footer_requested_by_username(result_embed, message)
+        await message.channel.send(embed=result_embed)
+        return True, command_called
+
+
+async def cmd_ti(message, message_string):
+    message_split = message_string.split()
+    if len(message_split) > 1 and 'group' in message_split[1]:
+        async with message.channel.typing():
+            command_called = '!ti group'
+            result_string = group_stage.get_group_stage()
+            result_string = 'Type **`!ti main`** to get TI Main Stage bracket and schedule\n' + result_string
+        result_string = embed_txt_message(result_string, color=discord.Color.purple())
+        result_string.set_thumbnail(url=constant.TI_LOGO_URL)
+        result_string.set_author(name='TI9 GROUP STAGE')
+        result_string = add_footer_requested_by_username(result_string, message)
+        await message.channel.send(embed=result_string)
+
+    elif len(message_split) > 1 and 'stat' in message_split[1]:
+        async with message.channel.typing():
+            command_called = '!ti stat'
+            result_string = stats.get_all_stats()
+        result_string = embed_txt_message(result_string, color=discord.Color.purple())
+        result_string.set_thumbnail(url=constant.TI_LOGO_URL)
+        result_string.set_author(name='TI9 Hero Stats')
+        result_string = add_footer_requested_by_username(result_string, message)
+        await message.channel.send(embed=result_string)
+
+    elif len(message_split) > 1 and 'match' in message_split[1]:
+        result_string = "Could not fetch Upcoming matches\nType  **`!ti main`** to get TI Main Stage bracket and schedule"
+        async with message.channel.typing():
+            try:
+                command_called = '!ti match'
+                result_string = matches.get_all_matches()
+            except Exception:
+                pass
+        await message.channel.send(result_string)
+
+    elif len(message_split) > 1 and 'main' in message_split[1]:
+        async with message.channel.typing():
+            command_called = '!ti main'
+            result_string = group_stage.get_main_stage()
+        result_string = embed_txt_message(result_string, color=discord.Color.purple())
+        result_string.set_thumbnail(url=constant.TI_LOGO_URL)
+        result_string.set_author(name='TI9 Main Stage Schedule')
+        result_string = add_footer_requested_by_username(result_string, message)
+        await message.channel.send(embed=result_string)
+
+    else:
+        result_string = help.help_message
+        result_string = embed_txt_message(result_string, color=discord.Color.purple())
+        result_string.set_thumbnail(url=constant.TI_LOGO_URL)
+        result_string.set_author(name='TI9 COMMANDS')
+        result_string = add_footer_requested_by_username(result_string, message)
+        await message.channel.send(embed=result_string)
+    return True, command_called
+
+
+async def cmd_broadcast(message, message_string):
+    async with message.channel.typing():
+        message_split = message_string.split()
+        if len(message_split) > 1:
+            client_id = message_split[1]
+            if str(client_id) == str(DISCORD_CLIENT_ID):
+                message = " ".join(message_split[2:])
+                await broadcast_message(message)
+
+
+async def cmd_exit(message, message_string):
+    message_split = message_string.split()
+    if len(message_split) > 1:
+        client_id = message_split[1]
+        if str(client_id) == str(DISCORD_CLIENT_ID):
+            await message.channel.send(f'Exiting client: {client_id}')
+            sys.exit(0)
+
+
+async def cmd_tail(message, message_string, n=5):
+    try:
+        n = int(message_string.split()[1])
+    except Exception:
+        pass
+    tail_log = get_command_log_tail(n)
+    tail_log = embed_txt_message(tail_log, color=discord.Color.purple())
+    tail_log.set_author(name='Command Tail Log')
+    tail_log = add_footer_requested_by_username(tail_log, message)
+    await message.channel.send(embed=tail_log)
+
+#################################################################################################
+
+
+# Where the commands are called
 @client.event
 async def on_message(message):
     is_command_called = True
@@ -59,7 +410,7 @@ async def on_message(message):
     message_string = message_string.lower().strip()
     message_word_length = len(message_string.split())
     user_discord_id = message.author.id
-    user_name = message.author.name
+    user_discord_name = message.author.name
     print(f"{message.channel}: {message.author}: {message.author.name}: {message.content}")
 
     # Ignore all message passed by the our bot
@@ -71,302 +422,59 @@ async def on_message(message):
         is_command_called = False
 
     elif '!help' == message_string or '--help' == message_string or '!command' in message_string:
-        command_called = "!help"
-        help_string = get_help()
-        embed_msg = embed_txt_message(help_string, add_header=True)
-        embed_msg.set_footer(text=HELP_FOOTER, icon_url=DOTA2_LOGO_URL)
-        await  message.channel.send(embed=embed_msg)
+        flag, command_called = await cmd_help(message)
 
     elif ('!top_game' in message_string or '!top game' in message_string) and \
             message_word_length < MAX_COMMAND_WORD_LENGTH:
-        command_called = "!top_game"
-        async with message.channel.typing():
-            image_path = get_top_games()
-            msg = "Top Live Games: Dota2API, Dota2ProTracker"
-            embed = discord.Embed(color=discord.Color.green())
-            embed.title = msg
-            image_file = discord.File(image_path, os.path.basename(image_path))
-            embed.add_field(name="Source:", value=('[Dota2API](https://demodota2api.readthedocs.io/en/latest/#)  '
-                                                   '[Dota2ProTracker](http://www.dota2protracker.com)'))
-            embed.set_image(url=f"attachment://{image_file.filename}")
-            await message.channel.send(embed=embed, file=image_file)
+        flag, command_called = await cmd_top_game(message)
 
     elif '!profile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        command_called = "!profile"
-        if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
-            result_embed = embed_txt_message(PROFILE_HELP_STRING, color=discord.Color.dark_blue())
-            result_embed.set_author(name="Profile Command Help")
-            result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
-            await message.channel.send(embed=result_embed)
-            return
-
-        async with message.channel.typing():
-            try:
-                flag, mode, steam_id, alias_name, result, medal_url = get_profile_from_db(user_discord_id, message_string)
-            except:
-                msg = 'Could not fetch your profile. Please make sure your profile is public'
-                msg = embed_txt_message(msg, color=discord.Color.red())
-                await message.channel.send(embed=msg)
-
-        result_embed = embed_txt_message(result, color=discord.Color.green())
-        result_embed.set_author(name=f"**Profile: {steam_id}**", url=f'{constant.PLAYER_URL_BASE}{steam_id}',
-                                icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
-        result_embed.set_thumbnail(url=medal_url)
-        if not flag:
-            if mode == 1:
-                msg = f'<@{user_discord_id}> Please save your Steam ID to get your profile, To save your profile:' \
-                      f' **`!save SteamID`** eg: **`!save 311360822`**\nPlease type  **`!profile help`**  for more help'
-                msg = embed_txt_message(msg, color=discord.Color.red())
-                await message.channel.send(embed=msg)
-            elif mode == 2:
-                msg = f'<@{user_discord_id}> Could not find any profile under the Steam ID:    **{steam_id}**\n' \
-                      f'Please type  **`!profile help`**  for more help'
-                msg = embed_txt_message(msg, color=discord.Color.red())
-                await message.channel.send(embed=msg)
-            else:
-                msg = f'<@{user_discord_id}> Could not find User:   **{alias_name}**,  You can save a username by eg: ' \
-                      f' **`!save {alias_name} SteamID`** \nPlease type  **`!profile help`**  for more help'
-                msg = embed_txt_message(msg, color=discord.Color.red())
-                await message.channel.send(embed=msg)
-        else:
-            await message.channel.send(embed=result_embed)
+        flag, command_called = await cmd_profile(message, message_string, message_word_length, user_discord_id)
 
     elif '!save' in message_string.split()[0]:
-        if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
-            result_embed = embed_txt_message(PROFILE_HELP_STRING, color=discord.Color.red())
-            result_embed.set_author(name="Save Command Help")
-            result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
-            await message.channel.send(embed=result_embed)
-            return
-        command_called = "!save"
-        async with message.channel.typing():
-            flag, summary = save_id_in_db(user_discord_id, user_name,  message_string)
-        if not flag:
-            summary = embed_txt_message(summary, color=discord.Color.red())
-        else:
-            summary = embed_txt_message(summary, color=discord.Color.green())
-        await message.channel.send(embed=summary)
+        await cmd_save(message, message_string, message_word_length, user_discord_id, user_discord_name)
 
     elif "!trend" in message_string and message_word_length < (MAX_COMMAND_WORD_LENGTH - 2):
-        command_called = "!trend"
-        async with message.channel.typing():
-            image_path = get_current_trend()
-            msg = "Current Heroes Trend"
-            desc = "Weekly Heroes Trend: Win Rate and Pick Rate"
-            embed = discord.Embed(description= desc, color=discord.Color.green())
-            embed.title = msg
-            image_file = discord.File(image_path, os.path.basename(image_path))
-            embed.add_field(name="Source:", value=('[DotaBuff](https://www.dotabuff.com/heroes/trends)'))
-            embed.set_image(url=f"attachment://{image_file.filename}")
-            await message.channel.send(embed=embed, file=image_file)
+        flag, command_called = await cmd_trend(message)
 
     elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        command_called = "!counter"
-        async with message.channel.typing():
-            note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
-            found, hero_name, image_path = get_counter_hero(message_string)
-            if not found:
-                if hero_name != '':
-                    msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
-                    msg = embed_txt_message(msg, color=discord.Color.red())
-                    await message.channel.send(embed=msg)
-                else:
-                    msg = f"Could not find hero, Please make sure the hero name is correct {note}"
-                    msg = embed_txt_message(msg, color=discord.Color.red())
-                    await message.channel.send(embed=msg)
-            else:
-                desc = f'**{hero_name.upper()}** is bad against, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
-                title = f"{hero_name.upper()} is countered by:"
-                embed = discord.Embed(description=desc, color=discord.Color.red(), title=title)
-                image_file = discord.File(image_path, os.path.basename(image_path))
-                embed.set_image(url=f"attachment://{image_file.filename}")
-                embed.add_field(name="Update:", value=(note))
-                await message.channel.send(embed=embed, file=image_file)
+        flag, command_called = await cmd_counter(message, message_string)
 
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        command_called = "!good"
-        async with message.channel.typing():
-            note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
-            found, hero_name, image_path = get_good_against(message_string)
-            if not found:
-                if hero_name != '':
-                    msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
-                    msg = embed_txt_message(msg, color=discord.Color.red())
-                    await message.channel.send(embed=msg)
-                else:
-                    msg = f"Could not find hero, Please make sure the hero name is correct {note}"
-                    msg = embed_txt_message(msg, color=discord.Color.red())
-                    await message.channel.send(embed=msg)
-            else:
-                desc = f'**{hero_name.upper()}** is bad against, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
-                title = f"{hero_name.upper()} counters:"
-                embed = discord.Embed(description=desc, color=discord.Color.green(), title=title)
-                image_file = discord.File(image_path, os.path.basename(image_path))
-                embed.set_image(url=f"attachment://{image_file.filename}")
-                embed.add_field(name="Update:", value=(note))
-                await message.channel.send(embed=embed, file=image_file)
+        flag, command_called = await cmd_good(message, message_string)
 
     elif ("!skill" in message_string or "!talent" in message_string) \
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        command_called = "!skill"
-        async with message.channel.typing():
-            note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
-            found, hero_name, image_path = await get_skill_build(message_string)
-            if not found:
-                if hero_name != '':
-                    msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
-                    msg = embed_txt_message(msg, color=discord.Color.red())
-                    await message.channel.send(embed=msg)
-                else:
-                    msg = f"Could not find hero, Please make sure the hero name is correct {note}"
-                    msg = embed_txt_message(msg, color=discord.Color.red())
-                    await message.channel.send(embed=msg)
-            else:
-                desc = f'**{hero_name.upper()}** most popular Skill/Talent build, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name})'
-                title = f"{hero_name.upper()} Skill/Talent buildt:"
-                embed = discord.Embed(description=desc, color=discord.Color.blurple(), title=title)
-                image_file = discord.File(image_path, os.path.basename(image_path))
-                embed.set_image(url=f"attachment://{image_file.filename}")
-                embed.add_field(name="Update:", value=(note))
-                await message.channel.send(embed=embed, file=image_file)
+        flag, command_called = await cmd_skill(message, message_string)
 
     elif "!item" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        command_called = "!item"
-        async with message.channel.typing():
-            note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
-            found, hero_name, image_path = get_item_build(message_string)
-            if not found:
-                if hero_name != '':
-                    msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
-                    msg = embed_txt_message(msg, color=discord.Color.red())
-                    await message.channel.send(embed=msg)
-                else:
-                    msg = f"Could not find hero, Please make sure the hero name is correct {note}"
-                    msg = embed_txt_message(msg, color=discord.Color.red())
-                    await message.channel.send(embed=msg)
-            else:
-                desc = f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/guides)'
-                title = f"{hero_name.upper()} Item Build:"
-                embed = discord.Embed(description=desc, color=discord.Color.blurple(), title=title)
-                image_file = discord.File(image_path, os.path.basename(image_path))
-                embed.set_image(url=f"attachment://{image_file.filename}")
-                embed.add_field(name="Update:", value=(note))
-                await message.channel.send(embed=embed, file=image_file)
+        flag, command_called = await cmd_item(message, message_string)
 
     elif "!twitch" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        command_called = "!twitch"
-        async with message.channel.typing():
-            language = None if len(message_string.split()) <= 1 else message_string.split()[1]
-            result = get_dota2_top_stream(language)
-        embed_msg = embed_txt_message(result)
-        await message.channel.send(embed=embed_msg)
+        flag, command_called = await cmd_twitch(message, message_string)
 
     elif "!reddit" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        async with message.channel.typing():
-            result_list, mode = get_reddit(message_string)
-        command_called = f"!reddit {mode}"
-        await message.channel.send(f"**REDDIT**  SortBy: **{mode.upper()}**, Source: Reddit")
-        for result in result_list:
-            await message.channel.send(f'{result}')
+        flag, command_called = await cmd_reddit(message, message_string)
 
     elif "!pro" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        command_called = "!protrack"
-        async with message.channel.typing():
-            found, hero_name, result_string, icon_path = get_protracker_hero(message_string)
-        if not found:
-            if hero_name != '':
-                await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
-            else:
-                await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
-        else:
-            embed_msg = embed_txt_message(result_string)
-            embed_msg.set_author(name=f'**{hero_name.upper()}** Dota2ProTracker:', url=constant.D2PT_WEBSITE_URL,
-                                 icon_url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
-            embed_msg.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
-            await message.channel.send(embed=embed_msg)
+        flag, command_called = await cmd_protracker(message, message_string)
 
     elif "!ti" in message_string:
-        command_called = '!ti'
-        message_split = message_string.split()
-        if len(message_split) > 1 and 'group' in message_split[1]:
-            async with message.channel.typing():
-                command_called = '!ti group'
-                result_string = group_stage.get_group_stage()
-                result_string = 'Type **`!ti main`** to get TI Main Stage bracket and schedule\n' + result_string
-            result_string = embed_txt_message(result_string, color=discord.Color.purple())
-            result_string.set_thumbnail(url=constant.TI_LOGO_URL)
-            result_string.set_author(name='TI9 GROUP STAGE')
-            await message.channel.send(embed=result_string)
-
-        elif len(message_split) > 1 and 'stat' in message_split[1]:
-            async with message.channel.typing():
-                command_called = '!ti stat'
-                result_string = stats.get_all_stats()
-            result_string = embed_txt_message(result_string, color=discord.Color.purple())
-            result_string.set_thumbnail(url=constant.TI_LOGO_URL)
-            result_string.set_author(name='TI9 Hero Stats')
-            await message.channel.send(embed=result_string)
-
-        elif len(message_split) > 1 and 'match' in message_split[1]:
-            result_string = "Could not fetch Upcoming matches\nType  **`!ti main`** to get TI Main Stage bracket and schedule"
-            async with message.channel.typing():
-                try:
-                    command_called = '!ti match'
-                    result_string = matches.get_all_matches()
-                except Exception:
-                    pass
-            await message.channel.send(result_string)
-
-        elif len(message_split) > 1 and 'main' in message_split[1]:
-            async with message.channel.typing():
-                command_called = '!ti main'
-                result_string = group_stage.get_main_stage()
-            result_string = embed_txt_message(result_string, color=discord.Color.purple())
-            result_string.set_thumbnail(url=constant.TI_LOGO_URL)
-            result_string.set_author(name='TI9 Main Stage Schedule')
-            await message.channel.send(embed=result_string)
-
-        else:
-            result_string = help.help_message
-            result_string = embed_txt_message(result_string, color=discord.Color.purple())
-            result_string.set_thumbnail(url=constant.TI_LOGO_URL)
-            result_string.set_author(name='TI9 COMMANDS')
-            await message.channel.send(embed=result_string)
+        flag, command_called = await cmd_ti(message, message_string)
 
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
 
     # Admin privilege
-    elif "!get_user" in message_string and str(message.author) == ADMIN_ID:
-        command_called = "!get_user"
-        await message.channel.send(f'Steam Users ID:', file=discord.File(constant.STEAM_USER_FILE_PATH))
-
     elif "!exit" in message_string and str(message.author) == ADMIN_ID:
-        message_split = message_string.split()
-        if len(message_split) > 1:
-            client_id = message_split[1]
-            if str(client_id) == str(DISCORD_CLIENT_ID):
-                await message.channel.send(f'Exiting client: {client_id}')
-                sys.exit(0)
+        await cmd_exit(message, message_string)
 
     elif "!broadcast" in message_string and str(message.author) == ADMIN_ID:
-        async with message.channel.typing():
-            message_split = message_string.split()
-            if len(message_split) > 1:
-                client_id = message_split[1]
-                if str(client_id) == str(DISCORD_CLIENT_ID):
-                    message = " ".join(message_split[2:])
-                    await broadcast_message(message)
+        await cmd_broadcast(message, message_string)
 
     elif "!tail" in message_string and str(message.author) == ADMIN_ID:
         is_command_called = False
-        n = 5
-        try:
-            n = int(message_string.split()[1])
-        except Exception:
-            pass
-        tail_log = get_command_log_tail(n)
-        await message.channel.send(tail_log)
+        await cmd_tail(message, message_string)
 
     # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:
@@ -381,3 +489,5 @@ async def on_message(message):
 
 
 client.run(DISCORD_TOKEN)
+
+
