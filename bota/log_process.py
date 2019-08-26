@@ -51,10 +51,18 @@ def save_command_logs(message, command_called):
 
 
 def get_command_log_tail(n):
-    lines = "Command Log Tail:\n"
+    lines = []
     path = COMMAND_USER_LOG_PATH
     for i, line in enumerate(reversed(list(open(path)))):
-        if i >=n :
+        if i >=n:
             break
-        lines += line
+        line = f'{i+1}. ' + line
+        line_split = line.split(',')
+        first = line_split[0].replace('INFO', '')
+        first = first.split('#')[0]
+        line_taken = [first, line_split[4], line_split[5], line_split[6], line_split[9]]
+        line = ", ".join(line_taken)
+        lines.append(line)
+    lines = "".join(lines)
+    lines = f'```cs\n{lines}```'
     return lines

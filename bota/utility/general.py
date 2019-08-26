@@ -171,6 +171,11 @@ def get_html_text(url):
 	return html_text
 
 
+def round_df_digits(df):
+	df = (df.astype(float).applymap('{:,.2f}'.format))
+	return df
+
+
 if __name__ == "__main__":
 	import cv2
 	image = cv2.imread('/home/ben/personal/discord-dota-bot/data/temp_images/ursa_skill.png')

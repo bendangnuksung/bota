@@ -108,7 +108,6 @@ def get_latest_match(soup, top=5):
         game_mode_split = game_mode.split()
         game_mode_short = [x[0] for x in game_mode_split]
         game_mode_short = ''.join(game_mode_short).upper()
-        print(game_type)
         if len(str(game_type)) < 11:
             match_type = str(game_type)
             match_type = match_type.split()[0]

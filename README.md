@@ -29,6 +29,9 @@ Once this is done you can assign all this key values in `bota/private_constant.p
 ### Install Requirements
 ```bash
 sudo sh setup.sh
+
+# Setup Postgres database (New)
+sh db_setup.sh
 ```
 ### Run
 **Run the bot**
@@ -49,4 +52,5 @@ sh stop_bota.sh
 2. [Reddit](https://www.reddit.com/r/DotA2/)
 3. [Twitch](https://www.twitch.tv/)
 4. [D2PT](http://www.dota2protracker.com/)
-5. Dota2API
+5. [DotaVoyance](http://dotavoyance.com/)
+6. Dota2API

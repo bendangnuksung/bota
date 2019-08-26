@@ -1,7 +1,7 @@
 from bota.image_processing import add_border_to_image
 from bota.web_scrap.heroes_process import get_current_hero_trends, find_hero_name, scrap_heroes_info
 import pandas as pd
-from bota.utility.general import render_mpl_table, get_icon_path, is_file_old, crop_image
+from bota.utility.general import render_mpl_table, get_icon_path, is_file_old, crop_image, round_df_digits
 from bota.constant import CT_IMAGE_PATH, CT_IMAGE_UPDATE_TIME_THRESHOLD
 from bota import constant
 import os
@@ -11,17 +11,13 @@ from bota.web_scrap.web_screenshot import get_screenshot
 from bota.web_scrap.items_process import scrap_item_info, make_item_image
 from bota.web_scrap.profile_process import scrap_profile_info
 from bota.web_scrap.reddit_process import scrap_reddit_dota
-from bota.applications.steam_user import User
+from bota.applications.steam_user_db import UserDB, AliasDB
 from bota.web_scrap.protracker_process import DotaProTracker
 
 
-steam_user = User()
+user_db = UserDB()
+alias = AliasDB()
 d2pt = DotaProTracker()
-
-
-def round_df_digits(df):
-    df = (df.astype(float).applymap('{:,.2f}'.format))
-    return df
 
 
 def get_current_trend():
@@ -197,31 +193,74 @@ def is_id(id):
     return flag
 
 
-def get_profile(query):
+def get_profile_from_db(discord_id, query):
     query = query.split()
-    id = ' '.join(query[1:])
-    id = id.strip()
     medal_url = ''
-    if is_id(id):
-        profile_info_string, medal_url = scrap_profile_info(id)
+    if len(query) == 1:
+        mode = 1
+        steam_id, reason = user_db.get_steam_id(discord_id)
+        if steam_id == '':
+            return False, mode, steam_id, '',  '', medal_url
+        profile_info_string, medal_url = scrap_profile_info(steam_id)
+        return True, mode, steam_id, '', profile_info_string, medal_url
+
     else:
-        user_name = id
-        flag, id = steam_user.get_id(user_name)
-        if not flag:
-            return False, user_name, 2, '', medal_url
-        profile_info_string, medal_url = scrap_profile_info(id)
-        return True, id, 2, profile_info_string, medal_url
-    if profile_info_string == '':
-        return False, id, 1, '', medal_url
-    return True, id, 1, profile_info_string, medal_url
+        mode = 2
+        steam_id = ' '.join(query[1:])
+        steam_id = steam_id.strip()
+        if is_id(steam_id):
+            profile_info_string, medal_url = scrap_profile_info(steam_id)
+            return True, mode, steam_id, '', profile_info_string, medal_url
+        else:
+            mode = 3
+            alias_name = steam_id
+            alias_name = alias_name.strip()
+            steam_id, reason = alias.get_steam_id(alias_name)
+            if steam_id != '':
+                profile_info_string, medal_url = scrap_profile_info(steam_id)
+                return True, mode, steam_id, alias_name, profile_info_string, medal_url
+            else:
+                return False, mode, steam_id, alias_name, '', medal_url
 
 
-def save_id(query):
+def save_id_in_db(discord_id, discord_name, query):
     query = query.split()
-    user_name = query[1].strip()
-    id = query[2].strip()
-    flag, status = steam_user.add_user(user_name, id)
-    return user_name, id, flag, status
+    discord_id = int(discord_id)
+    if len(query) == 1:
+        summary = "Please provide your Steam ID, eg: `!save 116585378`"
+        return False, summary
+
+    elif len(query) == 2:
+        steam_id = query[1].strip()
+        if not is_id(steam_id):
+            return False, f"<@{discord_id}> Invalid Steam ID, eg: **`!save 116585378`**"
+        steam_id = int(steam_id)
+        is_id_exist = user_db.is_discord_id_exist(discord_id)
+        if is_id_exist:
+            flag, summary = user_db.update_steam_id(discord_id=discord_id, steam_id=steam_id)
+        else:
+            flag, summary = user_db.add_user(discord_id=discord_id, discord_name=discord_name, steam_id=steam_id)
+        if not flag:
+            summary = f"<@{discord_id}> " + summary
+        return flag, summary
+
+    else:
+        alias_name = query[1:-1]
+        alias_name = " ".join(alias_name)
+        if len(alias_name) > 25:
+            return False, f"<@{discord_id}> **{alias_name}** is a very long name, Name should be under 25 characters"
+        steam_id = query[-1].strip()
+        if not is_id(steam_id):
+            return False, f"<@{discord_id}> Invalid Steam ID, eg: **`!save midone 116585378`**"
+        steam_id = int(steam_id)
+        is_alias_name_exist = alias.is_alias_name_exist(alias_name)
+        if is_alias_name_exist:
+            flag, summary = alias.update_steam_id(alias_name=alias_name, discord_id=discord_id, steam_id=steam_id)
+        else:
+            flag, summary = alias.add_alias_name(alias_name=alias_name, discord_id=discord_id, steam_id=steam_id)
+        if not flag:
+            summary = f"<@{discord_id}> " + summary
+        return flag, summary
 
 
 def get_reddit(query):
@@ -258,8 +297,6 @@ if __name__ == '__main__':
     print(get_reddit('!reddit top'))
     exit()
     # print(save_id('!save sam 297066030'))
-    print(get_profile('!profile david'))
-    exit()
     # print(get_counter_hero('!good ursa'))
     # print(get_good_against('!good ursa'))
     import asyncio
