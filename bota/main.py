@@ -51,10 +51,13 @@ async def on_guild_join(guild):
 
 
 def add_footer_requested_by_username(embed, message):
-    user_discord_id = message.author.id
-    user = message.guild.get_member(user_discord_id)
-    embed.set_footer(text=f'Requested by {message.author.name}', icon_url=user.avatar_url)
-    return embed
+    try:
+        user_discord_id = message.author.id
+        user = message.guild.get_member(user_discord_id)
+        embed.set_footer(text=f'Requested by {message.author.name}', icon_url=user.avatar_url)
+        return embed
+    except Exception as e:
+        return embed
 
 
 #################################################################################################
@@ -141,11 +144,11 @@ async def cmd_counter(message, message_string):
         found, hero_name, image_path = get_counter_hero(message_string)
         if not found:
             if hero_name != '':
-                msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
+                msg = f"Do you mean  **{hero_name}**, Try again with correct name"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
-                msg = f"Could not find hero, Please make sure the hero name is correct {note}"
+                msg = f"Could not find hero, Please make sure the hero name is correct"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             return False, command_called
@@ -168,11 +171,11 @@ async def cmd_item(message, message_string):
         found, hero_name, image_path = get_item_build(message_string)
         if not found:
             if hero_name != '':
-                msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
+                msg = f"Do you mean  **{hero_name}**, Try again with correct name"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
-                msg = f"Could not find hero, Please make sure the hero name is correct {note}"
+                msg = f"Could not find hero, Please make sure the hero name is correct"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             return False, command_called
@@ -195,11 +198,11 @@ async def cmd_good(message, message_string):
         found, hero_name, image_path = get_good_against(message_string)
         if not found:
             if hero_name != '':
-                msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
+                msg = f"Do you mean  **{hero_name}**, Try again with correct name "
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
-                msg = f"Could not find hero, Please make sure the hero name is correct {note}"
+                msg = f"Could not find hero, Please make sure the hero name is correct"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             return False, command_called
@@ -222,11 +225,11 @@ async def cmd_skill(message, message_string):
         found, hero_name, image_path = await get_skill_build(message_string)
         if not found:
             if hero_name != '':
-                msg = f"Do you mean  **{hero_name}**, Try again with correct name {note}"
+                msg = f"Do you mean  **{hero_name}**, Try again with correct name"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
-                msg = f"Could not find hero, Please make sure the hero name is correct {note}"
+                msg = f"Could not find hero, Please make sure the hero name is correct"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             return False, command_called
