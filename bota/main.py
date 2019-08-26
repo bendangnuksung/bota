@@ -1,7 +1,7 @@
 import discord
 import sys
 from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
-from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING
+from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
@@ -50,11 +50,11 @@ async def on_guild_join(guild):
                            f'Type   `!help` or `!command`   to get list of commands to use.')
 
 
-def add_footer_requested_by_username(embed, message):
+def add_footer_requested_by_username(embed, message, note=NOTE_FOOTER):
     try:
         user_discord_id = message.author.id
         user = message.guild.get_member(user_discord_id)
-        embed.set_footer(text=f'Requested by {message.author.name}', icon_url=user.avatar_url)
+        embed.set_footer(text=f'Req by {message.author.name}{note}', icon_url=user.avatar_url)
         return embed
     except Exception as e:
         return embed

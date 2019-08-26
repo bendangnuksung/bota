@@ -98,7 +98,14 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'queenofpain': 'queen-of-pain', 'shadowdemon': 'shadow-demon', 'shadowshaman': 'shadow-shaman',
                            'spiritbreaker': 'spirit-breaker', 'stormspirit': 'storm-spirit',
                            'templarassassin': 'templar-assassin', 'treantprotector': 'treant-protector',
-                           'vengefulspirit': 'vengeful-spirit', 'winterwyvern': 'winter-wyvern', 'witchdoctor': 'witch-doctor', 'zues': 'zeus'
+                           'vengefulspirit': 'vengeful-spirit', 'winterwyvern': 'winter-wyvern',
+                           'witchdoctor': 'witch-doctor', 'zues': 'zeus', 'kunka': 'kunkka', 'wv': 'weaver',
+                           'temp': 'templar-assassin', 'witch': 'witch-doctor', 'commander': 'legion-commander',
+                           'th': 'tidehunter', 'wyv': 'winter-wyvern', 'wl': 'warlock', 'vm': 'venomancer',
+                           'ts': 'timbersaw', 'sp': 'sniper', 'rb': 'rubick', 'rk': 'riki', 'rz': 'razor', 'pug': 'pugna',
+                           'ok': 'omniknight', 'om': 'ogre-magi', 'nec': 'necrophos', 'lr': 'leshrac', 'ech': 'enchantress',
+                           'enc': 'enchantress', 'mber': 'ember-spirit', 'amber': 'ember-spirit', 'dz': 'dazzle',
+                           'br': 'batrider'
                            }
 
 

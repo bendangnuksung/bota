@@ -11,7 +11,8 @@ HOW_TO_USE_COMMANDS_EXAMPLE = {
     }
 
 # Foot block
-HELP_FOOTER = "**NOTE**: Can use short Hero Names, !counter anti mage ---as---> !counter am"
+HELP_FOOTER = "NOTE: Can use short Hero Names, !counter anti mage ---as---> !counter am"
+NOTE_FOOTER = " | Can use Short HeroName, !skill antimage -> !skill am"
 
 # Note
 HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  !counter am"
