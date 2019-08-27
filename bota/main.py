@@ -207,7 +207,7 @@ async def cmd_good(message, message_string):
                 await message.channel.send(embed=msg)
             return False, command_called
         else:
-            desc = f'**{hero_name.upper()}** is bad against, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
+            desc = f'**{hero_name.upper()}** is good against, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
             title = f"{hero_name.upper()} counters:"
             embed = discord.Embed(description=desc, color=discord.Color.green(), title=title)
             image_file = discord.File(image_path, os.path.basename(image_path))
