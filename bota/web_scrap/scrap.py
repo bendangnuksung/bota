@@ -242,6 +242,8 @@ def save_id_in_db(discord_id, discord_name, query):
             flag, summary = user_db.add_user(discord_id=discord_id, discord_name=discord_name, steam_id=steam_id)
         if not flag:
             summary = f"<@{discord_id}> " + summary
+        else:
+            summary = f"{summary} | Type  **`!profile`**  to get your profile"
         return flag, summary
 
     else:
