@@ -20,12 +20,15 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 # Update Block
 UPDATE_BLOCK = '```cs\n"UPDATE": Can save your profile without name and change Steam ID and others, Type "!profile help" for details```'
-LAST_UPDATE = "**UPDATES:**\n" \
-              "1. Added TI command,   `!ti`   date: `15-Aug-2019`\n" \
-              "2. Added Language option in twitch    `!twitch en`    date: `07-Aug-2019`\n"\
-              "3. Added new command    `!protrack HeroName`    date: `06-Aug-2019`\n" \
-              "4. Added Notable hero in    `!top game`    date: `05-Aug-2019`\n" \
-              "For more info and support please join: https://discord.gg/a7QYPWd"
+
+UPDATE_BLOCK_LIST=\
+             ["`25-Aug-2019`: Save your profile without name and change Steam ID and others, Type `!profile help` for details",
+              "`15-Aug-2019`: Added TI command,   `!ti`",
+              "`07-Aug-2019`: Added Language option in twitch    `!twitch en`  `!twitch ru`  `twitch th`",
+              "`06-Aug-2019`: Added new command    `!protrack HeroName` ",
+              "`05-Aug-2019`: Added Notable hero in    `!top game`"]
+UPDATE_BLOCK_FOOT = "\nFor more info and support please join: https://discord.gg/a7QYPWd"
+LAST_UPDATE = "**UPDATES:**\n" + "\n".join(UPDATE_BLOCK_LIST) + UPDATE_BLOCK_FOOT
 
 
 # This weird spacing is to pretty text in discord
