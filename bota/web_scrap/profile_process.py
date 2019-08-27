@@ -174,6 +174,12 @@ def get_medal_url(medal, rank=None):
         return medal_url + '?raw=true'
 
 
+def get_dp_url(soup):
+    img = soup.find('img', {'class': 'image-player'})
+    url = img.attrs['src']
+    return url
+
+
 def scrap_profile_info(profile_id):
     result = {}
     profile_id = str(profile_id)
@@ -205,6 +211,8 @@ def scrap_profile_info(profile_id):
 
     string = pretty_profile_text_for_discord(result)
 
+    dp_url = get_dp_url(soup)
+
     medal = medal_info['medal']
     if medal_info['rank'] == '':
         medal = get_medal_url(medal)
@@ -213,7 +221,7 @@ def scrap_profile_info(profile_id):
 
     string += f"**[DotaBuff]({url})**"
 
-    return string, medal
+    return string, medal, dp_url
 
 
 if __name__ == '__main__':

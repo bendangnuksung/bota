@@ -284,7 +284,7 @@ async def cmd_profile(message, message_string, message_word_length, user_discord
 
     async with message.channel.typing():
         try:
-            flag, mode, steam_id, alias_name, result, medal_url = get_profile_from_db(user_discord_id, message_string)
+            flag, mode, steam_id, alias_name, result, medal_url, dp_url = get_profile_from_db(user_discord_id, message_string)
         except:
             msg = 'Could not fetch your profile. Please make sure your profile is public'
             msg = embed_txt_message(msg, color=discord.Color.red())
@@ -293,7 +293,7 @@ async def cmd_profile(message, message_string, message_word_length, user_discord
 
     result_embed = embed_txt_message(result, color=discord.Color.green())
     result_embed.set_author(name=f"**Profile: {steam_id}**", url=f'{constant.PLAYER_URL_BASE}{steam_id}',
-                            icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+                            icon_url=dp_url)
     result_embed.set_thumbnail(url=medal_url)
     if not flag:
         if mode == 1:

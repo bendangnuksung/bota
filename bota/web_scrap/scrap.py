@@ -200,27 +200,27 @@ def get_profile_from_db(discord_id, query):
         mode = 1
         steam_id, reason = user_db.get_steam_id(discord_id)
         if steam_id == '':
-            return False, mode, steam_id, '',  '', medal_url
-        profile_info_string, medal_url = scrap_profile_info(steam_id)
-        return True, mode, steam_id, '', profile_info_string, medal_url
+            return False, mode, steam_id, '',  '', medal_url, ''
+        profile_info_string, medal_url, dp_url = scrap_profile_info(steam_id)
+        return True, mode, steam_id, '', profile_info_string, medal_url, dp_url
 
     else:
         mode = 2
         steam_id = ' '.join(query[1:])
         steam_id = steam_id.strip()
         if is_id(steam_id):
-            profile_info_string, medal_url = scrap_profile_info(steam_id)
-            return True, mode, steam_id, '', profile_info_string, medal_url
+            profile_info_string, medal_url, dp_url = scrap_profile_info(steam_id)
+            return True, mode, steam_id, '', profile_info_string, medal_url, dp_url
         else:
             mode = 3
             alias_name = steam_id
             alias_name = alias_name.strip()
             steam_id, reason = alias.get_steam_id(alias_name)
             if steam_id != '':
-                profile_info_string, medal_url = scrap_profile_info(steam_id)
-                return True, mode, steam_id, alias_name, profile_info_string, medal_url
+                profile_info_string, medal_url, dp_url = scrap_profile_info(steam_id)
+                return True, mode, steam_id, alias_name, profile_info_string, medal_url, dp_url
             else:
-                return False, mode, steam_id, alias_name, '', medal_url
+                return False, mode, steam_id, alias_name, '', medal_url, ''
 
 
 def save_id_in_db(discord_id, discord_name, query):
