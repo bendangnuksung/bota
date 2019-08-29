@@ -121,7 +121,12 @@ def get_d2pt_hero(hero_name, top=5):
     body_2 = f"**Good Against**```glsl\n{good_against_string}```"
     body_3 = f"**Bad Against**```glsl\n{bad_against_string}```"
 
-    final_string = link + '\n' + header + '\n' + post_header + '\n' + body_1 + body_2 + body_3
+    bodies = []
+    for body in [body_1, body_2, body_3]:
+        if len(body) > 50:
+            bodies.append(body)
+
+    final_string = link + '\n' + header + '\n' + post_header + '\n' + "".join(bodies)
     return final_string
 
 
@@ -129,12 +134,10 @@ if __name__ == "__main__":
     d2pt = DotaProTracker()
     for heroname in scrap_constant.d2pt_hero_names:
         start = datetime.now()
-        print("*" * 30)
-        print(heroname)
         r = d2pt.get_hero_details_from_d2pt(heroname)
         # print((datetime.now() - start).total_seconds())
-
-        print(len(r))
+        print(r)
+        break
 
     # start= datetime.now()
     # r = get_d2pt_hero("axe")
