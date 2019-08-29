@@ -1,4 +1,4 @@
-# BOTA<img align="right" src="github_images/bota.png"/>
+# BOTA<img align="right" src="/github_images/bota.png"/>
 BOT-A is a free Discord Dota 2 bot which provides comprehensive Information of every Dota 2 characters and exciting features for the community. Pull request are welcome and report any issues you find. The Bot is still in beta so I don't expect it to be perfect. <br/>  
 **Website:** [https://bota.tech/](https://bota.tech/)<br/>
 [![Join Bota Server](https://i.imgur.com/oWXj1vI.png)](https://discord.gg/a7QYPWd)  [![Add Bota to your server](https://i.imgur.com/eBAIETS.jpg)](https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot)
@@ -6,9 +6,9 @@ BOT-A is a free Discord Dota 2 bot which provides comprehensive Information of e
 ## Commands & Screenshots
 Commands can be found at at [here](https://bota.tech/index.html#table1-7)<br/>
 Screenshots:
-1. Command:  `!counter  morphling`  ![counter morphling](github_images/counter.png)
-2. Command:  `!item storm` ![item storm](github_images/item.png)
-3. Command:  `!profile midone` ![profile](github_images/profile.png)
+1. Command:  `!counter  morphling`  ![counter morphling](/github_images/counter.png)
+2. Command:  `!item storm` ![item storm](/github_images/item.png)
+3. Command:  `!profile midone` ![profile](/github_images/profile.png)
 
 ## Setup
 ### Pre-Requirements:
