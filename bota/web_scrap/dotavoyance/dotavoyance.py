@@ -113,7 +113,13 @@ class Dotavoyance():
         num_heroes = num_heroes[0]
         sort_col = self.get_sort_col(skill)
 
-        req_str = "https://www.dotavoyance.com/combos?numHeroes="+num_heroes+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:25%7D%7D&table_to_use=Last Week"
+        minimum_num_games = 20
+        table_to_use = "Last Week"
+        if num_heroes > 2:
+            table_to_use = "Last Month"
+            minimum_num_games = 3
+
+        req_str = "https://www.dotavoyance.com/combos?numHeroes="+num_heroes+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:"+str(minimum_num_games)+"%7D%7D&table_to_use="+table_to_use
         r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
         results = r.json()
 
@@ -155,7 +161,13 @@ class Dotavoyance():
         sort_col = self.get_sort_col(skill)
         hero_ids, num_heroes = self.get_hero_ids(hero_strings)
 
-        req_str = "https://www.dotavoyance.com/teammates?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:50%7D%7D&table_to_use=Last Week"
+        minimum_num_games = 20
+        table_to_use = "Last Week"
+        if num_heroes > 2:
+            table_to_use = "Last Month"
+            minimum_num_games = 3
+
+        req_str = "https://www.dotavoyance.com/teammates?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:"+str(minimum_num_games)+"%7D%7D&table_to_use="+table_to_use
         r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
         results = r.json()
 
@@ -210,7 +222,13 @@ class Dotavoyance():
         sort_col = self.get_sort_col(skill)
         hero_ids, num_heroes = self.get_hero_ids(hero_strings)
 
-        req_str = "https://www.dotavoyance.com/explore?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column="+sort_col+"&sort_direction=-1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:50%7D%7D&table_to_use=Last Week"
+        minimum_num_games = 20
+        table_to_use = "Last Week"
+        if num_heroes > 2:
+            table_to_use = "Last Month"
+            minimum_num_games = 3
+
+        req_str = "https://www.dotavoyance.com/explore?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column="+sort_col+"&sort_direction=-1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:"+str(minimum_num_games)+"%7D%7D&table_to_use="+table_to_use
         r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
         results = r.json()
 
