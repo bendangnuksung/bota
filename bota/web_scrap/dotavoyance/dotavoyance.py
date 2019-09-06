@@ -13,6 +13,10 @@ import requests
 class Dotavoyance():
     def __init__(self):
         self.heroes = heroes.heroes_dict()
+        self.col_skill = {'high': 'perc_win_top',
+                          'med': 'perc_win_middle',
+                          'low': 'perc_win_bottom',
+                          '': 'perc_win_total'}
 
     def find_by_name(self, hero_name):
         return [x for x in self.heroes["heroes"] if x["name"] == hero_name.lower()]
@@ -47,13 +51,7 @@ class Dotavoyance():
         return hero_strings, skill
 
     def get_sort_col(self, skill):
-        col_skill = {
-                'high': 'perc_win_top',
-                'med': 'perc_win_middle',
-                'low': 'perc_win_bottom',
-                '': 'perc_win_total'
-                }
-        return col_skill[skill]
+        return self.col_skill.get(skill)
 
     def get_hero_ids(self, hero_strings):
         num_heroes = 0
@@ -156,22 +154,23 @@ class Dotavoyance():
 
 
     ## Teammates
-    def get_teammates(self, message_string):
-        hero_strings, skill = self.parse_heroes(message_string)
-        sort_col = self.get_sort_col(skill)
-        hero_ids, num_heroes = self.get_hero_ids(hero_strings)
+    def get_teammates(self, hero_list, sort_by='', min_games=5):
+        # hero_strings, skill = self.parse_heroes(message_string)
 
-        minimum_num_games = 20
+        sort_col = self.get_sort_col(sort_by)
+        hero_ids, num_heroes = self.get_hero_ids(hero_list)
+
+        minimum_num_games = min_games
         table_to_use = "Last Week"
         if num_heroes > 2:
             table_to_use = "Last Month"
-            minimum_num_games = 3
+            minimum_num_games = min_games
 
         req_str = "https://www.dotavoyance.com/teammates?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:"+str(minimum_num_games)+"%7D%7D&table_to_use="+table_to_use
         r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
         results = r.json()
 
-        if len(hero_strings) != num_heroes:
+        if len(hero_list) != num_heroes:
             return False, ''
 
         res_count = 0

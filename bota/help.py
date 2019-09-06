@@ -77,3 +77,12 @@ PROFILE_HELP_STRING = "**To Save your own profile** \n" \
                       "Reset :   To reset the SteamID for the user you created, type: **`!save anna 52870512`**\n\n" \
                       "**To check profile without saving Steam ID**\n" \
                       "Step 1:   **`!profile SteamID`**,  eg:  **`!profile 311360822`**"
+
+# Team command examples
+TEAM_CMD_EXAMPLE = f'**How to use `!team` command**:\n' \
+                   f'**`!team HeroName, HeroName SkillLevel`**`\n' \
+                   f'eg 1: **`!team lion, slark high`**  (Shows High Skill Bracket)\n' \
+                   f'eg 2: **`!team am, oracle, zeus normal`**  (Shows Normal Skill Bracket)\n' \
+                   f'eg 3: **`!team timber low`**  (Shows Low Skill Bracket)\n' \
+                   f'eg 4: **`!team axe, wr`**  (Shows Over all Skill Bracket)\n\n' \
+                   f'**There are three skill levels**: `High`, `Normal`, `Low`'

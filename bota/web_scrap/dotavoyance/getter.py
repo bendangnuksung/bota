@@ -4,11 +4,15 @@ from bota.image_processing import add_border_to_image, write_text_pil
 import cv2
 import os
 from bota import constant
+from bota.help import TEAM_CMD_EXAMPLE
 
 DV = Dotavoyance()
-SORT_BY_KEYS = ['high', 'med', 'low']
-
-TEAMMATE_BG_IMAGE = '/home/ben/personal/bota/bota/data/background/team_background.jpg'
+SORT_BY_KEYS = ['high', 'med', 'low', 'highest', 'higher', 'normal', 'medium', 'norm', 'mid', 'top', 'bot', 'lowerst',
+                'lower', 'middle']
+SORT_BY_ALT_KEYS = {'highest': 'high', 'higher': 'high', 'normal': 'med', 'medium': 'med', 'norm': 'norm',
+                    'mid': 'med', 'top': 'high', 'bot': 'low', 'lowest': 'low', 'lower': 'low', 'middle': 'med'}
+SKILL_DICT = {'high': 'High Skill', 'med': 'Normal Skill', 'low': 'Low Skill', '': 'All Skill'}
+HERO_COUNT_MIN_GAMES = {1: 100, 2: 50, 3: 5, 4: 2}
 
 
 def display(img):
@@ -18,13 +22,11 @@ def display(img):
     plt.show()
 
 
-def make_teammate_image(my_heroes, results, bg_image=TEAMMATE_BG_IMAGE):
+def make_teammate_image(my_heroes, results, skill_level, bg_image=constant.DV_TEAM_BG_IMAGE):
     bg_image = cv2.imread(bg_image)
     bg_h, bg_w, _ = bg_image.shape
     start_left = 50
-    start_top = 150
-
-    max = 10
+    start_top = 170
 
     my_hero_start_top = 675
     my_hero_start_left = ((bg_w // 2) - 85) - (((len(my_heroes) -1) * 200) // 2)
@@ -47,7 +49,6 @@ def make_teammate_image(my_heroes, results, bg_image=TEAMMATE_BG_IMAGE):
             k = i + j
             if i % 2 == 1:
                 hero_icon_x = start_top + (((k) // 2) * 90)
-                print(hero_icon_x)
                 hero_icon_y = start_left + 700
             else:
                 hero_icon_x = start_top + (((k+1) // 2) * 90)
@@ -58,16 +59,14 @@ def make_teammate_image(my_heroes, results, bg_image=TEAMMATE_BG_IMAGE):
             win_rate_y = hero_icon_y + (icon_w // 2) + 275
             percen = str(result['win_percentage']) + '%'
             pos = (win_rate_y, win_rate_x)
-            bg_image = write_text_pil(bg_image, percen, pos, size=30)
+            bg_image = write_text_pil(bg_image, percen, pos, size=40)
             count += 1
+    bg_image = write_text_pil(bg_image, skill_level, ((bg_image.shape[1]//2) - 70, (bg_image.shape[0]//2)-50), size=45)
 
-        # break
-    cv2.imwrite('/home/ben/Desktop/test.jpg', bg_image)
-    display(bg_image)
     return bg_image
 
 
-def extract_heroname_sortby(arguments):
+def extract_heroname_and_sortby(arguments):
     hero_names = []
     sort_by = ''
     is_correct_flag = True
@@ -97,40 +96,57 @@ def extract_heroname_sortby(arguments):
 
         if not is_correct_flag:
             break
+
+    if sort_by in SORT_BY_ALT_KEYS:
+        sort_by = SORT_BY_ALT_KEYS[sort_by]
+
     return is_correct_flag, hero_names, sort_by, incorrect_hero_name
 
 
 def get_team_mate(message_string):
     result = ''
-    example_how_to_use =   f'eg 1: `{message_string.split()[0]} axe, wr -high`\n' \
-                           f'eg 2: `{message_string.split()[0]} am, oracle, zeus -med`\n' \
-                           f'eg 3: `{message_string.split()[0]} timber low`\n' \
-                           f'eg 4: `{message_string.split()[0]} lion, slark`'
     arguments = message_string.split()[1:]
     arguments = " ".join(arguments)
     arguments = arguments.split(',')
-    is_correct_flag, hero_names, sort_by, incorrect_hero_name = extract_heroname_sortby(arguments)
+    is_correct_flag, hero_names, sort_by, incorrect_hero_name = extract_heroname_and_sortby(arguments)
 
     if len(hero_names) != len(set(hero_names)):
-        summary = "Cannot have more than 2 hero in the same team\n" + example_how_to_use
-        return is_correct_flag, summary, result
+        summary = "Cannot have more than 2 same hero in the team\n" + TEAM_CMD_EXAMPLE
+        return is_correct_flag, summary, result, []
 
     if not is_correct_flag:
-        summary = f"Could not find any hero name: **{incorrect_hero_name}**, Examples:\n" + example_how_to_use
-        return is_correct_flag, summary, result
+        summary = f"Could not find any hero name: **{incorrect_hero_name}**, Examples:\n" + TEAM_CMD_EXAMPLE
+        return is_correct_flag, summary, result, []
 
-    flag, team_mate = DV.get_teammates(hero_list=hero_names, sort_by=sort_by)
-    final_image = make_teammate_image(hero_names, team_mate)
-    # print(hero_names, sort_by)
+    min_games = HERO_COUNT_MIN_GAMES[len(hero_names)]
+    flag, team_mate_raw = DV.get_teammates(hero_list=hero_names, sort_by=sort_by, min_games=min_games)
+    team_mate = []
+    for t in team_mate_raw:
+        if t['win_percentage'] != 100:
+            team_mate.append(t)
 
-    return is_correct_flag, 'success', ''
+    # sort_by = DV.get_sort_col(sort_by)
+    file_name = "_".join(sorted(hero_names)) + '-' + sort_by + '.jpg'
+    file_path = os.path.join(constant.DV_TEAM_IMAGE_PATH, file_name)
+
+    if not flag:
+        if len(hero_names) > 3:
+            summary = f"Sorry! Could not find any results. Please try with {len(hero_names) - 1} Hero Names"
+            return is_correct_flag, summary, result, []
+        else:
+            summary = f"Sorry! Could not find any results. Please try with other Hero Names"
+            return is_correct_flag, summary, result, []
+
+    skill_level = SKILL_DICT[sort_by]
+    final_image = make_teammate_image(hero_names, team_mate, skill_level)
+    cv2.imwrite(file_path, final_image)
+
+    return is_correct_flag, 'success', file_path, hero_names
 
 
 if __name__ == '__main__':
-    flag, summary, result = get_team_mate("!sy io, gyro, lina")
-    print(flag)
-    print(summary)
-    print(result)
+    flag, summary, image_path, hero_names = get_team_mate("!sy techies, zeus, naga high")
+    print(flag, summary, image_path)
     # get_team_mate("!sy wr,  wk, am  high")
     # get_team_mate("!sy wr,  wk, am ")
     # get_team_mate("!sy wr high")

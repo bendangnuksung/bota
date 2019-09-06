@@ -1,7 +1,7 @@
 import discord
 import sys
 from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
-from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER
+from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
@@ -9,6 +9,7 @@ from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile_fr
 from bota.web_scrap.twitch_process import get_dota2_top_stream
 from bota.web_scrap.TI import group_stage, help, stats, matches
 from bota.log_process import save_command_logs, get_command_log_tail
+from bota.web_scrap.dotavoyance.getter import get_team_mate
 from discord.utils import find
 from bota import constant
 import os
@@ -401,6 +402,34 @@ async def cmd_tail(message, message_string, n=5):
     tail_log = add_footer_requested_by_username(tail_log, message)
     await message.channel.send(embed=tail_log)
 
+
+async def get_team(message, message_string, message_word_length):
+    command_called = '!team'
+    if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
+        result_embed = embed_txt_message(TEAM_CMD_EXAMPLE, color=discord.Color.dark_blue())
+        result_embed.set_author(name="Team Command Help", icon_url=constant.DV_ICON_URL, url=constant.DV_SITE_TEAM_URL)
+        result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        await message.channel.send(embed=result_embed)
+        return False, command_called
+
+    flag, summary, image_path, hero_list = get_team_mate(message_string)
+    if not flag:
+        msg = embed_txt_message(summary, color=discord.Color.red())
+        await message.channel.send(embed=msg)
+        return False, command_called
+    else:
+        desc = f"Next best Team Hero for **{'**, **'.join(hero_list)}** are:"
+        title = f"Next best Team Hero:"
+        note = 'Still '
+        embed = discord.Embed(description=desc, color=discord.Color.blurple())
+        embed.set_author(name=title, icon_url=constant.DV_ICON_URL, url=constant.DV_SITE_TEAM_URL)
+        image_file = discord.File(image_path, os.path.basename(image_path))
+        embed.set_image(url=f"attachment://{image_file.filename}")
+        # embed.add_field(name="Update:", value=(note))
+        embed = add_footer_requested_by_username(embed, message)
+        await message.channel.send(embed=embed, file=image_file)
+        return True, command_called
+
 #################################################################################################
 
 
@@ -467,6 +496,9 @@ async def on_message(message):
 
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
+
+    # elif "!team" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+    #     flag, command_called = await get_team(message, message_string, message_word_length)
 
     # Admin privilege
     elif "!exit" in message_string and str(message.author) == ADMIN_ID:

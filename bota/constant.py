@@ -246,6 +246,13 @@ DV_DEFAULT_IMAGE_HEIGHT = 1024 #768
 DV_NUM_CHANNELS = 4
 DV_HEIGHT_BUFFER = 10
 DV_COLUMN_BUFFER = 10
+DV_ICON_URL = 'https://pbs.twimg.com/profile_images/1074104310550679552/WZmQbyIP.jpg'
+DV_SITE_HOME = 'https://www.dotavoyance.com/'
+DV_SITE_TEAM_URL = 'https://www.dotavoyance.com/heroteammates'
+DV_TEAM_IMAGE_PATH = 'data/team_heroes/'
+DV_TEAM_IMAGE_PATH = os.path.join(REPO_PATH, DV_TEAM_IMAGE_PATH)
+DV_TEAM_BG_IMAGE = 'data/background/team_background.jpg'
+DV_TEAM_BG_IMAGE = os.path.join(REPO_PATH, DV_TEAM_BG_IMAGE)
 
 # Dota 2 API constant
 rank_tier = ['herald', 'Guardian', 'Crusader', 'Archon','Legend', 'Ancient','Divine', 'Immortal']
