@@ -176,6 +176,24 @@ def round_df_digits(df):
 	return df
 
 
+def make_dir_if_not_exist(dir_path):
+	if os.path.isfile(dir_path):
+		return False
+	if os.path.isdir(dir_path):
+		return True
+	split_dir_path = dir_path.split('/')
+	temp_dir_path = ''
+	for sub_dir_name in split_dir_path:
+		if sub_dir_name == '':
+			temp_dir_path += '/'
+			continue
+		temp_dir_path = os.path.join(temp_dir_path, sub_dir_name)
+		if not os.path.isdir(temp_dir_path):
+			os.mkdir(temp_dir_path)
+	print()
+	return True
+
+
 if __name__ == "__main__":
 	import cv2
 	image = cv2.imread('/home/ben/personal/discord-dota-bot/data/temp_images/ursa_skill.png')
