@@ -180,11 +180,13 @@ def extract_match_details():
             if not flag:
                 print("Skipped")
                 continue
-
-            for w_hero in won_heroes:
-                for l_hero in loss_heroes:
-                    hero_dict[w_hero][l_hero]['win'] += 1
-                    hero_dict[l_hero][w_hero]['loss'] += 1
+            try:
+                for w_hero in won_heroes:
+                    for l_hero in loss_heroes:
+                        hero_dict[w_hero][l_hero]['win'] += 1
+                        hero_dict[l_hero][w_hero]['loss'] += 1
+            except Exception as e:
+                continue
             current_time = datetime.now()
             won_heroes = [str(hero) for hero in won_heroes]
             loss_heroes = [str(hero) for hero in loss_heroes]
