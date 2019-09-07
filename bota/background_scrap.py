@@ -15,7 +15,7 @@ parser.add_argument('--mode', '-m', help='1: Update images once a day at given t
                                          '2: Update images now and returns back to mode 1',          default=1)
 args = vars(parser.parse_args())
 
-update_times = ['00:00', '06:00', '12:00', '18:00']
+update_times = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00']
 
 
 def update_images():
@@ -25,11 +25,15 @@ def update_images():
     start = datetime.now()
     get_current_trend()
     for i, hero_name in enumerate(heroes_names):
-        print(f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}")
-        loop.run_until_complete(get_skill_build('', hero=hero_name))
-        get_item_build('', hero=hero_name)
-        get_counter_hero('', hero=hero_name)
-        get_good_against('', hero=hero_name)
+        try:
+            print(f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}")
+            loop.run_until_complete(get_skill_build('', hero=hero_name, early_update=True))
+            get_item_build('', hero=hero_name, early_update=True)
+            get_counter_hero('', hero=hero_name, early_update=True)
+            get_good_against('', hero=hero_name, early_update=True)
+        except Exception as e:
+            print(e)
+            continue
     end = datetime.now()
     print("*"*80)
     print(f"Background Scrapping process starts at: {update_times} everyday")
