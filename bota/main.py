@@ -1,7 +1,7 @@
 import discord
 import sys
 from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
-from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE
+from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE, BOTA_SUPPORT_SERVER_URL, BOTA_ADD_TO_SERVER_URL
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
@@ -72,6 +72,8 @@ async def cmd_help(message):
     help_string = get_help()
     embed_msg = embed_txt_message(help_string, add_header=True)
     embed_msg.set_footer(text=HELP_FOOTER, icon_url=DOTA2_LOGO_URL)
+    embed_msg.add_field(name="Help and Support", value=(f"Add BOTA to your server: **[Click here]({BOTA_ADD_TO_SERVER_URL})**\n"
+                                        f"Join BOTA support server for more help: **[Click here]({BOTA_SUPPORT_SERVER_URL})**"))
     await  message.channel.send(embed=embed_msg)
     return True, command_called
 

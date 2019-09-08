@@ -1,3 +1,6 @@
+BOTA_SUPPORT_SERVER_URL = "https://discord.gg/a7QYPWd"
+BOTA_ADD_TO_SERVER_URL = "https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot"
+
 HOW_TO_USE_COMMANDS_EXAMPLE = {
     '!profile': 'How to use:\n1. With SteamID:  `!profile 116585378`\n2. With Name: !profile midone`  (Save your name using `!save` command)`',
     '!save': 'How to use -> `!save midone 116585378`',
