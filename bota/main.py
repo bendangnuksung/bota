@@ -14,7 +14,7 @@ from discord.utils import find
 from bota import constant
 import os
 
-client = discord.Client()
+client = discord.AutoShardedClient()
 GUILDS = []
 
 
@@ -448,6 +448,9 @@ async def on_message(message):
     # Ignore all message passed by the our bot
     if client.user == message.author:
         is_command_called = False
+
+    elif user_discord_id in [612215331334782990, 612284442131824640]:
+        return
 
     # Ignore if message is from another Bot
     elif message.author.bot:
