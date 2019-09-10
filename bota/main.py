@@ -502,8 +502,8 @@ async def on_message(message):
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
 
-    # elif "!team" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-    #     flag, command_called = await get_team(message, message_string, message_word_length)
+    elif "!team" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        flag, command_called = await get_team(message, message_string, message_word_length)
 
     # Admin privilege
     elif "!exit" in message_string and str(message.author) == ADMIN_ID:
@@ -515,6 +515,10 @@ async def on_message(message):
     elif "!tail" in message_string and str(message.author) == ADMIN_ID:
         is_command_called = False
         await cmd_tail(message, message_string)
+
+    elif "!guild" in message_string and str(message.author) == ADMIN_ID:
+        guilds = len(list(client.guilds))
+        await message.channel.send(f"{guilds}")
 
     # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:
