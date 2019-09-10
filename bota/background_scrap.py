@@ -25,15 +25,11 @@ def update_images():
     start = datetime.now()
     get_current_trend()
     for i, hero_name in enumerate(heroes_names):
-        try:
-            print(f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}")
-            loop.run_until_complete(get_skill_build('', hero=hero_name, early_update=True))
-            get_item_build('', hero=hero_name, early_update=True)
-            get_counter_hero('', hero=hero_name, early_update=True)
-            get_good_against('', hero=hero_name, early_update=True)
-        except Exception as e:
-            print(e)
-            continue
+        print(f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}")
+        loop.run_until_complete(get_skill_build('', hero=hero_name, early_update=True))
+        get_item_build('', hero=hero_name, early_update=True)
+        get_counter_hero('', hero=hero_name, early_update=True)
+        get_good_against('', hero=hero_name, early_update=True)
     end = datetime.now()
     print("*"*80)
     print(f"Background Scrapping process starts at: {update_times} everyday")
