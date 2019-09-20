@@ -6,8 +6,13 @@ async def get_screenshot(selector, url, save_path):
     browser = await launch()
     page = await browser.newPage()
     await page.goto(url)
-    await page.tap(selector)
-    await page.screenshot({'path': save_path})
+    try:
+        await page.tap(selector)
+        await page.screenshot({'path': save_path})
+    except Exception as e:
+        print("*"*60)
+        print("EXCEPTION: ", e)
+    await page.close()
     await browser.close()
 
 
