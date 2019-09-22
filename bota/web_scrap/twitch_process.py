@@ -32,15 +32,20 @@ def request_dota2_stream_json(url):
     return response
 
 
+def clean_text(text):
+    text = str(text)
+    text = text.replace('`', '')
+    return text
+
+
 def pretty_stream_text_for_discord(datas, language):
     final_string = f"```diff\n-TOP DOTA 2 TWITCH STREAMS: LANGUAGE: {language}```\n"
     for i, data in enumerate(datas, 1):
-        # title =
         link = constant.TWITCH_URL + data[constant.TWITCH_KEYWORD_USER_NAME]
-        final_string += f'{i}. **{data[constant.TWITCH_KEYWORD_USER_NAME]}**' \
-                        f'    `VIEWS:`{data[constant.TWITCH_KEYWORD_VIEWER_COUNT]}' \
-                        f'   `TITLE:` {data[constant.TWITCH_KEYWORD_TITLE]}`  ' \
-                        f' `LANG:` **{data[constant.TWITCH_KEYWORD_LANGUAGE].upper()}**' \
+        final_string += f'{i}. **{clean_text(data[constant.TWITCH_KEYWORD_USER_NAME])}**' \
+                        f'    `VIEWS:`{clean_text(data[constant.TWITCH_KEYWORD_VIEWER_COUNT])}' \
+                        f'   `TITLE:` {clean_text(data[constant.TWITCH_KEYWORD_TITLE])}  ' \
+                        f' `LANG:` **{clean_text(data[constant.TWITCH_KEYWORD_LANGUAGE].upper())}**' \
                         f'    **[LINK]({link})**\n\n'
     return final_string
 
@@ -71,4 +76,4 @@ def get_dota2_top_stream(language=None, top=8):
 
 
 if __name__ == "__main__":
-    print(get_dota2_top_stream('ru'))
+    print(get_dota2_top_stream('en'))
