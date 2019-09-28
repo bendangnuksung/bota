@@ -3,6 +3,8 @@ from bota import  constant
 
 BOTA_SUPPORT_SERVER_URL = "https://discord.gg/a7QYPWd"
 BOTA_ADD_TO_SERVER_URL = "https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot"
+PAYPAL_URL = 'https://www.paypal.me/bendang1'
+
 
 HOW_TO_USE_COMMANDS_EXAMPLE = {
     '!profile': 'How to use:\n1. With SteamID:  `!profile 116585378`\n2. With Name: !profile midone`  (Save your name using `!save` command)`',
@@ -127,6 +129,7 @@ def get_help():
     embed_msg.add_field(name="Dota Other Commands", value=other_commands)
     embed_msg.add_field(name="Help and Support",
                         value=(f"Add BOTA to your server: **[Click here]({BOTA_ADD_TO_SERVER_URL})**\n"
-                               f"Join BOTA support server for more help: **[Click here]({BOTA_SUPPORT_SERVER_URL})**"))
+                               f"Join BOTA support server for more help: **[Click here]({BOTA_SUPPORT_SERVER_URL})**\n"
+                               f"If you like BOTA do support us to keep the server running: **[Donate via PayPal]({PAYPAL_URL})**"))
     embed_msg.add_field(name="Updates", value=UPDATE_BLOCK)
     return embed_msg
