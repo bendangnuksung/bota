@@ -32,7 +32,7 @@ UPDATE_BLOCK = 'Save profile Steam ID and others, Type **`!profile help`** for d
 
 
 UPDATE_BLOCK_LIST=\
-             ["`15-Sep-2019`: Added `!synergy` command, type `!synergy help` for details",
+             ["`28-Sep-2019`: Added `!team` command, type `!team help` for details",
               "`25-Aug-2019`: Save your profile without name and change Steam ID and others, Type `!profile help` for details",
               "`15-Aug-2019`: Added TI command,   `!ti`",
               "`07-Aug-2019`: Added Language option in twitch    `!twitch en`  `!twitch ru`  `twitch th`",
