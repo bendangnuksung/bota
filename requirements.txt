@@ -7,3 +7,4 @@ matplotlib==3.1.0
 pyppeteer==0.0.25
 schedule==0.6.0
 Markdown==3.1.1
+seaborn==0.9.0
