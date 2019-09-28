@@ -1,8 +1,8 @@
 import discord
 import sys
-from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
-from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE,\
-    BOTA_SUPPORT_SERVER_URL, BOTA_ADD_TO_SERVER_URL, REDDIT_CMD_EXAMPLE, UPDATE_BLOCK
+from bota.constant import MAX_COMMAND_WORD_LENGTH
+from bota.help import LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE,\
+                      REDDIT_CMD_EXAMPLE, UPDATE_BLOCK
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
@@ -11,12 +11,15 @@ from bota.web_scrap.twitch_process import get_dota2_top_stream
 from bota.web_scrap.TI import group_stage, help, stats, matches
 from bota.log_process import save_command_logs, get_command_log_tail
 from bota.web_scrap.dotavoyance.getter import get_team_mate
+from bota.log_stats_process import LogStat
 from discord.utils import find
 from bota import constant
 import os
 
+logstat = LogStat()
 client = discord.AutoShardedClient()
 GUILDS = []
+
 
 
 def is_command_called_correctly(message, minlength, maxlength=constant.MAX_COMMAND_WORD_LENGTH, ):
@@ -414,10 +417,6 @@ async def cmd_tail(message, message_string, n=5):
     await message.channel.send(embed=tail_log)
 
 
-async def cmd_admin_stat(message, message_string):
-    pass
-
-
 async def get_team_heroes(message, message_string, message_word_length):
     command_called = '!team'
     if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
@@ -445,6 +444,57 @@ async def get_team_heroes(message, message_string, message_word_length):
         embed = add_footer_requested_by_username(embed, message)
         await message.channel.send(embed=embed, file=image_file)
         return True, command_called
+
+
+async def get_stats(message, message_string, message_word_length):
+    message_splitted = message_string.split()
+
+    show_all = False
+    if message_word_length > 1 and 'all' in message_splitted[1] and message_word_length == 2:
+        show_all = True
+
+    if message_word_length == 1 or show_all:
+        text_dict = logstat.all_time()
+        title = "Weekly All Time Stats"
+        embed, _ = logstat.embed_discord(title, text_dict)
+        await message.channel.send(embed=embed)
+        if not show_all:
+            return
+
+    if ('user' in message_splitted[1] or 'new' in message_splitted[1] or 'server' in message_splitted[1]) or show_all:
+        n = 21
+        if message_word_length == 3:
+            n = int(message_splitted[2])
+        img_path, summary = logstat.get_new_user_and_server(n=n)
+        title = 'New User and Server'
+        embed, image_embed = logstat.embed_discord(title, summary, image_path=img_path, is_type='image')
+        await message.channel.send(embed=embed, file=image_embed)
+        if not show_all:
+            return
+
+    if 'command' in message_splitted[1] or show_all:
+        n = 14
+        if message_word_length == 3:
+            n = int(message_splitted[2])
+        img_path_1, summary_1 = logstat.get_commands_stats(n=14)
+        img_path_2, summary_2 = logstat.get_command_calls(n=n)
+        title_1 = "All Commands Stats"
+        title_2 = "Command Calls Stats"
+        embed_1, image_1_embed = logstat.embed_discord(title_1, summary_1, image_path=img_path_1, is_type='image')
+        embed_2, image_2_embed = logstat.embed_discord(title_2, summary_2, image_path=img_path_2, is_type='image')
+        await message.channel.send(embed=embed_2, file=image_2_embed)
+        await message.channel.send(embed=embed_1, file=image_1_embed)
+        if not show_all:
+            return
+
+    if 'update' in message_splitted[1]:
+        flag = logstat.update_df()
+        if flag:
+            embed = discord.Embed(title="Updated The Log DF", color=discord.Color.green())
+        else:
+            embed = discord.Embed(title="Could not find the Log file", color=discord.Color.red())
+        await message.channel.send(embed=embed)
+
 
 #################################################################################################
 
@@ -521,7 +571,7 @@ async def on_message(message):
 
     # Admin privilege
     elif "!stat" in message_string and str(message.author) == ADMIN_ID:
-        await cmd_admin_stat(message, message_string)
+        await get_stats(message, message_string, message_word_length)
 
     elif "!exit" in message_string and str(message.author) == ADMIN_ID:
         await cmd_exit(message, message_string)

@@ -8,6 +8,7 @@ import calendar
 from bota import constant
 import re
 import seaborn as sns
+import discord
 
 
 def findDay(date):
@@ -26,7 +27,14 @@ class LogStat():
                          '!twitch', '!profile']
 
     def update_df(self):
-        self.df = self.log_to_df(self.log_file_path)
+        if os.path.exists(self.log_file_path):
+            self.df = self.log_to_df(self.log_file_path)
+            return True
+        else:
+            print("*"*80)
+            print(f"LOG FILE: {self.log_file_path} does not exist")
+            print("*" * 80)
+            return False
 
     def update_new_user_and_server(self, user_id, server_id, date_time):
         try:
@@ -220,10 +228,32 @@ class LogStat():
 
         change_in_percen = ((current_total_week_calls / last_total_week_calls) - 1) * 100
         change_in_percen = str(round(change_in_percen, 2)) + "%"
+        change_in_percen = change_in_percen if '-' in change_in_percen else '+' + change_in_percen
 
         return {'Total Calls': total_calls, 'Total Guilds': total_guilds, 'Total Users': total_users,
                 'Last Week Calls': str(last_total_week_calls), 'Current Week Calls': str(current_total_week_calls),
                 'Percentage Change': change_in_percen}
+
+    def embed_discord(self, title, summary, image_path=None, is_type='dictionary', color=discord.Color.blurple()):
+        if is_type == 'dictionary':
+            stat_week_text = []
+            embed = discord.Embed(color=color, title=title)
+            embed.set_author(name=constant.DEFAULT_EMBED_HEADER['name'],
+                             icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
+                             url=constant.DEFAULT_EMBED_HEADER['url'])
+            for key, value in summary.items():
+                stat_week_text.append(f"**{key}**: {value}")
+                embed.add_field(name=key, value=value)
+            return embed, ''
+
+        elif is_type == 'image':
+            embed = discord.Embed(description=summary, color=discord.Color.blurple(), title=title)
+            embed.set_author(name=constant.DEFAULT_EMBED_HEADER['name'],
+                                 icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
+                                 url=constant.DEFAULT_EMBED_HEADER['url'])
+            image_file = discord.File(image_path, os.path.basename(image_path))
+            embed.set_image(url=f"attachment://{image_file.filename}")
+            return embed, image_file
 
 
 if __name__ == '__main__':
