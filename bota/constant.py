@@ -565,8 +565,6 @@ NEW_USER_SERVER_IMAGE_PATH = os.path.join(TEMP_IMAGE_PATH, 'new_user_server.jpg'
 COMMAND_CALLS_IMAGE_PATH = os.path.join(TEMP_IMAGE_PATH, 'command_calls.jpg')
 COMMAND_STATS_IMAGE_PATH = os.path.join(TEMP_IMAGE_PATH, 'command_stats.jpg')
 
-
-
 WRITE_TEMP_LOG_AFTER_BATCH = 100
 WRITE_JSON_AFTER_BATCH = 100
 UPDATE_THREHSHOLD_FOR_MATCH_ID = 345600 # 4 Days
@@ -579,6 +577,3 @@ SKILL_BRACKET = {'low': {'start_mmr': 2000, 'end_mmr': 3000},
                  'normal': {'start_mmr': 3000, 'end_mmr':4000},
                  'high': {'start_mmr': 4000, 'end_mmr':5000},
                  'very_high': {'start_mmr': 5000, 'end_mmr':15000}}
-
-
-

@@ -178,13 +178,13 @@ def get_team_mate(message_string):
     skill_level = SKILL_DICT[sort_by]
     final_image = make_teammate_image_without_percentage(hero_names, team_mate, skill_level)
     cv2.imwrite(file_path, final_image)
-    summary = f'eg 1: **`!sy lion, am high`**\n' \
-              f'eg 2: **`!sy lion, am normal`**\n'
+    summary = f'eg 1: **`!team lion, am high`**\n' \
+              f'eg 2: **`!team lion, am normal`**\n'
     return is_correct_flag, summary, file_path, hero_names
 
 
 if __name__ == '__main__':
-    flag, summary, image_path, hero_names = get_team_mate("!sy drow, luna, aa, bm")
+    flag, summary, image_path, hero_names = get_team_mate("!team drow, luna, aa, bm")
     print(flag, summary, image_path)
     # get_team_mate("!sy wr,  wk, am  high")
     # get_team_mate("!sy wr,  wk, am ")

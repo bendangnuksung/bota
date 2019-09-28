@@ -45,7 +45,7 @@ DOTA_RELATED_COMMAND_LIST = {
                  '!counter HeroName': 'Get counter heroes for given HeroName eg: **`!counter am`**',
                  '!good HeroName'   : 'Opposite of !counter command. Good against. eg: **`!good axe`**',
                  '!skill HeroName': 'Get most popular & win rate talent/skill build  eg:**`!skill meepo`**',
-                 '!synergy HeroName': 'Get synergy hero for team. Type:**`!synergy help`** for details',
+                 '!team HeroName': 'Getnext best hero for team. Type:**`!team help`** for details',
                  '!item HeroName'   : 'Get recent item build by Top Rank Players  eg: **`!item kotl`**',
                  '!trend'           : 'Get current heroes trend  eg: `!trend`',
                  '!pro HeroName': 'Hero recently played by Pros and stats. eg:**`!protrack slark`**',
@@ -74,13 +74,13 @@ PROFILE_HELP_STRING = "**To Save your own profile** \n" \
                       "Step 1:   **`!profile SteamID`**,  eg:  **`!profile 311360822`**"
 
 # Team command examples
-TEAM_CMD_EXAMPLE = f'**How to use `!synergy` command**:\n' \
-                   f'**`!sy HeroName, HeroName, HeroName SkillLevel`**\n\n' \
+TEAM_CMD_EXAMPLE = f'**How to use `!team` command**:\n' \
+                   f'**`!team HeroName, HeroName, HeroName SkillLevel`**\n\n' \
                    f'**Three skill levels**: `High`, `Normal`, `Low`:\n'\
-                   f'eg 1: **`!sy lion, am high`**  \n' \
-                   f'eg 2: **`!sy lion, am normal`**\n' \
-                   f'eg 3: **`!sy lion, am low`**  \n' \
-                   f'eg 4: **`!sy lion, am`**'
+                   f'eg 1: **`!team lion, am high`**  \n' \
+                   f'eg 2: **`!team lion, am normal`**\n' \
+                   f'eg 3: **`!team lion, am low`**  \n' \
+                   f'eg 4: **`!team lion, am`**'
 
 # Reddit command examples
 REDDIT_CMD_EXAMPLE = f'**How to use `!reddit` command**:\n' \

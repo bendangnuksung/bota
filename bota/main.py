@@ -3,7 +3,6 @@ import sys
 from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
 from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE,\
     BOTA_SUPPORT_SERVER_URL, BOTA_ADD_TO_SERVER_URL, REDDIT_CMD_EXAMPLE, UPDATE_BLOCK
-
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
@@ -16,7 +15,7 @@ from discord.utils import find
 from bota import constant
 import os
 
-client = discord.Client()
+client = discord.AutoShardedClient()
 GUILDS = []
 
 
@@ -71,16 +70,9 @@ Below lies the Definition of all commands from on_message()
 
 async def cmd_help(message):
     command_called = '!help'
-# <<<<<<< Updated upstream
-#     help_string = get_help()
-#     embed_msg = embed_txt_message(help_string, add_header=True)
-#     embed_msg.set_footer(text=HELP_FOOTER, icon_url=DOTA2_LOGO_URL)
-#     await  message.channel.send(embed=embed_msg)
-# =======
     help_string_embed_msg = get_help()
 
     await  message.channel.send(embed=help_string_embed_msg)
-# >>>>>>> Stashed changes
     return True, command_called
 
 
@@ -427,7 +419,7 @@ async def cmd_admin_stat(message, message_string):
 
 
 async def get_team_heroes(message, message_string, message_word_length):
-    command_called = '!synergy'
+    command_called = '!team'
     if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
         result_embed = embed_txt_message(TEAM_CMD_EXAMPLE, color=discord.Color.dark_blue())
         result_embed.set_author(name="Team Command Help", icon_url=constant.DV_ICON_URL, url=constant.DV_SITE_TEAM_URL)
@@ -472,6 +464,9 @@ async def on_message(message):
     # Ignore all message passed by the our bot
     if client.user == message.author:
         is_command_called = False
+
+    elif user_discord_id in [612215331334782990, 612284442131824640]:
+        return
 
     # Ignore if message is from another Bot
     elif message.author.bot:
@@ -521,7 +516,7 @@ async def on_message(message):
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
 
-    elif ("!team" in message_string and  message_string.startswith('!synergy')):
+    elif ("!team" in message_string and  message_string.startswith('!team')):
         flag, command_called = await get_team_heroes(message, message_string, message_word_length)
 
     # Admin privilege
@@ -537,6 +532,10 @@ async def on_message(message):
     elif "!tail" in message_string and str(message.author) == ADMIN_ID:
         is_command_called = False
         await cmd_tail(message, message_string)
+
+    elif "!guild" in message_string and str(message.author) == ADMIN_ID:
+        guilds = len(list(client.guilds))
+        await message.channel.send(f"{guilds}")
 
     # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:
