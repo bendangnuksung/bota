@@ -1,3 +1,9 @@
+import discord
+from bota import  constant
+
+BOTA_SUPPORT_SERVER_URL = "https://discord.gg/a7QYPWd"
+BOTA_ADD_TO_SERVER_URL = "https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot"
+
 HOW_TO_USE_COMMANDS_EXAMPLE = {
     '!profile': 'How to use:\n1. With SteamID:  `!profile 116585378`\n2. With Name: !profile midone`  (Save your name using `!save` command)`',
     '!save': 'How to use -> `!save midone 116585378`',
@@ -19,10 +25,13 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 
 # Update Block
-UPDATE_BLOCK = '```cs\n"UPDATE": Can save your profile without name and change Steam ID and others, Type "!profile help" for details```'
+# UPDATE_BLOCK = 'Get Synergy hero for team with **`!synergy`**.\nType **`!synergy help`** for details'
+UPDATE_BLOCK = 'Save profile Steam ID and others, Type **`!profile help`** for details'
+
 
 UPDATE_BLOCK_LIST=\
-             ["`25-Aug-2019`: Save your profile without name and change Steam ID and others, Type `!profile help` for details",
+             ["`15-Sep-2019`: Added `!synergy` command, type `!synergy help` for details",
+              "`25-Aug-2019`: Save your profile without name and change Steam ID and others, Type `!profile help` for details",
               "`15-Aug-2019`: Added TI command,   `!ti`",
               "`07-Aug-2019`: Added Language option in twitch    `!twitch en`  `!twitch ru`  `twitch th`",
               "`06-Aug-2019`: Added new command    `!protrack HeroName` ",
@@ -32,39 +41,25 @@ LAST_UPDATE = "**UPDATES:**\n" + "\n".join(UPDATE_BLOCK_LIST) + UPDATE_BLOCK_FOO
 
 
 # This weird spacing is to pretty text in discord
-COMMAND_LIST = {'!top game'        : 'Shows top 9 Live Games eg: **`!top game`**',
-                 '!counter HeroName': 'Show Heroes that counter given HeroName eg: **`!counter am`**',
+DOTA_RELATED_COMMAND_LIST = {
+                 '!counter HeroName': 'Get counter heroes for given HeroName eg: **`!counter am`**',
                  '!good HeroName'   : 'Opposite of !counter command. Good against. eg: **`!good axe`**',
-                 '!skill': 'Shows most popular & win rate talent/skill build  eg:**`!skill meepo`**',
-                 '!item HeroName'   : 'Shows recent item build by Top Rank Players  eg: **`!item kotl`**',
-                 '!profile  steamID': 'Shows your profile stats, Type   **`!profile help`**  for more details',
-                 '!save steamID': 'Saves your profile steam ID, Type   **`!save help`**  for more details',
-                 '!trend'           : 'Shows current heroes trend  eg: `!trend`',
-                 '!twitch language' : 'Show top8 twitch Stream eg:**`!twitch`** **`!twitch en`** **`!twitch ru`**',
+                 '!skill HeroName': 'Get most popular & win rate talent/skill build  eg:**`!skill meepo`**',
+                 '!synergy HeroName': 'Get synergy hero for team. Type:**`!synergy help`** for details',
+                 '!item HeroName'   : 'Get recent item build by Top Rank Players  eg: **`!item kotl`**',
+                 '!trend'           : 'Get current heroes trend  eg: `!trend`',
                  '!pro HeroName': 'Hero recently played by Pros and stats. eg:**`!protrack slark`**',
-                 '!ti': 'Shows Group stage Table, TI9 stats,  eg:  `!ti group`,  `!ti stat`',
-                 '!reddit'          : 'Gets reddit post from   **/r/DotA2**. Options: `new`, `controversial`, `top`, `rising`, `random`, `hot`:\n'
-                                      '                       eg 1:   **`!reddit`** : Gets a random post from  /r/DotA2/\n'
-                                      '                       eg 2:   **`!reddit hot`** : Gets Top 3 hot post from  /r/DotA2/',
-                 '!update'     : 'Shows any new   `Updates`   and   `BOT support`'
                 }
 
-
-def get_help():
-    help_string = []
-    head = "```css\nBelow are the commands to use DOTA BOT: 😋```"
-    post_head = UPDATE_BLOCK
-    head = head + post_head
-    help_string.append(head)
-    body = []
-    for key, value in COMMAND_LIST.items():
-        command = '**' + key + '**'
-        command_help = value
-        full = command + '\t:\t' + command_help
-        body.append(full + '\n')
-    help_string = help_string + body
-    help_string = "\n".join(help_string)
-    return help_string
+OTHER_COMMAND_LIST = {
+    '!top game'        : 'Get top 9 Live Games eg: **`!top game`**',
+    '!profile  steamID': 'Get your profile stats, Type   **`!profile help`**  for more details',
+    '!save steamID': 'Saves your profile steam ID, Type   **`!save help`**  for more details',
+    '!twitch language' : 'Get top8 twitch Stream eg:**`!twitch`** **`!twitch en`** **`!twitch ru`**',
+    '!reddit': 'Get reddit post from  /r/DotA2. Type **`!reddit help`** for details',
+    '!ti': 'Get Group stage Table, TI9 stats,  eg:  `!ti group`,  `!ti stat`',
+    '!update': 'Shows any new   `Updates`   and   `BOT support`'
+    }
 
 
 PROFILE_HELP_STRING = "**To Save your own profile** \n" \
@@ -79,10 +74,59 @@ PROFILE_HELP_STRING = "**To Save your own profile** \n" \
                       "Step 1:   **`!profile SteamID`**,  eg:  **`!profile 311360822`**"
 
 # Team command examples
-TEAM_CMD_EXAMPLE = f'**How to use `!team` command**:\n' \
-                   f'**`!team HeroName, HeroName SkillLevel`**`\n' \
-                   f'eg 1: **`!team lion, slark high`**  (Shows High Skill Bracket)\n' \
-                   f'eg 2: **`!team am, oracle, zeus normal`**  (Shows Normal Skill Bracket)\n' \
-                   f'eg 3: **`!team timber low`**  (Shows Low Skill Bracket)\n' \
-                   f'eg 4: **`!team axe, wr`**  (Shows Over all Skill Bracket)\n\n' \
-                   f'**There are three skill levels**: `High`, `Normal`, `Low`'
+TEAM_CMD_EXAMPLE = f'**How to use `!synergy` command**:\n' \
+                   f'**`!sy HeroName, HeroName, HeroName SkillLevel`**\n\n' \
+                   f'**Three skill levels**: `High`, `Normal`, `Low`:\n'\
+                   f'eg 1: **`!sy lion, am high`**  \n' \
+                   f'eg 2: **`!sy lion, am normal`**\n' \
+                   f'eg 3: **`!sy lion, am low`**  \n' \
+                   f'eg 4: **`!sy lion, am`**'
+
+# Reddit command examples
+REDDIT_CMD_EXAMPLE = f'**How to use `!reddit` command**:\n' \
+                   f'**`!reddit option`**\n\n' \
+                   f'**Options:**: `new`, `controversial`, `top`, `rising`, `hot`\n\n' \
+                   f'eg 1: **`!reddit`** \n' \
+                   f'eg 2: **`!reddit new`**\n' \
+                   f'eg 3: **`!reddit controversial`**\n' \
+                   f'eg 4: **`!reddit top`** \n' \
+                   f'eg 5: **`!reddit rising`**\n' \
+                   f'eg 6: **`!reddit hot`**' \
+
+def get_help():
+    help_string = []
+    head = "**Commands to use BOTA**: 😋\n\n"
+    # post_head = UPDATE_BLOCK
+    # head = head + post_head
+    help_string.append(head)
+    dota_related_commands = []
+    other_commands = []
+    for key, value in DOTA_RELATED_COMMAND_LIST.items():
+        command = '**' + key + '**'
+        command_help = value
+        full = command + '\t:\t' + command_help
+        dota_related_commands.append(full + '\n')
+
+    for key, value in OTHER_COMMAND_LIST.items():
+        command = '**' + key + '**'
+        command_help = value
+        full = command + '\t:\t' + command_help
+        other_commands.append(full + '\n')
+
+    dota_related_commands = ''.join(dota_related_commands)
+    dota_related_commands += '\n' + '_'* 10
+    other_commands = ''.join(other_commands)
+    other_commands += '\n' +'_' * 10
+
+    help_string = head
+    # print(len(command_string))
+    embed_msg = discord.Embed(description=help_string, color=discord.Color.blue())
+    embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'], url=constant.DEFAULT_EMBED_HEADER['url'])
+    embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
+    embed_msg.add_field(name="Dota Hero Commands", value=dota_related_commands)
+    embed_msg.add_field(name="Dota Other Commands", value=other_commands)
+    embed_msg.add_field(name="Help and Support",
+                        value=(f"Add BOTA to your server: **[Click here]({BOTA_ADD_TO_SERVER_URL})**\n"
+                               f"Join BOTA support server for more help: **[Click here]({BOTA_SUPPORT_SERVER_URL})**"))
+    embed_msg.add_field(name="Updates", value=UPDATE_BLOCK)
+    return embed_msg

@@ -1,7 +1,9 @@
 import discord
 import sys
 from bota.constant import MAX_COMMAND_WORD_LENGTH, DOTA2_LOGO_URL
-from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE
+from bota.help import HELP_FOOTER, LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE,\
+    BOTA_SUPPORT_SERVER_URL, BOTA_ADD_TO_SERVER_URL, REDDIT_CMD_EXAMPLE, UPDATE_BLOCK
+
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
@@ -69,10 +71,16 @@ Below lies the Definition of all commands from on_message()
 
 async def cmd_help(message):
     command_called = '!help'
-    help_string = get_help()
-    embed_msg = embed_txt_message(help_string, add_header=True)
-    embed_msg.set_footer(text=HELP_FOOTER, icon_url=DOTA2_LOGO_URL)
-    await  message.channel.send(embed=embed_msg)
+# <<<<<<< Updated upstream
+#     help_string = get_help()
+#     embed_msg = embed_txt_message(help_string, add_header=True)
+#     embed_msg.set_footer(text=HELP_FOOTER, icon_url=DOTA2_LOGO_URL)
+#     await  message.channel.send(embed=embed_msg)
+# =======
+    help_string_embed_msg = get_help()
+
+    await  message.channel.send(embed=help_string_embed_msg)
+# >>>>>>> Stashed changes
     return True, command_called
 
 
@@ -108,7 +116,14 @@ async def cmd_trend(message):
     return True, command_called
 
 
-async def cmd_reddit(message, message_string):
+async def cmd_reddit(message, message_string, message_word_length):
+    if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
+        result_embed = embed_txt_message(REDDIT_CMD_EXAMPLE, color=discord.Color.dark_red())
+        result_embed.set_author(name="Profile Command Help")
+        result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        await message.channel.send(embed=result_embed)
+        return True, '!reddit help'
+
     async with message.channel.typing():
         result_list, mode = get_reddit(message_string)
     command_called = f"!reddit {mode}"
@@ -141,7 +156,7 @@ async def cmd_protracker(message, message_string):
 async def cmd_counter(message, message_string):
     command_called = '!counter'
     async with message.channel.typing():
-        note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
+        note = UPDATE_BLOCK
         found, hero_name, image_path = get_counter_hero(message_string)
         if not found:
             if hero_name != '':
@@ -159,6 +174,7 @@ async def cmd_counter(message, message_string):
             embed = discord.Embed(description=desc, color=discord.Color.red(), title=title)
             image_file = discord.File(image_path, os.path.basename(image_path))
             embed.set_image(url=f"attachment://{image_file.filename}")
+            embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             embed.add_field(name="Update:", value=(note))
             embed = add_footer_requested_by_username(embed, message)
             await message.channel.send(embed=embed, file=image_file)
@@ -168,7 +184,7 @@ async def cmd_counter(message, message_string):
 async def cmd_item(message, message_string):
     command_called = '!item'
     async with message.channel.typing():
-        note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
+        note = UPDATE_BLOCK
         found, hero_name, image_path = get_item_build(message_string)
         if not found:
             if hero_name != '':
@@ -187,6 +203,7 @@ async def cmd_item(message, message_string):
             image_file = discord.File(image_path, os.path.basename(image_path))
             embed.set_image(url=f"attachment://{image_file.filename}")
             embed.add_field(name="Update:", value=(note))
+            embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             embed = add_footer_requested_by_username(embed, message)
             await message.channel.send(embed=embed, file=image_file)
             return True, command_called
@@ -195,7 +212,7 @@ async def cmd_item(message, message_string):
 async def cmd_good(message, message_string):
     command_called = '!good'
     async with message.channel.typing():
-        note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
+        note = UPDATE_BLOCK
         found, hero_name, image_path = get_good_against(message_string)
         if not found:
             if hero_name != '':
@@ -214,6 +231,7 @@ async def cmd_good(message, message_string):
             image_file = discord.File(image_path, os.path.basename(image_path))
             embed.set_image(url=f"attachment://{image_file.filename}")
             embed.add_field(name="Update:", value=(note))
+            embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             embed = add_footer_requested_by_username(embed, message)
             await message.channel.send(embed=embed, file=image_file)
             return True, command_called
@@ -222,7 +240,7 @@ async def cmd_good(message, message_string):
 async def cmd_skill(message, message_string):
     command_called = '!skill'
     async with message.channel.typing():
-        note = f'Can save your profile without name and change Steam ID and others, Type **`!profile help`** for details'
+        note = UPDATE_BLOCK
         found, hero_name, image_path = await get_skill_build(message_string)
         if not found:
             if hero_name != '':
@@ -241,6 +259,7 @@ async def cmd_skill(message, message_string):
             image_file = discord.File(image_path, os.path.basename(image_path))
             embed.set_image(url=f"attachment://{image_file.filename}")
             embed.add_field(name="Update:", value=(note))
+            embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             embed = add_footer_requested_by_username(embed, message)
             await message.channel.send(embed=embed, file=image_file)
             return True, command_called
@@ -403,27 +422,32 @@ async def cmd_tail(message, message_string, n=5):
     await message.channel.send(embed=tail_log)
 
 
-async def get_team(message, message_string, message_word_length):
-    command_called = '!team'
+async def cmd_admin_stat(message, message_string):
+    pass
+
+
+async def get_team_heroes(message, message_string, message_word_length):
+    command_called = '!synergy'
     if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
         result_embed = embed_txt_message(TEAM_CMD_EXAMPLE, color=discord.Color.dark_blue())
         result_embed.set_author(name="Team Command Help", icon_url=constant.DV_ICON_URL, url=constant.DV_SITE_TEAM_URL)
         result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
         await message.channel.send(embed=result_embed)
         return False, command_called
-
     flag, summary, image_path, hero_list = get_team_mate(message_string)
     if not flag:
-        msg = embed_txt_message(summary, color=discord.Color.red())
+        msg = embed_txt_message('', color=discord.Color.red())
+        msg.add_field(name='Unsucessful', value=summary)
         await message.channel.send(embed=msg)
         return False, command_called
     else:
-        desc = f"Next best Team Hero for **{'**, **'.join(hero_list)}** are:"
+        desc = f"Next best Team Hero for: **{'**, **'.join(hero_list)}**\n" \
+               f"**Source**: [DotaVoyance]({constant.DV_SITE_TEAM_URL})"
         title = f"Next best Team Hero:"
-        note = 'Still '
         embed = discord.Embed(description=desc, color=discord.Color.blurple())
         embed.set_author(name=title, icon_url=constant.DV_ICON_URL, url=constant.DV_SITE_TEAM_URL)
         image_file = discord.File(image_path, os.path.basename(image_path))
+        embed.add_field(name='Try with different skill level, example:', value=summary)
         embed.set_image(url=f"attachment://{image_file.filename}")
         # embed.add_field(name="Update:", value=(note))
         embed = add_footer_requested_by_username(embed, message)
@@ -486,7 +510,7 @@ async def on_message(message):
         flag, command_called = await cmd_twitch(message, message_string)
 
     elif "!reddit" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        flag, command_called = await cmd_reddit(message, message_string)
+        flag, command_called = await cmd_reddit(message, message_string, message_word_length)
 
     elif "!pro" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         flag, command_called = await cmd_protracker(message, message_string)
@@ -497,10 +521,13 @@ async def on_message(message):
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
 
-    # elif "!team" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-    #     flag, command_called = await get_team(message, message_string, message_word_length)
+    elif ("!team" in message_string and  message_string.startswith('!synergy')):
+        flag, command_called = await get_team_heroes(message, message_string, message_word_length)
 
     # Admin privilege
+    elif "!stat" in message_string and str(message.author) == ADMIN_ID:
+        await cmd_admin_stat(message, message_string)
+
     elif "!exit" in message_string and str(message.author) == ADMIN_ID:
         await cmd_exit(message, message_string)
 

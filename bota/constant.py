@@ -253,6 +253,8 @@ DV_TEAM_IMAGE_PATH = 'data/team_heroes/'
 DV_TEAM_IMAGE_PATH = os.path.join(REPO_PATH, DV_TEAM_IMAGE_PATH)
 DV_TEAM_BG_IMAGE = 'data/background/team_background.jpg'
 DV_TEAM_BG_IMAGE = os.path.join(REPO_PATH, DV_TEAM_BG_IMAGE)
+DV_TEAM_BG_IMAGE_WITHOUT_WINRATE = 'data/background/team_background_no_winrate.jpg'
+DV_TEAM_BG_IMAGE_WITHOUT_WINRATE = os.path.join(REPO_PATH, DV_TEAM_BG_IMAGE_WITHOUT_WINRATE)
 
 # Dota 2 API constant
 rank_tier = ['herald', 'Guardian', 'Crusader', 'Archon','Legend', 'Ancient','Divine', 'Immortal']
@@ -550,3 +552,33 @@ background-color: #5a6372;
 }
 </style>
 """
+# Data collection (opendota & steam)
+RAW_MATCH_JSON_DATA_PATH = 'data/match_data_collection/raw_data/'
+RAW_MATCH_JSON_DATA_PATH = os.path.join(REPO_PATH, RAW_MATCH_JSON_DATA_PATH)
+MATCH_TEMP_PROCESS_LOG = 'data/match_data_collection/temp/temp_process_info.txt' # stores the last  log
+MATCH_TEMP_PROCESS_LOG = os.path.join(REPO_PATH, MATCH_TEMP_PROCESS_LOG)
+PROCESSED_MATCH_DATA_PATH = 'data/match_data_collection/processed_data'
+PROCESSED_MATCH_DATA_PATH = os.path.join(REPO_PATH, PROCESSED_MATCH_DATA_PATH)
+
+# Log stats
+NEW_USER_SERVER_IMAGE_PATH = os.path.join(TEMP_IMAGE_PATH, 'new_user_server.jpg')
+COMMAND_CALLS_IMAGE_PATH = os.path.join(TEMP_IMAGE_PATH, 'command_calls.jpg')
+COMMAND_STATS_IMAGE_PATH = os.path.join(TEMP_IMAGE_PATH, 'command_stats.jpg')
+
+
+
+WRITE_TEMP_LOG_AFTER_BATCH = 100
+WRITE_JSON_AFTER_BATCH = 100
+UPDATE_THREHSHOLD_FOR_MATCH_ID = 345600 # 4 Days
+LIMIT = 100000
+OPENDOTA_URL = 'https://www.opendota.com/api/explorer?sql='
+RANK_ID = 7
+GET_PUBLIC_MATCH_TIMEOUT = 10000 #sec
+ATTRS_WANTED = ['match_id']
+SKILL_BRACKET = {'low': {'start_mmr': 2000, 'end_mmr': 3000},
+                 'normal': {'start_mmr': 3000, 'end_mmr':4000},
+                 'high': {'start_mmr': 4000, 'end_mmr':5000},
+                 'very_high': {'start_mmr': 5000, 'end_mmr':15000}}
+
+
+

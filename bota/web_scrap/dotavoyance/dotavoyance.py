@@ -113,10 +113,10 @@ class Dotavoyance():
 
         minimum_num_games = 20
         table_to_use = "Last Week"
-        if num_heroes > 2:
-            table_to_use = "Last Month"
-            minimum_num_games = 3
-
+        # if num_heroes > 2:
+        #     table_to_use = "Last Month"
+        #     minimum_num_games = 3
+        print(num_heroes, sort_col)
         req_str = "https://www.dotavoyance.com/combos?numHeroes="+num_heroes+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:"+str(minimum_num_games)+"%7D%7D&table_to_use="+table_to_use
         r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
         results = r.json()
@@ -283,3 +283,7 @@ class Dotavoyance():
         return True, hero_results
 
 
+if __name__ == '__main__':
+    dv = Dotavoyance()
+    r=dv.get_combos('!combo slark')
+    print(r)

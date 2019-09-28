@@ -6,6 +6,7 @@ import asyncio
 from datetime import datetime
 import argparse
 from argparse import RawTextHelpFormatter
+import subprocess
 
 parser = argparse.ArgumentParser(description='Script to scrap data everyday at a particular time',
                                  formatter_class=RawTextHelpFormatter,)
@@ -38,6 +39,7 @@ def update_images():
     print("Start time: ", start.strftime('%H:%M:%S'))
     print("End time:   ", end.strftime('%H:%M:%S'))
     print("Date: ", start.strftime('%d-%m-%Y'))
+    subprocess.run(["pkill", "chrome"])
     return
 
 
