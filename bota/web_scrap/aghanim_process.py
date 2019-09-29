@@ -58,8 +58,9 @@ class Agha():
         title = f"{hero_name.upper()} : {info['skill_name']}"
         description = f'Aghanim Scepter upgrade for **{hero_name.upper()}**'
         embed = discord.Embed(description=description, color=discord.Color.blurple())
+
         embed.set_author(name=title,
-                         icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
+                         icon_url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png',
                          url=self.url)
         for key, value in info['key_desc'].items():
             embed.add_field(name=key.upper(), value=value)
