@@ -14,12 +14,13 @@ from bota.web_scrap.dotavoyance.getter import get_team_mate
 from bota.log_stats_process import LogStat
 from discord.utils import find
 from bota import constant
+from bota.web_scrap.aghanim_process import Agha
 import os
 
 logstat = LogStat()
 client = discord.AutoShardedClient()
+agha = Agha()
 GUILDS = []
-
 
 
 def is_command_called_correctly(message, minlength, maxlength=constant.MAX_COMMAND_WORD_LENGTH, ):
@@ -134,9 +135,13 @@ async def cmd_protracker(message, message_string):
         found, hero_name, result_string, icon_path = get_protracker_hero(message_string)
     if not found:
         if hero_name != '':
-            await message.channel.send(f"Do you mean  **{hero_name}**, Try again with correct name")
+            embed = discord.Embed(description=f"Do you mean  **{hero_name}**, Try again with correct name",
+                                  color=discord.Color.red())
+            await message.channel.send(embed=embed)
         else:
-            await message.channel.send(f"Could not find hero, Please make sure the hero name is correct")
+            embed = discord.Embed(description=f"Could not find hero, Please make sure the hero name is correct",
+                                  color=discord.Color.red())
+            await message.channel.send(embed=embed)
         return False, command_called
     else:
         embed_msg = embed_txt_message(result_string)
@@ -446,6 +451,28 @@ async def get_team_heroes(message, message_string, message_word_length):
         return True, command_called
 
 
+async def get_aghanim(message, message_string, message_word_length):
+    command_called = '!agha'
+    hero_name = message_string.split()[1:]
+    hero_name = " ".join(hero_name)
+    flag, hero_name, embed = agha.get_agha_info(hero_name)
+
+    if not flag:
+        if hero_name != '':
+            embed = discord.Embed(description=f"Do you mean  **{hero_name}**, Try again with correct name",
+                                  color=discord.Color.red())
+            await message.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(description=f"Could not find hero, Please make sure the hero name is correct",
+                                  color=discord.Color.red())
+            await message.channel.send(embed=embed)
+        return False, command_called
+
+    else:
+        await message.channel.send(embed=embed)
+    return True, command_called
+
+
 async def get_stats(message, message_string, message_word_length):
     message_splitted = message_string.split()
 
@@ -472,7 +499,7 @@ async def get_stats(message, message_string, message_word_length):
         if not show_all:
             return
 
-    if 'command' in message_splitted[1] or show_all:
+    if 'command' in message_splitted[1] or 'cmd' in message_splitted[1] or show_all:
         n = 14
         if message_word_length == 3:
             n = int(message_splitted[2])
@@ -566,8 +593,11 @@ async def on_message(message):
     elif "!update" in message_string and message_word_length < 2:
         await message.channel.send(LAST_UPDATE)
 
-    elif ("!team" in message_string and  message_string.startswith('!team')):
+    elif ("!team" in message_string and  message_string.startswith('!team') and message_word_length < 10):
         flag, command_called = await get_team_heroes(message, message_string, message_word_length)
+
+    elif ("!agha" in message_string or "!scepter" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
+        flag, command_called = await get_aghanim(message, message_string, message_word_length)
 
     # Admin privilege
     elif "!stat" in message_string and str(message.author) == ADMIN_ID:

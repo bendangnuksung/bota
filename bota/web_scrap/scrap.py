@@ -288,7 +288,7 @@ def get_protracker_hero(query):
     hero = hero.strip()
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
-        return False, hero_name, ''
+        return False, hero_name, '', ''
 
     result = d2pt.get_hero_details_from_d2pt(hero_name)
     icon_path = get_icon_path([hero_name], icon_size='big')[0]

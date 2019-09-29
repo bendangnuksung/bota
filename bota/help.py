@@ -15,7 +15,7 @@ HOW_TO_USE_COMMANDS_EXAMPLE = {
     '!item': 'How to use -> `!item meepo`  `!item et`',
     '!twitch': 'How to use:\n `!twitch`   `!twitch en`   `!twitch ru`   `!twitch russian',
     '!reddit': 'How to use:\n 1. `!reddit`\n2. `!reddit hot`\n3. `!reddit new',
-    '!pro': 'How to use:  `!pro slark`   `!pro meepo`'
+    '!pro': 'How to use:  `!pro slark`   `!pro meepo`',
     }
 
 # Foot block
@@ -28,11 +28,12 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 # Update Block
 # UPDATE_BLOCK = 'Get Synergy hero for team with **`!synergy`**.\nType **`!synergy help`** for details'
-UPDATE_BLOCK = 'Save profile Steam ID and others, Type **`!profile help`** for details'
+UPDATE_BLOCK = 'Aghanim Info for Heroes, type `!agha HeroName`'
 
 
 UPDATE_BLOCK_LIST=\
-             ["`28-Sep-2019`: Added `!team` command, type `!team help` for details",
+             ["`30-Sep-2019`: Added Aghanim Info for heroes, type `!agha HeroName`",
+              "`28-Sep-2019`: Added `!team` command, type `!team help` for details",
               "`25-Aug-2019`: Save your profile without name and change Steam ID and others, Type `!profile help` for details",
               "`15-Aug-2019`: Added TI command,   `!ti`",
               "`07-Aug-2019`: Added Language option in twitch    `!twitch en`  `!twitch ru`  `twitch th`",
@@ -51,6 +52,7 @@ DOTA_RELATED_COMMAND_LIST = {
                  '!item HeroName'   : 'Get recent item build by Top Rank Players  eg: **`!item kotl`**',
                  '!trend'           : 'Get current heroes trend  eg: `!trend`',
                  '!pro HeroName': 'Hero recently played by Pros and stats. eg:**`!protrack slark`**',
+                 '!agha HeroName': 'Get Aghanim Scepter info for heroes, eg: **`!agha gyro`**'
                 }
 
 OTHER_COMMAND_LIST = {
