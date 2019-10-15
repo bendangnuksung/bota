@@ -18,5 +18,5 @@ fi
 while true
 do
   python3 bota/main.py
-  python3 notify_message -m 1
+  python3 notify_message.py -m 1
 done
