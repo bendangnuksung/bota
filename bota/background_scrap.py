@@ -16,7 +16,7 @@ parser.add_argument('--mode', '-m', help='1: Update images once a day at given t
                                          '2: Update images now and returns back to mode 1',          default=1)
 args = vars(parser.parse_args())
 
-update_times = ['00:00', '06:00', '12:00', '18:00']
+update_times = ['00:00', '02:00', '04:00','06:00', '08:00', '10:00','12:00', '14:00', '16:00','18:00', '20:00', '22:00']
 
 
 def update_images():
