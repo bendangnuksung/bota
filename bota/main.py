@@ -559,7 +559,7 @@ async def on_message(message):
     elif '!profile' in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
         flag, command_called = await cmd_profile(message, message_string, message_word_length, user_discord_id)
 
-    elif '!save' in message_string.split()[0]:
+    elif message_string.startswith('!save') and message_word_length < MAX_COMMAND_WORD_LENGTH:
         await cmd_save(message, message_string, message_word_length, user_discord_id, user_discord_name)
 
     elif "!trend" in message_string and message_word_length < (MAX_COMMAND_WORD_LENGTH - 2):
