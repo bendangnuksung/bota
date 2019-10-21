@@ -16,10 +16,18 @@ parser.add_argument('--mode', '-m', help='1: Update images once a day at given t
                                          '2: Update images now and returns back to mode 1',          default=1)
 args = vars(parser.parse_args())
 
-update_times = ['00:00', '02:00', '04:00','06:00', '08:00', '10:00','12:00', '14:00', '16:00','18:00', '20:00', '22:00']
+
+LAST_UPDATE = 0
+UPDATE_INTERVAL = 60 # 1 min
 
 
 def update_images():
+    global LAST_UPDATE
+    if LAST_UPDATE != 0:
+        current_time = datetime.now()
+        if (current_time - LAST_UPDATE).total_seconds() < UPDATE_INTERVAL:
+            return
+
     print("*"*80)
     print("UPDATING: ")
     loop = asyncio.get_event_loop()
@@ -33,13 +41,13 @@ def update_images():
         get_good_against('', hero=hero_name)
     end = datetime.now()
     print("*"*80)
-    print(f"Background Scrapping process starts at: {update_times} everyday")
     print("Update Completed")
     print(f"Total Time taken: {((end-start).total_seconds()) / 60} min")
     print("Start time: ", start.strftime('%H:%M:%S'))
     print("End time:   ", end.strftime('%H:%M:%S'))
     print("Date: ", start.strftime('%d-%m-%Y'))
     subprocess.run(["pkill", "chrome"])
+    LAST_UPDATE = datetime.now()
     return
 
 
@@ -49,11 +57,7 @@ if args['mode'] == 2 or args['mode'] == '2':
     print("Finished One Time update")
 
 
-for update_time in update_times:
-    schedule.every().day.at(update_time).do(update_images)
-
-print(f"Background Scrapping process starts at: {update_times} everyday")
 
 while True:
-    schedule.run_pending()
-    time.sleep(60) # wait 1 minute
+    update_images()
+    time.sleep(UPDATE_INTERVAL-5) # wait 1 minute
