@@ -28,7 +28,7 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 # Update Block
 # UPDATE_BLOCK = 'Get Synergy hero for team with **`!synergy`**.\nType **`!synergy help`** for details'
-UPDATE_BLOCK = 'Aghanim Info for Heroes, type `!agha HeroName`'
+UPDATE_BLOCK = 'Command available for heroes Snapfire & Void Spirit, type `!counter snapfire`  `!item void spirit`'
 
 
 UPDATE_BLOCK_LIST=\
