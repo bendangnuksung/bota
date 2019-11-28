@@ -1,9 +1,9 @@
 from pyppeteer import launch
 import asyncio
-from bota.utility.general import crop_image
 
 
 async def get_screenshot(selector, url, save_path):
+    print(url, save_path, selector)
     browser = await launch()
     page = await browser.newPage()
     await page.goto(url)
@@ -13,17 +13,19 @@ async def get_screenshot(selector, url, save_path):
 
 
 if __name__ == '__main__':
+    'https://www.dotabuff.com/heroes/abaddon example.png'
     # url = 'https://www.dotabuff.com/heroes/kunkka/builds'
     # TALENT_SELECTOR = 'body > div.container-outer.seemsgood > div.container-inner.container-inner-content > div.content-inner > div.row-12 > div.col-8 > section:nth-child(5) > article'
 
-    url = 'https://www.dotabuff.com/heroes/wraith-king'
-    ITEM_SELECTOR = 'body > div.container-outer.seemsgood > div.container-inner.container-inner-content > div.content-inner > div.row-12 > div.col-8 > section:nth-child(5) > article'
+    url = 'https://www.dotabuff.com/heroes/abaddon'
+    ITEM_SELECTOR = 'body > div.container-outer.seemsgood > div.container-inner.container-inner-content > div.content-inner > div.row-12 > div.col-4 > section:nth-child(2) > article'
 
     path_to_save_screenshot = 'example.png'
     asyncio.get_event_loop().run_until_complete(get_screenshot(ITEM_SELECTOR, url, path_to_save_screenshot))
     import cv2
     image = cv2.imread(path_to_save_screenshot)
-    image = crop_image(image, [0, 155, 600, -168])
+    from bota.utility.general import crop_image
+    image = crop_image(image, [0, 155, 800, -150])
     cv2.imwrite(path_to_save_screenshot, image)
 
     import matplotlib.pyplot as plt

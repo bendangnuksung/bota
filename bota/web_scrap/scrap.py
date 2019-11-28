@@ -296,7 +296,7 @@ def get_protracker_hero(query):
 
 
 if __name__ == '__main__':
-    print(get_reddit('!reddit top'))
+    print(get_item_build('!item am'))
     exit()
     # print(save_id('!save sam 297066030'))
     # print(get_counter_hero('!good ursa'))
