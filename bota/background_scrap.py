@@ -38,6 +38,7 @@ def update_images():
         try:
             loop.run_until_complete(get_skill_build('', hero=hero_name))
         except Exception:
+            subprocess.run(["pkill", "chrome"])
             pass
         try:
             get_item_build('', hero=hero_name)
