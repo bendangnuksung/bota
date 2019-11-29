@@ -57,7 +57,7 @@ def make_hero_images(main_hero_image_path, heroes_image_path, bg_path):
     return bg_image
 
 
-def get_counter_hero(query, hero=None, early_update=False):
+def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -73,18 +73,29 @@ def get_counter_hero(query, hero=None, early_update=False):
     if not is_file_old(image_path, threshold_update_time):
         return True, hero_name, image_path
 
-    hero_info = scrap_heroes_info(hero_name)
-    counter_info = hero_info[0]
-    counter_heroes = counter_info['Hero']
-    counter_heroes_list = list(counter_heroes)
-    counter_heroes_image_path = get_icon_path(counter_heroes_list, icon_size='big')
-    hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
-    image = make_hero_images(hero_image_path, counter_heroes_image_path, constant.COUNTER_BG_IMAGE_PATH)
-    cv2.imwrite(image_path, image)
-    return True, hero_name, image_path
+    try:
+
+        hero_info = scrap_heroes_info(hero_name)
+        counter_info = hero_info[0]
+        counter_heroes = counter_info['Hero']
+        counter_heroes_list = list(counter_heroes)
+        counter_heroes_image_path = get_icon_path(counter_heroes_list, icon_size='big')
+        hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
+        image = make_hero_images(hero_image_path, counter_heroes_image_path, constant.COUNTER_BG_IMAGE_PATH)
+        cv2.imwrite(image_path, image)
+        return True, hero_name, image_path
+
+    except Exception as e:
+        if use_outdated_photo_if_fails:
+            return True, hero_name, image_path
+        else:
+            print("*"*70)
+            print("Counter Failed: ", hero_name)
+            print(e)
+            print("*" * 70)
 
 
-def get_good_against(query, hero=None, early_update=False):
+def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -100,18 +111,28 @@ def get_good_against(query, hero=None, early_update=False):
     if not is_file_old(image_path, threshold_update_time):
         return True, hero_name, image_path
 
-    hero_info = scrap_heroes_info(hero_name)
-    good_against_info = hero_info[1]
-    good_against_heroes = good_against_info['Hero']
-    good_against_heroes_list = list(good_against_heroes)
-    good_against_heroes_image_path = get_icon_path(good_against_heroes_list, icon_size='big')
-    hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
-    image = make_hero_images(hero_image_path, good_against_heroes_image_path, constant.GOOD_BG_IMAGE_PATH)
-    cv2.imwrite(image_path, image)
-    return True, hero_name, image_path
+    try:
+        hero_info = scrap_heroes_info(hero_name)
+        good_against_info = hero_info[1]
+        good_against_heroes = good_against_info['Hero']
+        good_against_heroes_list = list(good_against_heroes)
+        good_against_heroes_image_path = get_icon_path(good_against_heroes_list, icon_size='big')
+        hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
+        image = make_hero_images(hero_image_path, good_against_heroes_image_path, constant.GOOD_BG_IMAGE_PATH)
+        cv2.imwrite(image_path, image)
+        return True, hero_name, image_path
+
+    except Exception as e:
+        if use_outdated_photo_if_fails:
+            return True, hero_name, image_path
+        else:
+            print("*"*70)
+            print("Good Failed: ", hero_name)
+            print(e)
+            print("*" * 70)
 
 
-async def get_skill_build(query, hero=None, early_update=False):
+async def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -128,39 +149,49 @@ async def get_skill_build(query, hero=None, early_update=False):
     if not is_file_old(guide_image_path, threshold_update_time):
         return True, hero_name, guide_image_path
 
-    url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
+    try:
+        url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
 
-    talent_filename = hero + '_talent.jpg'
-    talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
-    await get_screenshot(constant.TALENT_SELECTOR, url, talent_screenshot_path)
+        talent_filename = hero + '_talent.jpg'
+        talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
+        await get_screenshot(constant.TALENT_SELECTOR, url, talent_screenshot_path)
 
-    skill_filename = hero + '_skill.jpg'
-    skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
+        skill_filename = hero + '_skill.jpg'
+        skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
 
-    await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
+        await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
 
-    talent_image = cv2.imread(talent_screenshot_path)
-    talent_crop = crop_image(talent_image, constant.TALENT_CROP_COORDS)
+        talent_image = cv2.imread(talent_screenshot_path)
+        talent_crop = crop_image(talent_image, constant.TALENT_CROP_COORDS)
 
-    skill_image = cv2.imread(skill_screenshot_path)
-    skill_crop = crop_image(skill_image, constant.SKILL_CROP_COORDS)
+        skill_image = cv2.imread(skill_screenshot_path)
+        skill_crop = crop_image(skill_image, constant.SKILL_CROP_COORDS)
 
-    hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
-    hero_icon = cv2.imread(hero_icon_path)
-    background_image = cv2.imread(constant.GUIDE_BACKGROUND_PATH)
-    background_image = cv2.resize(background_image, (
-    constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
-    background_image[constant.GUIDE_HERO_ICON_X_Y[0]: constant.GUIDE_HERO_ICON_X_Y[0] + hero_icon.shape[0],
-    constant.GUIDE_HERO_ICON_X_Y[1]: constant.GUIDE_HERO_ICON_X_Y[1] + hero_icon.shape[1]] = hero_icon
-    background_image = add_border_to_image(background_image, bordersize=10, rgb=[0, 0, 0])
-    background_image = cv2.resize(background_image,
-                                  (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
-    final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
-    cv2.imwrite(guide_image_path, final_image)
-    return True, hero_name, guide_image_path
+        hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
+        hero_icon = cv2.imread(hero_icon_path)
+        background_image = cv2.imread(constant.GUIDE_BACKGROUND_PATH)
+        background_image = cv2.resize(background_image, (
+        constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
+        background_image[constant.GUIDE_HERO_ICON_X_Y[0]: constant.GUIDE_HERO_ICON_X_Y[0] + hero_icon.shape[0],
+        constant.GUIDE_HERO_ICON_X_Y[1]: constant.GUIDE_HERO_ICON_X_Y[1] + hero_icon.shape[1]] = hero_icon
+        background_image = add_border_to_image(background_image, bordersize=10, rgb=[0, 0, 0])
+        background_image = cv2.resize(background_image,
+                                      (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
+        final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
+        cv2.imwrite(guide_image_path, final_image)
+        return True, hero_name, guide_image_path
+
+    except Exception as e:
+        if use_outdated_photo_if_fails:
+            return True, hero_name, guide_image_path
+        else:
+            print("*"*70)
+            print("Skill Failed: ", hero_name)
+            print(e)
+            print("*" * 70)
 
 
-def get_item_build(query, hero=None, early_update=False):
+def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -177,10 +208,21 @@ def get_item_build(query, hero=None, early_update=False):
     if not is_file_old(item_build_path, threshold_update_time):
         return True, hero_name, item_build_path
 
-    item_build_info = scrap_item_info(hero_name)
-    item_image = make_item_image(item_build_info, hero_name)
-    cv2.imwrite(item_build_path, item_image, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
-    return True, hero_name, item_build_path
+    try:
+
+        item_build_info = scrap_item_info(hero_name)
+        item_image = make_item_image(item_build_info, hero_name)
+        cv2.imwrite(item_build_path, item_image, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
+        return True, hero_name, item_build_path
+
+    except Exception as e:
+        if use_outdated_photo_if_fails:
+            return True, hero_name, item_build_path
+        else:
+            print("*"*70)
+            print("Item Build Fail: ", hero_name)
+            print(e)
+            print("*" * 70)
 
 
 def is_id(id):
