@@ -93,6 +93,7 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
             print("Counter Failed: ", hero_name)
             print(e)
             print("*" * 70)
+            assert 1 == 0
 
 
 def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
@@ -130,6 +131,7 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
             print("Good Failed: ", hero_name)
             print(e)
             print("*" * 70)
+            assert 1 == 0
 
 
 async def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
@@ -188,6 +190,7 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
             print("Skill Failed: ", hero_name)
             print(e)
             print("*" * 70)
+            assert 1 == 0
 
 
 def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
@@ -222,6 +225,7 @@ def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_f
             print("Item Build Fail: ", hero_name)
             print(e)
             print("*" * 70)
+            assert 1 == 0
 
 
 def is_id(id):
