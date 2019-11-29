@@ -152,14 +152,13 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
     try:
         url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
 
+        skill_filename = hero + '_skill.jpg'
+        skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
+        await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
+
         talent_filename = hero + '_talent.jpg'
         talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
         await get_screenshot(constant.TALENT_SELECTOR, url, talent_screenshot_path)
-
-        skill_filename = hero + '_skill.jpg'
-        skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
-
-        await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
 
         talent_image = cv2.imread(talent_screenshot_path)
         talent_crop = crop_image(talent_image, constant.TALENT_CROP_COORDS)
