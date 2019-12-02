@@ -217,4 +217,5 @@ d2pt_hero_names = {'abaddon': 'Abaddon', 'alchemist': 'Alchemist', 'ancient-appa
                    'underlord': 'Underlord', 'undying': 'Undying', 'ursa': 'Ursa', 'vengeful-spirit': 'Vengeful Spirit',
                    'venomancer': 'Venomancer', 'viper': 'Viper', 'visage': 'Visage', 'warlock': 'Warlock',
                    'weaver': 'Weaver', 'windranger': 'Windranger', 'winter-wyvern': 'Winter Wyvern',
-                   'witch-doctor': 'Witch Doctor', 'wraith-king': 'Wraith King', 'zeus': 'Zeus'}
+                   'witch-doctor': 'Witch Doctor', 'wraith-king': 'Wraith King', 'zeus': 'Zeus', 'void-spirit': 'Void Spirit',
+                   'snapfire': 'Snapfire'}
