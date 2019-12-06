@@ -12,6 +12,7 @@ from bota.web_scrap.TI import group_stage, help, stats, matches
 from bota.log_process import save_command_logs, get_command_log_tail
 from bota.web_scrap.dotavoyance.getter import get_team_mate
 from bota.log_stats_process import LogStat
+from bota.third_party_update import update_value_to_server
 from discord.utils import find
 from bota import constant
 from bota.web_scrap.aghanim_process import Agha
@@ -542,6 +543,7 @@ async def on_message(message):
     if client.user == message.author:
         is_command_called = False
 
+    # Manual block users
     elif user_discord_id in [612215331334782990, 612284442131824640]:
         return
 
@@ -628,7 +630,8 @@ async def on_message(message):
     if is_command_called:
         save_command_logs(message, command_called)
 
+    # Getting total guilds using
+    update_value_to_server(logstat)
+
 
 client.run(DISCORD_TOKEN)
-
-

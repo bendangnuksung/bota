@@ -4,11 +4,11 @@ BOT-A is a free Discord Dota 2 bot which provides comprehensive Information of e
 [![Join Bota Server](/github_images/join_server.jpg)](https://discord.gg/a7QYPWd)  [![Add Bota to your server](/github_images/add_bot.jpg)](https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot)
 
 ## Commands & Screenshots
-Commands List: `!help`  ![help](/github_images/commands.png)
+Commands List: `!help`  
+  ![help](/github_images/commands.png)
 Screenshots:
 1. Command:  `!counter  morphling`  ![counter morphling](/github_images/counter.png)
 2. Command:  `!item storm` ![item storm](/github_images/item.png)
-3. Command:  `!profile midone` ![profile](/github_images/profile.png)
 
 ## Setup
 ### Pre-Requirements:
