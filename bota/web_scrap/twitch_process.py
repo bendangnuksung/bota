@@ -14,7 +14,7 @@ twitch_language = {'english': "en", "dansk": 'da', "danish": "da", "deutsch": "d
                     'ceština': 'cs', 'czech': 'cs', 'eλληνικά': 'el', 'greek': 'el', 'български': 'bg', 'bulgarian': 'bg',
                    'pусский': 'ru', 'slovenian': 'ru', 'russian': 'ru', 'العربية': 'ar', 'arabic': 'ar',
                    'ภาษาไทย': 'th', 'thai': 'th', '中文': 'zh', 'chinese': 'zh', '中文 繁體': 'zh-hk', 'hong kong': 'zh-kh',
-                   '日本語': 'ja', 'japanese': 'ja', '한국어': 'ko', 'korean': 'ko', 'sign': 'asl'}
+                   '日本語': 'ja', 'japanese': 'ja', '한국어': 'ko', 'korean': 'ko', 'sign': 'asl', 'ru': 'ru'}
 
 
 def request_dota2_stream_json(url):
@@ -39,9 +39,9 @@ def pretty_stream_text_for_discord(datas, language):
         link = constant.TWITCH_URL + data[constant.TWITCH_KEYWORD_USER_NAME]
         final_string += f'{i}. **{data[constant.TWITCH_KEYWORD_USER_NAME]}**' \
                         f'    `VIEWS:`{data[constant.TWITCH_KEYWORD_VIEWER_COUNT]}' \
-                        f'   `TITLE:` {data[constant.TWITCH_KEYWORD_TITLE]}`  ' \
+                        f'   `TITLE:` _{(data[constant.TWITCH_KEYWORD_TITLE]).rstrip()}_  ' \
                         f' `LANG:` **{data[constant.TWITCH_KEYWORD_LANGUAGE].upper()}**' \
-                        f'    **[LINK]({link})**\n\n'
+                        f'    __**[LINK]({link})**__\n\n'
     return final_string
 
 
@@ -71,4 +71,4 @@ def get_dota2_top_stream(language=None, top=8):
 
 
 if __name__ == "__main__":
-    print(get_dota2_top_stream('ru'))
+    print(get_dota2_top_stream())
