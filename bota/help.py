@@ -97,6 +97,7 @@ REDDIT_CMD_EXAMPLE = f'**How to use `!reddit` command**:\n' \
                    f'eg 5: **`!reddit rising`**\n' \
                    f'eg 6: **`!reddit hot`**' \
 
+
 def get_help():
     help_string = []
     head = "**Commands to use BOTA**: 😋\n\n"
@@ -108,30 +109,30 @@ def get_help():
     for key, value in DOTA_RELATED_COMMAND_LIST.items():
         command = '**' + key + '**'
         command_help = value
-        full = command + '\t:\t' + command_help
+        full = command + ':' + command_help
         dota_related_commands.append(full + '\n')
 
     for key, value in OTHER_COMMAND_LIST.items():
         command = '**' + key + '**'
         command_help = value
-        full = command + '\t:\t' + command_help
+        full = command + ':' + command_help
         other_commands.append(full + '\n')
 
     dota_related_commands = ''.join(dota_related_commands)
-    dota_related_commands += '\n' + '_'* 10
+    # dota_related_commands += '\n' + '_'* 2
     other_commands = ''.join(other_commands)
-    other_commands += '\n' +'_' * 10
+    # other_commands += '\n' + ' ' * 10
 
     help_string = head
     # print(len(command_string))
     embed_msg = discord.Embed(description=help_string, color=discord.Color.blue())
     embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'], url=constant.DEFAULT_EMBED_HEADER['url'])
     embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
-    embed_msg.add_field(name="Dota Hero Commands", value=dota_related_commands)
-    embed_msg.add_field(name="Dota Other Commands", value=other_commands)
+    embed_msg.add_field(name="Dota Hero Commands", value=dota_related_commands, inline=False)
+    embed_msg.add_field(name="Dota Other Commands", value=other_commands, inline=False)
     embed_msg.add_field(name="Help and Support",
-                        value=(f"Add BOTA to your server: **[Click here]({BOTA_ADD_TO_SERVER_URL})**\n"
-                               f"Join BOTA support server for more help: **[Click here]({BOTA_SUPPORT_SERVER_URL})**\n"
-                               f"If you like BOTA do support us to keep the server running: **[Donate via PayPal]({PAYPAL_URL})**"))
+                        value=(f"Add BOTA to your server: **[Link]({BOTA_ADD_TO_SERVER_URL})**\n"
+                               f"Join BOTA server for more help: **[Link]({BOTA_SUPPORT_SERVER_URL})**\n"
+                               f"If you like BOTA do support us to keep the server running: **[Donate]({PAYPAL_URL})**"))
     embed_msg.add_field(name="Updates", value=UPDATE_BLOCK)
     return embed_msg
