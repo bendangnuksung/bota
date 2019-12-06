@@ -1,4 +1,7 @@
 # BOTA<img align="right" src="/github_images/bota.png"/>
+[![Servers](https://img.shields.io/badge/dynamic/json?url=http://bota.tech:5000/getstat&label=Discord Servers&query=$.n_servers&color=green)](https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot)
+[![Users](https://img.shields.io/badge/dynamic/json?url=http://bota.tech:5000/getstat&label=Unique Users&query=$.n_users&color=brightgreen)](https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot)
+
 BOT-A is a free Discord Dota 2 bot which provides comprehensive Information of every Dota 2 characters and exciting features for the community. Pull request are welcome and report any issues you find. The Bot is still in beta so I don't expect it to be perfect. <br/>  
 **Website:** [https://bota.tech/](https://bota.tech/)<br/>
 [![Join Bota Server](/github_images/join_server.jpg)](https://discord.gg/a7QYPWd)  [![Add Bota to your server](/github_images/add_bot.jpg)](https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot)
