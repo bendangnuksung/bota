@@ -12,12 +12,12 @@ LAST_UPDATE_TIME = 0
 UPDATE_AFTER = 21600 # update every 6 hours
 
 
-def update_value_to_server(logstat):
+def update_value_to_server(logstat, force_update=False):
     if ip_address == '':
         return
     global tp_url, LAST_UPDATE_TIME, UPDATE_AFTER
     current_time = datetime.now()
-    if LAST_UPDATE_TIME == 0 or ((current_time - LAST_UPDATE_TIME).total_seconds() >= UPDATE_AFTER):
+    if LAST_UPDATE_TIME == 0 or ((current_time - LAST_UPDATE_TIME).total_seconds() >= UPDATE_AFTER) or force_update:
         logstat.update_df()
         info = logstat.all_time()
         user_no = info['Total Users']
