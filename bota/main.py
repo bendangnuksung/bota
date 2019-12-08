@@ -517,7 +517,7 @@ async def get_stats(message, message_string, message_word_length):
 
     if 'update' in message_splitted[1]:
         flag = logstat.update_df()
-        update_value_to_server(force_update=True)
+        update_value_to_server(logstat, force_update=True)
         if flag:
             embed = discord.Embed(title="Updated The Log DF", color=discord.Color.green())
         else:
