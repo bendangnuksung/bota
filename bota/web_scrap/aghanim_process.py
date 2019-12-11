@@ -55,18 +55,24 @@ class Agha():
         self.last_update = datetime.now()
 
     def embed_message(self, hero_name, info):
-        title = f"{hero_name.upper()} : {info['skill_name']}"
-        description = f'Aghanim Scepter upgrade for **{hero_name.upper()}**'
-        embed = discord.Embed(description=description, color=discord.Color.blurple())
+        if info is not None:
+            title = f"{hero_name.upper()} : {info['skill_name']}"
+            description = f'Aghanim Scepter upgrade for **{hero_name.upper()}**'
+            embed = discord.Embed(description=description, color=discord.Color.blurple())
+        else:
+            title = f"{hero_name.upper()}"
+            description = f'No Aghanim Scepter for **{hero_name.upper()}**'
+            embed = discord.Embed(description=description, color=discord.Color.red())
 
         embed.set_author(name=title,
                          icon_url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png',
                          url=self.url)
-        for key, value in info['key_desc'].items():
-            embed.add_field(name=key.upper(), value=value)
-        embed.add_field(name='Summary', value=info['summary'])
+        if info is not None:
+            for key, value in info['key_desc'].items():
+                embed.add_field(name=key.upper(), value=value)
+            embed.add_field(name='Summary', value=info['summary'])
         # image_file = discord.File(image_path, os.path.basename(image_path))
-        embed.set_thumbnail(url=info['skill_image_url'])
+            embed.set_thumbnail(url=info['skill_image_url'])
         return embed
 
     def get_agha_info(self, hero_name):
@@ -79,11 +85,11 @@ class Agha():
             return False, hero_name, ''
         # if hero_name not in self.agha_info:
         #     return False, ''
-        info = self.agha_info[hero_name]
+        info = self.agha_info.get(hero_name)
         embed_msg = self.embed_message(hero_name, info)
         return True, hero_name, embed_msg
 
 
 if __name__ == '__main__':
     a = Agha()
-    print(a.get_agha_info('am'))
+    print(a.get_agha_info('snap'))

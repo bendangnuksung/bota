@@ -136,7 +136,7 @@ async def cmd_protracker(message, message_string):
         found, hero_name, result_string, icon_path = get_protracker_hero(message_string)
     if not found:
         if hero_name != '':
-            embed = discord.Embed(description=f"Do you mean  **{hero_name}**, Try again with correct name",
+            embed = discord.Embed(description=f"Did you mean  **{hero_name}**, Try again with correct name",
                                   color=discord.Color.red())
             await message.channel.send(embed=embed)
         else:
@@ -161,7 +161,7 @@ async def cmd_counter(message, message_string):
         found, hero_name, image_path = get_counter_hero(message_string)
         if not found:
             if hero_name != '':
-                msg = f"Do you mean  **{hero_name}**, Try again with correct name"
+                msg = f"Did you mean  **{hero_name.replace('-', ' ')}**, Try again with correct name"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
@@ -189,7 +189,7 @@ async def cmd_item(message, message_string):
         found, hero_name, image_path = get_item_build(message_string)
         if not found:
             if hero_name != '':
-                msg = f"Do you mean  **{hero_name}**, Try again with correct name"
+                msg = f"Did you mean  **{hero_name.replace('-', ' ')}**, Try again with correct name"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
@@ -217,7 +217,7 @@ async def cmd_good(message, message_string):
         found, hero_name, image_path = get_good_against(message_string)
         if not found:
             if hero_name != '':
-                msg = f"Do you mean  **{hero_name}**, Try again with correct name "
+                msg = f"Did you mean  **{hero_name.replace('-', ' ')}**, Try again with correct name "
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
@@ -245,7 +245,7 @@ async def cmd_skill(message, message_string):
         found, hero_name, image_path = await get_skill_build(message_string)
         if not found:
             if hero_name != '':
-                msg = f"Do you mean  **{hero_name}**, Try again with correct name"
+                msg = f"Did you mean  **{hero_name.replace('-', ' ')}**, Try again with correct name"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
@@ -460,7 +460,7 @@ async def get_aghanim(message, message_string, message_word_length):
 
     if not flag:
         if hero_name != '':
-            embed = discord.Embed(description=f"Do you mean  **{hero_name}**, Try again with correct name",
+            embed = discord.Embed(description=f"Did you mean  **{hero_name.replace('-', ' ')}**, Try again with correct name",
                                   color=discord.Color.red())
             await message.channel.send(embed=embed)
         else:
