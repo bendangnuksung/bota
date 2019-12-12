@@ -1,0 +1,83 @@
+from flask import jsonify
+from flask import Flask, request
+from flask_process.image_shield_process import BotaLog
+from flask_process.logs_constant import IMAGE_SHIELD_JSON_FILE
+from flask_process.flask_log_process import save_command_logs
+from flask_process.flask_log_stat_process import LogStat
+import base64
+
+botalog = BotaLog(IMAGE_SHIELD_JSON_FILE)
+logstat = LogStat()
+app = Flask(__name__)
+
+
+@app.route('/updatestat', methods=['POST'])
+def updatestat():
+    n_servers = request.form.get('guilds')
+    n_users = request.form.get('users')
+    botalog.update_info(n_servers, n_users)
+    return jsonify({'result': True})
+
+
+@app.route('/getstat')
+def getstat():
+    stat = botalog.get_info()
+    return jsonify(stat)
+
+
+@app.route('/stats/update_command_log', methods=['POST'])
+def update_command_log():
+    log = request.form.get('log')
+    command_called = request.form.get('command_called')
+    save_command_logs(log, command_called)
+    return jsonify({'result': True})
+
+
+@app.route('/stats/all_time', methods=['POST'])
+def get_stats_all_time():
+    text_dict = logstat.all_time()
+    return jsonify(text_dict)
+
+
+@app.route('/stats/new_user_and_server', methods=['POST'])
+def get_stats_new_user_and_server():
+    n = request.form.get('n')
+    n = int(n)
+    img_path, summary = logstat.get_new_user_and_server(n=n)
+    data = {'summary': summary}
+    with open(img_path, mode='rb') as file:
+        img = file.read()
+    data['image'] = base64.encodebytes(img).decode("utf-8")
+    return jsonify(data)
+
+
+@app.route('/stats/command', methods=['POST'])
+def get_stats_command():
+    n = request.form.get('n')
+    n = int(n)
+    img_path, summary = logstat.get_commands_stats(n=n)
+    data = {'summary': summary}
+    with open(img_path, mode='rb') as file:
+        img_1 = file.read()
+    data['image'] = base64.encodebytes(img_1).decode("utf-8")
+    return jsonify(data)
+
+
+@app.route('/stats/calls', methods=['POST'])
+def get_stats_calls():
+    n = request.form.get('n')
+    n = int(n)
+    img_path, summary = logstat.get_command_calls(n=n)
+    data = {'summary': summary}
+    with open(img_path, mode='rb') as file:
+        img_1 = file.read()
+    data['image'] = base64.encodebytes(img_1).decode("utf-8")
+    return jsonify(data)
+
+
+@app.route('/stats/update', methods=['POST'])
+def stats_update():
+    flag = logstat.update_df()
+    # update_value_to_server(logstat, force_update=True)
+    data = {'flag': flag}
+    return jsonify(data)
