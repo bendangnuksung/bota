@@ -1,10 +1,10 @@
-# This script is just to show Image shield in GIthub (Personal)
+# This script is just to show Image shield in Github (Personal purpose)
 import requests
 from datetime import datetime
+from bota.private_constant import LOG_PORCESS_IP_ADDRESS
 
-
-ip_address = ''
-path = ''
+ip_address = LOG_PORCESS_IP_ADDRESS if LOG_PORCESS_IP_ADDRESS is not None else "http://localhost:5000/"
+path = 'updatestat'
 tp_url = ip_address + path
 
 

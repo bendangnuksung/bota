@@ -1,13 +1,10 @@
-import numpy as np
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-# import datetime
 from datetime import datetime, date, timedelta
 import calendar
 from bota import constant
 import re
-import seaborn as sns
 import discord
 
 

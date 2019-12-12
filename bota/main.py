@@ -9,16 +9,17 @@ from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_a
 from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile_from_db, get_protracker_hero
 from bota.web_scrap.twitch_process import get_dota2_top_stream
 from bota.web_scrap.TI import group_stage, help, stats, matches
-from bota.log_process import save_command_logs, get_command_log_tail
+from bota.logs_process.local_log_process import save_command_logs, get_command_log_tail
 from bota.web_scrap.dotavoyance.getter import get_team_mate
-from bota.log_stats_process import LogStat
-from bota.third_party_update import update_value_to_server
+# from bota.logs_process.local_log_stats_process import LogStat
+from bota.logs_process import log_caller
+# from bota.third_party_update import update_value_to_server
 from discord.utils import find
 from bota import constant
 from bota.web_scrap.aghanim_process import Agha
 import os
 
-logstat = LogStat()
+# logstat = LogStat()
 client = discord.AutoShardedClient()
 agha = Agha()
 GUILDS = []
@@ -482,9 +483,10 @@ async def get_stats(message, message_string, message_word_length):
         show_all = True
 
     if message_word_length == 1 or show_all:
-        text_dict = logstat.all_time()
+        text_dict = log_caller.get_stat_all_time() #logstat.all_time()
+        print(text_dict)
         title = "Weekly All Time Stats"
-        embed, _ = logstat.embed_discord(title, text_dict)
+        embed, _ = log_caller.embed_discord(title, text_dict) #logstat.embed_discord(title, text_dict)
         await message.channel.send(embed=embed)
         if not show_all:
             return
@@ -493,9 +495,10 @@ async def get_stats(message, message_string, message_word_length):
         n = 21
         if message_word_length == 3:
             n = int(message_splitted[2])
-        img_path, summary = logstat.get_new_user_and_server(n=n)
+        img_path, summary = log_caller.get_stat_new_user_server(n) #logstat.get_new_user_and_server(n=n)
         title = 'New User and Server'
-        embed, image_embed = logstat.embed_discord(title, summary, image_path=img_path, is_type='image')
+        embed, image_embed = log_caller.embed_discord(title, summary, image_path=img_path, is_type='image')
+        #logstat.embed_discord(title, summary, image_path=img_path, is_type='image')
         await message.channel.send(embed=embed, file=image_embed)
         if not show_all:
             return
@@ -504,20 +507,20 @@ async def get_stats(message, message_string, message_word_length):
         n = 14
         if message_word_length == 3:
             n = int(message_splitted[2])
-        img_path_1, summary_1 = logstat.get_commands_stats(n=14)
-        img_path_2, summary_2 = logstat.get_command_calls(n=n)
+        img_path_1, summary_1 = log_caller.get_stat_commands(n) #logstat.get_commands_stats(n=14)
+        img_path_2, summary_2 = log_caller.get_stat_calls(n) #logstat.get_command_calls(n=n)
         title_1 = "All Commands Stats"
         title_2 = "Command Calls Stats"
-        embed_1, image_1_embed = logstat.embed_discord(title_1, summary_1, image_path=img_path_1, is_type='image')
-        embed_2, image_2_embed = logstat.embed_discord(title_2, summary_2, image_path=img_path_2, is_type='image')
+        embed_1, image_1_embed = log_caller.embed_discord(title_1, summary_1, image_path=img_path_1, is_type='image')
+        embed_2, image_2_embed = log_caller.embed_discord(title_2, summary_2, image_path=img_path_2, is_type='image')
         await message.channel.send(embed=embed_2, file=image_2_embed)
         await message.channel.send(embed=embed_1, file=image_1_embed)
         if not show_all:
             return
 
     if 'update' in message_splitted[1]:
-        flag = logstat.update_df()
-        update_value_to_server(logstat, force_update=True)
+        flag = log_caller.stats_update()
+        log_caller.update_value_to_server(force_update=True)
         if flag:
             embed = discord.Embed(title="Updated The Log DF", color=discord.Color.green())
         else:
@@ -632,7 +635,7 @@ async def on_message(message):
         save_command_logs(message, command_called)
 
     # Getting total guilds using
-    update_value_to_server(logstat)
+    log_caller.update_value_to_server()
 
 
 client.run(DISCORD_TOKEN)
