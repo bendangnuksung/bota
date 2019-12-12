@@ -10,7 +10,7 @@ from bota.private_constant import LOG_PORCESS_IP_ADDRESS
 from bota.logs_process import log_constant
 from datetime import datetime
 
-BASE_URL = LOG_PORCESS_IP_ADDRESS if LOG_PORCESS_IP_ADDRESS is not None else "http://localhost:5000/"
+BASE_URL = LOG_PORCESS_IP_ADDRESS if LOG_PORCESS_IP_ADDRESS is not None else "http://0.0.0.0:5000/"
 LAST_UPDATE_TIME = 0
 
 
@@ -18,7 +18,6 @@ def get_stat_all_time():
     p = log_constant.API_PATH_ALL_TIME
     url_components = [BASE_URL, p]
     url = '/'.join(s.strip('/') for s in url_components)
-    print(url)
     r = requests.post(url)
     r = json.loads(r.content)
     return r

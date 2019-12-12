@@ -81,3 +81,6 @@ def stats_update():
     # update_value_to_server(logstat, force_update=True)
     data = {'flag': flag}
     return jsonify(data)
+
+
+app.run(host='0.0.0.0', port=5000)
