@@ -1,26 +1,74 @@
-import discord
-from bota import constant
-import os
 import cv2
 import requests, json
 import base64
 import io
 from imageio import imread
+from bota.logs_process.log_utils import extract_info
 from bota.private_constant import LOG_PORCESS_IP_ADDRESS
 from bota.logs_process import log_constant
 from datetime import datetime
+from bota.logs_process.log_utils import LogBackup
 
 BASE_URL = LOG_PORCESS_IP_ADDRESS if LOG_PORCESS_IP_ADDRESS is not None else "http://0.0.0.0:5000/"
 LAST_UPDATE_TIME = 0
+
+log_backup = LogBackup()
+
+
+def save_log(message, command_called):
+    log = extract_info(message, command_called)
+    p = log_constant.API_PATH_SAVELOG
+    url_components = [BASE_URL, p]
+    url = '/'.join(s.strip('/') for s in url_components)
+    data = {'log': log}
+    flag = True
+    r = None
+
+    try:
+        r = requests.post(url, data=data)
+    except requests.exceptions.RequestException as e:
+        flag = False
+        log_backup.append_log(log, e)
+        print("*" * 50)
+        print("Failed Saving logs: ", e)
+        print("*" * 50)
+
+    if flag and r.status_code == 200:
+        if log_backup.is_fail_logs_in_memory():
+            failed_logs = log_backup.get_failed_logs()
+            for log in failed_logs:
+                data = {'log': log}
+                requests.post(url, data=data)
+            log_backup.clear_failed_logs()
+        return True
+    else:
+        return False
+
+
+def get_command_log_tail(n):
+    p = log_constant.APU_PATH_TAIL
+    url_components = [BASE_URL, p]
+    url = '/'.join(s.strip('/') for s in url_components)
+    data = {'n': n}
+    r = requests.post(url, data=data)
+    r = json.loads(r.content)
+    r = r['tail']
+    return r
 
 
 def get_stat_all_time():
     p = log_constant.API_PATH_ALL_TIME
     url_components = [BASE_URL, p]
     url = '/'.join(s.strip('/') for s in url_components)
-    r = requests.post(url)
-    r = json.loads(r.content)
-    return r
+    try:
+        r = requests.post(url)
+        r = json.loads(r.content)
+        return r
+    except requests.exceptions.RequestException as e:
+        print("*"*50)
+        print("Failed All time stats: ", e)
+        print("*" * 50)
+        return {}
 
 
 def get_stat_new_user_server(n):
@@ -46,7 +94,6 @@ def get_stat_commands(n):
     url = '/'.join(s.strip('/') for s in url_components)
     data = {'n': n}
     r = requests.post(url, data=data)
-    print(r.content)
     r = json.loads(r.content)
     summary = r.get('summary')
     image = r.get('image')
@@ -81,10 +128,17 @@ def stats_update():
     p = log_constant.API_PATH_UPDATE
     url_components = [BASE_URL, p]
     url = '/'.join(s.strip('/') for s in url_components)
-    r = requests.post(url)
-    r = json.loads(r.content)
-    flag = r.get('flag')
-    return flag
+    r = None
+    try:
+        r = requests.post(url)
+        r = json.loads(r.content)
+        flag = r.get('flag')
+        return flag
+    except requests.exceptions.RequestException as e:
+        print("*" * 50)
+        print("Failed Stats update: ", e)
+        print("*" * 50)
+        return False
 
 
 def update_value_to_server(force_update=False):
@@ -102,32 +156,10 @@ def update_value_to_server(force_update=False):
         try:
             requests.post(url=tp_url, data=data)
             LAST_UPDATE_TIME = current_time
-            print("update Successful")
+            print("Update to Log server  Successful")
         except requests.exceptions.ConnectionError:
-            status_code = "Connection refused"
+            status_code = "Connection refused to Log server"
             print(status_code)
-
-
-def embed_discord(title, summary, image_path=None, is_type='dictionary', color=discord.Color.blurple()):
-    if is_type == 'dictionary':
-        stat_week_text = []
-        embed = discord.Embed(color=color, title=title)
-        embed.set_author(name=constant.DEFAULT_EMBED_HEADER['name'],
-                         icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
-                         url=constant.DEFAULT_EMBED_HEADER['url'])
-        for key, value in summary.items():
-            stat_week_text.append(f"**{key}**: {value}")
-            embed.add_field(name=key, value=value)
-        return embed, ''
-
-    elif is_type == 'image':
-        embed = discord.Embed(description=summary, color=discord.Color.blurple(), title=title)
-        embed.set_author(name=constant.DEFAULT_EMBED_HEADER['name'],
-                         icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
-                         url=constant.DEFAULT_EMBED_HEADER['url'])
-        image_file = discord.File(image_path, os.path.basename(image_path))
-        embed.set_image(url=f"attachment://{image_file.filename}")
-        return embed, image_file
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@ DOTA2_API_KEY = ""
 DISCORD_CLIENT_ID = ""
 ADMIN_ID = "" # Discord User
 TWITCH_CLIENT_IDS = [] # List of strings: twitch client IDs
-LOG_PORCESS_IP_ADDRESS = 'localhost' # IP addres where the LOG will be processed (Not necessary)
+LOG_PORCESS_IP_ADDRESS = '' #  IP address with Port Number where the LOG will be processed (Not necessary)
 
 
 # Take keys from environment variable if empty
@@ -31,12 +31,24 @@ if ADMIN_ID == "":
     if ADMIN_ID is None:
         print("ADMIN_ID not provided")
 
-if TWITCH_CLIENT_IDS == "":
-    TWITCH_CLIENT_IDS = env_var.get('TWITCH_CLIENT_IDS')
+if len(TWITCH_CLIENT_IDS) <= 0:
+    twitch = env_var.get('TWITCH_CLIENT_IDS')
+    TWITCH_CLIENT_IDS = [env_var.get('TWITCH_CLIENT_IDS')]
     if TWITCH_CLIENT_IDS is None:
         print("TWITCH_CLIENT_IDS not provided")
 
 if LOG_PORCESS_IP_ADDRESS == "":
     LOG_PORCESS_IP_ADDRESS = env_var.get('LOG_PORCESS_IP_ADDRESS')
     if LOG_PORCESS_IP_ADDRESS is None:
-        print("LOG_PORCESS_IP_ADDRESS not provided")
+        LOG_PORCESS_IP_ADDRESS = 'http://0.0.0.0:5000/'
+        print("LOG_PORCESS_IP_ADDRESS not provided, taking default address")
+
+
+CREDS = {'Discord Token': DISCORD_TOKEN, 'Discord Client ID': DISCORD_CLIENT_ID, 'DOTA2 APIKEY':DOTA2_API_KEY,
+         'Admin ID': ADMIN_ID, 'Twitch Client IDs': TWITCH_CLIENT_IDS, 'Log IP address':LOG_PORCESS_IP_ADDRESS}
+print("*"*40)
+print("CREDENTIALS")
+for key, val in CREDS.items():
+    print(key, ': ', val)
+print("*"*40)
+

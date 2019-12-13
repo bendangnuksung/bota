@@ -1,5 +1,7 @@
 import discord
 import sys
+
+import bota.logs_process.log_utils
 from bota.constant import MAX_COMMAND_WORD_LENGTH
 from bota.help import LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE,\
                       REDDIT_CMD_EXAMPLE, UPDATE_BLOCK
@@ -417,7 +419,7 @@ async def cmd_tail(message, message_string, n=5):
         n = int(message_string.split()[1])
     except Exception:
         pass
-    tail_log = get_command_log_tail(n)
+    tail_log = log_caller.get_command_log_tail(n)
     tail_log = embed_txt_message(tail_log, color=discord.Color.purple())
     tail_log.set_author(name='Command Tail Log')
     tail_log = add_footer_requested_by_username(tail_log, message)
@@ -484,9 +486,8 @@ async def get_stats(message, message_string, message_word_length):
 
     if message_word_length == 1 or show_all:
         text_dict = log_caller.get_stat_all_time() #logstat.all_time()
-        print(text_dict)
         title = "Weekly All Time Stats"
-        embed, _ = log_caller.embed_discord(title, text_dict) #logstat.embed_discord(title, text_dict)
+        embed, _ = bota.logs_process.log_utils.embed_discord(title, text_dict) #logstat.embed_discord(title, text_dict)
         await message.channel.send(embed=embed)
         if not show_all:
             return
@@ -497,7 +498,7 @@ async def get_stats(message, message_string, message_word_length):
             n = int(message_splitted[2])
         img_path, summary = log_caller.get_stat_new_user_server(n) #logstat.get_new_user_and_server(n=n)
         title = 'New User and Server'
-        embed, image_embed = log_caller.embed_discord(title, summary, image_path=img_path, is_type='image')
+        embed, image_embed = bota.logs_process.log_utils.embed_discord(title, summary, image_path=img_path, is_type='image')
         #logstat.embed_discord(title, summary, image_path=img_path, is_type='image')
         await message.channel.send(embed=embed, file=image_embed)
         if not show_all:
@@ -511,8 +512,8 @@ async def get_stats(message, message_string, message_word_length):
         img_path_2, summary_2 = log_caller.get_stat_calls(n) #logstat.get_command_calls(n=n)
         title_1 = "All Commands Stats"
         title_2 = "Command Calls Stats"
-        embed_1, image_1_embed = log_caller.embed_discord(title_1, summary_1, image_path=img_path_1, is_type='image')
-        embed_2, image_2_embed = log_caller.embed_discord(title_2, summary_2, image_path=img_path_2, is_type='image')
+        embed_1, image_1_embed = bota.logs_process.log_utils.embed_discord(title_1, summary_1, image_path=img_path_1, is_type='image')
+        embed_2, image_2_embed = bota.logs_process.log_utils.embed_discord(title_2, summary_2, image_path=img_path_2, is_type='image')
         await message.channel.send(embed=embed_2, file=image_2_embed)
         await message.channel.send(embed=embed_1, file=image_1_embed)
         if not show_all:
@@ -541,7 +542,8 @@ async def on_message(message):
     message_word_length = len(message_string.split())
     user_discord_id = message.author.id
     user_discord_name = message.author.name
-    print(f"{message.channel}: {message.author}: {message.author.name}: {message.content}")
+    message_content = message.content[:100]
+    print(f"{message.author.name}: {message.author}: {message.channel}: {message_content}")
 
     # Ignore all message passed by the our bot
     if client.user == message.author:
@@ -607,12 +609,15 @@ async def on_message(message):
 
     # Admin privilege
     elif "!stat" in message_string and str(message.author) == ADMIN_ID:
+        is_command_called = False
         await get_stats(message, message_string, message_word_length)
 
     elif "!exit" in message_string and str(message.author) == ADMIN_ID:
+        is_command_called = False
         await cmd_exit(message, message_string)
 
     elif "!broadcast" in message_string and str(message.author) == ADMIN_ID:
+        is_command_called = False
         await cmd_broadcast(message, message_string)
 
     elif "!tail" in message_string and str(message.author) == ADMIN_ID:
@@ -620,11 +625,22 @@ async def on_message(message):
         await cmd_tail(message, message_string)
 
     elif "!guild" in message_string and str(message.author) == ADMIN_ID:
+        is_command_called = False
         guilds = len(list(client.guilds))
         await message.channel.send(f"{guilds}")
 
+    elif "!loglocal" in message_string and str(message.author) == ADMIN_ID:
+        is_command_called = False
+        if 'clear' in message_string:
+            log_caller.log_backup.clear_failed_logs()
+            await message.channel.send("Cleared")
+        else:
+            info = str(log_caller.log_backup.fail_logs_info())
+            await message.channel.send(info)
+
     # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:
+        is_command_called = False
         await message.channel.send(f"Hello {message.author.name}"
                                    f" Please type    `!help`  or `!command`  for more options")
 
@@ -632,7 +648,7 @@ async def on_message(message):
         is_command_called = False
 
     if is_command_called:
-        save_command_logs(message, command_called)
+        log_caller.save_log(message, command_called)
 
     # Getting total guilds using
     log_caller.update_value_to_server()

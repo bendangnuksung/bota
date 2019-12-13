@@ -11,6 +11,8 @@ API_PATH_NEW_USER_SERVER = '/stats/new_user_and_server'
 API_PATH_COMMANDS = '/stats/command'
 API_PATH_CALLS = '/stats/calls'
 API_PATH_UPDATE = '/stats/update'
+API_PATH_SAVELOG = '/stats/update_command_log'
+APU_PATH_TAIL = '/stats/tail'
 API_PATH_IMAGE_SHIELD_UPDATE = 'updatestat'
 
 UPDATE_AFTER = 21600 # update every 6 hours for image shield

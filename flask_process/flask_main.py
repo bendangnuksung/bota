@@ -2,7 +2,7 @@ from flask import jsonify
 from flask import Flask, request
 from flask_process.image_shield_process import BotaLog
 from flask_process.logs_constant import IMAGE_SHIELD_JSON_FILE
-from flask_process.flask_log_process import save_command_logs
+from flask_process.flask_log_process import save_command_logs, get_command_log_tail
 from flask_process.flask_log_stat_process import LogStat
 import base64
 
@@ -28,8 +28,7 @@ def getstat():
 @app.route('/stats/update_command_log', methods=['POST'])
 def update_command_log():
     log = request.form.get('log')
-    command_called = request.form.get('command_called')
-    save_command_logs(log, command_called)
+    save_command_logs(log)
     return jsonify({'result': True})
 
 
@@ -80,6 +79,15 @@ def stats_update():
     flag = logstat.update_df()
     # update_value_to_server(logstat, force_update=True)
     data = {'flag': flag}
+    return jsonify(data)
+
+
+@app.route('/stats/tail', methods=['POST'])
+def get_tail():
+    n = request.form.get('n')
+    n = int(n)
+    tail_data = get_command_log_tail(n)
+    data = {'tail': tail_data}
     return jsonify(data)
 
 

@@ -26,28 +26,8 @@ def is_command_from_channel(message):
     return True
 
 
-def save_command_logs(message, command_called):
-    guild_id = ""
-    guild_name = ""
-    guild_member_count = ""
-    channel_name = ""
-    channel_nsfw = ""
-    author = message.author
-    author_id = message.author.id
-    content = message.content
-    command_channel_flag = is_command_from_channel(message)
-    if command_channel_flag:
-        guild_id = message.guild.id
-        guild_name = message.guild.name
-        guild_member_count = message.guild.member_count
-        channel_name = message.channel.name
-        channel_nsfw = message.channel.nsfw
-
-    info = [str(author), str(author_id), str(command_channel_flag), str(guild_id), str(guild_name), channel_name,
-            str(guild_member_count), str(command_called), str(channel_nsfw), content]
-
-    log_text = ",".join(info)
-    command_logger.info(log_text)
+def save_command_logs(log):
+    command_logger.info(log)
 
 
 def get_command_log_tail(n):

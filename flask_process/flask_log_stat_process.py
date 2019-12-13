@@ -225,6 +225,7 @@ class LogStat():
 
         current_total_week_calls = self._get_call_count_from_date(current_week_start, current_week_end)
         last_total_week_calls = self._get_call_count_from_date(last_week_start, last_week_end)
+        last_total_week_calls = last_total_week_calls if last_total_week_calls > 0 else 1
 
         change_in_percen = ((current_total_week_calls / last_total_week_calls) - 1) * 100
         change_in_percen = str(round(change_in_percen, 2)) + "%"
