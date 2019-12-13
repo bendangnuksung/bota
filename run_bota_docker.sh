@@ -7,8 +7,7 @@ export ADMIN_ID=$4
 export TWITCH_CLIENT_IDS=$5
 export LOG_PORCESS_IP_ADDRESS=$6
 
-screen -X -S bota quit
 screen -X -S scrap quit
 
-screen -S bota -d -m sh run_scrap.sh
+screen -S scrap -d -m sh run_scrap.sh
 sh run_bota.sh
