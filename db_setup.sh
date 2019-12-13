@@ -5,7 +5,6 @@
 sudo apt update
 sudo apt install postgresql postgresql-contrib
 sudo apt-get install libpq-dev python-dev
-sudo pip3 install psycopg2
 
 # Default password for user postgres
 echo "Setting up Postgres password, database and table"

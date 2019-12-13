@@ -13,8 +13,8 @@ Screenshots:
 1. Command:  `!counter  morphling`  ![counter morphling](/github_images/counter.png)
 2. Command:  `!item storm` ![item storm](/github_images/item.png)
 
-## Setup
-### Pre-Requirements:
+
+## Pre-Requirements:
 Before setting up the environment we first need to get:
 1. Discord Token
 2. Discord Client ID
@@ -29,26 +29,62 @@ Before setting up the environment we first need to get:
 
 Once this is done you can assign all this key values in `bota/private_constant.py`.
 
-### Install Requirements
-```bash
-sudo sh setup.sh
 
-# Setup Postgres database (New)
-sh db_setup.sh
-```
-### Run
-**Run the bot**
-```bash
-sh run_bota.sh
-```
-`run_bota.sh` runs two programs parallely on the screen background:
-1. `main.py`: Bot application server where all commands are executed
-2. `background_scrap.py`: Scans and Updates the data twice a day
+## Setup Bota
+1. Clone repo and Setup postgres DB  
+    ```bash
+    # clone repo
+    git clone https://github.com/bendangnuksung/bota.git
+    cd bota
+    
+    # Install and setup PSQL
+    # default password given, please check db_setup.sh to change password
+    sh db_setup.sh
+    ```
 
-**Stop the bot**
-```bash
-sh stop_bota.sh
-```
+1. Run the independent flask server which handles the log process.   
+        ```bash
+        # Set Python Path
+        export PYTHONPATH=$PYTHONPATH:$pwd
+        
+        # Run flask server
+        python3 flask_process/flask_main.py
+        ```
+
+There are two ways to run BOTA
+  1. Run using Docker. **(RECOMMENDED)**
+  2. Run directly from the Repository
+
+#### 1. Run using Docker
+1. Download the docker image from [DockerHub](https://hub.docker.com/repository/docker/bendang/bota) or download directly using:
+   ```bash
+   docker pull bendang/bota:latest
+   ```
+2. Run the docker image with the credentials which you got from Pre-Requirements:
+   ```bash
+   # docker run --rm -i -t --net=host --entrypoint=/bota/run_bota_docker.sh bendang/bota:latest "DISCORD_TOKEN" "DISCORD_CLIENT_ID" "DOTA2_API_KEY" "ADMIN_ID" "TWITCH_CLIENT_IDS" "LOG_PROCESS_IP_ADDRESS"
+   docker run --rm -i -t --net=host --entrypoint=/bota/run_bota_docker.sh bendang/bota:latest 1234 ABCD 6789 YOU#67 FGHI http://0.0.0.0:5000
+   ```
+   
+#### 2. Run directly from Repository
+1. Install requirements 
+    ```bash
+    sudo sh setup.sh
+    ```
+
+2. Create two Screen.
+   1. Screen 1: **Run the scrap process**
+      ```bash
+      sh run_scrap.sh
+      ```
+      exit then
+   2. Screen 2: **Run the BOT process** 
+      ```bash
+      sh run_bota.sh
+      ```
+
+**CAUTION** : While running directly from repository if you are using chrome it will automatically close as the scrap process uses it and it kills once the scraping is done.
+
 
 ### Data Collection Source
 1. [DotaBuff](https://www.dotabuff.com/)

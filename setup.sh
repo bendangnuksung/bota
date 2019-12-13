@@ -18,14 +18,6 @@ pip3 install -r requirements.txt
 pip3 uninstall opencv-python
 sudo apt install python3-opencv
 
-echo "Installing  Rapptz/Discord "
-python3 -m pip install -U discord.py
-cd discord.py
-sudo pip3 install -r requirements.txt
-python3 setup.py install
-cd ..
-rm -rf discord.py
-
 echo "Setting Up wkhtmltox......"
 wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
 tar xf  wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
