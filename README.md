@@ -43,17 +43,17 @@ Once this is done you can assign all this key values in `bota/private_constant.p
     ```
 
 1. Run the independent flask server which handles the log process.   
-        ```bash
-        # Set Python Path
-        export PYTHONPATH=$PYTHONPATH:$pwd
-        
-        # Run flask server
-        python3 flask_process/flask_main.py
-        ```
+      ```bash
+      # Set Python Path
+      export PYTHONPATH=$PYTHONPATH:$pwd
 
-There are two ways to run BOTA
-  1. Run using Docker. **(RECOMMENDED)**
-  2. Run directly from the Repository
+      # Run flask server
+      python3 flask_process/flask_main.py
+      ```
+
+3. Run the bot. There are two ways to run BOTA
+    1. Run using Docker. **(RECOMMENDED)**
+    2. Run directly from the Repository
 
 #### 1. Run using Docker
 1. Download the docker image from [DockerHub](https://hub.docker.com/repository/docker/bendang/bota) or download directly using:
