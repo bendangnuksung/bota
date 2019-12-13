@@ -55,7 +55,7 @@ Once this is done you can assign all this key values in `bota/private_constant.p
     1. Run using Docker. **(RECOMMENDED)**
     2. Run directly from the Repository
 
-#### 1. Run using Docker
+### 1. Run using Docker
 1. Download the docker image from [DockerHub](https://hub.docker.com/repository/docker/bendang/bota) or download directly using:
    ```bash
    docker pull bendang/bota:latest
@@ -66,7 +66,7 @@ Once this is done you can assign all this key values in `bota/private_constant.p
    docker run --rm -i -t --net=host --entrypoint=/bota/run_bota_docker.sh bendang/bota:latest 1234 ABCD 6789 YOU#67 FGHI http://0.0.0.0:5000
    ```
    
-#### 2. Run directly from Repository
+### 2. Run directly from Repository
 1. Install requirements 
     ```bash
     sudo sh setup.sh
@@ -77,11 +77,12 @@ Once this is done you can assign all this key values in `bota/private_constant.p
       ```bash
       sh run_scrap.sh
       ```
-      exit then
+      Detach
    2. Screen 2: **Run the BOT process** 
       ```bash
       sh run_bota.sh
       ```
+      Detach
 
 **CAUTION** : While running directly from repository if you are using chrome it will automatically close as the scrap process uses it and it kills once the scraping is done.
 
