@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+BASEDIR=$(dirname "$0")
+cd $BASEDIR
+
 export DISCORD_TOKEN=$1
 export DISCORD_CLIENT_ID=$2
 export DOTA2_API_KEY=$3
