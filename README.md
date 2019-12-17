@@ -56,7 +56,7 @@ Once this is done you can assign all this key values in `bota/private_constant.p
     2. Run directly from the Repository
 
 ### 1. Run using Docker **(RECOMMENDED)**
-1. Download the docker image from [DockerHub](https://hub.docker.com/repository/docker/bendang/bota) or download directly using:
+1. Download the docker image from [DockerHub](https://hub.docker.com/r/bendang/bota) or download directly using:
    ```bash
    docker pull bendang/bota:latest
    ```
