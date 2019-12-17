@@ -78,6 +78,7 @@ def update_images():
     get_current_trend()
     for i, hero_name in enumerate(heroes_names):
         iter_text = f"{i + 1}/{len(heroes_names)}, Hero: {hero_name}"
+        print(iter_text)
         background_logger.info(iter_text)
         run_func_in_exception_block(hero_name, loop)
 
