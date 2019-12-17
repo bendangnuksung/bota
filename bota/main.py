@@ -3,7 +3,7 @@ import sys
 
 import bota.logs_process.log_utils
 from bota.constant import MAX_COMMAND_WORD_LENGTH
-from bota.help import LAST_UPDATE, get_help, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE,\
+from bota.help import LAST_UPDATE, get_help, get_admin_commands, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE,\
                       REDDIT_CMD_EXAMPLE, UPDATE_BLOCK
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
@@ -11,24 +11,17 @@ from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_a
 from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile_from_db, get_protracker_hero
 from bota.web_scrap.twitch_process import get_dota2_top_stream
 from bota.web_scrap.TI import group_stage, help, stats, matches
-from bota.logs_process.local_log_process import save_command_logs, get_command_log_tail
 from bota.web_scrap.dotavoyance.getter import get_team_mate
-# from bota.logs_process.local_log_stats_process import LogStat
 from bota.logs_process import log_caller
-# from bota.third_party_update import update_value_to_server
 from discord.utils import find
+from discord import File
 from bota import constant
 from bota.web_scrap.aghanim_process import Agha
 import os
 
-# logstat = LogStat()
 client = discord.AutoShardedClient()
 agha = Agha()
 GUILDS = []
-
-
-def is_command_called_correctly(message, minlength, maxlength=constant.MAX_COMMAND_WORD_LENGTH, ):
-    pass
 
 
 def embed_txt_message(content, add_header=False, header=constant.DEFAULT_EMBED_HEADER, color=discord.Color.blue()):
@@ -608,6 +601,11 @@ async def on_message(message):
         flag, command_called = await get_aghanim(message, message_string, message_word_length)
 
     # Admin privilege
+    elif "!admin" in message_string and str(message.author) == ADMIN_ID:
+        is_command_called = False
+        admin_commands = get_admin_commands()
+        await  message.channel.send(embed=admin_commands)
+
     elif "!stat" in message_string and str(message.author) == ADMIN_ID:
         is_command_called = False
         await get_stats(message, message_string, message_word_length)
@@ -637,6 +635,17 @@ async def on_message(message):
         else:
             info = str(log_caller.log_backup.fail_logs_info())
             await message.channel.send(info)
+
+    elif "!bglog" in message_string and str(message.author) == ADMIN_ID:
+        is_command_called = False
+        if "download" in message_string:
+            await  message.channel.send('Background Scrap logs:', file=File(constant.SCRAP_LOG_PATH))
+
+        else:
+            with open(constant.SCRAP_LOG_PATH) as f:
+                file = f.readlines()
+                lines = "Background Scrap logs: \n```cs\n" + "".join(file[-15:]) + "```"
+                await message.channel.send(lines)
 
     # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:

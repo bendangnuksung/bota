@@ -28,7 +28,7 @@ SCREEN_SHOT_SCRAP_FUNCTIONS = {'skill': get_skill_build, 'item': get_item_build,
 SCRAP_FUNCTIONS_THAT_NEED_LOOP = ['skill']
 
 #
-formatter = logging.Formatter('%(asctime)s - %(message)s', '%Y-%m-%d %H:%M:%S')
+formatter = logging.Formatter('%(asctime)s - %(message)s', '%d-%m %H:%M')
 
 
 def setup_logger(name, log_file, level=logging.INFO):
@@ -73,7 +73,7 @@ def update_images():
     start = datetime.now()
     get_current_trend()
     for i, hero_name in enumerate(heroes_names):
-        iter_text = f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}"
+        iter_text = f"{i + 1}/{len(heroes_names)}, Hero: {hero_name}"
         background_logger.info(iter_text)
         run_func_in_exception_block(hero_name, loop)
 

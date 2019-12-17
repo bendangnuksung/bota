@@ -65,6 +65,18 @@ OTHER_COMMAND_LIST = {
     '!update': 'Shows any new   `Updates`   and   `BOT support`'
     }
 
+ADMIN_COMMAND_LIST = {'!stat': 'Shows overall stats and weekly stats',
+                       '!stat cmd 14': 'Shows command stats in last 14 days',
+                       '!stat new 14': 'Shows new users & servers that joined in last 14 days',
+                       '!stat update': 'Update the Log to get latest stats',
+                       '!tail': 'Shows last N lines from Log',
+                       '!guild': 'Shows total guilds using BOTA',
+                       'loglocal': 'Shows stats and reason if log didnt get push to the log server',
+                       'loglocal clear': 'Clear all local logs',
+                       '!broadcast admin_client_id messsage': 'Broadcast Message to servers',
+                       '!bglog': 'Tails the background scrap log',
+                       '!bglog download': 'Download the background scrap log'}
+
 
 PROFILE_HELP_STRING = "**To Save your own profile** \n" \
                       "Step 1:   **`!save YourSteamID`**, eg:  **`!save 311360822`**\n" \
@@ -135,4 +147,17 @@ def get_help():
                                f"Join BOTA server for more help: **[Link]({BOTA_SUPPORT_SERVER_URL})**\n"
                                f"If you like BOTA do support us to keep the server running: **[Donate]({PAYPAL_URL})**"))
     embed_msg.add_field(name="Updates", value=UPDATE_BLOCK)
+    return embed_msg
+
+
+def get_admin_commands():
+    head = "**Admin  BOTA Commands**:\n\n"
+    embed_msg = discord.Embed(description=head, color=discord.Color.blue())
+    embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
+                         url=constant.DEFAULT_EMBED_HEADER['url'])
+    for key, value in ADMIN_COMMAND_LIST.items():
+        key = f"**`{key}`**"
+        embed_msg.add_field(name=key, value=value, inline=True)
+
+    embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
     return embed_msg
