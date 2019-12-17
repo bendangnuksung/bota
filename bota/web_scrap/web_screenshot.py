@@ -3,7 +3,7 @@ import asyncio
 
 
 async def get_screenshot(selector, url, save_path):
-    browser = await launch()
+    browser = await launch({"args": ["--no-sandbox"]})
     flag = True
     exception_summary = ''
     try:
