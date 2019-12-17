@@ -27,6 +27,8 @@ NEW_USER_FILE_PATH_CSV = os.path.join(REPO_PATH, NEW_USER_FILE_PATH_CSV)
 # Log path
 COMMAND_USER_LOG_PATH = "data/logs/command_user_log.txt"
 COMMAND_USER_LOG_PATH = os.path.join(REPO_PATH, COMMAND_USER_LOG_PATH)
+SCRAP_LOG_PATH = 'data/logs/scrap_log.txt'
+SCRAP_LOG_PATH = os.path.join(REPO_PATH, SCRAP_LOG_PATH)
 
 # Dota 2 ProTracker
 D2PT_HERO_UPDATE_THRESHOLD = 600 # 10 min

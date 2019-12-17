@@ -3,13 +3,20 @@ import asyncio
 
 
 async def get_screenshot(selector, url, save_path):
-    print(url, save_path, selector)
     browser = await launch()
-    page = await browser.newPage()
-    await page.goto(url)
-    await page.tap(selector)
-    await page.screenshot({'path': save_path})
-    await browser.close()
+    flag = True
+    exception_summary = ''
+    try:
+        page = await browser.newPage()
+        await page.goto(url)
+        await page.tap(selector)
+        await page.screenshot({'path': save_path})
+    except Exception as e:
+        flag = False
+        exception_summary = e
+    finally:
+        await browser.close()
+        return flag, exception_summary
 
 
 if __name__ == '__main__':

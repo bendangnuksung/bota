@@ -1,7 +1,9 @@
-import schedule
+import logging
+from logging.handlers import RotatingFileHandler
 import time
 from bota.web_scrap.scrap import get_item_build, get_skill_build, get_current_trend, get_counter_hero, get_good_against
 from bota.web_scrap.scrap_constant import heroes_names
+from bota.constant import SCRAP_LOG_PATH
 import asyncio
 from datetime import datetime
 import argparse
@@ -19,6 +21,43 @@ args = vars(parser.parse_args())
 
 LAST_UPDATE = 0
 UPDATE_INTERVAL = 60 # 1 min
+SCRAP_LOG_FILE_PATH = 'scrap_log.txt'
+
+SCREEN_SHOT_SCRAP_FUNCTIONS = {'skill': get_skill_build, 'item': get_item_build,
+                               'counter': get_counter_hero, 'good': get_good_against}
+SCRAP_FUNCTIONS_THAT_NEED_LOOP = ['skill']
+
+#
+formatter = logging.Formatter('%(asctime)s - %(message)s', '%Y-%m-%d %H:%M:%S')
+
+
+def setup_logger(name, log_file, level=logging.INFO):
+    """Function setup as many loggers as you want"""
+    handler = RotatingFileHandler(log_file, mode='a', maxBytes=1024*256, backupCount=2, encoding=None)
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    logger.addHandler(handler)
+
+    return logger
+
+
+background_logger = setup_logger('background_logger', SCRAP_LOG_PATH)
+
+
+def run_func_in_exception_block(hero_name, loop):
+    for key, scrap_function in SCREEN_SHOT_SCRAP_FUNCTIONS.items():
+        if key in SCRAP_FUNCTIONS_THAT_NEED_LOOP:
+            returned_kwargs = loop.run_until_complete(scrap_function('', hero=hero_name, use_outdated_photo_if_fails=False))
+        else:
+            returned_kwargs = scrap_function('', hero=hero_name, use_outdated_photo_if_fails=False)
+        flag, exception_reason = returned_kwargs[0], returned_kwargs[-1]
+        if flag:
+            background_logger.info(f"\t{key} : Success")
+        else:
+            background_logger.info(f"\t{key} : Unsuccessful, Reason: {exception_reason}")
+            subprocess.run(["pkill", "chrome"])
 
 
 def update_images():
@@ -34,25 +73,18 @@ def update_images():
     start = datetime.now()
     get_current_trend()
     for i, hero_name in enumerate(heroes_names):
-        print(f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}")
-        try:
-            loop.run_until_complete(get_skill_build('', hero=hero_name, use_outdated_photo_if_fails=False))
-        except Exception:
-            subprocess.run(["pkill", "chrome"])
-            pass
-        try:
-            get_item_build('', hero=hero_name, use_outdated_photo_if_fails=False)
-            get_counter_hero('', hero=hero_name, use_outdated_photo_if_fails=False)
-            get_good_against('', hero=hero_name, use_outdated_photo_if_fails=False)
-        except Exception:
-            continue
+        iter_text = f"{i + 1} / {len(heroes_names)}, Hero: {hero_name}"
+        background_logger.info(iter_text)
+        run_func_in_exception_block(hero_name, loop)
+
     end = datetime.now()
-    print("*"*80)
-    print("Update Completed")
-    print(f"Total Time taken: {((end-start).total_seconds()) / 60} min")
-    print("Start time: ", start.strftime('%H:%M:%S'))
-    print("End time:   ", end.strftime('%H:%M:%S'))
-    print("Date: ", start.strftime('%d-%m-%Y'))
+    stats = f"{'*'*50} \n Update Completed \n" \
+            f" Total Time taken: {((end-start).total_seconds()) / 60} min \n" \
+            f"Start time: {start.strftime('%H:%M:%S')} \n" \
+            f"End time: {end.strftime('%H:%M:%S')} \n" \
+            f"Date: {start.strftime('%d-%m-%Y')} \n" \
+            f"{'*'*50}"
+    background_logger.info(stats)
     subprocess.run(["pkill", "chrome"])
     LAST_UPDATE = datetime.now()
     return
@@ -62,7 +94,6 @@ if args['mode'] == 2 or args['mode'] == '2':
     print("Running One Time update:")
     update_images()
     print("Finished One Time update")
-
 
 
 while True:

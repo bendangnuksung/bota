@@ -89,11 +89,7 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
         if use_outdated_photo_if_fails:
             return True, hero_name, image_path
         else:
-            print("*"*70)
-            print("Counter Failed: ", hero_name)
-            print(e)
-            print("*" * 70)
-            assert 1 == 0
+            return False, e
 
 
 def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
@@ -127,11 +123,7 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
         if use_outdated_photo_if_fails:
             return True, hero_name, image_path
         else:
-            print("*"*70)
-            print("Good Failed: ", hero_name)
-            print(e)
-            print("*" * 70)
-            assert 1 == 0
+            return False, e
 
 
 async def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
@@ -139,6 +131,7 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
         query = query.split()
         hero = ' '.join(query[1:])
         hero = hero.strip()
+    flag_1, flag_2 = False, False
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
         return False, hero_name, ''
@@ -151,46 +144,44 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
     if not is_file_old(guide_image_path, threshold_update_time):
         return True, hero_name, guide_image_path
 
-    try:
-        url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
+    url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
 
-        skill_filename = hero + '_skill.jpg'
-        skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
-        await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
+    skill_filename = hero + '_skill.jpg'
+    skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
+    flag_1, exception_summary = await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
 
+    if flag_1:
         talent_filename = hero + '_talent.jpg'
         talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
-        await get_screenshot(constant.TALENT_SELECTOR, url, talent_screenshot_path)
+        flag_2, exception_summary = await get_screenshot(constant.TALENT_SELECTOR, url, talent_screenshot_path)
+        if flag_2:
+            talent_image = cv2.imread(talent_screenshot_path)
+            talent_crop = crop_image(talent_image, constant.TALENT_CROP_COORDS)
 
-        talent_image = cv2.imread(talent_screenshot_path)
-        talent_crop = crop_image(talent_image, constant.TALENT_CROP_COORDS)
+            skill_image = cv2.imread(skill_screenshot_path)
+            skill_crop = crop_image(skill_image, constant.SKILL_CROP_COORDS)
 
-        skill_image = cv2.imread(skill_screenshot_path)
-        skill_crop = crop_image(skill_image, constant.SKILL_CROP_COORDS)
+            hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
+            hero_icon = cv2.imread(hero_icon_path)
+            background_image = cv2.imread(constant.GUIDE_BACKGROUND_PATH)
+            background_image = cv2.resize(background_image, (
+            constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
+            background_image[constant.GUIDE_HERO_ICON_X_Y[0]: constant.GUIDE_HERO_ICON_X_Y[0] + hero_icon.shape[0],
+            constant.GUIDE_HERO_ICON_X_Y[1]: constant.GUIDE_HERO_ICON_X_Y[1] + hero_icon.shape[1]] = hero_icon
+            background_image = add_border_to_image(background_image, bordersize=10, rgb=[0, 0, 0])
+            background_image = cv2.resize(background_image,
+                                          (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
+            final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
+            cv2.imwrite(guide_image_path, final_image)
 
-        hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
-        hero_icon = cv2.imread(hero_icon_path)
-        background_image = cv2.imread(constant.GUIDE_BACKGROUND_PATH)
-        background_image = cv2.resize(background_image, (
-        constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
-        background_image[constant.GUIDE_HERO_ICON_X_Y[0]: constant.GUIDE_HERO_ICON_X_Y[0] + hero_icon.shape[0],
-        constant.GUIDE_HERO_ICON_X_Y[1]: constant.GUIDE_HERO_ICON_X_Y[1] + hero_icon.shape[1]] = hero_icon
-        background_image = add_border_to_image(background_image, bordersize=10, rgb=[0, 0, 0])
-        background_image = cv2.resize(background_image,
-                                      (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
-        final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
-        cv2.imwrite(guide_image_path, final_image)
+    if flag_1 and flag_2:
         return True, hero_name, guide_image_path
 
-    except Exception as e:
-        if use_outdated_photo_if_fails:
-            return True, hero_name, guide_image_path
-        else:
-            print("*"*70)
-            print("Skill Failed: ", hero_name)
-            print(e)
-            print("*" * 70)
-            assert 1 == 0
+    elif use_outdated_photo_if_fails:
+        return True, hero_name, guide_image_path
+
+    else:
+        return False, exception_summary
 
 
 def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
@@ -221,11 +212,7 @@ def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_f
         if use_outdated_photo_if_fails:
             return True, hero_name, item_build_path
         else:
-            print("*"*70)
-            print("Item Build Fail: ", hero_name)
-            print(e)
-            print("*" * 70)
-            assert 1 == 0
+            return False, e
 
 
 def is_id(id):
@@ -341,7 +328,10 @@ def get_protracker_hero(query):
 
 
 if __name__ == '__main__':
-    print(get_item_build('!item am'))
+    import asyncio
+    r = asyncio.get_event_loop().run_until_complete(get_skill_build('!skill am', use_outdated_photo_if_fails=False))
+    print(r)
+    print("Completed")
     exit()
     # print(save_id('!save sam 297066030'))
     # print(get_counter_hero('!good ursa'))
