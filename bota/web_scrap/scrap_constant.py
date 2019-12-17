@@ -179,7 +179,16 @@ ITEM_NAMES = ['abyssal-blade', 'aegis-of-the-immortal', 'aeon-disk', 'aether-len
               'vladmir', 'vladmirs-offering', 'void-stone', 'ward-dispenser-sentry', 'wind-lace', 'winter-cake', 'winter-coal',
               'winter-coco', 'winter-cookie', 'winter-greevil-chewy', 'winter-greevil-garbage', 'winter-greevil-treat',
               'winter-ham', 'winter-kringle', 'winter-mushroom', 'winter-skates', 'winter-snowball', 'winter-stocking',
-              'winter-woolies', 'wraith-band', 'yasha', 'yasha-and-kaya']
+              'winter-woolies', 'wraith-band', 'yasha', 'yasha-and-kaya',
+              'grove-bow', 'nether-shawl', 'titan-sliver', 'orb-of-destruction', 'phoenix-ash', 'craggy-coat',
+              'force-boots', 'ballista', 'mind-breaker', 'apex', 'helm-of-the-undying', 'imp-claw', 'pupils-gift',
+              'timeless-relic', 'telescope', 'dragon-scale', 'broom-handle', 'trident', 'clumsy-net', 'princes-knife',
+              'keen-optic', 'witless-shako', 'the-leveller', 'mirror-shield', 'fallen-sky', 'repair-kit',
+              'enchanted-quiver', 'faded-broach', 'royal-jelly', 'pirate-hat', 'trusty-shovel', 'stygian-desolator',
+              'woodland-striders', 'vampire-fangs', 'paladin-sword', 'iron-talon', 'ocean-heart', 'spider-legs',
+              'book-of-the-dead', 'ironwood-tree', 'essence-ring', 'fusion-rune', 'vambrace', 'ninja-gear',
+              'illusionists-cape', 'third-eye', 'minotaur-horn', 'arcane-ring', 'quickening-charm', 'mango-tree',
+              'philosophers-stone', 'flicker', 'seer-stone', 'spell-prism', 'greater-faerie-fire']
 
 
 # Dota 2 pro tracker constants
