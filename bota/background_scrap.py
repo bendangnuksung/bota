@@ -33,7 +33,7 @@ formatter = logging.Formatter('%(asctime)s - %(message)s', '%d-%m %H:%M')
 
 def setup_logger(name, log_file, level=logging.INFO):
     """Function setup as many loggers as you want"""
-    handler = RotatingFileHandler(log_file, mode='a', maxBytes=1024*256, backupCount=2, encoding=None)
+    handler = RotatingFileHandler(log_file, mode='a', maxBytes=1024*128, backupCount=2, encoding=None)
     handler.setFormatter(formatter)
 
     logger = logging.getLogger(name)
@@ -54,9 +54,13 @@ def run_func_in_exception_block(hero_name, loop):
             returned_kwargs = scrap_function('', hero=hero_name, use_outdated_photo_if_fails=False)
         flag, exception_reason = returned_kwargs[0], returned_kwargs[-1]
         if flag:
-            background_logger.info(f"\t{key} : Success")
+            log_info = f"\t{key} : Success"
+            print(log_info)
+            background_logger.info(log_info)
         else:
-            background_logger.info(f"\t{key} : Unsuccessful, Reason: {exception_reason}")
+            log_info = f"\t{key} : Unsuccessful, Reason: {exception_reason}"
+            print(log_info)
+            background_logger.info(log_info)
             subprocess.run(["pkill", "chrome"])
 
 
@@ -84,6 +88,7 @@ def update_images():
             f"End time: {end.strftime('%H:%M:%S')} \n" \
             f"Date: {start.strftime('%d-%m-%Y')} \n" \
             f"{'*'*50}"
+    print(stats)
     background_logger.info(stats)
     subprocess.run(["pkill", "chrome"])
     LAST_UPDATE = datetime.now()
