@@ -139,8 +139,15 @@ def scrap_item_info(hero_name):
             time_tag = div_tag.find_all(constant.ITEM_BUILD_TIME_TAG[0], constant.ITEM_BUILD_TIME_TAG[1])
             item_tag = div_tag.find_all(constant.ITEM_BUILD_ITEM_TAG[0], constant.ITEM_BUILD_ITEM_TAG[1])
             item_build_dict = {}
-            for itm, time in zip(item_tag, time_tag):
-                item_build_dict[time.string] = itm.attrs[constant.ITEM_KEYWORD_TITLE]
+            c = '.'
+            for i in range(len(item_tag)):
+                if i < len(time_tag):
+                    item_build_dict[time_tag[i].string] = item_tag[i].attrs[constant.ITEM_KEYWORD_TITLE]
+                else:
+                    item_build_dict[c] = item_tag[i].attrs[constant.ITEM_KEYWORD_TITLE]
+                    c += '.'
+            # for itm, time in zip(item_tag, time_tag):
+            #     item_build_dict[time.string] = itm.attrs[constant.ITEM_KEYWORD_TITLE]
             result[constant.ITEM_KEYWORD_ITEM_BUILD] = item_build_dict
 
         # Get Region
@@ -178,7 +185,7 @@ def scrap_item_info(hero_name):
 
 
 if __name__ == '__main__':
-    rs = scrap_item_info('juggernaut')
+    rs = scrap_item_info('void-spirit')
     for r in rs:
         print(r)
     # rs = [{'player_name': 'Hope', 'player_id': '245655553', 'item_build': {'15:52': 'Battle Fury', '20:38': 'Manta Style', '26:18': 'Eye of Skadi', '31:13': 'Butterfly', '36:54': 'Abyssal Blade', '48:35': 'Assault Cuirass'}, 'region': 'SE Asia', 'rank': '20', 'medal': 'ancient vii'},
