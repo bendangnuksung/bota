@@ -171,6 +171,12 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
             background_image = add_border_to_image(background_image, bordersize=10, rgb=[0, 0, 0])
             background_image = cv2.resize(background_image,
                                           (constant.GUIDE_BACKGROUND_SHAPE[1], constant.GUIDE_BACKGROUND_SHAPE[0]))
+
+            if talent_crop.shape[1] != constant.GUIDE_BACKGROUND_SHAPE[1]:
+                talent_crop = cv2.resize(talent_crop, (constant.GUIDE_BACKGROUND_SHAPE[1], talent_crop.shape[0]))
+            if skill_crop.shape[1] != constant.GUIDE_BACKGROUND_SHAPE[1]:
+                skill_crop = cv2.resize(skill_crop, (constant.GUIDE_BACKGROUND_SHAPE[1], skill_crop.shape[0]))
+
             final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
             cv2.imwrite(guide_image_path, final_image)
 

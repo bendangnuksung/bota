@@ -194,7 +194,7 @@ TALENT_SELECTOR = 'body > div.container-outer.seemsgood > div.container-inner.co
 TALENT_CROP_COORDS = [0, 125, 800, -135] # xmin, ymin, xmax, ymax
 
 SKILL_SELECTOR = 'body > div.container-outer.seemsgood > div.container-inner.container-inner-content > div.content-inner > div:nth-child(2) > div:nth-child(5) > div.build > section > article'
-SKILL_CROP_COORDS = [0, 165, 800, -168] # xmin, ymin, xmax, ymax
+SKILL_CROP_COORDS = [0, 165, 670, -168] # xmin, ymin, xmax, ymax
 
 
 # Counter Hero
