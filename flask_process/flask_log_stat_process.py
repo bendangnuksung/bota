@@ -6,7 +6,6 @@ import calendar
 # from bota import constant
 from flask_process import logs_constant
 import re
-import discord
 
 
 def findDay(date):
@@ -237,7 +236,7 @@ class LogStat():
 
 
 if __name__ == '__main__':
-    logstat = LogStat('/home/ben/Downloads/bota_log10.txt')
+    logstat = LogStat('empty.txt')
     print(logstat.all_time())
     logstat.get_commands_stats()
     logstat.get_command_calls(30)
