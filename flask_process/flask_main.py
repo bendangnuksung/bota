@@ -5,6 +5,7 @@ from flask_process.logs_constant import IMAGE_SHIELD_JSON_FILE
 from flask_process.flask_log_process import save_command_logs, get_command_log_tail
 from flask_process.flask_log_stat_process import LogStat
 import base64
+import gc
 
 botalog = BotaLog(IMAGE_SHIELD_JSON_FILE)
 logstat = LogStat()
@@ -22,6 +23,7 @@ def updatestat():
 @app.route('/getstat')
 def getstat():
     stat = botalog.get_info()
+    gc.collect()
     return jsonify(stat)
 
 
@@ -29,12 +31,14 @@ def getstat():
 def update_command_log():
     log = request.form.get('log')
     save_command_logs(log)
+    gc.collect()
     return jsonify({'result': True})
 
 
 @app.route('/stats/all_time', methods=['POST'])
 def get_stats_all_time():
     text_dict = logstat.all_time()
+    gc.collect()
     return jsonify(text_dict)
 
 
@@ -47,6 +51,7 @@ def get_stats_new_user_and_server():
     with open(img_path, mode='rb') as file:
         img = file.read()
     data['image'] = base64.encodebytes(img).decode("utf-8")
+    gc.collect()
     return jsonify(data)
 
 
@@ -59,6 +64,7 @@ def get_stats_command():
     with open(img_path, mode='rb') as file:
         img_1 = file.read()
     data['image'] = base64.encodebytes(img_1).decode("utf-8")
+    gc.collect()
     return jsonify(data)
 
 
@@ -71,6 +77,7 @@ def get_stats_calls():
     with open(img_path, mode='rb') as file:
         img_1 = file.read()
     data['image'] = base64.encodebytes(img_1).decode("utf-8")
+    gc.collect()
     return jsonify(data)
 
 
@@ -79,6 +86,7 @@ def stats_update():
     flag = logstat.update_df()
     # update_value_to_server(logstat, force_update=True)
     data = {'flag': flag}
+    gc.collect()
     return jsonify(data)
 
 
@@ -88,6 +96,7 @@ def get_tail():
     n = int(n)
     tail_data = get_command_log_tail(n)
     data = {'tail': tail_data}
+    gc.collect()
     return jsonify(data)
 
 
