@@ -6,6 +6,7 @@ import calendar
 # from bota import constant
 from flask_process import logs_constant
 import re
+import gc
 
 
 def findDay(date):
@@ -19,13 +20,16 @@ class LogStat():
         self.new_user_dict = {}
         self.new_server_dict = {}
         self.client = client
+        self.df = []
         self.update_df()
         self.commands = ['!top game', '!trend', '!reddit', '!protrack', '!counter', '!item', '!good', '!skill',
                          '!twitch', '!profile']
 
     def update_df(self):
         if os.path.exists(self.log_file_path):
+            del self.df # deleting for memory reason
             self.df = self.log_to_df(self.log_file_path)
+            gc.collect()
             return True
         else:
             print("*"*80)
@@ -236,8 +240,14 @@ class LogStat():
 
 
 if __name__ == '__main__':
-    logstat = LogStat('empty.txt')
-    print(logstat.all_time())
-    logstat.get_commands_stats()
-    logstat.get_command_calls(30)
-    logstat.get_new_user_and_server(n=21)
+    import psutil
+    logstat = LogStat('/Users/ben/personal/bota/flask_process/logs/command_logs.txt')
+    for i in range(5):
+        if i != 0:
+            logstat.update_df()
+        logstat.get_commands_stats()
+        logstat.get_command_calls(30)
+        logstat.get_new_user_and_server(n=21)
+        process = psutil.Process(os.getpid())
+        print(process.memory_info().rss)
+        print(logstat.all_time())
