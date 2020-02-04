@@ -105,6 +105,10 @@ def make_item_image(infos, hero_name):
             item_time_y = Y + constant.TIME_START_TOP
             item_time_x = item_x
             bg_image = write_text_pil(bg_image, time, (item_time_x, item_time_y), size=constant.TIME_FONT_SIZE)
+
+    new_height, new_width = int(bg_image.shape[0] * 0.84), int(bg_image.shape[1] * 0.84) # resizing for image size
+    print(new_height, new_width)
+    bg_image = cv2.resize(bg_image, (new_width, new_height))
     return bg_image
     # display(bg_image)
 

@@ -65,7 +65,7 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
         return False, hero_name, ''
-    image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + '.png')
+    image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + '.jpg')
 
     threshold_update_time = constant.COUNTER_HERO_UPDATE_TIME_THRESHOLD
     if early_update:
@@ -82,7 +82,7 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
         counter_heroes_image_path = get_icon_path(counter_heroes_list, icon_size='big')
         hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
         image = make_hero_images(hero_image_path, counter_heroes_image_path, constant.COUNTER_BG_IMAGE_PATH)
-        cv2.imwrite(image_path, image)
+        cv2.imwrite(image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
         return True, hero_name, image_path
 
     except Exception as e:
@@ -100,7 +100,7 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
         return False, hero_name, ''
-    image_path = os.path.join(constant.GOOD_HERO_IMAGE_PATH, hero_name + '.png')
+    image_path = os.path.join(constant.GOOD_HERO_IMAGE_PATH, hero_name + '.jpg')
 
     threshold_update_time = constant.GOOD_HERO_UPDATE_TIME_THRESHOLD
     if early_update:
@@ -116,7 +116,7 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
         good_against_heroes_image_path = get_icon_path(good_against_heroes_list, icon_size='big')
         hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
         image = make_hero_images(hero_image_path, good_against_heroes_image_path, constant.GOOD_BG_IMAGE_PATH)
-        cv2.imwrite(image_path, image)
+        cv2.imwrite(image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
         return True, hero_name, image_path
 
     except Exception as e:
@@ -178,7 +178,7 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
                 skill_crop = cv2.resize(skill_crop, (constant.GUIDE_BACKGROUND_SHAPE[1], skill_crop.shape[0]))
 
             final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
-            cv2.imwrite(guide_image_path, final_image)
+            cv2.imwrite(guide_image_path, final_image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
 
     if flag_1 and flag_2:
         return True, hero_name, guide_image_path
@@ -208,10 +208,9 @@ def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_f
         return True, hero_name, item_build_path
 
     try:
-
         item_build_info = scrap_item_info(hero_name)
         item_image = make_item_image(item_build_info, hero_name)
-        cv2.imwrite(item_build_path, item_image, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
+        cv2.imwrite(item_build_path, item_image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
         return True, hero_name, item_build_path
 
     except Exception as e:
