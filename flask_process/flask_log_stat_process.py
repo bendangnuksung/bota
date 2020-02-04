@@ -20,6 +20,7 @@ class LogStat():
         self.new_user_dict = {}
         self.new_server_dict = {}
         self.client = client
+        self.last_update_line_number = 0
         self.df = []
         self.update_df()
         self.commands = ['!top game', '!trend', '!reddit', '!protrack', '!counter', '!item', '!good', '!skill',
@@ -27,8 +28,15 @@ class LogStat():
 
     def update_df(self):
         if os.path.exists(self.log_file_path):
-            del self.df # deleting for memory reason
-            self.df = self.log_to_df(self.log_file_path)
+            # del self.df # deleting for memory reason
+            if self.last_update_line_number == 0:
+                self.df = self.log_to_df(self.log_file_path)
+            else:
+                new_df = self.log_to_df(self.log_file_path)
+                if type(new_df) != list:
+                    frames = [self.df, new_df]
+                    del self.df
+                    self.df = pd.concat(frames)
             gc.collect()
             return True
         else:
@@ -64,6 +72,9 @@ class LogStat():
             if len(raw_string) == 0:
                 return []
             prepared = []
+            raw_string = raw_string[self.last_update_line_number: ]
+            if len(raw_string) == 0:
+                return []
             for line in raw_string:
                 try:
                     date_time, data = line.split('INFO')
@@ -72,7 +83,7 @@ class LogStat():
                 except Exception as e:
                     uname, uid, is_server, sid, sname, channel, total_members, command_called, nsfw = data.split(',')[:9]
                     command_passed = ','.join(data.split(',')[9:])
-
+                self.last_update_line_number += 1
                 date_time_format = datetime.strptime(date_time.strip(),"%Y-%m-%d %H:%M:%S")
                 date = datetime.date(date_time_format)
                 time = datetime.time(date_time_format)
@@ -84,16 +95,22 @@ class LogStat():
                 prepared.append([date_time.strip(), uname.strip(), uid.strip(), is_server, sid.strip(), sname.strip(),
                                  channel.strip(), total_members.strip(), command_called.strip(), nsfw.strip(),
                                  command_passed.strip(), weekday, is_weekend, date, hour])
-
         df = pd.DataFrame(prepared)
         df.columns = ['date_time', 'user', 'user_id', 'is_server', 'server_id', 'server_name', 'channel', 'total_members',
                       'command_called', 'nsfw', 'command_passed', 'weekday', 'weekend', 'date', 'hour']
         df['date_time'] = df['date_time'].astype('datetime64[ns]')
         return df
 
-    def get_most_activate_user(self, top):
+    def get_most_activate_user(self, top, alltime=True, days=7):
         df = self.df
         most_active = df.groupby("user")["command_called"].count().sort_values()
+        p = pd.DataFrame(most_active)
+        p = p.iloc[-(top):]
+        return p
+
+    def get_most_active_group(self, top, alltime=True, days=7):
+        df = self.df
+        most_active = df.groupby("server_name")["command_called"].count().sort_values()
         p = pd.DataFrame(most_active)
         p = p.iloc[-(top):]
         return p
@@ -251,3 +268,4 @@ if __name__ == '__main__':
         process = psutil.Process(os.getpid())
         print(process.memory_info().rss)
         print(logstat.all_time())
+        # print(logstat.get_most_activate_user(50))
