@@ -49,8 +49,11 @@ def get_top_games(length=10):
 
 	game_list = dota_api.get_top_live_games()
 	game_list = game_list['game_list']
-
-	notable_player_dict = get_notable_hero_from_d2pt()
+	notable_player_dict = {}
+	try:
+		notable_player_dict = get_notable_hero_from_d2pt()
+	except Exception:
+		pass
 	results = []
 	results.append(constant.TLG_CUSTOM_COLUMNS)
 	for game in game_list:
