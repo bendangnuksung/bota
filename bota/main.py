@@ -653,6 +653,9 @@ async def on_message(message):
                 lines = "Background Scrap logs: \n```cs\n" + "".join(file[-15:]) + "```"
                 await message.channel.send(lines)
 
+    elif "!restart bota" in message_string and str(message.author) == ADMIN_ID:
+        sys.exit()
+
     # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:
         is_command_called = False
