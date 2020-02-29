@@ -135,6 +135,10 @@ async def cmd_protracker(message, message_string):
             embed = discord.Embed(description=f"Did you mean  **{hero_name}**, Try again with correct name",
                                   color=discord.Color.red())
             await message.channel.send(embed=embed)
+        elif result_string == 'request-timeout':
+            embed = discord.Embed(description=f"Currently facing server down from www.dota2protracker.com (D2PT).",
+                                  color=discord.Color.red())
+            await message.channel.send(embed=embed)
         else:
             embed = discord.Embed(description=f"Could not find hero, Please make sure the hero name is correct",
                                   color=discord.Color.red())

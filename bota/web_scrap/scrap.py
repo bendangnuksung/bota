@@ -326,8 +326,10 @@ def get_protracker_hero(query):
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
         return False, hero_name, '', ''
-
-    result = d2pt.get_hero_details_from_d2pt(hero_name)
+    try:
+        result = d2pt.get_hero_details_from_d2pt(hero_name)
+    except Exception:
+        return False, hero_name, 'request-timeout', ''
     icon_path = get_icon_path([hero_name], icon_size='big')[0]
     return True, hero_name, result, icon_path
 

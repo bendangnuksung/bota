@@ -28,7 +28,7 @@ class DotaProTracker():
 def get_d2pt_hero_json(heroname):
     d2pt_hero_name = scrap_constant.d2pt_hero_names[heroname]
     url = constant.D2PT_HERO_BASE_URL + d2pt_hero_name
-    json_data = requests.get(url, headers=scrap_constant.browser_headers)
+    json_data = requests.get(url, headers=scrap_constant.browser_headers, timeout=1.5)
     json_data = json_data.json()
     return json_data, url
 

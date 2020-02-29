@@ -16,7 +16,7 @@ dota_api = dota2api.Initialise(DOTA2_API_KEY)
 # Dota 2 ProTracker
 def get_notable_hero_from_d2pt():
 	url = constant.D2PT_URL_LIVE_GAMES
-	results = requests.get(url, headers=browser_headers_chrome)
+	results = requests.get(url, headers=browser_headers_chrome, timeout=1.5)
 	results = results.json()
 	final_result = {}
 	for match in results:
@@ -94,5 +94,8 @@ def get_top_games(length=10):
 
 if __name__ == '__main__':
 	# print(get_notable_hero_from_d2pt())
+	from datetime import datetime
+	start = datetime.now()
 	path = get_top_games(10)
+	print((datetime.now() - start).total_seconds())
 	print(path)
