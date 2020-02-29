@@ -167,8 +167,12 @@ class Dotavoyance():
             minimum_num_games = min_games
 
         req_str = "https://www.dotavoyance.com/teammates?heroes[]="+",".join(hero_ids)+"&results_offset=0&sort_column="+sort_col+"&sort_direction=1&column_filters=%7B%22total_matches%22:%7B%22upper%22:0,%22lower%22:"+str(minimum_num_games)+"%7D%7D&table_to_use="+table_to_use
-        r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'})
-        results = r.json()
+        r = requests.get(req_str,  headers={'user-agent': 'Mozilla/5.0'}, timeout=2)
+        try:
+            results = r.json()
+        except Exception as e:
+            print(e)
+            return False, 'timeout'
 
         if len(hero_list) != num_heroes:
             return False, ''

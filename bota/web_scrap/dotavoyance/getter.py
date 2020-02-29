@@ -168,7 +168,10 @@ def get_team_mate(message_string):
     file_path = os.path.join(constant.DV_TEAM_IMAGE_PATH, file_name)
 
     if not flag:
-        if len(hero_names) > 3:
+        if team_mate_raw == 'timeout':
+            summary = f"Sorry! Currently facing server down from https://www.dotavoyance"
+            return False, summary, result, []
+        elif len(hero_names) > 3:
             summary = f"Sorry! Could not find any results. Please try with **{len(hero_names) - 1}** Hero Names"
             return False, summary, result, []
         else:
@@ -184,7 +187,7 @@ def get_team_mate(message_string):
 
 
 if __name__ == '__main__':
-    flag, summary, image_path, hero_names = get_team_mate("!team drow, luna, aa, bm")
+    flag, summary, image_path, hero_names = get_team_mate("!team snap")
     print(flag, summary, image_path)
     # get_team_mate("!sy wr,  wk, am  high")
     # get_team_mate("!sy wr,  wk, am ")
