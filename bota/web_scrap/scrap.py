@@ -67,6 +67,10 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
         return False, hero_name, ''
     image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + '.jpg')
 
+    if hero is None:
+        if os.path.exists(image_path):
+            return True, hero_name, image_path
+
     threshold_update_time = constant.COUNTER_HERO_UPDATE_TIME_THRESHOLD
     if early_update:
         threshold_update_time = threshold_update_time - constant.EARLY_BY
@@ -101,6 +105,10 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
     if not found_hero:
         return False, hero_name, ''
     image_path = os.path.join(constant.GOOD_HERO_IMAGE_PATH, hero_name + '.jpg')
+
+    if hero is None:
+        if os.path.exists(image_path):
+            return True, hero_name, image_path
 
     threshold_update_time = constant.GOOD_HERO_UPDATE_TIME_THRESHOLD
     if early_update:
@@ -137,6 +145,10 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
         return False, hero_name, ''
 
     guide_image_path = os.path.join(constant.GUIDE_SAVE_PATH, hero_name + '.jpg')
+
+    if hero is None:
+        if os.path.exists(guide_image_path):
+            return True, hero_name, guide_image_path
 
     threshold_update_time = constant.GUIDE_THRESHOLD_IMAGE_UPDATE
     if early_update:
@@ -200,6 +212,10 @@ def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_f
         return False, hero_name, ''
 
     item_build_path = os.path.join(constant.ITEM_IMAGE_PATH, hero_name + '.jpg')
+
+    if hero is None:
+        if os.path.exists(item_build_path):
+            return True, hero_name, item_build_path
 
     threshold_update_time = constant.ITEM_THRESHOLD_UPDATE
     if early_update:
