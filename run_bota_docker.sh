@@ -13,4 +13,5 @@ export LOG_PORCESS_IP_ADDRESS=$6
 screen -X -S scrap quit
 
 screen -S scrap -d -m sh run_scrap.sh
+git pull origin master
 sh run_bota.sh
