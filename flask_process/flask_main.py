@@ -13,7 +13,7 @@ logstat = LogStat()
 app = Flask(__name__)
 
 
-def check_enough_memory(min_free_mb_ram=15):
+def check_enough_memory(min_free_mb_ram=10):
     file = open('/proc/meminfo')
     lines = file.readlines()
     for line in lines:
@@ -21,8 +21,6 @@ def check_enough_memory(min_free_mb_ram=15):
             attrs = line.split()
             value = int(attrs[1])
             value = value / 1000
-            print(value)
-            print(line)
             if value > min_free_mb_ram:
                 return True
             return False
