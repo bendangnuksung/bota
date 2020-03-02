@@ -654,6 +654,8 @@ async def on_message(message):
                 await message.channel.send(lines)
 
     elif "!restart bota" in message_string and str(message.author) == ADMIN_ID:
+        lines = "Restarting BOTA"
+        await message.channel.send(lines)
         sys.exit()
 
     # Message user
