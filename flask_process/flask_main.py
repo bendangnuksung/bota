@@ -6,10 +6,27 @@ from flask_process.flask_log_process import save_command_logs, get_command_log_t
 from flask_process.flask_log_stat_process import LogStat
 import base64
 import gc
+import sys
 
 botalog = BotaLog(IMAGE_SHIELD_JSON_FILE)
 logstat = LogStat()
 app = Flask(__name__)
+
+
+def check_enough_memory(min_free_mb_ram=15):
+    file = open('/proc/meminfo')
+    lines = file.readlines()
+    for line in lines:
+        if 'MemFree' in line:
+            attrs = line.split()
+            value = int(attrs[1])
+            value = value / 1000
+            print(value)
+            print(line)
+            if value > min_free_mb_ram:
+                return True
+            return False
+    return True
 
 
 @app.route('/updatestat', methods=['POST'])
@@ -32,6 +49,12 @@ def update_command_log():
     log = request.form.get('log')
     save_command_logs(log)
     gc.collect()
+
+    # If not enough RAM restart the server
+    # (Running the flask service in Shell script in a while loop)
+    if not check_enough_memory():
+        sys.exit()
+
     return jsonify({'result': True})
 
 

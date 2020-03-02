@@ -44,11 +44,7 @@ Once this is done you can assign all this key values in `bota/private_constant.p
 
 1. Run the independent flask server which handles the log process.   
       ```bash
-      # Set Python Path
-      export PYTHONPATH=$PYTHONPATH:$pwd
-
-      # Run flask server
-      python3 flask_process/flask_main.py
+      sh run_flask.sh
       ```
 
 3. Run the bot. There are two ways to run BOTA
