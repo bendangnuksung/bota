@@ -125,7 +125,7 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
         hero = ' '.join(query[1:])
         hero = hero.strip()
     found_hero, hero_name = find_hero_name(hero)
-    if not found_hero:
+    if not found_hero and hero_name == '':
         return False, hero_name, ''
     with_role_txt = '' if not role_flag else '_' + role
     image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + with_role_txt + '.jpg')
@@ -182,7 +182,7 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
         hero = ' '.join(query[1:])
         hero = hero.strip()
     found_hero, hero_name = find_hero_name(hero)
-    if not found_hero:
+    if not found_hero and hero_name == '':
         return False, hero_name, ''
     with_role_txt = '' if not role_flag else '_' + role
     image_path = os.path.join(constant.GOOD_HERO_IMAGE_PATH, hero_name + with_role_txt + '.jpg')
@@ -230,7 +230,7 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
         hero = hero.strip()
     flag_1, flag_2 = False, False
     found_hero, hero_name = find_hero_name(hero)
-    if not found_hero:
+    if not found_hero and hero_name == '':
         return False, hero_name, ''
 
     guide_image_path = os.path.join(constant.GUIDE_SAVE_PATH, hero_name + '.jpg')
@@ -297,7 +297,7 @@ def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_f
         hero = ' '.join(query[1:])
         hero = hero.strip()
     found_hero, hero_name = find_hero_name(hero)
-    if not found_hero:
+    if not found_hero and hero_name == '':
         return False, hero_name, ''
 
     item_build_path = os.path.join(constant.ITEM_IMAGE_PATH, hero_name + '.jpg')

@@ -28,7 +28,7 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 # Update Block
 # UPDATE_BLOCK = 'Get Synergy hero for team with **`!synergy`**.\nType **`!synergy help`** for details'
-UPDATE_BLOCK = 'NEW: You can now select specific roles to !counter and !good, Type `!counter help` or `!good help`'
+UPDATE_BLOCK = '**NEW**: You can now select Specific roles to !counter and !good, Type **`!counter help`** or **`!good help`**'
 
 
 UPDATE_BLOCK_LIST=\
@@ -119,7 +119,7 @@ COUNTER_EXAMPLE = f'**How to use `!counter` command**:\n' \
                        f'Role Options: `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
                        f'eg 1: **`!counter axe carry`**\n' \
                        f'eg 2: **`!counter am support`**\n' \
-                       f'eg 3: **`!counter alchemist nuker`'
+                       f'eg 3: **`!counter alchemist nuker`**'
 
 GOOD_EXAMPLE = f'**How to use `!good` command**:\n' \
                        f'General command: `!good Heroname` eg: `!good axe`\n\n' \
@@ -127,7 +127,7 @@ GOOD_EXAMPLE = f'**How to use `!good` command**:\n' \
                        f'Role Options: `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
                        f'eg 1: **`!good axe carry`**\n' \
                        f'eg 2: **`!good am support`**\n' \
-                       f'eg 3: **`!good alchemist nuker`'
+                       f'eg 3: **`!good alchemist nuker`**'
 
 
 def get_help():
