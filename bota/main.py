@@ -4,7 +4,7 @@ import sys
 import bota.logs_process.log_utils
 from bota.constant import MAX_COMMAND_WORD_LENGTH
 from bota.help import LAST_UPDATE, get_help, get_admin_commands, PROFILE_HELP_STRING, NOTE_FOOTER, TEAM_CMD_EXAMPLE,\
-                      REDDIT_CMD_EXAMPLE, UPDATE_BLOCK
+                      REDDIT_CMD_EXAMPLE, UPDATE_BLOCK, COUNTER_EXAMPLE, GOOD_EXAMPLE
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
@@ -22,6 +22,7 @@ import os
 client = discord.AutoShardedClient()
 agha = Agha()
 GUILDS = []
+UPDATE_BLOCK = UPDATE_BLOCK
 
 
 def embed_txt_message(content, add_header=False, header=constant.DEFAULT_EMBED_HEADER, color=discord.Color.blue()):
@@ -156,7 +157,14 @@ async def cmd_protracker(message, message_string):
         return True, command_called
 
 
-async def cmd_counter(message, message_string):
+async def cmd_counter(message, message_string, message_word_length):
+    if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
+        result_embed = embed_txt_message(COUNTER_EXAMPLE, color=discord.Color.dark_red())
+        result_embed.set_author(name="Counter Command Help")
+        result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        await message.channel.send(embed=result_embed)
+        return True, '!counter help'
+
     command_called = '!counter'
     async with message.channel.typing():
         note = UPDATE_BLOCK
@@ -212,7 +220,13 @@ async def cmd_item(message, message_string):
             return True, command_called
 
 
-async def cmd_good(message, message_string):
+async def cmd_good(message, message_string, message_word_length):
+    if message_word_length == 2 and ('help' == message_string.split()[1] or 'helps' == message_string.split()[1]):
+        result_embed = embed_txt_message(GOOD_EXAMPLE, color=discord.Color.dark_red())
+        result_embed.set_author(name="Good Command Help")
+        result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
+        await message.channel.send(embed=result_embed)
+        return True, '!counter help'
     command_called = '!good'
     async with message.channel.typing():
         note = UPDATE_BLOCK
@@ -534,6 +548,7 @@ async def get_stats(message, message_string, message_word_length):
 # Where the commands are called
 @client.event
 async def on_message(message):
+    global UPDATE_BLOCK
     is_command_called = True
     command_called = ""
     message_string = message.content
@@ -573,10 +588,10 @@ async def on_message(message):
         flag, command_called = await cmd_trend(message)
 
     elif ("!counter" in message_string or "!bad" in message_string) and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        flag, command_called = await cmd_counter(message, message_string)
+        flag, command_called = await cmd_counter(message, message_string, message_word_length)
 
     elif "!good" in message_string and message_word_length < MAX_COMMAND_WORD_LENGTH:
-        flag, command_called = await cmd_good(message, message_string)
+        flag, command_called = await cmd_good(message, message_string, message_word_length)
 
     elif ("!skill" in message_string or "!talent" in message_string) \
             and message_word_length < MAX_COMMAND_WORD_LENGTH:
@@ -657,6 +672,12 @@ async def on_message(message):
         lines = "Restarting BOTA"
         await message.channel.send(lines)
         sys.exit()
+
+    elif "!updateblock" in message_string and str(message.author) == ADMIN_ID:
+        update_txt = message_string.split()[1:]
+        update_txt = " ".join(update_txt)
+        UPDATE_BLOCK = update_txt
+        await message.channel.send('Updated Block message')
 
     # Message user
     elif f"{DISCORD_CLIENT_ID}" in message_string:

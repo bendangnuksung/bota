@@ -1,5 +1,5 @@
 from bota.image_processing import add_border_to_image
-from bota.web_scrap.heroes_process import get_current_hero_trends, find_hero_name, scrap_heroes_info
+from bota.web_scrap.heroes_process import get_current_hero_trends, find_hero_name, scrap_heroes_info, scrap_hero_counters
 import pandas as pd
 from bota.utility.general import render_mpl_table, get_icon_path, is_file_old, crop_image, round_df_digits
 from bota.constant import CT_IMAGE_PATH, CT_IMAGE_UPDATE_TIME_THRESHOLD
@@ -13,11 +13,60 @@ from bota.web_scrap.profile_process import scrap_profile_info
 from bota.web_scrap.reddit_process import scrap_reddit_dota
 from bota.applications.steam_user_db import UserDB, AliasDB
 from bota.web_scrap.protracker_process import DotaProTracker
-
+from bota.web_scrap.scrap_constant import hero_role, hero_role_alternative_names, hero_role_colors
 
 user_db = UserDB()
 alias = AliasDB()
 d2pt = DotaProTracker()
+
+
+def check_if_role_given(message):
+    last_word = message.split()[-1]
+
+    if last_word in hero_role:
+        return True, last_word
+
+    if last_word in hero_role_alternative_names:
+        return True, hero_role_alternative_names[last_word]
+
+    return False, None
+
+
+def write_hero_role_text_to_image(image, role):
+    font = cv2.FONT_HERSHEY_COMPLEX
+    bottomLeftCornerOfText = (30, 355)
+    fontScale = 1.25
+    fontColor = hero_role_colors[role]
+    lineType = 2
+    role_txt = role[0].upper() + role[1:]
+    cv2.putText(image, role_txt, bottomLeftCornerOfText, font, fontScale, fontColor, lineType)
+    return image
+
+
+def prune_heroes(hero_list, top=10, given_hero_roles=None):
+    if given_hero_roles is None:
+        return hero_list[:top]
+
+    correct_hero_roles = []
+    for role in given_hero_roles:
+        if role in hero_role:
+            correct_hero_roles.append(role)
+
+    if len(correct_hero_roles) == 0:
+        return hero_list[:top]
+
+    filter_hero_list = []
+
+    for role in correct_hero_roles:
+        heroes_from_role_list = hero_role[role]
+        for hero in hero_list:
+            if hero in heroes_from_role_list:
+                filter_hero_list.append(hero)
+            if len(filter_hero_list) >= top and len(correct_hero_roles) == 1:
+                break
+        hero_list = filter_hero_list
+
+    return hero_list[:top]
 
 
 def get_current_trend():
@@ -39,7 +88,7 @@ def get_current_trend():
     return image_path
 
 
-def make_hero_images(main_hero_image_path, heroes_image_path, bg_path):
+def make_hero_images(main_hero_image_path, heroes_image_path, bg_path, role=None):
     bg_image = cv2.imread(bg_path)
     bg_image = cv2.resize(bg_image, (constant.COUNTER_BG_SHAPE[1], constant.COUNTER_BG_SHAPE[0]))
     main_hero_image = cv2.imread(main_hero_image_path)
@@ -54,10 +103,23 @@ def make_hero_images(main_hero_image_path, heroes_image_path, bg_path):
         y = y + ((i % constant.COUNTER_MAX_COLUMN) * image.shape[1]) + \
             ((i % constant.COUNTER_MAX_COLUMN) * constant.COUNTER_WIDTH_DIST)
         bg_image[x: x + image.shape[0], y: y + image.shape[1], :] = image
+
+    if role is not None:
+        write_hero_role_text_to_image(bg_image, role)
+
     return bg_image
 
 
 def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
+    is_request_from_bg_process = False if hero is None else True
+    if not is_request_from_bg_process:
+        role_flag, role = check_if_role_given(query)
+    else:
+        role_flag, role = False, None
+    if role_flag:
+        query = query.split()[:-1]
+        query = " ".join(query)
+
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -65,7 +127,8 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
         return False, hero_name, ''
-    image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + '.jpg')
+    with_role_txt = '' if not role_flag else '_' + role
+    image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + with_role_txt + '.jpg')
 
     if hero is None:
         if os.path.exists(image_path):
@@ -78,15 +141,23 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
         return True, hero_name, image_path
 
     try:
+        all_counter_heroes = scrap_hero_counters(hero_name)
+        if is_request_from_bg_process:
+            for i_role in hero_role:
+                counter_heroes = prune_heroes(all_counter_heroes, given_hero_roles=[i_role])
+                counter_heroes_image_path = get_icon_path(counter_heroes, icon_size='big')
+                hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
+                image = make_hero_images(hero_image_path, counter_heroes_image_path, constant.COUNTER_BG_IMAGE_PATH, i_role)
+                my_image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + '_' + i_role + '.jpg')
+                cv2.imwrite(my_image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
+        print(role)
 
-        hero_info = scrap_heroes_info(hero_name)
-        counter_info = hero_info[0]
-        counter_heroes = counter_info['Hero']
-        counter_heroes_list = list(counter_heroes)
-        counter_heroes_image_path = get_icon_path(counter_heroes_list, icon_size='big')
+        counter_heroes = prune_heroes(all_counter_heroes, given_hero_roles=[role])
+        counter_heroes_image_path = get_icon_path(counter_heroes, icon_size='big')
         hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
-        image = make_hero_images(hero_image_path, counter_heroes_image_path, constant.COUNTER_BG_IMAGE_PATH)
+        image = make_hero_images(hero_image_path, counter_heroes_image_path, constant.COUNTER_BG_IMAGE_PATH, role)
         cv2.imwrite(image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
+        print(image_path)
         return True, hero_name, image_path
 
     except Exception as e:
@@ -97,6 +168,15 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
 
 
 def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
+    is_request_from_bg_process = False if hero is None else True
+    if not is_request_from_bg_process:
+        role_flag, role = check_if_role_given(query)
+    else:
+        role_flag, role = False, None
+    if role_flag:
+        query = query.split()[:-1]
+        query = " ".join(query)
+
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -104,7 +184,8 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
     found_hero, hero_name = find_hero_name(hero)
     if not found_hero:
         return False, hero_name, ''
-    image_path = os.path.join(constant.GOOD_HERO_IMAGE_PATH, hero_name + '.jpg')
+    with_role_txt = '' if not role_flag else '_' + role
+    image_path = os.path.join(constant.GOOD_HERO_IMAGE_PATH, hero_name + with_role_txt + '.jpg')
 
     if hero is None:
         if os.path.exists(image_path):
@@ -117,13 +198,21 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
         return True, hero_name, image_path
 
     try:
-        hero_info = scrap_heroes_info(hero_name)
-        good_against_info = hero_info[1]
-        good_against_heroes = good_against_info['Hero']
-        good_against_heroes_list = list(good_against_heroes)
-        good_against_heroes_image_path = get_icon_path(good_against_heroes_list, icon_size='big')
+        all_good_against_heroes = scrap_hero_counters(hero_name, is_counter=False)
+
+        if is_request_from_bg_process:
+            for i_role in hero_role.keys():
+                good_against_heroes = prune_heroes(all_good_against_heroes, given_hero_roles=[i_role])
+                good_against_heroes_image_path = get_icon_path(good_against_heroes, icon_size='big')
+                hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
+                image = make_hero_images(hero_image_path, good_against_heroes_image_path, constant.GOOD_BG_IMAGE_PATH, i_role)
+                my_image_path = os.path.join(constant.GOOD_HERO_IMAGE_PATH, hero_name + '_' + i_role + '.jpg')
+                cv2.imwrite(my_image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
+
+        good_against_heroes = prune_heroes(all_good_against_heroes, given_hero_roles=[role])
+        good_against_heroes_image_path = get_icon_path(good_against_heroes, icon_size='big')
         hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
-        image = make_hero_images(hero_image_path, good_against_heroes_image_path, constant.GOOD_BG_IMAGE_PATH)
+        image = make_hero_images(hero_image_path, good_against_heroes_image_path, constant.GOOD_BG_IMAGE_PATH, role)
         cv2.imwrite(image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
         return True, hero_name, image_path
 
@@ -351,6 +440,8 @@ def get_protracker_hero(query):
 
 
 if __name__ == '__main__':
+    get_counter_hero('!counter axe carry')
+    exit()
     import asyncio
     r = asyncio.get_event_loop().run_until_complete(get_skill_build('!skill am', use_outdated_photo_if_fails=False))
     print(r)

@@ -2,7 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import time
 from bota.web_scrap.scrap import get_item_build, get_skill_build, get_current_trend, get_counter_hero, get_good_against
-from bota.web_scrap.scrap_constant import heroes_names
+from bota.web_scrap.scrap_constant import heroes_names, hero_role
 from bota.constant import SCRAP_LOG_PATH
 import asyncio
 from datetime import datetime

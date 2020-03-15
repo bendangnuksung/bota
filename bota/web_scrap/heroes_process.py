@@ -46,6 +46,18 @@ def get_heroes_section(section_name, html):
     return rows, headers
 
 
+def extract_counter_hero_from_html(html):
+    soup = bs(html, 'html.parser')
+    heroes = soup.find_all('td', {'class': 'cell-icon'})
+    final_heroes = []
+    for hero in heroes:
+        h = hero.find('a')
+        h = h.attrs['href']
+        h = h.split('/')[-1]
+        final_heroes.append(h)
+    return final_heroes
+
+
 def scrap_heroes_info(hero_name):
     url = os.path.join(scrap_constant.heroes_pre_url, hero_name)
     r = requests.get(url, headers=scrap_constant.browser_headers)
@@ -59,6 +71,16 @@ def scrap_heroes_info(hero_name):
         panda_result = pd.DataFrame(results, columns=section_header)
         panda_results.append(panda_result)
     return panda_results
+
+
+def scrap_hero_counters(hero_name, is_counter=True):
+    url = os.path.join(scrap_constant.heroes_pre_url, hero_name + "/counters")
+    r = requests.get(url, headers=scrap_constant.browser_headers)
+    html = r.text
+    heroes = extract_counter_hero_from_html(html)
+    if is_counter == False:
+        heroes = heroes[::-1]
+    return heroes
 
 
 def get_current_hero_trends():
@@ -76,7 +98,8 @@ def get_current_hero_trends():
 
 
 if __name__ == '__main__':
-    # r = scrap_heroes_info('alchemist')
+    # r = scrap_heroes_info('axe')
+    scrap_hero_counters('axe')
     r = find_hero_name('brood')
     print(r)
 

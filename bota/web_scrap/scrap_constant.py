@@ -4,6 +4,75 @@ browser_headers_chrome = {'user-agent': 'Chrome/75.0.3770.80-1'}
 
 ##### character_icons Info constant
 heroes_pre_url = 'https://www.dotabuff.com/heroes/'
+
+hero_role_colors = {'carry': (88, 220, 222),
+                    'nuker': (48, 48, 219),
+                    'initiator': (200, 210, 100),
+                    'disabler': (32, 129, 214),
+                    'support': (58, 190, 58),
+                    'pusher': (104, 178, 210)}
+
+hero_role_alternative_names = {'cary': 'carry', 'cari': 'carry', 'karry': 'carry',
+                               'nuke':'nuker', 'nuk': 'nuker',
+                               'initiate': 'initiator', 'init': 'initiator',
+                               'disable': 'disabler',
+                               'sup': 'support', 'supp': 'support', 'suport': 'support', 'sport': 'support',
+                               'push': 'pusher'}
+
+hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'brewmaster', 'bristleback',
+                       'broodmother', 'chaos-knight', 'clinkz', 'death-prophet', 'doom', 'dragon-knight', 'drow-ranger',
+                       'ember-spirit', 'faceless-void', 'gyrocopter', 'huskar', 'invoker', 'juggernaut', 'kunkka',
+                       'legion-commander', 'leshrac', 'lifestealer', 'lina', 'lone-druid', 'luna', 'lycan', 'magnus',
+                       'mars', 'medusa', 'meepo', 'mirana', 'monkey-king', 'morphling', 'naga-siren', 'natures-prophet',
+                       'necrophos', 'night-stalker', 'outworld-devourer', 'pangolier', 'phantom-assassin', 'phantom-lancer',
+                       'queen-of-pain', 'razor', 'riki', 'shadow-fiend', 'silencer', 'slardar', 'slark', 'sniper', 'spectre',
+                       'spirit-breaker', 'storm-spirit', 'sven', 'templar-assassin', 'terrorblade', 'tinker', 'tiny',
+                       'troll-warlord', 'ursa', 'viper', 'visage', 'void-spirit', 'weaver', 'windranger', 'wraith-king'],
+
+             'nuker': ['alchemist', 'ancient-apparition', 'arc-warden', 'bane', 'beastmaster', 'brewmaster', 'bristleback',
+                       'centaur-warrunner', 'clockwerk', 'crystal-maiden', 'dark-willow', 'dazzle', 'death-prophet',
+                       'disruptor', 'doom', 'dragon-knight', 'earth-spirit', 'earthshaker', 'elder-titan', 'ember-spirit',
+                       'grimstroke', 'gyrocopter', 'invoker', 'io', 'jakiro', 'kunkka', 'legion-commander', 'leshrac',
+                       'lich', 'lina', 'lion', 'luna', 'magnus', 'meepo', 'mirana', 'morphling', 'necrophos', 'night-stalker',
+                       'nyx-assassin', 'ogre-magi', 'omniknight', 'oracle', 'outworld-devourer', 'pangolier', 'phoenix',
+                       'puck', 'pudge', 'pugna', 'queen-of-pain', 'rubick', 'sand-king', 'shadow-fiend', 'shadow-shaman',
+                       'skywrath-mage', 'snapfire', 'storm-spirit', 'techies', 'tidehunter', 'timbersaw', 'tinker', 'tiny',
+                       'tusk', 'undying', 'vengeful-spirit', 'visage', 'void-spirit', 'windranger', 'winter-wyvern', 'witch-doctor', 'zeus'],
+
+             'initiator': ["alchemist", "axe", "batrider", "beastmaster", "bloodseeker", "brewmaster", "bristleback",
+                           "centaur-warrunner", "chaos-knight", "clockwerk", "dark-seer", "disruptor", "doom", "dragon-knight",
+                           "earth-spirit", "earthshaker", "ember-spirit", "enigma", "faceless-void", "huskar", "kunkka",
+                           "legion-commander", "lion", "magnus", "mars", "meepo", "monkey-king", "naga-siren", "night-stalker",
+                           "nyx-assassin", "ogre-magi", "pangolier", "phoenix", "puck", "pudge", "sand-king", "shadow-demon",
+                           "shadow-shaman", "silencer", "slardar", "spirit-breaker", "storm-spirit", "sven", "tidehunter",
+                           "tiny", "treant-protector", "tusk", "vengeful-spirit", "viper", "void-spirit", "warlock", "winter-wyvern", "wraith-king"],
+
+             'disabler': ['alchemist', 'ancient-apparition', 'axe', 'bane', 'batrider', 'beastmaster', 'bloodseeker',
+                          'brewmaster', 'centaur-warrunner', 'chaos-knight', 'clockwerk', 'crystal-maiden', 'dark-seer',
+                          'dark-willow', 'dazzle', 'death-prophet', 'disruptor', 'doom', 'dragon-knight', 'earth-spirit',
+                          'earthshaker', 'elder-titan', 'ember-spirit', 'enigma', 'faceless-void', 'grimstroke', 'invoker',
+                          'jakiro', 'keeper-of-the-light', 'kunkka', 'legion-commander', 'leshrac', 'lina', 'lion', 'magnus',
+                          'mars', 'mirana', 'monkey-king', 'naga-siren', 'necrophos', 'night-stalker', 'nyx-assassin',
+                          'ogre-magi', 'oracle', 'outworld-devourer', 'pangolier', 'phoenix', 'puck', 'pudge', 'riki',
+                          'rubick', 'sand-king', 'shadow-demon', 'shadow-shaman', 'silencer', 'skywrath-mage', 'slardar',
+                          'spirit-breaker', 'storm-spirit', 'sven', 'techies', 'tidehunter', 'tiny', 'treant-protector',
+                          'tusk', 'vengeful-spirit', 'visage', 'warlock', 'windranger', 'winter-wyvern', 'witch-doctor', 'wraith-king'],
+
+             'support': ['abaddon', 'ancient-apparition', 'bane', 'bounty-hunter', 'chen', 'crystal-maiden', 'dark-willow',
+                         'dazzle', 'disruptor', 'earth-spirit', 'earthshaker', 'elder-titan', 'enchantress', 'grimstroke',
+                         'io', 'jakiro', 'keeper-of-the-light', 'kunkka', 'lich', 'lina', 'lion', 'mirana', 'nyx-assassin',
+                         'ogre-magi', 'omniknight', 'oracle', 'phoenix', 'pudge', 'rubick', 'sand-king', 'shadow-demon',
+                         'shadow-shaman', 'silencer', 'skywrath-mage', 'snapfire', 'tiny', 'treant-protector', 'tusk',
+                         'undying', 'vengeful-spirit', 'venomancer', 'visage', 'warlock', 'windranger', 'winter-wyvern', 'witch-doctor'],
+
+             'pusher': ['anti-mage', 'arc-warden', 'beastmaster', 'broodmother', 'chen', 'death-prophet', 'dragon-knight',
+                        'drow-ranger', 'enchantress', 'enigma', 'invoker', 'jakiro', 'juggernaut', 'leshrac', 'lone-druid',
+                        'luna', 'lycan', 'meepo', 'naga-siren', 'natures-prophet', 'phantom-lancer', 'pugna', 'shadow-shaman',
+                        'terrorblade', 'tinker', 'troll-warlord', 'visage', 'venomancer']
+
+
+             }
+
 heroes_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-warden', 'axe', 'bane', 'batrider',
                'beastmaster', 'bloodseeker', 'bounty-hunter', 'brewmaster', 'bristleback', 'broodmother',
                'centaur-warrunner', 'chaos-knight', 'chen', 'clinkz', 'clockwerk', 'crystal-maiden', 'dark-seer',

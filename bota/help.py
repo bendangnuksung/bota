@@ -28,11 +28,12 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 # Update Block
 # UPDATE_BLOCK = 'Get Synergy hero for team with **`!synergy`**.\nType **`!synergy help`** for details'
-UPDATE_BLOCK = 'Command available for heroes Snapfire & Void Spirit, type `!counter snapfire`  `!item void spirit`'
+UPDATE_BLOCK = 'NEW: You can now select specific roles to !counter and !good, Type `!counter help` or `!good help`'
 
 
 UPDATE_BLOCK_LIST=\
-             ["`30-Sep-2019`: Added Aghanim Info for heroes, type `!agha HeroName`",
+             ["`15-Mar-2020`: User can now specify roles to show hero for !counter & !good command, type `!counter help`",
+              "`30-Sep-2019`: Added Aghanim Info for heroes, type `!agha HeroName`",
               "`28-Sep-2019`: Added `!team` command, type `!team help` for details",
               "`25-Aug-2019`: Save your profile without name and change Steam ID and others, Type `!profile help` for details",
               "`15-Aug-2019`: Added TI command,   `!ti`",
@@ -108,6 +109,25 @@ REDDIT_CMD_EXAMPLE = f'**How to use `!reddit` command**:\n' \
                    f'eg 4: **`!reddit top`** \n' \
                    f'eg 5: **`!reddit rising`**\n' \
                    f'eg 6: **`!reddit hot`**' \
+
+
+# COUNTER AND GOOD command examples
+COUNTER_EXAMPLE = f'**How to use `!counter` command**:\n' \
+                       f'General command: `!counter Heroname` eg: `!counter axe`\n' \
+                       f'Alternative command: `!bad Heroname` eg: `!bad axe`\n\n' \
+                       f'**Counter a Hero given a specific role:**:\n' \
+                       f'Role Options: `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
+                       f'eg 1: **`!counter axe carry`**\n' \
+                       f'eg 2: **`!counter am support`**\n' \
+                       f'eg 3: **`!counter alchemist nuker`'
+
+GOOD_EXAMPLE = f'**How to use `!good` command**:\n' \
+                       f'General command: `!good Heroname` eg: `!good axe`\n\n' \
+                       f'**Counter a Hero given a specific role:**:\n' \
+                       f'Role Options: `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
+                       f'eg 1: **`!good axe carry`**\n' \
+                       f'eg 2: **`!good am support`**\n' \
+                       f'eg 3: **`!good alchemist nuker`'
 
 
 def get_help():
