@@ -119,7 +119,9 @@ COUNTER_EXAMPLE = f'**How to use `!counter` command**:\n' \
                        f'Role Options: `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
                        f'eg 1: **`!counter axe carry`**\n' \
                        f'eg 2: **`!counter am support`**\n' \
-                       f'eg 3: **`!counter alchemist nuker`**'
+                       f'eg 3: **`!counter alchemist nuker`**\n' \
+                       f'eg 4: **`!counter puck disabler`** or **`!counter puck dis`**\n' \
+                       f'eg 5: **`!counter io initiator`** or **`!counter io init`**'
 
 GOOD_EXAMPLE = f'**How to use `!good` command**:\n' \
                        f'General command: `!good Heroname` eg: `!good axe`\n\n' \
@@ -127,7 +129,9 @@ GOOD_EXAMPLE = f'**How to use `!good` command**:\n' \
                        f'Role Options: `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
                        f'eg 1: **`!good axe carry`**\n' \
                        f'eg 2: **`!good am support`**\n' \
-                       f'eg 3: **`!good alchemist nuker`**'
+                       f'eg 3: **`!good alchemist nuker`**\n'\
+                       f'eg 4: **`!good puck disabler`** or **`!good puck dis`**\n' \
+                       f'eg 5: **`!good io initiator`** or **`!good io init`**'
 
 
 def get_help():

@@ -15,7 +15,7 @@ hero_role_colors = {'carry': (88, 220, 222),
 hero_role_alternative_names = {'cary': 'carry', 'cari': 'carry', 'karry': 'carry',
                                'nuke':'nuker', 'nuk': 'nuker',
                                'initiate': 'initiator', 'init': 'initiator',
-                               'disable': 'disabler',
+                               'disable': 'disabler', 'dis': 'disabler',
                                'sup': 'support', 'supp': 'support', 'suport': 'support', 'sport': 'support',
                                'push': 'pusher'}
 
