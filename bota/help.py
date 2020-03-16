@@ -28,7 +28,7 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 # Update Block
 # UPDATE_BLOCK = 'Get Synergy hero for team with **`!synergy`**.\nType **`!synergy help`** for details'
-UPDATE_BLOCK = '**NEW**: You can now select Specific roles to !counter and !good, Type **`!counter help`** or **`!good help`**'
+UPDATE_BLOCK = '**NEW**: You can now select Specific roles to !counter and !good, Type **`!counter help`** or **`!good help`**\n**EG:** To show only support counter heroes against Anti Mage Type: **`!counter am support`'
 
 
 UPDATE_BLOCK_LIST=\
