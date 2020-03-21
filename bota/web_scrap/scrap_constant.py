@@ -10,14 +10,20 @@ hero_role_colors = {'carry': (88, 220, 222),
                     'initiator': (200, 210, 100),
                     'disabler': (32, 129, 214),
                     'support': (58, 190, 58),
-                    'pusher': (104, 178, 210)}
+                    'pusher': (104, 178, 210),
+                    'mid': (200, 210, 100),
+                    'off': (32, 120, 214),
+                    'safe': (88, 220, 222)}
 
 hero_role_alternative_names = {'cary': 'carry', 'cari': 'carry', 'karry': 'carry',
                                'nuke':'nuker', 'nuk': 'nuker',
                                'initiate': 'initiator', 'init': 'initiator',
                                'disable': 'disabler', 'dis': 'disabler',
                                'sup': 'support', 'supp': 'support', 'suport': 'support', 'sport': 'support',
-                               'push': 'pusher'}
+                               'push': 'pusher',
+                               'midlane': 'mid',
+                               'offlane': 'off',
+                               'safelane': 'safe'}
 
 hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'brewmaster', 'bristleback',
                        'broodmother', 'chaos-knight', 'clinkz', 'death-prophet', 'doom', 'dragon-knight', 'drow-ranger',
@@ -68,7 +74,26 @@ hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'b
              'pusher': ['anti-mage', 'arc-warden', 'beastmaster', 'broodmother', 'chen', 'death-prophet', 'dragon-knight',
                         'drow-ranger', 'enchantress', 'enigma', 'invoker', 'jakiro', 'juggernaut', 'leshrac', 'lone-druid',
                         'luna', 'lycan', 'meepo', 'naga-siren', 'natures-prophet', 'phantom-lancer', 'pugna', 'shadow-shaman',
-                        'terrorblade', 'tinker', 'troll-warlord', 'visage', 'venomancer']
+                        'terrorblade', 'tinker', 'troll-warlord', 'visage', 'venomancer'],
+
+             'mid': ['alchemist', 'arc-warden', 'batrider', 'bloodseeker', 'broodmother', 'clinkz', 'death-prophet',
+                     'dragon-knight', 'ember-spirit', 'gyrocopter', 'huskar', 'invoker', 'kunkka', 'leshrac', 'lina',
+                     'lone-druid', 'magnus', 'medusa', 'meepo', 'mirana', 'monkey-king', 'morphling', 'necrophos',
+                     'outworld-devourer', 'puck', 'pugna', 'queen-of-pain', 'razor', 'rubick', 'shadow-fiend', 'silencer',
+                     'skywrath-mage', 'sniper', 'storm-spirit', 'templar-assassin', 'timbersaw', 'tinker', 'tiny', 'venomancer',
+                     'viper', 'visage', 'void-spirit', 'windranger', 'zeus'],
+
+             'off': ['abaddon', 'axe', 'batrider', 'beastmaster', 'brewmaster', 'bristleback', 'centaur-warrunner',
+                     'clockwerk', 'dark-seer', 'doom', 'dragon-knight', 'earthshaker', 'elder-titan', 'enchantress',
+                     'enigma', 'kunkka', 'legion-commander', 'lone-druid', 'magnus', 'mars', 'natures-prophet',
+                     'necrophos', 'night-stalker', 'nyx-assassin', 'ogre-magi', 'omniknight', 'pangolier', 'phoenix',
+                     'puck', 'pudge', 'pugna', 'razor', 'sand-king', 'slardar', 'spirit-breaker', 'tidehunter', 'timbersaw',
+                     'treant-protector', 'tusk', 'underlord', 'undying', 'venomancer', 'viper', 'visage'],
+
+             'safe': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'chaos-knight', 'clinkz', 'drow-ranger',
+                      'faceless-void', 'gyrocopter', 'juggernaut', 'lifestealer', 'lone-druid', 'luna', 'lycan', 'medusa',
+                      'monkey-king', 'morphling', 'naga-siren', 'phantom-assassin', 'phantom-lancer', 'razor', 'riki', 'slark',
+                      'sniper', 'spectre', 'sven', 'terrorblade', 'troll-warlord', 'ursa', 'weaver', 'wraith-king']
 
 
              }

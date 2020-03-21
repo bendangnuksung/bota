@@ -28,7 +28,11 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 # Update Block
 # UPDATE_BLOCK = 'Get Synergy hero for team with **`!synergy`**.\nType **`!synergy help`** for details'
-UPDATE_BLOCK = '**NEW**: You can now select Specific roles to !counter and !good, Type **`!counter help`** or **`!good help`**\n**For eg:** To show only support counter heroes against Anti Mage Type: **`!counter am support`**'
+UPDATE_BLOCK = '**NEW**: You can now select Specific roles to !counter and !good\n ' \
+               'To show only particular lane heroes that counter Anti Mage: `For EG:`\n' \
+               '1. Counter with support **`!counter am support`**\n' \
+               '2. Counter with midlane **`!counter am mid`**\n'\
+               'Type **`!counter help`** or **`!good help`** for more help'
 
 
 UPDATE_BLOCK_LIST=\
@@ -116,20 +120,20 @@ COUNTER_EXAMPLE = f'**How to use `!counter` command**:\n' \
                        f'General command: `!counter Heroname` eg: `!counter axe`\n' \
                        f'Alternative command: `!bad Heroname` eg: `!bad axe`\n\n' \
                        f'**Counter a Hero given a specific role:**:\n' \
-                       f'Role Options: `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
-                       f'eg 1: **`!counter axe carry`**\n' \
+                       f'Role Options: `mid` `off` `safe` `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
+                       f'eg 1: **`!counter axe mid`**\n' \
                        f'eg 2: **`!counter am support`**\n' \
-                       f'eg 3: **`!counter alchemist nuker`**\n' \
+                       f'eg 3: **`!counter alchemist safe`**\n' \
                        f'eg 4: **`!counter puck disabler`** or **`!counter puck dis`**\n' \
                        f'eg 5: **`!counter io initiator`** or **`!counter io init`**'
 
 GOOD_EXAMPLE = f'**How to use `!good` command**:\n' \
                        f'General command: `!good Heroname` eg: `!good axe`\n\n' \
                        f'**Counter a Hero given a specific role:**:\n' \
-                       f'Role Options: `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
-                       f'eg 1: **`!good axe carry`**\n' \
+                       f'Role Options: `mid` `off` `safe` `carry` `support` `inititator` `disabler` `nuker` `pusher`\n' \
+                       f'eg 1: **`!good axe mid`**\n' \
                        f'eg 2: **`!good am support`**\n' \
-                       f'eg 3: **`!good alchemist nuker`**\n'\
+                       f'eg 3: **`!good alchemist safe`**\n'\
                        f'eg 4: **`!good puck disabler`** or **`!good puck dis`**\n' \
                        f'eg 5: **`!good io initiator`** or **`!good io init`**'
 
