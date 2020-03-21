@@ -111,6 +111,7 @@ def make_hero_images(main_hero_image_path, heroes_image_path, bg_path, role=None
 
 
 def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
+    given_hero = hero
     is_request_from_bg_process = False if hero is None else True
     if not is_request_from_bg_process:
         role_flag, role = check_if_role_given(query)
@@ -137,7 +138,7 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
     threshold_update_time = constant.COUNTER_HERO_UPDATE_TIME_THRESHOLD
     if early_update:
         threshold_update_time = threshold_update_time - constant.EARLY_BY
-    if not is_file_old(image_path, threshold_update_time):
+    if not is_file_old(image_path, threshold_update_time) or (given_hero is None and os.path.exists(image_path)):
         return True, hero_name, image_path
 
     try:
@@ -168,6 +169,7 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
 
 
 def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
+    given_hero = hero
     is_request_from_bg_process = False if hero is None else True
     if not is_request_from_bg_process:
         role_flag, role = check_if_role_given(query)
@@ -194,7 +196,7 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
     threshold_update_time = constant.GOOD_HERO_UPDATE_TIME_THRESHOLD
     if early_update:
         threshold_update_time = threshold_update_time - constant.EARLY_BY
-    if not is_file_old(image_path, threshold_update_time):
+    if not is_file_old(image_path, threshold_update_time) or (given_hero is None and os.path.exists(image_path)):
         return True, hero_name, image_path
 
     try:
@@ -224,6 +226,7 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
 
 
 async def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
+    given_hero = hero
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -242,7 +245,7 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
     threshold_update_time = constant.GUIDE_THRESHOLD_IMAGE_UPDATE
     if early_update:
         threshold_update_time = threshold_update_time - constant.EARLY_BY
-    if not is_file_old(guide_image_path, threshold_update_time):
+    if not is_file_old(guide_image_path, threshold_update_time) or (given_hero is None and os.path.exists(guide_image_path)):
         return True, hero_name, guide_image_path
 
     url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
@@ -292,6 +295,7 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
 
 
 def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
+    given_hero = hero
     if hero is None:
         query = query.split()
         hero = ' '.join(query[1:])
@@ -309,7 +313,7 @@ def get_item_build(query, hero=None, early_update=False, use_outdated_photo_if_f
     threshold_update_time = constant.ITEM_THRESHOLD_UPDATE
     if early_update:
         threshold_update_time = threshold_update_time - constant.EARLY_BY
-    if not is_file_old(item_build_path, threshold_update_time):
+    if not is_file_old(item_build_path, threshold_update_time) or (given_hero is None and os.path.exists(item_build_path)):
         return True, hero_name, item_build_path
 
     try:
@@ -440,8 +444,10 @@ def get_protracker_hero(query):
 
 
 if __name__ == '__main__':
+    print(get_item_build('!good enchan'))
+    get_protracker_hero("!pro slark")
     get_counter_hero('!counter axe carry')
-    exit()
+    # exit()
     import asyncio
     r = asyncio.get_event_loop().run_until_complete(get_skill_build('!skill am', use_outdated_photo_if_fails=False))
     print(r)
@@ -453,4 +459,4 @@ if __name__ == '__main__':
     import asyncio
     print(asyncio.get_event_loop().run_until_complete(get_skill_build('!good witch doctor')))
     # print(get_skill_build('!good witch doctor'))
-    print(get_item_build('!good ursa'))
+

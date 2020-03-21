@@ -175,7 +175,7 @@ async def cmd_counter(message, message_string, message_word_length):
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
-                msg = f"Could not find hero, Please make sure the hero name is correct"
+                msg = f"Could not find hero, Please make sure the hero name is correct.\nType **`!counter help`**  for more help"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             return False, command_called
@@ -203,7 +203,7 @@ async def cmd_item(message, message_string):
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             else:
-                msg = f"Could not find hero, Please make sure the hero name is correct"
+                msg = f"Could not find hero, Please make sure the hero name is correct\nType **`!good help`**  for more help"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await message.channel.send(embed=msg)
             return False, command_called
