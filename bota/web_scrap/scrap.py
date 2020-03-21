@@ -151,14 +151,14 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
                 image = make_hero_images(hero_image_path, counter_heroes_image_path, constant.COUNTER_BG_IMAGE_PATH, i_role)
                 my_image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + '_' + i_role + '.jpg')
                 cv2.imwrite(my_image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
-        print(role)
+
 
         counter_heroes = prune_heroes(all_counter_heroes, given_hero_roles=[role])
         counter_heroes_image_path = get_icon_path(counter_heroes, icon_size='big')
         hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
         image = make_hero_images(hero_image_path, counter_heroes_image_path, constant.COUNTER_BG_IMAGE_PATH, role)
         cv2.imwrite(image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
-        print(image_path)
+
         return True, hero_name, image_path
 
     except Exception as e:
@@ -444,9 +444,9 @@ def get_protracker_hero(query):
 
 
 if __name__ == '__main__':
-    print(get_item_build('!good enchan'))
-    get_protracker_hero("!pro slark")
-    get_counter_hero('!counter axe carry')
+    # print(get_item_build('!good enchan'))
+    # get_protracker_hero("!pro slark")
+    get_counter_hero('!counter axe mid')
     # exit()
     import asyncio
     r = asyncio.get_event_loop().run_until_complete(get_skill_build('!skill am', use_outdated_photo_if_fails=False))
