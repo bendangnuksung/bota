@@ -104,6 +104,8 @@ def get_stats_calls():
 
 @app.route('/stats/update', methods=['POST'])
 def stats_update():
+    if not check_enough_memory():
+        sys.exit()
     flag = logstat.update_df()
     # update_value_to_server(logstat, force_update=True)
     data = {'flag': flag}
