@@ -1,4 +1,5 @@
 import os
+import requests
 
 # Private keys
 DISCORD_TOKEN = ""
@@ -6,7 +7,16 @@ DOTA2_API_KEY = ""
 DISCORD_CLIENT_ID = ""
 ADMIN_ID = "" # Discord User
 TWITCH_CLIENT_IDS = [] # List of strings: twitch client IDs
+TWITCH_SECRET_KEY = []
 LOG_PORCESS_IP_ADDRESS = '' #  IP address with Port Number where the LOG will be processed (Not necessary)
+
+
+def get_steam_auth_token(client_id, secret_id):
+    url = f'https://id.twitch.tv/oauth2/token?client_id={client_id}&client_secret={secret_id}&grant_type=client_credentials'
+    r = requests.post(url)
+    r = r.json()
+    token = r['access_token']
+    return token
 
 
 # Take keys from environment variable if empty
@@ -37,6 +47,12 @@ if len(TWITCH_CLIENT_IDS) <= 0:
     if TWITCH_CLIENT_IDS is None:
         print("TWITCH_CLIENT_IDS not provided")
 
+if len(TWITCH_SECRET_KEY) <= 0:
+    twitch = env_var.get('TWITCH_SECRET_KEY')
+    TWITCH_SECRET_KEY = [env_var.get('TWITCH_SECRET_KEY')]
+    if TWITCH_SECRET_KEY is None:
+        print("TWITCH SECRET KEY not provided")
+
 if LOG_PORCESS_IP_ADDRESS == "":
     LOG_PORCESS_IP_ADDRESS = env_var.get('LOG_PORCESS_IP_ADDRESS')
     if LOG_PORCESS_IP_ADDRESS is None:
@@ -52,3 +68,8 @@ for key, val in CREDS.items():
     print(key, ': ', val)
 print("*"*40)
 
+
+TWITCH_AUTH_TOKENS = {}
+for client_id, secret_key in zip(TWITCH_CLIENT_IDS, TWITCH_SECRET_KEY):
+    oth_token = get_steam_auth_token(client_id, secret_key)
+    TWITCH_AUTH_TOKENS[client_id] = oth_token

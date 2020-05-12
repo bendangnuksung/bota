@@ -20,8 +20,9 @@ twitch_language = {'english': "en", "dansk": 'da', "danish": "da", "deutsch": "d
 def request_dota2_stream_json(url):
     response_flag = False
     response = {}
-    for client_id in bota.private_constant.TWITCH_CLIENT_IDS:
-        r = requests.get(url, headers={constant.TWITCH_KEYWORD_CLIENT_ID: str(client_id)})
+    for client_id, oth_token in bota.private_constant.TWITCH_AUTH_TOKENS.items():
+        r = requests.get(url, headers={'Client-Id': str(client_id), "Authorization": "Bearer " + oth_token})
+        # r = requests.get(url, headers={constant.TWITCH_KEYWORD_CLIENT_ID: str(client_id)})
         if r.status_code == 200:
             response = r
             response_flag = True
