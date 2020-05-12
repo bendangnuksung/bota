@@ -3,6 +3,7 @@
 BASEDIR=$(dirname "$0")
 cd $BASEDIR
 
+git pull origin master
 export DISCORD_TOKEN=$1
 export DISCORD_CLIENT_ID=$2
 export DOTA2_API_KEY=$3
