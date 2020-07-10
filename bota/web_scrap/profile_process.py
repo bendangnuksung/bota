@@ -218,7 +218,7 @@ def scrap_profile_info(profile_id):
     dp_url = get_dp_url(soup)
 
     medal = medal_info['medal']
-    if medal_info['rank'] == '':
+    if medal_info['rank'] == '' or medal.split()[0] == 'divine':
         medal = get_medal_url(medal)
     else:
         medal = get_medal_url(medal, rank=medal_info['rank'])
@@ -230,7 +230,9 @@ def scrap_profile_info(profile_id):
 
 if __name__ == '__main__':
     ids  = ['1234567890', '237445135','116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
-    ids = ['297066030']
+    ids = ['145296060']
     for id in ids:
         string, medal, dp_url = scrap_profile_info(id)
         print(string)
+        print(medal)
+        print(dp_url)
