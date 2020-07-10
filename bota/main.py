@@ -181,7 +181,7 @@ async def cmd_counter(message, message_string, message_word_length):
             return False, command_called
         else:
             desc = f'**Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
-            title = f"{hero_name.upper()} is countered by:"
+            title = f"{hero_name.upper()} is BAD against:"
             embed = discord.Embed(description=desc, color=discord.Color.red(), title=title)
             image_file = discord.File(image_path, os.path.basename(image_path))
             embed.set_image(url=f"attachment://{image_file.filename}")
@@ -242,9 +242,8 @@ async def cmd_good(message, message_string, message_word_length):
                 await message.channel.send(embed=msg)
             return False, command_called
         else:
-            desc = f'**Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)\n' \
-                   f'**{hero_name}** is **Good** against: '
-            title = f"{hero_name.upper()}:"
+            desc = f'**Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
+            title = f"{hero_name.upper()} is GOOD against:"
             embed = discord.Embed(description=desc, color=discord.Color.green(), title=title)
             image_file = discord.File(image_path, os.path.basename(image_path))
             embed.set_image(url=f"attachment://{image_file.filename}")
