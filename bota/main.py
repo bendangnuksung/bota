@@ -329,7 +329,7 @@ async def cmd_profile(message, message_string, message_word_length, user_discord
             return False, command_called
 
     result_embed = embed_txt_message(result, color=discord.Color.green())
-    result_embed.set_author(name=f"**Profile: {steam_id}**", url=f'{constant.PLAYER_URL_BASE}{steam_id}',
+    result_embed.set_author(name=f"SteamID: {steam_id}", url=f'{constant.PLAYER_URL_BASE}{steam_id}',
                             icon_url=dp_url)
     result_embed.set_thumbnail(url=medal_url)
     if not flag:
