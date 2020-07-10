@@ -248,16 +248,17 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
     if not is_file_old(guide_image_path, threshold_update_time) or (given_hero is None and os.path.exists(guide_image_path)):
         return True, hero_name, guide_image_path
 
-    url = constant.GUIDE_URL.replace('<hero_name>', hero_name)
+    url_skill = constant.GUIDE_URL_SKILL.replace('<hero_name>', hero_name)
 
     skill_filename = hero + '_skill.jpg'
     skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
-    flag_1, exception_summary = await get_screenshot(constant.SKILL_SELECTOR, url, skill_screenshot_path)
+    flag_1, exception_summary = await get_screenshot(constant.SKILL_SELECTOR, url_skill, skill_screenshot_path)
 
     if flag_1:
         talent_filename = hero + '_talent.jpg'
         talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
-        flag_2, exception_summary = await get_screenshot(constant.TALENT_SELECTOR, url, talent_screenshot_path)
+        url_talent = constant.GUIDE_URL_TALENT.replace('<hero_name>', hero_name)
+        flag_2, exception_summary = await get_screenshot(constant.TALENT_SELECTOR, url_talent, talent_screenshot_path)
         if flag_2:
             talent_image = cv2.imread(talent_screenshot_path)
             talent_crop = crop_image(talent_image, constant.TALENT_CROP_COORDS)
@@ -446,10 +447,10 @@ def get_protracker_hero(query):
 if __name__ == '__main__':
     # print(get_item_build('!good enchan'))
     # get_protracker_hero("!pro slark")
-    get_counter_hero('!counter axe mid')
+    # get_counter_hero('!counter axe mid')
     # exit()
     import asyncio
-    r = asyncio.get_event_loop().run_until_complete(get_skill_build('!skill am', use_outdated_photo_if_fails=False))
+    r = asyncio.get_event_loop().run_until_complete(get_skill_build('!skill slark', use_outdated_photo_if_fails=False))
     print(r)
     print("Completed")
     exit()
