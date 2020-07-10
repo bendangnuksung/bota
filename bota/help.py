@@ -28,11 +28,14 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 
 # Update Block
 # UPDATE_BLOCK = 'Get Synergy hero for team with **`!synergy`**.\nType **`!synergy help`** for details'
-UPDATE_BLOCK = '**NEW**:' \
-               'To show only particular lane heroes that counter Anti Mage: **For EG:**\n' \
-               '1. Counter with support **`!counter am support`**\n' \
-               '2. Counter with midlane **`!counter am mid`**\n'\
-               'More Options: **`!counter help`** or **`!good help`**'
+
+# UPDATE_BLOCK = '**NEW**:' \
+#                'To show only particular lane heroes that counter Anti Mage: **For EG:**\n' \
+#                '1. Counter with support **`!counter am support`**\n' \
+#                '2. Counter with midlane **`!counter am mid`**\n'\
+#                'More Options: **`!counter help`** or **`!good help`**'
+
+UPDATE_BLOCK = '**`!counter help`** or **`!good help`**'
 
 
 UPDATE_BLOCK_LIST=\
