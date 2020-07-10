@@ -92,8 +92,11 @@ def get_latest_match(soup, top=5):
             break
         hero_name = row.find('a').contents[0].attrs['title']
         hero_name_split = hero_name.split()
-        if len(hero_name) > 12 and len(hero_name_split) > 1:
-            hero_name = hero_name_split[0][0].upper() + hero_name_split[1][0].upper()
+        print(hero_name_split)
+        if len(hero_name) > 11 and len(hero_name_split) > 1:
+            # hero_name = hero_name_split[0][0].upper() + hero_name_split[1][0].upper()
+            hero_name = [hn[0].upper() for hn in hero_name_split]
+            hero_name = ''.join(hero_name)
 
         result = row.find('div', {'class': 'r-fluid r-175 r-text-only r-right r-match-result'})
         status = result.find('a').attrs['class'][0]
@@ -139,7 +142,7 @@ def pretty_profile_text_for_discord(json_data, spaces=18):
         else:
 
             if key_1 == 'latest_match':
-                table = cvt_dict_to_discord_pretty_text(value, rename_keys={'duration': 'time', 'status':'w/l'}, spaces=15,
+                table = cvt_dict_to_discord_pretty_text(value, rename_keys={'duration': 'time', 'status':'w/l'}, spaces=12,
                                                                custom_space={'w/l':4, 'type': 8, 'time': 8,
                                                                              'kda':8, 'win': 8, 'matches': 9})
             else:
@@ -227,6 +230,7 @@ def scrap_profile_info(profile_id):
 
 if __name__ == '__main__':
     ids  = ['1234567890', '237445135','116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
+    ids = ['297066030']
     for id in ids:
         string, medal, dp_url = scrap_profile_info(id)
         print(string)
