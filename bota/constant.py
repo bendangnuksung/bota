@@ -193,8 +193,8 @@ GUIDE_URL_TALENT = 'https://www.dotabuff.com/heroes/<hero_name>/builds'
 TALENT_SELECTOR = 'body > div.container-outer.seemsgood > div.skin-container > div.container-inner.container-inner-content > div.content-inner > div.row-12.hero-abilities > div.col-8 > section:nth-child(1) > article'
 TALENT_CROP_COORDS = [50, 125, 750, -135] # xmin, ymin, xmax, ymax
 
-GUIDE_URL_SKILL = 'https://www.dotabuff.com/heroes/<hero_name>'
-SKILL_SELECTOR = 'body > div.container-outer.seemsgood > div.skin-container > div.container-inner.container-inner-content > div.content-inner > div.row-12 > div.col-8 > section:nth-child(4) > article'
+GUIDE_URL_SKILL = 'https://www.dotabuff.com/heroes/<hero_name>/builds'
+SKILL_SELECTOR = 'body > div.container-outer.seemsgood > div.skin-container > div.container-inner.container-inner-content > div.content-inner > div:nth-child(2) > div:nth-child(5) > div.build'
 SKILL_CROP_COORDS = [0, 173, 670, -175] # xmin, ymin, xmax, ymax
 
 
