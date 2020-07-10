@@ -5,7 +5,9 @@ from bota.web_scrap import scrap_constant
 import re
 from bota.utility.discord_display import cvt_dict_to_discord_pretty_text
 import os
+import re
 
+regex = re.compile('[^a-zA-Z ]')
 
 # Div class r-fluid line-graph sometimes different for others
 r_fluid_list = ['r-10', 'r-20', 'r-30', 'r-40', 'r-50']
@@ -67,6 +69,7 @@ def get_most_played_heroes(soup, top=5):
         if i > top:
             break
         hero_name = row.find('div', {'class': "r-none-mobile"}).contents[0].string
+        hero_name = regex.sub('', hero_name)
         others = None
         for r_n in  r_fluid_list:
             others = row.find_all('div', {'class': f'r-fluid {r_n} r-line-graph'})
@@ -91,12 +94,18 @@ def get_latest_match(soup, top=5):
         if i > top:
             break
         hero_name = row.find('a').contents[0].attrs['title']
+        hero_name = regex.sub('', hero_name)
         hero_name_split = hero_name.split()
         print(hero_name_split)
         if len(hero_name) > 11 and len(hero_name_split) > 1:
             # hero_name = hero_name_split[0][0].upper() + hero_name_split[1][0].upper()
-            hero_name = [hn[0].upper() for hn in hero_name_split]
-            hero_name = ''.join(hero_name)
+            hero_name = []
+            for i, hn in enumerate(hero_name_split):
+                if i == 0:
+                    hero_name.append(hn)
+                else:
+                    hero_name.append(hn[0].upper())
+            hero_name = ' '.join(hero_name)
 
         result = row.find('div', {'class': 'r-fluid r-175 r-text-only r-right r-match-result'})
         status = result.find('a').attrs['class'][0]
