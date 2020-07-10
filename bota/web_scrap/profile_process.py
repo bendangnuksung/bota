@@ -92,7 +92,7 @@ def get_latest_match(soup, top=5):
             break
         hero_name = row.find('a').contents[0].attrs['title']
         hero_name_split = hero_name.split()
-        if len(hero_name) > 14 and len(hero_name_split) > 1:
+        if len(hero_name) > 12 and len(hero_name_split) > 1:
             hero_name = hero_name_split[0][0].upper() + hero_name_split[1][0].upper()
 
         result = row.find('div', {'class': 'r-fluid r-175 r-text-only r-right r-match-result'})
@@ -155,7 +155,7 @@ def pretty_profile_text_for_discord(json_data, spaces=18):
 def get_medal_url(medal, rank=None):
     medals_url = 'https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/medals_small/'
 
-    if medal == 'uncalibrated':
+    if medal == 'uncalibrated' or medal == 'not calibrated':
         return medals_url + 'uncalibrated.png' + '?raw=true'
     if rank is not None:
         rank = int(rank)
@@ -169,6 +169,7 @@ def get_medal_url(medal, rank=None):
     else:
         medal_name, medal_no = medal.split()
         medal_no = constant.MEDAL_NUMBERING[medal_no]
+
         medal_name = medal_name + '-' + str(medal_no)
         medal_url = medals_url + (medal_name + '.png')
         return medal_url + '?raw=true'
@@ -186,7 +187,7 @@ def scrap_profile_info(profile_id):
     url = constant.PLAYER_URL_BASE + profile_id
     r = requests.get(url, headers=scrap_constant.browser_headers)
     if r.status_code != 200:
-        return '', ''
+        return '', '', ''
     html = r.text
     soup = bs(html, 'html.parser')
 
@@ -227,6 +228,5 @@ def scrap_profile_info(profile_id):
 if __name__ == '__main__':
     ids  = ['1234567890', '237445135','116585378', '425327377', '86753879', '86745912', '297066030', '46135920']
     for id in ids:
-        r,link = (scrap_profile_info(id))
-        print(r)
-        print(link)
+        string, medal, dp_url = scrap_profile_info(id)
+        print(string)
