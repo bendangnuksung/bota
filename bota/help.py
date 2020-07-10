@@ -56,10 +56,8 @@ DOTA_RELATED_COMMAND_LIST = {
                  '!counter HeroName': 'Get counter heroes for given HeroName eg: **`!counter am`**',
                  '!good HeroName'   : 'Opposite of !counter command. Good against. eg: **`!good axe`**',
                  '!skill HeroName': 'Get most popular & win rate talent/skill build  eg:**`!skill meepo`**',
-                 '!team HeroName': 'Getnext best hero for team. Type:**`!team help`** for details',
                  '!item HeroName'   : 'Get recent item build by Top Rank Players  eg: **`!item kotl`**',
                  '!trend'           : 'Get current heroes trend  eg: `!trend`',
-                 '!pro HeroName': 'Hero recently played by Pros and stats. eg:**`!protrack slark`**',
                  '!agha HeroName': 'Get Aghanim Scepter info for heroes, eg: **`!agha gyro`**'
                 }
 

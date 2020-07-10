@@ -50,10 +50,12 @@ def get_top_games(length=10):
 	game_list = dota_api.get_top_live_games()
 	game_list = game_list['game_list']
 	notable_player_dict = {}
-	try:
-		notable_player_dict = get_notable_hero_from_d2pt()
-	except Exception:
-		pass
+	if False:
+		try:
+			notable_player_dict = get_notable_hero_from_d2pt()
+		except Exception:
+			pass
+
 	results = []
 	results.append(constant.TLG_CUSTOM_COLUMNS)
 	for game in game_list:
@@ -74,9 +76,7 @@ def get_top_games(length=10):
 		if constant.KEYWORD_DIRE_TEAM in game:
 			d_team_name = game[constant.KEYWORD_DIRE_TEAM]
 
-		match_id = game[constant.KEYWORD_MATCH_ID]
-		notable_players = '' if match_id not in notable_player_dict else notable_player_dict[match_id]
-		results.append([notable_players, r_team_name, d_team_name, avg_mmr, game_mode, n_spectators,
+		results.append([r_team_name, d_team_name, avg_mmr, game_mode, n_spectators,
 						game_time, r_kills, d_kills, gold_lead])
 
 	results = [results[0]] + sorted(results[1:], key =lambda x: (x[4]), reverse=True)

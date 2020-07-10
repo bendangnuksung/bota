@@ -82,12 +82,11 @@ async def cmd_top_game(message):
     command_called = '!top game'
     async with message.channel.typing():
         image_path = get_top_games()
-        msg = "Top Live Games: Dota2API, Dota2ProTracker"
+        msg = "Top Live Games: Dota2API"
         embed = discord.Embed(color=discord.Color.green())
         embed.title = msg
         image_file = discord.File(image_path, os.path.basename(image_path))
-        embed.add_field(name="Source:", value=('[Dota2API](https://demodota2api.readthedocs.io/en/latest/#)  '
-                                               '[Dota2ProTracker](http://www.dota2protracker.com)'))
+        embed.add_field(name="Source:", value=('[Dota2API](https://demodota2api.readthedocs.io/en/latest/#)'))
         embed.set_image(url=f"attachment://{image_file.filename}")
         embed = add_footer_requested_by_username(embed, message)
         await message.channel.send(embed=embed, file=image_file)
@@ -133,7 +132,7 @@ async def cmd_protracker(message, message_string):
         found, hero_name, result_string, icon_path = get_protracker_hero(message_string)
     if not found:
         if result_string == 'request-timeout':
-            embed = discord.Embed(description=f"Currently facing server down from www.dota2protracker.com (D2PT).",
+            embed = discord.Embed(description=f"This command no longer works. Sorry!",
                                   color=discord.Color.red())
             await message.channel.send(embed=embed)
 
