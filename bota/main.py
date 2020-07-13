@@ -664,7 +664,7 @@ async def on_message(message):
         else:
             with open(constant.SCRAP_LOG_PATH) as f:
                 file = f.readlines()
-                lines = "Background Scrap logs: \n```cs\n" + "".join(file[-15:]) + "```"
+                lines = "Background Scrap logs: \n```cs\n" + "".join(file[-30:]) + "```"
                 await message.channel.send(lines)
 
     elif "!restart bota" in message_string and str(message.author) == ADMIN_ID:
