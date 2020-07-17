@@ -557,12 +557,11 @@ async def on_message(message):
     user_discord_name = message.author.name
     message_content = message.content[:100]
 
-
     # Ignore all message passed by the our bot
     if client.user == message.author:
         is_command_called = False
 
-    elif message_word_length < 3:
+    elif len(message_string) < 3:
         return
 
     elif '!' == message_string[0]:
