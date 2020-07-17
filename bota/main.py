@@ -694,7 +694,7 @@ async def on_message(message):
 
     if is_command_called:
         log_caller.save_log(message, command_called)
-
+        print(f"{message.author.name}: {message.author}: {message.channel}: {message_content}")
 
 
     # Getting total guilds using
