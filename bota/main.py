@@ -556,11 +556,17 @@ async def on_message(message):
     user_discord_id = message.author.id
     user_discord_name = message.author.name
     message_content = message.content[:100]
-    print(f"{message.author.name}: {message.author}: {message.channel}: {message_content}")
+
 
     # Ignore all message passed by the our bot
     if client.user == message.author:
         is_command_called = False
+
+    elif message_word_length < 3:
+        return
+
+    elif '!' == message_string[0]:
+        return
 
     # Manual block users
     elif user_discord_id in [612215331334782990, 612284442131824640]:
@@ -689,6 +695,8 @@ async def on_message(message):
 
     if is_command_called:
         log_caller.save_log(message, command_called)
+        print(f"{message.author.name}: {message.author}: {message.channel}: {message_content}")
+
 
     # Getting total guilds using
     log_caller.update_value_to_server()
