@@ -96,7 +96,6 @@ def get_latest_match(soup, top=5):
         hero_name = row.find('a').contents[0].attrs['title']
         hero_name = regex.sub('', hero_name)
         hero_name_split = hero_name.split()
-        print(hero_name_split)
         if len(hero_name) > 11 and len(hero_name_split) > 1:
             # hero_name = hero_name_split[0][0].upper() + hero_name_split[1][0].upper()
             hero_name = []
