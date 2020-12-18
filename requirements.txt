@@ -13,4 +13,4 @@ imageio==2.6.1
 psycopg2==2.8.3
 discord.py==1.2.5
 webscreenshot==2.94
-opencv-python
+opencv-python==4.4.0.46

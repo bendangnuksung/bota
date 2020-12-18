@@ -16,10 +16,15 @@ def display(img):
 def take_screenshot(url, path_to_save):
     flag = True
     summary = ''
-    temp_save_path = os.path.join(current_file_path, 'temp_screenshot.png')
+    temp_save_path = 'temp_screenshot.png'
     try:
         os.system(f'webscreenshot {url} -z {temp_save_path}')
-        copyfile(temp_save_path, path_to_save)
+
+        absolute_temp_save_path = os.path.join(constant.REPO_PATH, temp_save_path)
+        if os.path.exists(absolute_temp_save_path):
+            absolute_temp_save_path = os.path.join(current_file_path, temp_save_path)
+
+        copyfile(absolute_temp_save_path, path_to_save)
     except Exception as e:
         flag = False
         summary = e
