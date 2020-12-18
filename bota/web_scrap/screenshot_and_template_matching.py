@@ -2,7 +2,7 @@ import os
 import cv2
 from bota import constant
 import numpy as np
-from shutil import copyfile
+import shutil
 import matplotlib.pyplot as plt
 
 current_file_path = os.path.dirname(os.path.realpath(__file__))
@@ -16,15 +16,15 @@ def display(img):
 def take_screenshot(url, path_to_save):
     flag = True
     summary = ''
-    temp_save_path = 'temp_screenshot.png'
+    dirname = os.path.dirname(path_to_save)
+    filename_generated = url.replace('.com/', '.com_443/').replace('://', '_').replace('/', '_') + '.png'
+
+    # print(dirname, ' | ', filename)
+    # print(url)
     try:
-        os.system(f'webscreenshot {url} -z {temp_save_path}')
+        os.system(f'webscreenshot {url} -o {dirname}')
+        shutil.move(os.path.join(dirname, filename_generated), path_to_save)
 
-        absolute_temp_save_path = os.path.join(os.getcwd(), temp_save_path)
-        if os.path.exists(absolute_temp_save_path):
-            absolute_temp_save_path = os.path.join(current_file_path, temp_save_path)
-
-        copyfile(absolute_temp_save_path, path_to_save)
     except Exception as e:
         flag = False
         summary = e
@@ -71,8 +71,8 @@ if __name__ == '__main__':
     skill_template_image = cv2.imread(constant.SKILL_TEMPLATE_PATH, 0)
 
     test_type = 'skill' # 'talent'
-    save_image = False
-    is_display = True
+    save_image = True
+    is_display = False
 
     # crop_coords= skill_coords
     for hero_name in heroes_names:
