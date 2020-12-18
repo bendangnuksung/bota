@@ -30,10 +30,5 @@ RUN apt-get install -y xvfb && \
     apt-get install -y phantomjs
 
 
-## Run once time update:
-RUN cd /bota && \
-    sh run_scrap.sh 3
-
-
-ENTRYPOINT /bota/run_bota_docker.sh
-
+# sudo docker build -f dockerfile -t DOCKERNAME:TAGNAME .
+# 
