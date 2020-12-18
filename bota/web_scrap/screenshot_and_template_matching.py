@@ -20,7 +20,7 @@ def take_screenshot(url, path_to_save):
     try:
         os.system(f'webscreenshot {url} -z {temp_save_path}')
 
-        absolute_temp_save_path = os.path.join(constant.REPO_PATH, '../' + temp_save_path)
+        absolute_temp_save_path = os.path.join(os.getcwd(), temp_save_path)
         if os.path.exists(absolute_temp_save_path):
             absolute_temp_save_path = os.path.join(current_file_path, temp_save_path)
 
