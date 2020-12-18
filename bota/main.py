@@ -257,7 +257,7 @@ async def cmd_skill(message, message_string):
     command_called = '!skill'
     async with message.channel.typing():
         note = UPDATE_BLOCK
-        found, hero_name, image_path = await get_skill_build(message_string)
+        found, hero_name, image_path = get_skill_build(message_string)
         if not found:
             if hero_name != '':
                 msg = f"Did you mean  **{hero_name.replace('-', ' ')}**, Try again with correct name"

@@ -7,17 +7,21 @@ from bota import constant
 import os
 import cv2
 import numpy as np
-from bota.web_scrap.web_screenshot import get_screenshot
+# from bota.web_scrap.web_screenshot import get_screenshot
 from bota.web_scrap.items_process import scrap_item_info, make_item_image
 from bota.web_scrap.profile_process import scrap_profile_info
 from bota.web_scrap.reddit_process import scrap_reddit_dota
 from bota.applications.steam_user_db import UserDB, AliasDB
 from bota.web_scrap.protracker_process import DotaProTracker
 from bota.web_scrap.scrap_constant import hero_role, hero_role_alternative_names, hero_role_colors
+from bota.web_scrap.screenshot_and_template_matching import take_screenshot, crop_screenshots
 
 user_db = UserDB()
 alias = AliasDB()
 d2pt = DotaProTracker()
+
+talent_template_image = cv2.imread(constant.TALENT_TEMPLATE_PATH, 0)
+skill_template_image = cv2.imread(constant.SKILL_TEMPLATE_PATH, 0)
 
 
 def check_if_role_given(message):
@@ -225,7 +229,7 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
             return False, e
 
 
-async def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
+def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_fails=True):
     given_hero = hero
     if hero is None:
         query = query.split()
@@ -252,19 +256,25 @@ async def get_skill_build(query, hero=None, early_update=False, use_outdated_pho
 
     skill_filename = hero + '_skill.jpg'
     skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
-    flag_1, exception_summary = await get_screenshot(constant.SKILL_SELECTOR, url_skill, skill_screenshot_path)
+    flag_1, exception_summary = take_screenshot(url_skill, skill_screenshot_path)
 
     if flag_1:
         talent_filename = hero + '_talent.jpg'
         talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
         url_talent = constant.GUIDE_URL_TALENT.replace('<hero_name>', hero_name)
-        flag_2, exception_summary = await get_screenshot(constant.TALENT_SELECTOR, url_talent, talent_screenshot_path)
+        flag_2, exception_summary = take_screenshot(url_talent, talent_screenshot_path)
         if flag_2:
             talent_image = cv2.imread(talent_screenshot_path)
-            talent_crop = crop_image(talent_image, constant.TALENT_CROP_COORDS)
+            talent_crop = crop_screenshots(talent_image, talent_template_image, offset_x=constant.TALENT_OFFSET_X,
+                                                                                offset_y=constant.TALENT_OFFSET_Y,
+                                                                                offset_height=constant.TALENT_OFFSET_HEIGHT,
+                                                                                offset_width=constant.TALENT_OFFSET_WIDTH)
 
             skill_image = cv2.imread(skill_screenshot_path)
-            skill_crop = crop_image(skill_image, constant.SKILL_CROP_COORDS)
+            skill_crop = crop_screenshots(skill_image, skill_template_image, offset_height=constant.SKILL_OFFSET_HEIGHT,
+                                                                             offset_x=constant.SKILL_OFFSET_X,
+                                                                             offset_y=constant.SKILL_OFFSET_Y,
+                                                                             offset_width=constant.SKILL_OFFSET_WIDTH)
 
             hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
             hero_icon = cv2.imread(hero_icon_path)
@@ -449,15 +459,8 @@ if __name__ == '__main__':
     # get_protracker_hero("!pro slark")
     # get_counter_hero('!counter axe mid')
     # exit()
-    import asyncio
-    r = asyncio.get_event_loop().run_until_complete(get_skill_build('!skill slark', use_outdated_photo_if_fails=False))
+    # r = get_skill_build('!skill slark', use_outdated_photo_if_fails=False)
+    r = get_good_against('!good witch-doctor')
     print(r)
     print("Completed")
     exit()
-    # print(save_id('!save sam 297066030'))
-    # print(get_counter_hero('!good ursa'))
-    # print(get_good_against('!good ursa'))
-    import asyncio
-    print(asyncio.get_event_loop().run_until_complete(get_skill_build('!good witch doctor')))
-    # print(get_skill_build('!good witch doctor'))
-

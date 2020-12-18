@@ -66,3 +66,7 @@ docs/_build/
 .env
 dota2api
 bota/data
+
+# webscreenshots
+webscreenshots_failed.txt
+screenshots
