@@ -25,7 +25,7 @@ SCRAP_LOG_FILE_PATH = 'scrap_log.txt'
 
 SCREEN_SHOT_SCRAP_FUNCTIONS = {'skill': get_skill_build, 'item': get_item_build,
                                'counter': get_counter_hero, 'good': get_good_against}
-SCRAP_FUNCTIONS_THAT_NEED_LOOP = ['skill']
+SCRAP_FUNCTIONS_THAT_NEED_LOOP = []
 
 #
 formatter = logging.Formatter('%(asctime)s - %(message)s', '%d-%m %H:%M')
