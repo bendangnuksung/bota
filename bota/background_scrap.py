@@ -14,8 +14,7 @@ parser = argparse.ArgumentParser(description='Script to scrap data everyday at a
                                  formatter_class=RawTextHelpFormatter,)
 
 # parser.add_argument('--time', '-t', help='UST time at which update will take place. Format: HH:MM ', default='22:00')
-parser.add_argument('--mode', '-m', help='1: Update images once a day at given time \n'
-                                         '2: Update images now and returns back to mode 1',          default=1)
+parser.add_argument('--mode', '-m', help='1: Update images once a day at given time \n2: Update images now and returns back to mode 1 \n3: Scrap Only once and stop', default=1)
 args = vars(parser.parse_args())
 
 
@@ -96,12 +95,13 @@ def update_images():
     return
 
 
-if args['mode'] == 2 or args['mode'] == '2':
+print("MODE: ", args['mode'])
+if args['mode'] == 2 or args['mode'] == '2' or args['mode'] == '3' or args['mode'] == 3:
     print("Running One Time update:")
     update_images()
     print("Finished One Time update")
 
-
-while True:
-    update_images()
-    time.sleep(UPDATE_INTERVAL-5) # wait 1 minute
+if args['mode'] != '3' or args['mode'] != 3:
+    while True:
+        update_images()
+        time.sleep(UPDATE_INTERVAL-5) # wait 1 minute

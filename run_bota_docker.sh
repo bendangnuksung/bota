@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-BASEDIR=$(dirname "$0")
-cd $BASEDIR
+cd /bota
 
 git pull origin master
 export DISCORD_TOKEN=$1

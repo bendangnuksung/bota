@@ -1,11 +1,14 @@
 # Set PYTHONPATH to current working directory
-wrk= pwd
-export PYTHONPATH=PYTHONPATH:$wrk
+export PYTHONPATH=PYTHONPATH:$pwd
 
-while true
-do
-  python3 bota/background_scrap.py -m 2
-  python3 notify_message.py -m 2
-  sleep 30
-done
+if [ -z "$1" ]
+  then
+    while true
+    do
+      python3 bota/background_scrap.py -m 2
+      sleep 30
+    done
+else
+  python3 bota/background_scrap.py -m 3
+fi
 
