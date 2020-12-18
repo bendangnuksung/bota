@@ -3,9 +3,9 @@ import cv2
 from bota import constant
 import numpy as np
 from shutil import copyfile
-
-
 import matplotlib.pyplot as plt
+
+current_file_path = os.path.dirname(os.path.realpath(__file__))
 
 
 def display(img):
@@ -16,7 +16,7 @@ def display(img):
 def take_screenshot(url, path_to_save):
     flag = True
     summary = ''
-    temp_save_path = 'temp_screenshot.png'
+    temp_save_path = os.path.join(current_file_path, 'temp_screenshot.png')
     try:
         os.system(f'webscreenshot {url} -z {temp_save_path}')
         copyfile(temp_save_path, path_to_save)
