@@ -200,7 +200,7 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'ok': 'omniknight', 'om': 'ogre-magi', 'nec': 'necrophos', 'lr': 'leshrac', 'ech': 'enchantress',
                            'enc': 'enchantress', 'mber': 'ember-spirit', 'amber': 'ember-spirit', 'dz': 'dazzle',
                            'br': 'batrider', 'snap': 'snapfire', 'snap fire': 'snapfire', 'void spirit': 'void-spirit',
-                           'hw': 'hoodwink'
+                           'hw': 'hoodwink', 'wood': 'hoodwink', 'wink': 'hoodwink'
                            }
 
 
