@@ -113,7 +113,7 @@ heroes_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-
                 'spirit-breaker', 'storm-spirit', 'sven', 'techies', 'templar-assassin', 'terrorblade', 'tidehunter',
                 'timbersaw', 'tinker', 'tiny', 'treant-protector', 'troll-warlord', 'tusk', 'underlord', 'undying', 'ursa',
                 'vengeful-spirit', 'venomancer', 'viper', 'visage', 'void-spirit','warlock', 'weaver', 'windranger',
-                'winter-wyvern', 'witch-doctor', 'wraith-king', 'zeus']
+                'winter-wyvern', 'witch-doctor', 'wraith-king', 'zeus', 'hoodwink']
 
 
 heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancient-apparition', 'am':'anti-mage',
