@@ -1,5 +1,8 @@
 import os
 
+# command prefix
+DEFAULT_PREFIX = '!'
+
 # General
 MAX_COMMAND_WORD_LENGTH = 5
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))

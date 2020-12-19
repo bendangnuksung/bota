@@ -83,6 +83,10 @@ ADMIN_COMMAND_LIST = {'!stat': 'Shows overall stats and weekly stats',
                        '!bglog': 'Tails the background scrap log',
                        '!bglog download': 'Download the background scrap log'}
 
+GUILD_COMMAND_LIST = {'!guild prefix Character': 'Changing the BOTA command prefix of your own choice.\neg: **!guild prefix #**: Prefix change from "!" to "#"',
+                      '!guild block ChannelName': 'BOTA will not be able to send  message at ChannelName\neg: **!guild block general**',
+                      '!guild unblock general': 'BOTA will be able to send at ChannelName\neg: **!guild unblock general**'}
+
 
 PROFILE_HELP_STRING = "**To Save your own profile** \n" \
                       "Step 1:   **`!save YourSteamID`**, eg:  **`!save 311360822`**\n" \
@@ -190,3 +194,30 @@ def get_admin_commands():
 
     embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
     return embed_msg
+
+
+def get_guild_commands():
+    head = "**Guild Commands**:\n\n"
+    embed_msg = discord.Embed(description=head, color=discord.Color.blue())
+    embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
+                         url=constant.DEFAULT_EMBED_HEADER['url'])
+    for key, value in GUILD_COMMAND_LIST.items():
+        key = f"**`{key}`**"
+        embed_msg.add_field(name=key, value=value, inline=False)
+
+    embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
+    return embed_msg
+
+
+def pretty_guild_settings(my_dict):
+    head = "**Guild settings**:\n\n"
+    embed_msg = discord.Embed(description=head, color=discord.Color.blue())
+    embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
+                         url=constant.DEFAULT_EMBED_HEADER['url'])
+    for key, value in my_dict.items():
+        key = f"**`{key}`**"
+        embed_msg.add_field(name=key, value=value, inline=False)
+
+    embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
+    return embed_msg
+

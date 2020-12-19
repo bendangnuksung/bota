@@ -70,3 +70,4 @@ bota/data
 # webscreenshots
 webscreenshots_failed.txt
 screenshots
+test_run_docker.sh

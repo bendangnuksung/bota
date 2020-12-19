@@ -7,6 +7,7 @@ PASSWORD = "bota@123"
 # Table Name
 TABLE_USER_INFO = 'user_info'
 TABLE_ALIAS = 'alias'
+TABLE_GUILD = 'guild'
 
 
 # USER_INFO column name
@@ -18,3 +19,10 @@ COLUMN_OTHERS = 'others'
 
 # ALIAS column name
 COLUMN_ALIAS_NAME = 'alias_name'
+
+
+# GUILD column name
+COLUMN_GUILD_ID = 'id'
+COLUMN_GUILD_NAME = 'name'
+COLUMN_GUILD_PREFIX = 'prefix'
+COLUMN_GUILD_BLOCK_CHANNEL = 'block_channel'
