@@ -83,7 +83,8 @@ ADMIN_COMMAND_LIST = {'!stat': 'Shows overall stats and weekly stats',
                        '!bglog': 'Tails the background scrap log',
                        '!bglog download': 'Download the background scrap log'}
 
-GUILD_COMMAND_LIST = {'!guild prefix Character': 'Changing the BOTA command prefix of your own choice.\neg: **!guild prefix #**: Prefix change from "!" to "#"',
+GUILD_COMMAND_LIST = {'!guild settings': 'Displays current guild settings',
+                      '!guild prefix Character': 'Changing the BOTA command prefix of your own choice.\neg: **!guild prefix #**: Prefix change from "!" to "#"',
                       '!guild block ChannelName': 'BOTA will not be able to send  message at ChannelName\neg: **!guild block general**',
                       '!guild unblock general': 'BOTA will be able to send at ChannelName\neg: **!guild unblock general**'}
 
@@ -205,7 +206,7 @@ def get_guild_commands():
         key = f"**`{key}`**"
         embed_msg.add_field(name=key, value=value, inline=False)
 
-    embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
+    # embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
     return embed_msg
 
 
@@ -218,6 +219,6 @@ def pretty_guild_settings(my_dict):
         key = f"**`{key}`**"
         embed_msg.add_field(name=key, value=value, inline=False)
 
-    embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
+    # embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
     return embed_msg
 
