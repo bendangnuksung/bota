@@ -6,7 +6,7 @@ DEFAULT_PREFIX = '!'
 # General
 MAX_COMMAND_WORD_LENGTH = 5
 REPO_PATH = os.path.dirname(os.path.realpath(__file__))
-DEFAULT_EMBED_HEADER = {'name': 'Bota', 'icon_url': 'https://bota.tech/assets/images/bota-122x122.png',
+DEFAULT_EMBED_HEADER = {'name': 'Bota', 'icon_url': 'https://raw.githubusercontent.com/bendangnuksung/bota/master/github_images/bota.png',
                         'url': 'https://bota.tech'}
 DOTA2_LOGO_URL = 'https://seeklogo.com/images/D/dota-2-logo-A8CAC9B4C9-seeklogo.com.png'
 CHARACTER_ICONS_URL ='https://raw.githubusercontent.com/bendangnuksung/bota/master/bota/data/character_icons_big/'
