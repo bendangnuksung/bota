@@ -45,8 +45,11 @@ def make_item_image(infos, hero_name):
     for i, info in enumerate(infos):
         medal = info[constant.ITEM_KEYWORD_RANK_MEDAl]
         rank = info[constant.ITEM_KEYWORD_RANK]
-
-        medal_image_path = general.get_medal_image_path(medal, rank)
+        try:
+            medal_image_path = general.get_medal_image_path(medal, rank)
+        except Exception as e:
+            print(e)
+            continue
 
         # Top players should be either immortal or divine medals if not skip it
         flag_divine_immortal_medal = False
@@ -107,7 +110,6 @@ def make_item_image(infos, hero_name):
             bg_image = write_text_pil(bg_image, time, (item_time_x, item_time_y), size=constant.TIME_FONT_SIZE)
 
     new_height, new_width = int(bg_image.shape[0] * 0.84), int(bg_image.shape[1] * 0.84) # resizing for image size
-    print(new_height, new_width)
     bg_image = cv2.resize(bg_image, (new_width, new_height))
     return bg_image
     # display(bg_image)

@@ -71,3 +71,4 @@ bota/data
 webscreenshots_failed.txt
 screenshots
 test_run_docker.sh
+test_run_locally.sh
