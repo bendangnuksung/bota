@@ -226,8 +226,8 @@ async def save(ctx):
     await ctx.send(embed=summary)
 
 
-
-token = "NjA2Mzk0Njk4NTcxMTg2MTc2.XUKbEg.vVkMfq2nacNWHT62pmCaMplpqZY"
-bot.run(token)
+env_var = os.environ
+DISCORD_TOKEN = env_var.get('DISCORD_TOKEN')
+bot.run(DISCORD_TOKEN)
 
 
