@@ -1,3 +1,8 @@
+from bota.constant import REPO_PATH
+from glob import glob
+import os
+
+
 ##### General
 browser_headers = {'user-agent': 'Mozilla/5.0'}
 browser_headers_chrome = {'user-agent': 'Chrome/75.0.3770.80-1'}
@@ -284,6 +289,10 @@ ITEM_NAMES = ['abyssal-blade', 'aegis-of-the-immortal', 'aeon-disk', 'aether-len
               'book-of-the-dead', 'ironwood-tree', 'essence-ring', 'fusion-rune', 'vambrace', 'ninja-gear',
               'illusionists-cape', 'third-eye', 'minotaur-horn', 'arcane-ring', 'quickening-charm', 'mango-tree',
               'philosophers-stone', 'flicker', 'seer-stone', 'spell-prism', 'greater-faerie-fire']
+
+items_path = os.path.join(REPO_PATH, 'data/items/*.png')
+items = [os.path.basename(x.replace('.png', '').lower()) for x in glob(items_path)]
+ITEM_NAMES = list(set(ITEM_NAMES + items))
 
 
 # Dota 2 pro tracker constants
