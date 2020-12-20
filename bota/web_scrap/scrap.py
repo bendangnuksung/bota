@@ -460,7 +460,7 @@ if __name__ == '__main__':
     # get_counter_hero('!counter axe mid')
     # exit()
     # r = get_skill_build('!skill slark', use_outdated_photo_if_fails=False)
-    r = get_item_build('!item wk')
+    r = get_item_build('!item viper')
     # r = get_good_against('!good witch-doctor')
     print(r)
     print("Completed")
