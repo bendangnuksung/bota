@@ -12,12 +12,12 @@ class GuildCaller:
         pass
 
     def get_guild_settings(self, guild_id):
-        columns = [dbc.COLUMN_GUILD_PREFIX, dbc.COLUMN_GUILD_BLOCK_CHANNEL]
+        columns = [dbc.COLUMN_GUILD_NAME, dbc.COLUMN_GUILD_PREFIX, dbc.COLUMN_GUILD_BLOCK_CHANNEL]
         wherekey = {dbc.COLUMN_GUILD_ID: guild_id}
         try:
             r = bota_db.select_query(dbc.TABLE_GUILD, columns, wherekey)[0]
         except:
-            r = [None, None]
+            r = [None, None, None]
         return r
 
     def guild_exist(self, guild_id):

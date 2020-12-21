@@ -28,7 +28,7 @@ def add_footer_requested_by_username(embed, message, note=NOTE_FOOTER):
 
 def get_infos_from_msg(ctx):
     message_string = str(ctx.message.content)
-    message_word_length = message_string.split()
+    message_word_length = len(message_string.split())
     user_discord_id = ctx.message.author.id
     user_discord_name = ctx.message.author.name
 

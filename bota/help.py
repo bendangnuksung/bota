@@ -77,14 +77,14 @@ ADMIN_COMMAND_LIST = {'!stat': 'Shows overall stats and weekly stats',
                        '!stat update': 'Update the Log to get latest stats',
                        '!tail': 'Shows last N lines from Log',
                        '!guild': 'Shows total guilds using BOTA',
-                       'loglocal': 'Shows stats and reason if log didnt get push to the log server',
-                       'loglocal clear': 'Clear all local logs',
+                       '!loglocal': 'Shows stats and reason if log didnt get push to the log server',
+                       '!loglocal clear': 'Clear all local logs',
                        '!broadcast admin_client_id messsage': 'Broadcast Message to servers',
                        '!bglog': 'Tails the background scrap log',
                        '!bglog download': 'Download the background scrap log'}
 
 GUILD_COMMAND_LIST = {'!guild settings': 'Displays current guild settings',
-                      '!guild prefix Character': 'Changing the BOTA command prefix of your own choice.\neg: **!guild prefix #**: Prefix change from "!" to "#"',
+                      '!guild prefix Character': 'Changing the BOTA command prefix of your own choice.\neg: **!guild prefix #**: Prefix change from "!" to "&"',
                       '!guild block ChannelName': 'BOTA will not be able to send  message at ChannelName\neg: **!guild block general**',
                       '!guild unblock general': 'BOTA will be able to send at ChannelName\neg: **!guild unblock general**'}
 
@@ -144,7 +144,7 @@ GOOD_EXAMPLE = f'**How to use `!good` command**:\n' \
                        f'eg 5: **`!good io initiator`** or **`!good io init`**'
 
 
-def get_help():
+def get_help(prefix):
     help_string = []
     head = "**Commands to use BOTA**: 😋\n\n"
     # post_head = UPDATE_BLOCK
@@ -153,14 +153,14 @@ def get_help():
     dota_related_commands = []
     other_commands = []
     for key, value in DOTA_RELATED_COMMAND_LIST.items():
-        command = '**' + key + '**'
-        command_help = value
+        command = '**' + key.replace('!', prefix) + '**'
+        command_help = value.replace('!', prefix)
         full = command + ':' + command_help
         dota_related_commands.append(full + '\n')
 
     for key, value in OTHER_COMMAND_LIST.items():
-        command = '**' + key + '**'
-        command_help = value
+        command = '**' + key.replace('!', prefix) + '**'
+        command_help = value.replace('!', prefix)
         full = command + ':' + command_help
         other_commands.append(full + '\n')
 
@@ -180,7 +180,7 @@ def get_help():
                         value=(f"Add BOTA to your server: **[Link]({BOTA_ADD_TO_SERVER_URL})**\n"
                                f"Join BOTA server for more help: **[Link]({BOTA_SUPPORT_SERVER_URL})**\n"
                                f"If you like BOTA do support us to keep the server running: **[Donate]({PAYPAL_URL})**"))
-    embed_msg.add_field(name="Updates", value=UPDATE_BLOCK)
+    embed_msg.add_field(name="Updates", value=UPDATE_BLOCK.replace('!', prefix))
     return embed_msg
 
 
@@ -197,27 +197,28 @@ def get_admin_commands():
     return embed_msg
 
 
-def get_guild_commands():
+def get_guild_commands(prefix):
     head = "**Guild Commands**:\n\n"
-    embed_msg = discord.Embed(description=head, color=discord.Color.blue())
+    embed_msg = discord.Embed(description=head, color=discord.Color.dark_gold())
     embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
                          url=constant.DEFAULT_EMBED_HEADER['url'])
     for key, value in GUILD_COMMAND_LIST.items():
-        key = f"**`{key}`**"
-        embed_msg.add_field(name=key, value=value, inline=False)
+        key = f"**`{key.replace('!', prefix)}`**"
+        embed_msg.add_field(name=key, value=value.replace('!', prefix), inline=False)
 
     # embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
     return embed_msg
 
 
-def pretty_guild_settings(my_dict):
-    head = "**Guild settings**:\n\n"
-    embed_msg = discord.Embed(description=head, color=discord.Color.blue())
+def pretty_guild_settings(my_dict, head=None, inline=False):
+    if head is None:
+        head = "**Guild settings**:\n\n"
+    embed_msg = discord.Embed(description=head, color=discord.Color.dark_gold())
     embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
                          url=constant.DEFAULT_EMBED_HEADER['url'])
     for key, value in my_dict.items():
         key = f"**`{key}`**"
-        embed_msg.add_field(name=key, value=value, inline=False)
+        embed_msg.add_field(name=key, value=value, inline=inline)
 
     # embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
     return embed_msg
