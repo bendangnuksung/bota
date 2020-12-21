@@ -156,10 +156,10 @@ def update_value_to_server(force_update=False):
         try:
             requests.post(url=tp_url, data=data)
             LAST_UPDATE_TIME = current_time
-            print("Update to Log server  Successful")
+            # print("Update to Log server  Successful")
         except requests.exceptions.ConnectionError:
             status_code = "Connection refused to Log server"
-            print(status_code)
+            # print(status_code)
 
 
 if __name__ == '__main__':

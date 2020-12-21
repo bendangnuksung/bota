@@ -184,13 +184,13 @@ def get_help(prefix):
     return embed_msg
 
 
-def get_admin_commands():
+def get_admin_commands(prefix):
     head = "**Admin  BOTA Commands**:\n\n"
     embed_msg = discord.Embed(description=head, color=discord.Color.blue())
     embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'],
                          url=constant.DEFAULT_EMBED_HEADER['url'])
     for key, value in ADMIN_COMMAND_LIST.items():
-        key = f"**`{key}`**"
+        key = f"**`{key.replace('!', prefix)}`**"
         embed_msg.add_field(name=key, value=value, inline=True)
 
     embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)

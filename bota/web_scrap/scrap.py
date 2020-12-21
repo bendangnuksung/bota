@@ -293,7 +293,7 @@ def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_
                 skill_crop = cv2.resize(skill_crop, (constant.GUIDE_BACKGROUND_SHAPE[1], skill_crop.shape[0]))
 
             final_image = np.concatenate([talent_crop, background_image, skill_crop], axis=0)
-            cv2.imwrite(guide_image_path, final_image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
+            cv2.imwrite(guide_image_path, final_image, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
 
     if flag_1 and flag_2:
         return True, hero_name, guide_image_path

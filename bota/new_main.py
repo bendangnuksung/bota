@@ -219,7 +219,8 @@ async def top_game(ctx):
         embed.set_image(url=f"attachment://{image_file.filename}")
         embed = add_footer_requested_by_username(embed, ctx.message)
         await ctx.send(embed=embed, file=image_file)
-    pass
+
+    await ctx.update_logs(ctx.message, "!top_game")
 
 
 @bot.command(aliases=['profiles', 'PROFILE'])
@@ -269,6 +270,8 @@ async def profile(ctx):
         result_embed = add_footer_requested_by_username(result_embed, ctx.message)
         await ctx.send(embed=result_embed)
 
+    await ctx.update_logs(ctx.message, "!profile")
+
 
 @bot.command(aliases=['saves'])
 async def save(ctx):
@@ -308,6 +311,7 @@ async def trend(ctx):
         embed.set_image(url=f"attachment://{image_file.filename}")
         embed = add_footer_requested_by_username(embed, ctx.message)
         await ctx.send(embed=embed, file=image_file)
+    await ctx.update_logs(ctx.message, "!trend")
 
 
 @bot.command(aliases=['counters', 'bad', 'COUNTER', 'COUNTERS', 'BAD'])
@@ -321,9 +325,8 @@ async def counter(ctx):
         result_embed.set_author(name="Counter Command Help")
         result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
         await ctx.send(embed=result_embed)
-        return True, f'!counter help'
+        return
 
-    command_called = '!counter'
     async with ctx.typing():
         note = UPDATE_BLOCK.replace("!", prefix)
         found, hero_name, image_path = get_counter_hero(message_string)
@@ -336,7 +339,7 @@ async def counter(ctx):
                 msg = f"Could not find hero, Please make sure the hero name is correct.\nType **`!counter help`**  for more help"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await ctx.send(embed=msg)
-            return False, command_called
+            return
         else:
             desc = f'**Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
             title = f"{hero_name.upper()} is BAD against:"
@@ -347,7 +350,8 @@ async def counter(ctx):
             embed.add_field(name="Update:", value=(note))
             embed = add_footer_requested_by_username(embed, ctx.message)
             await ctx.send(embed=embed, file=image_file)
-            return True, command_called
+            await ctx.update_logs(ctx.message, "!counter")
+            return
 
 
 @bot.command(aliases=['goods', 'GOOD', 'GOODS'])
@@ -362,8 +366,7 @@ async def good(ctx):
         result_embed.set_author(name="Good Command Help")
         result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
         await ctx.send(embed=result_embed)
-        return True, '!counter help'
-    command_called = '!good'
+        return
     async with ctx.typing():
         note = UPDATE_BLOCK.replace("!", prefix)
         found, hero_name, image_path = get_good_against(message_string)
@@ -376,7 +379,7 @@ async def good(ctx):
                 msg = f"Could not find hero, Please make sure the hero name is correct"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await ctx.send(embed=msg)
-            return False, command_called
+            return
         else:
             desc = f'**Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/counters)'
             title = f"{hero_name.upper()} is GOOD against:"
@@ -387,7 +390,8 @@ async def good(ctx):
             embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             embed = add_footer_requested_by_username(embed, ctx.message)
             await ctx.send(embed=embed, file=image_file)
-            return True, command_called
+            await ctx.update_logs(ctx.message, "!good")
+            return
 
 
 @bot.command(aliases=['skills', 'SKILL', 'SKILLS', 'talent', 'talents', 'TALENT'])
@@ -397,7 +401,6 @@ async def skill(ctx):
     prefix = await bot.get_prefix(ctx.message)
     message_string, message_word_length, user_discord_id, user_discord_name = get_infos_from_msg(ctx)
 
-    command_called = '!skill'
     async with ctx.typing():
         note = UPDATE_BLOCK.replace("!", prefix)
         found, hero_name, image_path = get_skill_build(message_string)
@@ -410,7 +413,7 @@ async def skill(ctx):
                 msg = f"Could not find hero, Please make sure the hero name is correct"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await ctx.send(embed=msg)
-            return False, command_called
+            return
         else:
             desc = f'**{hero_name.upper()}** most popular Skill/Talent build, **Source**: [DotaBuff](https://www.dotabuff.com/heroes/{hero_name})'
             title = f"{hero_name.upper()} Skill/Talent buildt:"
@@ -421,7 +424,8 @@ async def skill(ctx):
             embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             embed = add_footer_requested_by_username(embed, ctx.message)
             await ctx.send(embed=embed, file=image_file)
-            return True, command_called
+            await ctx.update_logs(ctx.message, "!skill")
+            return
 
 
 @bot.command(aliases=['items', 'ITEM', 'ITEMS'])
@@ -431,7 +435,6 @@ async def item(ctx):
     prefix = await bot.get_prefix(ctx.message)
     message_string, message_word_length, user_discord_id, user_discord_name = get_infos_from_msg(ctx)
 
-    command_called = '!item'
     async with ctx.typing():
         note = UPDATE_BLOCK.replace("!", prefix)
         found, hero_name, image_path = get_item_build(message_string)
@@ -444,7 +447,7 @@ async def item(ctx):
                 msg = f"Could not find hero, Please make sure the hero name is correct\nType **`!good help`**  for more help"
                 msg = embed_txt_message(msg, color=discord.Color.red())
                 await ctx.send(embed=msg)
-            return False, command_called
+            return
         else:
             desc = f'**{hero_name.upper()}** recent Item build by **Top Rank Players**:, [DotaBuff](https://www.dotabuff.com/heroes/{hero_name}/guides)'
             title = f"{hero_name.upper()} Item Build:"
@@ -455,7 +458,8 @@ async def item(ctx):
             embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             embed = add_footer_requested_by_username(embed, ctx.message)
             await ctx.send(embed=embed, file=image_file)
-            return True, command_called
+            await ctx.update_logs(ctx.message, "!item")
+            return
 
 
 @bot.command(aliases=['twitchs', 'TWITCH'])
@@ -463,14 +467,14 @@ async def twitch(ctx):
     if is_channel_block(ctx):
         return
     message_string, message_word_length, user_discord_id, user_discord_name = get_infos_from_msg(ctx)
-    command_called = '!twitch'
     async with ctx.typing():
         language = None if len(message_string.split()) <= 1 else message_string.split()[1]
         result = get_dota2_top_stream(language)
     embed_msg = embed_txt_message(result)
     embed_msg = add_footer_requested_by_username(embed_msg, ctx.message)
     await ctx.send(embed=embed_msg)
-    return True, command_called
+    await ctx.update_logs(ctx.message, "!twitch")
+    return
 
 
 @bot.command(aliases=['reddits', 'REDDIT', 'redit'])
@@ -485,15 +489,15 @@ async def reddit(ctx):
         result_embed.set_author(name="Profile Command Help")
         result_embed.set_thumbnail(url=constant.DEFAULT_EMBED_HEADER['icon_url'])
         await ctx.send(embed=result_embed)
-        return True, '!reddit help'
+        return
 
     async with ctx.typing():
         result_list, mode = get_reddit(message_string)
-    command_called = f"!reddit {mode}"
     await ctx.send(f"**REDDIT**  SortBy: **{mode.upper()}**, Source: Reddit")
     for result in result_list:
         await ctx.send(f'{result}')
-    return True, command_called
+    await ctx.update_logs(ctx.message, "!reddit")
+    return
 
 
 @bot.command(aliases=['tis', 'TI'])
@@ -551,7 +555,8 @@ async def ti(ctx):
         result_string.set_author(name='TI9 COMMANDS')
         result_string = add_footer_requested_by_username(result_string, ctx.message)
         await ctx.send(embed=result_string)
-    return True, command_called
+    await ctx.update_logs(ctx.message, command_called)
+    return
 
 
 @bot.command()
@@ -585,6 +590,7 @@ async def agha(ctx):
 
     else:
         await ctx.send(embed=embed)
+        await ctx.update_logs(ctx.message, '!agha')
     return True, command_called
 
 
@@ -595,7 +601,8 @@ async def admin(ctx):
     user_id = str(ctx.message.author).strip()
     if user_id != ADMIN_ID:
         return
-    admin_commands = get_admin_commands()
+    prefix = await bot.get_prefix(ctx.message)
+    admin_commands = get_admin_commands(prefix=prefix)
     await ctx.send(embed=admin_commands)
     
 
