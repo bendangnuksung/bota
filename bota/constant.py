@@ -120,6 +120,22 @@ MEDAL_ITEM_X_Y = [50, 90]
 MEDAL_ITEM_HEIGHT_DIFF = 100
 
 
+# Meta
+META_URL = 'https://www.dotabuff.com/heroes/meta'
+META_THRESHOLD_UPDATE = 6000
+META_IMAGE_PATH = 'data/temp_images/meta.jpg'
+META_IMAGE_PATH = os.path.join(REPO_PATH, META_IMAGE_PATH)
+META_TEMPLATE_IMAGE = 'data/template_image/meta_template.png'
+META_TEMPLATE_IMAGE = os.path.join(REPO_PATH, META_TEMPLATE_IMAGE)
+META_OFFSET_X = 0
+META_OFFSET_Y = -65
+META_OFFSET_HEIGHT = 780
+META_OFFSET_WIDTH = 1170
+
+META_HERO_SPLIT_1_COORDS = [0, 0, 55, -1] # xmin,ymin,xmax,ymax
+META_HERO_SPLIT_2_COORDS = [265, 0, -1, -1] # xmin,ymin,xmax,ymax
+
+
 # Item Guide
 ITEM_IMAGE_PATH = 'data/items_build/'
 ITEM_IMAGE_PATH = os.path.join(REPO_PATH, ITEM_IMAGE_PATH)

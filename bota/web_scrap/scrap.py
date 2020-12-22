@@ -22,6 +22,7 @@ d2pt = DotaProTracker()
 
 talent_template_image = cv2.imread(constant.TALENT_TEMPLATE_PATH, 0)
 skill_template_image = cv2.imread(constant.SKILL_TEMPLATE_PATH, 0)
+meta_template_image = cv2.imread(constant.META_TEMPLATE_IMAGE, 0)
 
 
 def check_if_role_given(message):
@@ -454,14 +455,49 @@ def get_protracker_hero(query):
     return True, hero_name, result, icon_path
 
 
+def get_meta(early_update=False, use_outdated_photo_if_fails=True):
+
+    meta_image_path = constant.META_IMAGE_PATH
+    threshold_update_time = constant.META_THRESHOLD_UPDATE
+    if early_update:
+        threshold_update_time = threshold_update_time - constant.EARLY_BY
+    if os.path.exists(meta_image_path) and not is_file_old(meta_image_path, threshold_update_time):
+        return meta_image_path
+
+    try:
+        x = constant.META_OFFSET_X
+        y = constant.META_OFFSET_Y
+        height = constant.META_OFFSET_HEIGHT
+        width = constant.META_OFFSET_WIDTH
+        url = constant.META_URL
+        take_screenshot(url, meta_image_path)
+        image = cv2.imread(meta_image_path)
+        cropped_image = crop_screenshots(image, meta_template_image, x, y, offset_height=height, offset_width=width)
+        xmin, ymin, xmax, ymax = constant.META_HERO_SPLIT_1_COORDS
+        image_1 = cropped_image[ymin:ymax, xmin:xmax]
+        xmin, ymin, xmax, ymax = constant.META_HERO_SPLIT_2_COORDS
+        image_2 = cropped_image[ymin:ymax, xmin:xmax]
+
+        cropped_image = np.concatenate([image_1, image_2], axis=1)
+        cv2.imwrite(meta_image_path, cropped_image, [int(cv2.IMWRITE_PNG_COMPRESSION), 90])
+        return meta_image_path
+
+    except Exception as e:
+        if use_outdated_photo_if_fails:
+            return meta_image_path
+        else:
+            return None
+
+
 if __name__ == '__main__':
+    get_meta()
     # print(get_item_build('!good enchan'))
     # get_protracker_hero("!pro slark")
     # get_counter_hero('!counter axe mid')
     # exit()
     # r = get_skill_build('!skill slark', use_outdated_photo_if_fails=False)
-    r = get_item_build('!item viper')
+    # r = get_item_build('!item viper')
     # r = get_good_against('!good witch-doctor')
-    print(r)
+    # print(r)
     print("Completed")
     exit()

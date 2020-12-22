@@ -9,11 +9,11 @@ from bota.constant import DEFAULT_PREFIX
 import bota.logs_process.log_utils
 # from bota.constant import MAX_COMMAND_WORD_LENGTH
 from bota.help import get_help, PROFILE_HELP_STRING, get_guild_commands, pretty_guild_settings, COUNTER_EXAMPLE, \
-    UPDATE_BLOCK, GOOD_EXAMPLE, REDDIT_CMD_EXAMPLE, LAST_UPDATE, get_admin_commands
+    UPDATE_BLOCK, GOOD_EXAMPLE, REDDIT_CMD_EXAMPLE, LAST_UPDATE, get_admin_commands, get_random_footer
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
-from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile_from_db, get_protracker_hero
+from bota.web_scrap.scrap import get_skill_build, get_item_build, get_profile_from_db, get_protracker_hero, get_meta
 from bota.web_scrap.twitch_process import get_dota2_top_stream
 from bota.web_scrap.TI import group_stage, help, stats, matches
 # from bota.web_scrap.dotavoyance.getter import get_team_mate
@@ -24,6 +24,13 @@ from bota import constant
 from bota.web_scrap.aghanim_process import Agha
 from bota.utility.main_utils import prefix_validation_correct, add_footer_requested_by_username, \
     embed_txt_message, get_infos_from_msg
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('-t', '--test', help='test mode', default=False)
+args = vars(parser.parse_args())
+TEST_MODE = args['test']
+
 
 guild_caller = GuildCaller()
 GUILDS = []
@@ -61,7 +68,9 @@ class MyContext(commands.Context):
         except discord.HTTPException:
             pass
 
-    async def update_logs(self, message, command_called):
+    async def update_logs(self, message, command_called, is_test=TEST_MODE):
+        if is_test:
+            return
         log_caller.save_log(message, command_called)
         print(f"{message.author.name}: {message.author}: {message.channel}: {message.content[:100]}")
         log_caller.update_value_to_server()
@@ -308,6 +317,24 @@ async def trend(ctx):
         embed.title = msg
         image_file = discord.File(image_path, os.path.basename(image_path))
         embed.add_field(name="Source:", value=('[DotaBuff](https://www.dotabuff.com/heroes/trends)'))
+        embed.set_image(url=f"attachment://{image_file.filename}")
+        embed = add_footer_requested_by_username(embed, ctx.message)
+        await ctx.send(embed=embed, file=image_file)
+    await ctx.update_logs(ctx.message, "!trend")
+
+
+@bot.command(aliases=['META', 'metas'])
+async def meta(ctx):
+    if is_channel_block(ctx):
+        return
+    async with ctx.typing():
+        image_path = get_meta()
+        msg = "Heroes Meta Statistics"
+        desc = "This month Hero Meta with MMR Brackets"
+        embed = discord.Embed(description=desc, color=discord.Color.green())
+        embed.title = msg
+        image_file = discord.File(image_path, os.path.basename(image_path))
+        embed.add_field(name="Source:", value=(f'[DotaBuff]({constant.META_URL})'))
         embed.set_image(url=f"attachment://{image_file.filename}")
         embed = add_footer_requested_by_username(embed, ctx.message)
         await ctx.send(embed=embed, file=image_file)

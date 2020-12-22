@@ -1,5 +1,6 @@
 import discord
 from bota import  constant
+import random
 
 BOTA_SUPPORT_SERVER_URL = "https://discord.gg/a7QYPWd"
 BOTA_ADD_TO_SERVER_URL = "https://discordapp.com/api/oauth2/authorize?client_id=501100945405378562&permissions=388176&scope=bot"
@@ -22,6 +23,32 @@ HOW_TO_USE_COMMANDS_EXAMPLE = {
 HELP_FOOTER = "NOTE: Can use short Hero Names, !counter anti mage ---as---> !counter am"
 NOTE_FOOTER = " | Can use Short HeroName, !skill antimage -> !skill am"
 
+
+NOTE_FOOTER_LIST = ['Can use Short HeroName, eg: !skill antimage -> !skill am',
+                    'Get Twitch Live stream using: !twitch english, !twitch russian',
+                    'Get current Top Games stats using: !topgame',
+                    'You can also save and get your Profile stats. For details type !profile help',
+                    'Get scepter/aghanim info of a hero. eg: !agha axe',
+                    'Get a random reddit post from r/Dota2. !reddit',
+                    'Alternative counter command: !counter axe -> !bad axe',
+                    'Alternative skilll command: !skill axe -> !talent axe',
+                    'Type !update to see any latest updates',
+                    'Get weekly trends in Win Rate and Pick Rate: !trend',
+                    'Want to counter meepo with a safelane hero? type: !counter meepo safe',
+                    'Want to counter axe with midlane hero? type: !counter axe mid',
+                    'Want to counter PA with offlane hero? type: !counter pa off',
+                    'Check recent immortal/divine players item build using: !items heroname',
+                    'Check high win-rate Skill and Talent upgrade using: !skill heroname',
+                    'Know latest hero Meta with MMR brackets using: !meta'
+                    ]
+
+
+def get_random_footer():
+    # global NOTE_FOOTER_LIST
+    footer = random.choice(NOTE_FOOTER_LIST)
+    return footer
+
+
 # Note
 HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  !counter am"
 
@@ -35,11 +62,14 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 #                '2. Counter with midlane **`!counter am mid`**\n'\
 #                'More Options: **`!counter help`** or **`!good help`**'
 
-UPDATE_BLOCK = '**`!counter help`** or **`!good help`**'
+UPDATE_BLOCK = 'Manage BOTA in your server using **`!guild`**\n' \
+               'Get latest hero Meta with MMR brackets using: **`!meta`**'
 
 
 UPDATE_BLOCK_LIST=\
-             ["`15-Mar-2020`: User can now specify roles to show hero for !counter & !good command, type `!counter help`",
+             ["`23-Dec-2020`: Added `!meta` command",
+              "`23-Dec-2020`: Server owner can now change command prefix and block channels from BOTA, type `!guild` for details",
+              "`15-Mar-2020`: User can now specify roles to show hero for !counter & !good command, type `!counter help`",
               "`30-Sep-2019`: Added Aghanim Info for heroes, type `!agha HeroName`",
               "`28-Sep-2019`: Added `!team` command, type `!team help` for details",
               "`25-Aug-2019`: Save your profile without name and change Steam ID and others, Type `!profile help` for details",
@@ -58,10 +88,12 @@ DOTA_RELATED_COMMAND_LIST = {
                  '!skill HeroName': 'Get most popular & win rate talent/skill build  eg:**`!skill meepo`**',
                  '!item HeroName'   : 'Get recent item build by Top Rank Players  eg: **`!item kotl`**',
                  '!trend'           : 'Get current heroes trend  eg: `!trend`',
-                 '!agha HeroName': 'Get Aghanim Scepter info for heroes, eg: **`!agha gyro`**'
+                 '!agha HeroName': 'Get Aghanim Scepter info for heroes, eg: **`!agha gyro`**',
+                 '!meta': 'Get latest hero Meta with MMR brackets  eg: **`!meta`**'
                 }
 
 OTHER_COMMAND_LIST = {
+    '!guild': 'Managing BOTA in your server',
     '!top game'        : 'Get top 9 Live Games eg: **`!top game`**',
     '!profile  steamID': 'Get your profile stats, Type   **`!profile help`**  for more details',
     '!save steamID': 'Saves your profile steam ID, Type   **`!save help`**  for more details',
@@ -84,7 +116,7 @@ ADMIN_COMMAND_LIST = {'!stat': 'Shows overall stats and weekly stats',
                        '!bglog download': 'Download the background scrap log'}
 
 GUILD_COMMAND_LIST = {'!guild settings': 'Displays current guild settings',
-                      '!guild prefix Character': 'Changing the BOTA command prefix of your own choice.\neg: **!guild prefix #**: Prefix change from "!" to "&"',
+                      '!guild prefix Character': 'Changing the BOTA command prefix of your own choice.\neg: **!guild prefix &**: Prefix change from "!" to "&"',
                       '!guild block ChannelName': 'BOTA will not be able to send  message at ChannelName\neg: **!guild block general**',
                       '!guild unblock general': 'BOTA will be able to send at ChannelName\neg: **!guild unblock general**'}
 
@@ -173,7 +205,7 @@ def get_help(prefix):
     # print(len(command_string))
     embed_msg = discord.Embed(description=help_string, color=discord.Color.blue())
     embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'], url=constant.DEFAULT_EMBED_HEADER['url'])
-    embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
+    embed_msg.set_footer(text=get_random_footer(), icon_url=constant.DOTA2_LOGO_URL)
     embed_msg.add_field(name="Dota Hero Commands", value=dota_related_commands, inline=False)
     embed_msg.add_field(name="Dota Other Commands", value=other_commands, inline=False)
     embed_msg.add_field(name="Help and Support",
@@ -193,7 +225,7 @@ def get_admin_commands(prefix):
         key = f"**`{key.replace('!', prefix)}`**"
         embed_msg.add_field(name=key, value=value, inline=True)
 
-    embed_msg.set_footer(text=HELP_FOOTER, icon_url=constant.DOTA2_LOGO_URL)
+    embed_msg.set_footer(text=get_random_footer(), icon_url=constant.DOTA2_LOGO_URL)
     return embed_msg
 
 

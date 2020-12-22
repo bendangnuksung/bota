@@ -69,10 +69,11 @@ if __name__ == '__main__':
 
     talent_template_image = cv2.imread(constant.TALENT_TEMPLATE_PATH, 0)
     skill_template_image = cv2.imread(constant.SKILL_TEMPLATE_PATH, 0)
+    meta_template_image = cv2.imread(constant.META_TEMPLATE_IMAGE, 0)
 
-    test_type = 'skill' # 'talent'
+    test_type = 'meta' # skill, talent, meta
     save_image = True
-    is_display = False
+    is_display = True
 
     # crop_coords= skill_coords
     for hero_name in heroes_names:
@@ -89,7 +90,7 @@ if __name__ == '__main__':
             url = constant.GUIDE_URL_SKILL.replace('<hero_name>', hero_name)
             path_to_save = os.path.join('temp/', hero_name+'_skill.png')
 
-        else:
+        elif test_type == 'talent':
             x = constant.TALENT_OFFSET_X
             y = constant.TALENT_OFFSET_Y
             height = constant.TALENT_OFFSET_HEIGHT
@@ -98,13 +99,37 @@ if __name__ == '__main__':
             url = constant.GUIDE_URL_TALENT.replace('<hero_name>', hero_name)
             path_to_save = os.path.join('temp/', hero_name + '_talent.png')
 
+        else:
+            x = constant.META_OFFSET_X
+            y = constant.META_OFFSET_Y
+            height = constant.META_OFFSET_HEIGHT
+            width = constant.META_OFFSET_WIDTH
+            template_image = meta_template_image
+            url = constant.META_URL
+            path_to_save = os.path.join('temp/meta.png')
+
         take_screenshot(url, path_to_save)
         image = cv2.imread(path_to_save)
 
         cropped_image = crop_screenshots(image, template_image, x, y, offset_height=height, offset_width=width)
+
+        if test_type == 'meta':
+            xmin, ymin, xmax, ymax = constant.META_HERO_SPLIT_1_COORDS
+            image_1 = cropped_image[ymin:ymax, xmin:xmax]
+            display(image_1)
+
+            xmin, ymin, xmax, ymax = constant.META_HERO_SPLIT_2_COORDS
+            image_2 = cropped_image[ymin:ymax, xmin:xmax]
+            display(image_2)
+
+            cropped_image = np.concatenate([image_1, image_2], axis=1)
+
         if save_image:
             cv2.imwrite(path_to_save, cropped_image)
 
         if is_display:
             cropped_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2RGB)
             display(cropped_image)
+
+        if test_type == 'meta':
+            break
