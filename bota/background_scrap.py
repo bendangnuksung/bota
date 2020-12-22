@@ -1,7 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler
 import time
-from bota.web_scrap.scrap import get_item_build, get_skill_build, get_current_trend, get_counter_hero, get_good_against
+from bota.web_scrap.scrap import get_item_build, get_skill_build, get_current_trend, get_counter_hero, get_good_against, get_meta
 from bota.web_scrap.scrap_constant import heroes_names, hero_role
 from bota.constant import SCRAP_LOG_PATH
 import asyncio
@@ -75,6 +75,10 @@ def update_images():
     loop = asyncio.get_event_loop()
     start = datetime.now()
     get_current_trend()
+    meta_r = get_meta(early_update=True, use_outdated_photo_if_fails=False)
+    meta_r = 'Unsuccessful' if meta_r is None else 'Success'
+    meta_r = f"META: {meta_r}"
+    background_logger.info(meta_r)
     for i, hero_name in enumerate(heroes_names):
         iter_text = f"{i + 1}/{len(heroes_names)}, Hero: {hero_name}"
         print(iter_text)
@@ -88,6 +92,7 @@ def update_images():
             f"End time: {end.strftime('%H:%M:%S')} \n" \
             f"Date: {start.strftime('%d-%m-%Y')} \n" \
             f"{'*'*50}"
+
     print(stats)
     background_logger.info(stats)
     subprocess.run(["pkill", "chrome"])
