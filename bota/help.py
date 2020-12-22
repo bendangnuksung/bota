@@ -43,9 +43,9 @@ NOTE_FOOTER_LIST = ['Can use Short HeroName, eg: !skill antimage -> !skill am',
                     ]
 
 
-def get_random_footer():
+def get_random_footer(prefix="!"):
     # global NOTE_FOOTER_LIST
-    footer = random.choice(NOTE_FOOTER_LIST)
+    footer = random.choice(NOTE_FOOTER_LIST).replace("!", prefix)
     return footer
 
 
@@ -63,7 +63,7 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 #                'More Options: **`!counter help`** or **`!good help`**'
 
 UPDATE_BLOCK = 'Manage BOTA in your server using **`!guild`**\n' \
-               'Get latest hero Meta with MMR brackets using: **`!meta`**'
+               'Get Meta Hero with MMR brackets using **`!meta`**'
 
 
 UPDATE_BLOCK_LIST=\
@@ -205,7 +205,7 @@ def get_help(prefix):
     # print(len(command_string))
     embed_msg = discord.Embed(description=help_string, color=discord.Color.blue())
     embed_msg.set_author(name=constant.DEFAULT_EMBED_HEADER['name'], icon_url=constant.DEFAULT_EMBED_HEADER['icon_url'], url=constant.DEFAULT_EMBED_HEADER['url'])
-    embed_msg.set_footer(text=get_random_footer(), icon_url=constant.DOTA2_LOGO_URL)
+    embed_msg.set_footer(text=get_random_footer(prefix), icon_url=constant.DOTA2_LOGO_URL)
     embed_msg.add_field(name="Dota Hero Commands", value=dota_related_commands, inline=False)
     embed_msg.add_field(name="Dota Other Commands", value=other_commands, inline=False)
     embed_msg.add_field(name="Help and Support",
@@ -225,7 +225,7 @@ def get_admin_commands(prefix):
         key = f"**`{key.replace('!', prefix)}`**"
         embed_msg.add_field(name=key, value=value, inline=True)
 
-    embed_msg.set_footer(text=get_random_footer(), icon_url=constant.DOTA2_LOGO_URL)
+    embed_msg.set_footer(text=get_random_footer(prefix), icon_url=constant.DOTA2_LOGO_URL)
     return embed_msg
 
 

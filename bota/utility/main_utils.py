@@ -16,8 +16,8 @@ def prefix_validation_correct(string):
     return False
 
 
-def add_footer_requested_by_username(embed, message, note=None):
-    note = get_random_footer()
+def add_footer_requested_by_username(embed, message, prefix):
+    note = get_random_footer().replace("!", prefix)
     try:
         embed.set_footer(text=f'Requested by {message.author.name}\n{note}', icon_url=message.author.avatar_url)
         return embed

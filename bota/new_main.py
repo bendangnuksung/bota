@@ -9,7 +9,7 @@ from bota.constant import DEFAULT_PREFIX
 import bota.logs_process.log_utils
 # from bota.constant import MAX_COMMAND_WORD_LENGTH
 from bota.help import get_help, PROFILE_HELP_STRING, get_guild_commands, pretty_guild_settings, COUNTER_EXAMPLE, \
-    UPDATE_BLOCK, GOOD_EXAMPLE, REDDIT_CMD_EXAMPLE, LAST_UPDATE, get_admin_commands, get_random_footer
+    UPDATE_BLOCK, GOOD_EXAMPLE, REDDIT_CMD_EXAMPLE, LAST_UPDATE, get_admin_commands
 from bota.private_constant import DISCORD_TOKEN, DISCORD_CLIENT_ID, ADMIN_ID
 from bota.applications.top_games import get_top_games
 from bota.web_scrap.scrap import get_current_trend, get_counter_hero, get_good_against, get_reddit, save_id_in_db
@@ -218,6 +218,7 @@ async def top_game(ctx):
     """Gets Top current live games with Average MMR"""
     if is_channel_block(ctx):
         return
+    prefix = await bot.get_prefix(ctx.message)
     async with ctx.typing():
         image_path = get_top_games()
         msg = "Top Live Games: Dota2API"
@@ -226,7 +227,7 @@ async def top_game(ctx):
         image_file = discord.File(image_path, os.path.basename(image_path))
         embed.add_field(name="Source:", value=('[Dota2API](https://demodota2api.readthedocs.io/en/latest/#)'))
         embed.set_image(url=f"attachment://{image_file.filename}")
-        embed = add_footer_requested_by_username(embed, ctx.message)
+        embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
         await ctx.send(embed=embed, file=image_file)
 
     await ctx.update_logs(ctx.message, "!top_game")
@@ -276,7 +277,7 @@ async def profile(ctx):
             msg = embed_txt_message(msg, color=discord.Color.red())
             await ctx.send(embed=msg)
     else:
-        result_embed = add_footer_requested_by_username(result_embed, ctx.message)
+        result_embed = add_footer_requested_by_username(result_embed, ctx.message, prefix=prefix)
         await ctx.send(embed=result_embed)
 
     await ctx.update_logs(ctx.message, "!profile")
@@ -301,7 +302,7 @@ async def save(ctx):
         summary = embed_txt_message(summary, color=discord.Color.red())
     else:
         summary = embed_txt_message(summary, color=discord.Color.green())
-    summary = add_footer_requested_by_username(summary, ctx.message)
+    summary = add_footer_requested_by_username(summary, ctx.message, prefix=prefix)
     await ctx.send(embed=summary)
 
 
@@ -309,6 +310,7 @@ async def save(ctx):
 async def trend(ctx):
     if is_channel_block(ctx):
         return
+    prefix = await bot.get_prefix(ctx.message)
     async with ctx.typing():
         image_path = get_current_trend()
         msg = "Current Heroes Trend"
@@ -318,7 +320,7 @@ async def trend(ctx):
         image_file = discord.File(image_path, os.path.basename(image_path))
         embed.add_field(name="Source:", value=('[DotaBuff](https://www.dotabuff.com/heroes/trends)'))
         embed.set_image(url=f"attachment://{image_file.filename}")
-        embed = add_footer_requested_by_username(embed, ctx.message)
+        embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
         await ctx.send(embed=embed, file=image_file)
     await ctx.update_logs(ctx.message, "!trend")
 
@@ -327,6 +329,7 @@ async def trend(ctx):
 async def meta(ctx):
     if is_channel_block(ctx):
         return
+    prefix = await bot.get_prefix(ctx.message)
     async with ctx.typing():
         image_path = get_meta()
         msg = "Heroes Meta Statistics"
@@ -336,7 +339,7 @@ async def meta(ctx):
         image_file = discord.File(image_path, os.path.basename(image_path))
         embed.add_field(name="Source:", value=(f'[DotaBuff]({constant.META_URL})'))
         embed.set_image(url=f"attachment://{image_file.filename}")
-        embed = add_footer_requested_by_username(embed, ctx.message)
+        embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
         await ctx.send(embed=embed, file=image_file)
     await ctx.update_logs(ctx.message, "!trend")
 
@@ -375,7 +378,7 @@ async def counter(ctx):
             embed.set_image(url=f"attachment://{image_file.filename}")
             embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
             embed.add_field(name="Update:", value=(note))
-            embed = add_footer_requested_by_username(embed, ctx.message)
+            embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
             await ctx.send(embed=embed, file=image_file)
             await ctx.update_logs(ctx.message, "!counter")
             return
@@ -415,7 +418,7 @@ async def good(ctx):
             embed.set_image(url=f"attachment://{image_file.filename}")
             embed.add_field(name="Update:", value=(note))
             embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
-            embed = add_footer_requested_by_username(embed, ctx.message)
+            embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
             await ctx.send(embed=embed, file=image_file)
             await ctx.update_logs(ctx.message, "!good")
             return
@@ -449,7 +452,7 @@ async def skill(ctx):
             embed.set_image(url=f"attachment://{image_file.filename}")
             embed.add_field(name="Update:", value=(note))
             embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
-            embed = add_footer_requested_by_username(embed, ctx.message)
+            embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
             await ctx.send(embed=embed, file=image_file)
             await ctx.update_logs(ctx.message, "!skill")
             return
@@ -483,7 +486,7 @@ async def item(ctx):
             embed.set_image(url=f"attachment://{image_file.filename}")
             embed.add_field(name="Update:", value=(note))
             embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{hero_name}.png')
-            embed = add_footer_requested_by_username(embed, ctx.message)
+            embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
             await ctx.send(embed=embed, file=image_file)
             await ctx.update_logs(ctx.message, "!item")
             return
@@ -494,11 +497,12 @@ async def twitch(ctx):
     if is_channel_block(ctx):
         return
     message_string, message_word_length, user_discord_id, user_discord_name = get_infos_from_msg(ctx)
+    prefix = await bot.get_prefix(ctx.message)
     async with ctx.typing():
         language = None if len(message_string.split()) <= 1 else message_string.split()[1]
         result = get_dota2_top_stream(language)
     embed_msg = embed_txt_message(result)
-    embed_msg = add_footer_requested_by_username(embed_msg, ctx.message)
+    embed_msg = add_footer_requested_by_username(embed_msg, ctx.message, prefix=prefix)
     await ctx.send(embed=embed_msg)
     await ctx.update_logs(ctx.message, "!twitch")
     return
@@ -542,7 +546,7 @@ async def ti(ctx):
         result_string = embed_txt_message(result_string, color=discord.Color.purple())
         result_string.set_thumbnail(url=constant.TI_LOGO_URL)
         result_string.set_author(name='TI9 GROUP STAGE')
-        result_string = add_footer_requested_by_username(result_string, ctx.message)
+        result_string = add_footer_requested_by_username(result_string, ctx.message, prefix=prefix)
         await ctx.send(embed=result_string)
 
     elif len(message_split) > 1 and 'stat' in message_split[1]:
@@ -552,7 +556,7 @@ async def ti(ctx):
         result_string = embed_txt_message(result_string, color=discord.Color.purple())
         result_string.set_thumbnail(url=constant.TI_LOGO_URL)
         result_string.set_author(name='TI9 Hero Stats')
-        result_string = add_footer_requested_by_username(result_string, ctx.message)
+        result_string = add_footer_requested_by_username(result_string, ctx.message, prefix=prefix)
         await ctx.send(embed=result_string)
 
     elif len(message_split) > 1 and 'match' in message_split[1]:
@@ -572,7 +576,7 @@ async def ti(ctx):
         result_string = embed_txt_message(result_string, color=discord.Color.purple())
         result_string.set_thumbnail(url=constant.TI_LOGO_URL)
         result_string.set_author(name='TI9 Main Stage Schedule')
-        result_string = add_footer_requested_by_username(result_string, ctx.message)
+        result_string = add_footer_requested_by_username(result_string, ctx.message, prefix=prefix)
         await ctx.send(embed=result_string)
 
     else:
@@ -580,7 +584,7 @@ async def ti(ctx):
         result_string = embed_txt_message(result_string, color=discord.Color.purple())
         result_string.set_thumbnail(url=constant.TI_LOGO_URL)
         result_string.set_author(name='TI9 COMMANDS')
-        result_string = add_footer_requested_by_username(result_string, ctx.message)
+        result_string = add_footer_requested_by_username(result_string, ctx.message, prefix=prefix)
         await ctx.send(embed=result_string)
     await ctx.update_logs(ctx.message, command_called)
     return
@@ -732,6 +736,7 @@ async def tail(ctx):
     user_id = str(ctx.message.author).strip()
     if user_id != ADMIN_ID:
         return
+    prefix = await bot.get_prefix(ctx.message)
     message_string, message_word_length, user_discord_id, user_discord_name = get_infos_from_msg(ctx)
     n = 5
     try:
@@ -741,7 +746,7 @@ async def tail(ctx):
     tail_log = log_caller.get_command_log_tail(n)
     tail_log = embed_txt_message(tail_log, color=discord.Color.purple())
     tail_log.set_author(name='Command Tail Log')
-    tail_log = add_footer_requested_by_username(tail_log, ctx.message)
+    tail_log = add_footer_requested_by_username(tail_log, ctx.message, prefix=prefix)
     await ctx.send(embed=tail_log)
 
 
