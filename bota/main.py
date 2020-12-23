@@ -133,6 +133,13 @@ async def guild(ctx):
     all_channels = [x.name for x in ctx.guild.text_channels]
     messages_split = ctx.message.content.lower().split()
     length = len(messages_split)
+
+    if owner_id != author_id:
+        embed = discord.Embed(description=f"Sorry! Only server owner can use **`{prefix}guild`** command",
+                              color=discord.Color.red())
+        await ctx.send(embed=embed)
+        return
+
     if length == 1:
         guild_commands = get_guild_commands(prefix=prefix)
         await ctx.send(embed=guild_commands)
