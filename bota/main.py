@@ -41,12 +41,15 @@ CURRENT_PREFIX = DEFAULT_PREFIX
 
 
 def is_channel_block(ctx):
-    guild_id = ctx.message.guild.id
-    channel_name = str(ctx.channel)
-    block_channel_names = guild_caller.get_block_channel_names(guild_id)
-    if channel_name in block_channel_names:
-        return True
-    return False
+    try:
+        guild_id = ctx.message.guild.id
+        channel_name = str(ctx.channel)
+        block_channel_names = guild_caller.get_block_channel_names(guild_id)
+        if channel_name in block_channel_names:
+            return True
+        return False
+    except:
+        return False
 
 
 async def determine_prefix(bot, message):
