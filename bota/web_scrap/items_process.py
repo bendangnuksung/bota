@@ -109,6 +109,30 @@ def make_item_image(infos, hero_name):
             item_time_x = item_x
             bg_image = write_text_pil(bg_image, time, (item_time_x, item_time_y), size=constant.TIME_FONT_SIZE)
 
+        # Write and add starting items
+        j = 0
+        for raw_item_name in info['starting_items']:
+            # icon
+            if raw_item_name == 'town-portal-scroll':
+                continue
+            if j + 1 > constant.MAX_ITEM:
+                break
+            item_found, item_name = find_item(raw_item_name)
+            item_icon_path = os.path.join(constant.ITEM_ICON_PATH, item_name + '.png')
+            item_icon_image = cv2.imread(item_icon_path)
+            item_icon_image = add_border_to_image(item_icon_image, rgb=[255, 255, 255], bordersize=1)
+            item_icon_image = cv2.resize(item_icon_image, constant.ITEM_ICON_SHAPE)
+            item_y = Y + (medal_image.shape[0] // 6)
+            item_x = X + (constant.ITEM_START_LEFT + 435) + (j * (item_icon_image.shape[1]))
+            bg_image[item_y: item_y + item_icon_image.shape[0],
+            item_x: item_x + item_icon_image.shape[1]] = item_icon_image
+
+            # time
+            item_time_y = Y + constant.TIME_START_TOP
+            item_time_x = item_x
+            bg_image = write_text_pil(bg_image, '', (item_time_x, item_time_y), size=constant.TIME_FONT_SIZE)
+            j += 1
+
     new_height, new_width = int(bg_image.shape[0] * 0.84), int(bg_image.shape[1] * 0.84) # resizing for image size
     bg_image = cv2.resize(bg_image, (new_width, new_height))
     return bg_image
@@ -144,6 +168,7 @@ def scrap_item_info(hero_name):
         for div_tag in item_builds:
             time_tag = div_tag.find_all(constant.ITEM_BUILD_TIME_TAG[0], constant.ITEM_BUILD_TIME_TAG[1])
             item_tag = div_tag.find_all(constant.ITEM_BUILD_ITEM_TAG[0], constant.ITEM_BUILD_ITEM_TAG[1])
+
             item_build_dict = {}
             c = '.'
             for i in range(len(item_tag)):
@@ -155,6 +180,17 @@ def scrap_item_info(hero_name):
             # for itm, time in zip(item_tag, time_tag):
             #     item_build_dict[time.string] = itm.attrs[constant.ITEM_KEYWORD_TITLE]
             result[constant.ITEM_KEYWORD_ITEM_BUILD] = item_build_dict
+
+        # Starting items:
+        result['starting_items'] = []
+        starting_items = item.find_all('div', {"class": "kv r-none-mobile"})[0]
+        for div_tag in starting_items:
+            item_name = div_tag.find('a')
+            if item_name is None:
+                continue
+            item_name = item_name.attrs['href']
+            item_name = os.path.basename(item_name)
+            result['starting_items'].append(item_name)
 
         # Get Region
         region_info = item.find_all(constant.ITEM_REGION_FIRST_TAG[0], constant.ITEM_REGION_FIRST_TAG[1])
@@ -191,7 +227,7 @@ def scrap_item_info(hero_name):
 
 
 if __name__ == '__main__':
-    rs = scrap_item_info('void-spirit')
+    rs = scrap_item_info('shadow-fiend')
     for r in rs:
         print(r)
     # rs = [{'player_name': 'Hope', 'player_id': '245655553', 'item_build': {'15:52': 'Battle Fury', '20:38': 'Manta Style', '26:18': 'Eye of Skadi', '31:13': 'Butterfly', '36:54': 'Abyssal Blade', '48:35': 'Assault Cuirass'}, 'region': 'SE Asia', 'rank': '20', 'medal': 'ancient vii'},
@@ -200,5 +236,6 @@ if __name__ == '__main__':
     #         {'player_name': 'qing', 'player_id': '196043199', 'item_build': {'10:52': 'Power Treads', '16:17': 'Battle Fury', '20:49': 'Manta Style', '25:15': 'Eye of Skadi', '29:55': 'Butterfly', '32:55': 'Skull Basher'}, 'region': 'Europe West', 'rank': '2453', 'medal': 'immortal'},
     #         {'player_name': 'Agressif', 'player_id': '130416036', 'item_build': {'15:47': 'Battle Fury', '21:21': 'Manta Style', '24:18': 'Eye of Skadi', '29:11': 'Butterfly', '36:07': 'Abyssal Blade', '37:19': 'Black King Bar'}, 'region': 'China', 'rank': '125', 'medal': 'immortal'}]
     info = rs
-    image = make_item_image(info, 'juggernaut')
+    # print(info)
+    image = make_item_image(info, 'shadow-fiend')
     display(image)

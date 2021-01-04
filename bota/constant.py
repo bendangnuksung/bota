@@ -143,7 +143,7 @@ ITEM_URL = 'https://www.dotabuff.com/heroes/<hero_name>/guides'
 
 ITEM_BACKGROUND_IMAGE = 'data/background/items_background.jpg'
 ITEM_BACKGROUND_IMAGE = os.path.join(REPO_PATH, ITEM_BACKGROUND_IMAGE)
-ITEM_BACKGROUND_IMAGE_SHAPE = [600, 1070]
+ITEM_BACKGROUND_IMAGE_SHAPE = [600, 1070+440]
 
 ITEM_THRESHOLD_UPDATE = 43200 # 12 hour
 

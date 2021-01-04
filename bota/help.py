@@ -63,11 +63,13 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 #                'More Options: **`!counter help`** or **`!good help`**'
 
 UPDATE_BLOCK = 'Manage BOTA in your server using **`!guild`**\n' \
-               'Get Meta Hero with MMR brackets using **`!meta`**'
+               'Get Meta Hero with MMR brackets using **`!meta`**\n' \
+               '**`!items`** now shows starting items too'
 
 
 UPDATE_BLOCK_LIST=\
-             ["`23-Dec-2020`: Added `!meta` command",
+             ["`04-JAN-2020`: Now !items shows starting items too",
+              "`23-Dec-2020`: Added `!meta` command",
               "`23-Dec-2020`: Server owner can now change command prefix and block channels from BOTA, type `!guild` for details",
               "`15-Mar-2020`: User can now specify roles to show hero for !counter & !good command, type `!counter help`",
               "`30-Sep-2019`: Added Aghanim Info for heroes, type `!agha HeroName`",
