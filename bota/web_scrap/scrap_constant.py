@@ -307,7 +307,7 @@ d2pt_hero_names = {'abaddon': 'Abaddon', 'alchemist': 'Alchemist', 'ancient-appa
                    'dragon-knight': 'Dragon Knight', 'drow-ranger': 'Drow Ranger', 'earth-spirit': 'Earth Spirit',
                    'earthshaker': 'Earthshaker', 'elder-titan': 'Elder Titan', 'ember-spirit': 'Ember Spirit',
                    'enchantress': 'Enchantress', 'enigma': 'Enigma', 'faceless-void': 'Faceless Void',
-                   'grimstroke': 'Grimstroke', 'gyrocopter': 'Gyrocopter', 'huskar': 'Huskar', 'invoker': 'Invoker',
+                   'grimstroke': 'Grimstroke', 'gyrocopter': 'Gyrocopter', 'hoodwink': 'Hoodwink', 'huskar': 'Huskar', 'invoker': 'Invoker',
                    'io': 'Io', 'jakiro': 'Jakiro', 'juggernaut': 'Juggernaut',
                    'keeper-of-the-light': 'Keeper of the Light', 'kunkka': 'Kunkka',
                    'legion-commander': 'Legion Commander', 'leshrac': 'Leshrac', 'lich': 'Lich',

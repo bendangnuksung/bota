@@ -14,3 +14,4 @@ psycopg2==2.8.3
 discord.py==1.5.1
 webscreenshot==2.94
 opencv-python==4.4.0.46
+pycryptodome
