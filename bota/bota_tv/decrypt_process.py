@@ -28,11 +28,12 @@ def decrypt(key, source, decode=True):
 
 
 if __name__ == '__main__':
-    my_key = "mmykeyexample"
+    my_key = "123"
     my_key = str.encode(my_key)
     my_api_key = "123"
+    my_api_key = str.encode(my_api_key)
 
-    r = encrypt(my_key, my_api_key)
-    print(r)
-    data = decrypt(my_key, r)
-    print(data)
+    # r = encrypt(my_key, my_api_key)
+    # print(r)
+    # data = decrypt(my_key, r)
+    # print(data)
