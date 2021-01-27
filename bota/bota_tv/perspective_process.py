@@ -1,6 +1,13 @@
 from bota.bota_tv.youtube_process import YoutubeVideo
 from bota.web_scrap.scrap_constant import heroes_names, d2pt_hero_names
 from datetime import datetime
+from bota.web_scrap.scrap import find_hero_name
+import discord
+from bota import constant
+from bota.utility.general import is_file_old
+import os
+import json
+
 
 ytvideo = YoutubeVideo()
 
@@ -30,6 +37,7 @@ class PlayersPerspective:
 
     def _init_heros(self):
         self.hero_perspective_info = {}
+        self.all_video_info = []
         for heroname in heroes_names:
             heroname = d2pt_hero_names[heroname]
             self.hero_perspective_info[heroname] = []
@@ -58,9 +66,32 @@ class PlayersPerspective:
 
         return heroname, playername, position, mmr
 
-    def _update_vids(self, r=None):
+    def load_last_saved_link(self, last_saved_pth):
+        f = open(last_saved_pth)
+        self.hero_perspective_info = json.load(f)
+
+        f = open(constant.ALL_YT_LINK_PATH)
+        self.all_video_info = json.load(f)
+
+    def _update_vids(self, r=None, force_update=False, last_saved_pth=constant.YT_LINK_PATH):
+        if not force_update:
+            if os.path.exists(last_saved_pth):
+                file_old = is_file_old(last_saved_pth, self.update_after)
+                if not file_old:
+                    print("Loading from saved YT links (file not old)")
+                    self.load_last_saved_link(last_saved_pth)
+                    return
+                else:
+                    print("File outdated, updating to latest ")
+
         if r is None:
-            all_vid_info = ytvideo.get_all_video_info_in_channel()
+            try:
+                all_vid_info = ytvideo.get_all_video_info_in_channel()
+            except Exception as e:
+                print("Failed to update: ", e)
+                if os.path.exists(last_saved_pth):
+                    self.load_last_saved_link(last_saved_pth)
+                return
         else:
             all_vid_info = r
         self._init_heros()
@@ -73,9 +104,16 @@ class PlayersPerspective:
             link = vid_info['link']
             published = vid_info['published']
             infos = {'heroname': heroname, 'player': playername,'mmr': mmr, 'link': link, 'published': published, 'position': position}
+            self.all_video_info.append(infos)
             self.hero_perspective_info[heroname].append(infos)
 
-    def pretty_text(self, heroname, max_row):
+        with open(last_saved_pth, 'w') as fp:
+            json.dump(self.hero_perspective_info, fp)
+
+        with open(constant.ALL_YT_LINK_PATH) as fp:
+            json.dump(self.all_video_info, fp)
+
+    def pretty_text_for_hero(self, heroname, max_row):
         # final_string = f"```diff\n-{heroname} Perspective: ```\n"
         final_string = ""
         for i, data in enumerate(self.hero_perspective_info[heroname], 1):
@@ -93,14 +131,76 @@ class PlayersPerspective:
                 final_ago = days_ago // 31
                 day_string = "month" if final_ago < 2 else "months"
 
+            data["player"] = "Unknown" if data["player"] == "None" else data["player"]
+            data["position"] = "Unknown" if data["position"] == "none" else data["position"]
+
             final_string += f'{i}. **{data["player"]}**' \
-                            f'  `Pos:`{data["position"]}' \
+                            f'  `Pos:` {data["position"]}' \
                             f'  `MMR:` {data["mmr"]} ' \
                             f'  `{final_ago} {day_string} ago`' \
                             f'   __**[LINK]({data["link"]})**__\n\n'
         return final_string
 
-    def get_perspective(self, heroname, max_row=15):
+    def pretty_text_latest_vid(self, max_row=20):
+        final_string = ""
+        for i, data in enumerate(self.all_video_info, 1):
+            if i >= max_row:
+                break
+            # title =
+            published_data = datetime.fromisoformat(data["published"][:-1])
+            now = datetime.now()
+            days_ago = (now - published_data).days
+
+            if days_ago < 31:
+                final_ago = days_ago
+                day_string = "days" if final_ago > 1 else "day"
+            else:
+                final_ago = days_ago // 31
+                day_string = "month" if final_ago < 2 else "months"
+
+            data["player"] = "Unknown" if data["player"] == "None" else data["player"]
+            data["position"] = "Unknown" if data["position"] == "none" else data["position"]
+
+            final_string += f'{i}. **{data["player"]}: **' \
+                            f'  __{data["heroname"]}__ ' \
+                            f'  `Pos:` {data["position"]}' \
+                            f'  `MMR:` {data["mmr"]} ' \
+                            f'  `{final_ago} {day_string} ago`' \
+                            f'   __**[LINK]({data["link"]})**__\n\n'
+        return final_string
+
+    def embed_message(self, hero_name, text):
+        flag, dotabuff_hero_name = find_hero_name(hero_name)
+
+        title = f"{hero_name.upper()} Perspective"
+        description = f'{hero_name} Perspective Youtube videos in 1440p'
+        embed = discord.Embed(description=description, color=discord.Color.from_rgb(175, 232, 109))
+
+        embed.set_author(name=title,
+                         icon_url=constant.BOTA_LOGO_URL,
+                         url=constant.YOUTUBE_CHANNEL_URL)
+        embed.set_thumbnail(url=f'{constant.CHARACTER_ICONS_URL}{dotabuff_hero_name}.png')
+
+        embed.add_field(name='Videos', value=text)
+
+        return embed
+
+    def get_perspective(self, argument, is_admin=False, max_row=15):
+        if 'update' in argument.lower() and is_admin:
+            print("Force update")
+            self._update_vids(force_update=True)
+            embed = discord.Embed(description='Update Youtube links Successfull', color=discord.Color.green())
+            return True, '', embed
+
+        heroname = argument
+        get_latest_vid = False
+        if len(heroname) < 1:
+            get_latest_vid = True
+        flag, heroname = find_hero_name(heroname)
+        flag = False if heroname == '' else True
+        if not flag:
+            return False, heroname, ''
+
         if not self.first_update: # update only during the first call
             self._update_vids()
             self.last_update = datetime.now()
@@ -113,8 +213,13 @@ class PlayersPerspective:
                 self.last_update = datetime.now()
 
         heroname = d2pt_hero_names[heroname]
-        text = self.pretty_text(heroname, max_row)
-        return text
+        if not get_latest_vid:
+            text = self.pretty_text_for_hero(heroname, max_row)
+            embed = self.embed_message(heroname, text)
+        else:
+            text = self.pretty_text_latest_vid(heroname, max_row)
+            embed = self.embed_message(heroname, text)
+        return True, heroname, embed
 
 
 if __name__ == '__main__':

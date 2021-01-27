@@ -43,7 +43,6 @@ class Agha():
                     key_desc[desc.string] = desc.next_sibling
                 summary = info.find('i').string
                 if summary is None:
-                    print(summary, hero_name)
                     summary = f'\nSource: **[dota2.gamepedia.com]({self.url})**'
                 else:
                     summary += f'\nSource: **[dota2.gamepedia.com]({self.url})**'
@@ -81,6 +80,7 @@ class Agha():
             self._update_info()
 
         flag, hero_name = find_hero_name(hero_name)
+        flag = False if hero_name == '' else True
         if not flag:
             return False, hero_name, ''
         # if hero_name not in self.agha_info:

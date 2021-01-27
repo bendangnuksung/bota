@@ -1,7 +1,12 @@
 import os
 
+
+YOUTUBE_CHANNEL_URL = "https://www.youtube.com/channel/UCnby5VqRpcJ-qzyhAp2cTAQ"
+
 # command prefix
 DEFAULT_PREFIX = '!'
+
+BOTA_LOGO_URL = 'https://raw.githubusercontent.com/bendangnuksung/bota/master/github_images/bota.png'
 
 # General
 MAX_COMMAND_WORD_LENGTH = 5
@@ -32,6 +37,10 @@ COMMAND_USER_LOG_PATH = "data/logs/command_user_log.txt"
 COMMAND_USER_LOG_PATH = os.path.join(REPO_PATH, COMMAND_USER_LOG_PATH)
 SCRAP_LOG_PATH = 'data/logs/scrap_log.txt'
 SCRAP_LOG_PATH = os.path.join(REPO_PATH, SCRAP_LOG_PATH)
+
+# yt link path
+YT_LINK_PATH = os.path.join(REPO_PATH, 'data/logs/youtube_links.json')
+
 
 # Dota 2 ProTracker
 D2PT_HERO_UPDATE_THRESHOLD = 600 # 10 min

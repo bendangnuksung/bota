@@ -3,6 +3,7 @@ from bota.bota_tv.decrypt_process import decrypt
 import json
 import random
 import os
+import requests
 
 
 ENCRYPTED_KEYS = {'cc:': '5ak0cUjgaeLxvMRLGf1nPd92fa8eAMVoP7uR+I8dp3DTp0oYme/+p4Bd2WBRb45VlC19/vkWlfw0XHU5O4YHsQ==', 'steam': 'P0FUsUP7te3tPALeHeN5jVbqkrhAOau0sN4SOs+mcJFbn797MJXUjPVoCkfxhoVgQUaGznrsWJetTdfXa3O6Eg==', 'bendang': '2FIwUsxVrwcLAnViznVrsGLbnH5RYH81+BF9BLKqCtYaE4RZnhD0hsXfMTI8Lrse/kQepsEWadkksdrOpGL+4w==', 'playing2': 'NulblAODU8FwExmh/iRT5Hr1ALr+tGhHy5lw2d2WcrePcaG8k77HQuyqIdXnmdFA+394l1J12Pq++lTltMl2bg==', 'bota': 'V/lXFlwVb5A3cfyQF83/dE215Zshc9YWuOKSKCJaZ7hSeVq6NCTDb7tI8jpOVKpN1sb2MKlJ9aEiAkQpP6OEIw==', 'playing1': 'yCWRin5NogBJOlaWHnFcNLhl7wS5/X9tMyzbbZO1pvRoCuh8IDmhT5PVY4y5Ur375lg+D9tHRmjadzL0tJ9UdQ==', 'playing': 'fw1lMg/M2casHtE8I9FhWPopSL5OtjFCiKdsE5mDyy0E+KyrRzT9E9ph6WD3dsZb7srP3F+KrUZlFYjTY5CSZw=='}
@@ -11,7 +12,7 @@ channel_id = "UCnby5VqRpcJ-qzyhAp2cTAQ"
 
 class YoutubeVideo:
 
-    def __init__(self, encrypt_key=None, api_keys=ENCRYPTED_KEYS, channel_id=channel_id, limit=30):
+    def __init__(self, encrypt_key=None, api_keys=ENCRYPTED_KEYS, channel_id=channel_id, limit=40):
         self.encrypt_key = str.encode(encrypt_key) if encrypt_key is not None else self._load_encrypt_key()
         self.api_keys = self._load_api_keys(api_keys)
         self.channel_id = channel_id
@@ -45,8 +46,8 @@ class YoutubeVideo:
     def get_full_description(self, video_ids, apikey):
         video_ids_text = ",".join(video_ids)
         url = f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_ids_text}&key={apikey}'
-        inp = urlopen(url)
-        resp = json.load(inp)
+        inp = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+        resp = inp.json()
         descriptions = []
 
         for i in resp['items']:
@@ -63,10 +64,28 @@ class YoutubeVideo:
         first_url = self.base_search_url + 'key={}&channelId={}&part=snippet,id&order=date&maxResults={}'.format(
             api_key, channel_id, self.limit)
         url = first_url
-
+        max_retry = 2
+        current_retry = 0
         while True:
-            inp = urlopen(url)
-            resp = json.load(inp)
+            resp = None
+            while True:
+                if current_retry > max_retry:
+                    break
+                inp = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+                resp = inp.json()
+                got_items = False
+                try:
+                    for _ in resp['items']:
+                        got_items = True
+                        break
+                    if got_items:
+                        break
+                except:
+                    new_api_key = self.get_api_key()
+                    url = url.replace(api_key, new_api_key)
+                    api_key = new_api_key
+                    current_retry += 1
+                    print(current_retry)
 
             video_ids = []
             infos = []
@@ -97,6 +116,7 @@ class YoutubeVideo:
                 api_key = new_api_key
             except:
                 break
+        print("Finished fetching YT videos")
         return video_infos
 
 
