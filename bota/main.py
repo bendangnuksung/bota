@@ -5,6 +5,7 @@ import random
 import sys
 from bota.guild_process.guild_main import GuildCaller
 from bota.constant import DEFAULT_PREFIX
+from bota.bota_tv.perspective_process import PlayersPerspective
 
 import bota.logs_process.log_utils
 # from bota.constant import MAX_COMMAND_WORD_LENGTH
@@ -25,7 +26,10 @@ from bota.web_scrap.aghanim_process import Agha
 from bota.utility.main_utils import prefix_validation_correct, add_footer_requested_by_username, \
     embed_txt_message, get_infos_from_msg
 
+
 import argparse
+
+pp = PlayersPerspective()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--test', help='test mode', default=False)
@@ -615,6 +619,7 @@ async def update(ctx):
 async def agha(ctx):
     if is_channel_block(ctx):
         return
+    prefix = await bot.get_prefix(ctx.message)
     message_string, message_word_length, user_discord_id, user_discord_name = get_infos_from_msg(ctx)
     command_called = '!agha'
     hero_name = message_string.split()[1:]
@@ -634,8 +639,46 @@ async def agha(ctx):
         return False, command_called
 
     else:
+        embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
         await ctx.send(embed=embed)
         await ctx.update_logs(ctx.message, '!agha')
+    return True, command_called
+
+
+@bot.command(aliases=['per', 'pers', 'PERS', 'Perspective', 'PERSPECTIVE'])
+async def perspective(ctx):
+    is_admin = False
+    user_id = str(ctx.message.author).strip()
+    if user_id == ADMIN_ID:
+        is_admin = True
+
+    if is_channel_block(ctx):
+        return
+    prefix = await bot.get_prefix(ctx.message)
+    message_string, message_word_length, user_discord_id, user_discord_name = get_infos_from_msg(ctx)
+    command_called = '!perspective'
+    message_string = message_string.strip()
+    argument = message_string.split()[1:]
+    argument = " ".join(argument)
+
+    flag, hero_name, embed = pp.get_perspective(argument, is_admin)
+
+    if not flag:
+        if hero_name != '':
+            embed = discord.Embed(
+                description=f"Did you mean  **{hero_name.replace('-', ' ')}**, Try again with correct name",
+                color=discord.Color.red())
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(description=f"Could not find hero, Please make sure the hero name is correct",
+                                  color=discord.Color.red())
+            await ctx.send(embed=embed)
+        return False, command_called
+
+    else:
+        embed = add_footer_requested_by_username(embed, ctx.message, prefix=prefix)
+        await ctx.send(embed=embed)
+        await ctx.update_logs(ctx.message, '!perspective')
     return True, command_called
 
 

@@ -35,9 +35,9 @@ def camel_case(txt):
 
 class PlayersPerspective:
 
-    def __init__(self):
+    def __init__(self, update_after=18000): # update after every 5 hours
         self.first_update = False
-        self.update_after = 28800 # update after every eight hours
+        self.update_after = update_after
 
     def _init_heros(self):
         self.hero_perspective_info = {}
@@ -165,9 +165,10 @@ class PlayersPerspective:
                             f'  `MMR:` {data["mmr"]} ' \
                             f'  `{final_ago} {day_string} ago`' \
                             f'   __**[LINK]({data["link"]})**__\n\n'
+
         return final_string
 
-    def pretty_text_latest_vid(self, max_row=16):
+    def pretty_text_latest_vid(self, max_row=15):
         final_string = ""
         for i, data in enumerate(self.all_video_info, 1):
             if i >= max_row:
@@ -190,8 +191,8 @@ class PlayersPerspective:
             data["player"] = "Unknown" if data["player"] == "None" else data["player"]
             data["position"] = "Unknown" if data["position"] == "none" else data["position"]
 
-            final_string += f'{i}. **{data["heroname"]}: **' \
-                            f'  __**_{data["player"]}_**__ ' \
+            final_string += f'{i}. **{data["heroname"]}** _By_' \
+                            f'  __**{data["player"]}**__ ' \
                             f'  `Pos:` {data["position"]}' \
                             f'  `MMR:` {data["mmr"]} ' \
                             f'  `{final_ago} {day_string} ago`' \
@@ -202,7 +203,7 @@ class PlayersPerspective:
         flag, dotabuff_hero_name = find_hero_name(hero_name)
 
         if hero_name != 'latest':
-            title = f"{hero_name.upper()} Perspective \nLast WeekStats: Win: {self.heroes_win_rate[hero_name]['winrate']}% | Pick: {self.heroes_win_rate[hero_name]['pickrate']}% | KDA: {self.heroes_win_rate[hero_name]['kda']}%"
+            title = f"{hero_name.upper()} Perspective \nLast WeekStats: Win: {self.heroes_win_rate[hero_name]['winrate']}% | Pick: {self.heroes_win_rate[hero_name]['pickrate']}% | KDA: {self.heroes_win_rate[hero_name]['kda']}"
             description = f'{hero_name} Perspective Youtube videos in 1440p'
             thumbnail_path = f'{constant.CHARACTER_ICONS_URL}{dotabuff_hero_name}.png'
         else:

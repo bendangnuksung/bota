@@ -37,9 +37,11 @@ NOTE_FOOTER_LIST = ['Can use Short HeroName, eg: !skill antimage -> !skill am',
                     'Want to counter meepo with a safelane hero? type: !counter meepo safe',
                     'Want to counter axe with midlane hero? type: !counter axe mid',
                     'Want to counter PA with offlane hero? type: !counter pa off',
-                    'Check recent immortal/divine players item build using: !items heroname',
-                    'Check high win-rate Skill and Talent upgrade using: !skill heroname',
-                    'Know latest hero Meta with MMR brackets using: !meta'
+                    'Check recent immortal/divine players item build using: !items HeroName',
+                    'Check high win-rate Skill and Talent upgrade using: !skill HeroName',
+                    'Know latest hero Meta with MMR brackets using: !meta',
+                    'Watch Pro Player Perspective using: !pers HeroName',
+                    'Get latest Pro Perspective videos using: !pers'
                     ]
 
 
@@ -62,13 +64,16 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 #                '2. Counter with midlane **`!counter am mid`**\n'\
 #                'More Options: **`!counter help`** or **`!good help`**'
 
-UPDATE_BLOCK = 'Manage BOTA in your server using **`!guild`**\n' \
-               'Get Meta Hero with MMR brackets using **`!meta`**\n' \
-               '**`!items`** now shows starting items too'
+# UPDATE_BLOCK = 'Manage BOTA in your server using **`!guild`**\n' \
+#                'Get Meta Hero with MMR brackets using **`!meta`**\n' \
+#                '**`!items`** now shows starting items too'
 
+UPDATE_BLOCK = f'Watch Pro PLayer Perspective **@1440p60** on **YouTube** using: **`!pers HeroName`**\n' \
+               f'Please do __**[Subscribe Channel](https://www.youtube.com/channel/UCnby5VqRpcJ-qzyhAp2cTAQ)**__ to show support😊'
 
 UPDATE_BLOCK_LIST=\
-             ["`04-JAN-2020`: Now !items shows starting items too",
+             ["`01-FEB-2021`: Watch Pro PLayer Perspective @1440p60 on **YouTube** **`!pers HeroName`**",
+              "`04-JAN-2021`: Now !items shows starting items too",
               "`23-Dec-2020`: Added `!meta` command",
               "`23-Dec-2020`: Server owner can now change command prefix and block channels from BOTA, type `!guild` for details",
               "`15-Mar-2020`: User can now specify roles to show hero for !counter & !good command, type `!counter help`",
@@ -102,7 +107,8 @@ OTHER_COMMAND_LIST = {
     '!twitch language' : 'Get top8 twitch Stream eg:**`!twitch`** **`!twitch en`** **`!twitch ru`**',
     '!reddit': 'Get reddit post from  /r/DotA2. Type **`!reddit help`** for details',
     '!ti': 'Get Group stage Table, TI9 stats,  eg:  `!ti group`,  `!ti stat`',
-    '!update': 'Shows any new   `Updates`   and   `BOT support`'
+    '!update': 'Shows any new   `Updates`   and   `BOT support`',
+    '!pers': 'Watch Pro Player Perspective @1440p60 `!pers HeroName`'
     }
 
 ADMIN_COMMAND_LIST = {'!stat': 'Shows overall stats and weekly stats',
