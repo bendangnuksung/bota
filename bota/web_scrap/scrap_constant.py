@@ -332,3 +332,8 @@ d2pt_hero_names = {'abaddon': 'Abaddon', 'alchemist': 'Alchemist', 'ancient-appa
                    'weaver': 'Weaver', 'windranger': 'Windranger', 'winter-wyvern': 'Winter Wyvern',
                    'witch-doctor': 'Witch Doctor', 'wraith-king': 'Wraith King', 'zeus': 'Zeus', 'void-spirit': 'Void Spirit',
                    'snapfire': 'Snapfire'}
+
+
+d2pt_to_dotabuff = {}
+for key, name in d2pt_hero_names.items():
+    d2pt_to_dotabuff[name] = key

@@ -8,6 +8,8 @@ import difflib
 
 
 def find_hero_name(hero):
+    if scrap_constant.d2pt_to_dotabuff.get(hero) is not None:
+        return True, scrap_constant.d2pt_to_dotabuff[hero]
     hero = hero.lower().strip()
     hero = re.sub('[^a-z- ]', '', hero)
     hero = hero.replace(' ', '-')

@@ -86,10 +86,11 @@ class PlayersPerspective:
             tds = row.findAll('td')
 
             heroname = tds[0].attrs['data-value']
+            flag, dotabuff_hero_name = find_hero_name(heroname)
             winrate = str(round(float(tds[2].attrs['data-value']), 2))
             pickrate = str(round(float(tds[3].attrs['data-value']), 2))
             kda = str(round(float(tds[4].attrs['data-value']), 2))
-            self.heroes_win_rate[heroname] = {'winrate': winrate, 'pickrate': pickrate, 'kda': kda}
+            self.heroes_win_rate[dotabuff_hero_name] = {'winrate': winrate, 'pickrate': pickrate, 'kda': kda}
 
     def _update_vids(self, r=None, force_update=False, last_saved_pth=constant.YT_LINK_PATH):
         if not force_update:
@@ -201,9 +202,8 @@ class PlayersPerspective:
 
     def embed_message(self, hero_name, text):
         flag, dotabuff_hero_name = find_hero_name(hero_name)
-
         if hero_name != 'latest':
-            title = f"{hero_name.upper()} Perspective \nLast WeekStats: Win: {self.heroes_win_rate[hero_name]['winrate']}% | Pick: {self.heroes_win_rate[hero_name]['pickrate']}% | KDA: {self.heroes_win_rate[hero_name]['kda']}"
+            title = f"{hero_name.upper()} Perspective \nLast WeekStats: Win: {self.heroes_win_rate[dotabuff_hero_name]['winrate']}% | Pick: {self.heroes_win_rate[dotabuff_hero_name]['pickrate']}% | KDA: {self.heroes_win_rate[dotabuff_hero_name]['kda']}"
             description = f'{hero_name} Perspective Youtube videos in 1440p'
             thumbnail_path = f'{constant.CHARACTER_ICONS_URL}{dotabuff_hero_name}.png'
         else:
@@ -259,6 +259,7 @@ class PlayersPerspective:
 if __name__ == '__main__':
     # print(camel_case("queen of pain"))
     pp = PlayersPerspective()
-    pp.update_hero_win_rate()
+    flag, result, embed = pp.get_perspective('od')
+    print(flag, embed.description)
     # t = pp.get_perspective("")
     # print(t)
