@@ -9,9 +9,7 @@ from datetime import datetime
 import argparse
 from argparse import RawTextHelpFormatter
 import subprocess
-from bota.bota_tv.perspective_process import PlayersPerspective
-
-# pp_yt = PlayersPerspective(14400) # update very 4 hour
+from bota.bota_tv.update_video_links import update_video_links
 
 
 parser = argparse.ArgumentParser(description='Script to scrap data everyday at a particular time',
@@ -80,7 +78,7 @@ def update_images():
     start = datetime.now()
     get_current_trend()
     print("Updating YT links:")
-    # pp_yt._update_vids()
+    update_yt_links = update_video_links()
     meta_r = get_meta(early_update=True, use_outdated_photo_if_fails=False)
     meta_r = 'Unsuccessful' if meta_r is None else 'Success'
     meta_r = f"META: {meta_r}"
@@ -93,6 +91,7 @@ def update_images():
 
     end = datetime.now()
     stats = f"{'*'*50} \n Update Completed \n" \
+            f"YT link updated: {update_yt_links}\n" \
             f" Total Time taken: {((end-start).total_seconds()) / 60} min \n" \
             f"Start time: {start.strftime('%H:%M:%S')} \n" \
             f"End time: {end.strftime('%H:%M:%S')} \n" \

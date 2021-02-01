@@ -38,6 +38,8 @@ class PlayersPerspective:
     def __init__(self, update_after=100000): # update after every 5 hours
         self.first_update = False
         self.update_after = update_after
+        self.update_hero_win_rate()
+        self.load_last_saved_link()
 
     def _init_heros(self):
         self.hero_perspective_info = {}
@@ -46,31 +48,8 @@ class PlayersPerspective:
             heroname = d2pt_hero_names[heroname]
             self.hero_perspective_info[heroname] = []
 
-    def extract_info(self, description):
-        description = description.lower()
-        description_lines = description.split("\n")
-        heroname = None
-        playername = None
-        position = None
-        mmr = None
-        for line in description_lines:
-            if line.startswith("hero"):
-                heroname = line.split(":")[1]
-
-            elif line.startswith("player"):
-                playername = line.split(":")[1:]
-                playername = ":".join(playername)
-
-            elif line.startswith("mmr"):
-                mmr = line.split(":")[1]
-
-            elif line.startswith("position"):
-                position = line.split(":")[1]
-
-        return heroname, playername, position, mmr
-
-    def load_last_saved_link(self, last_saved_pth):
-        f = open(last_saved_pth)
+    def load_last_saved_link(self):
+        f = open(constant.YT_LINK_PATH)
         self.hero_perspective_info = json.load(f)
 
         f = open(constant.ALL_YT_LINK_PATH)
@@ -91,52 +70,6 @@ class PlayersPerspective:
             pickrate = str(round(float(tds[3].attrs['data-value']), 2))
             kda = str(round(float(tds[4].attrs['data-value']), 2))
             self.heroes_win_rate[dotabuff_hero_name] = {'winrate': winrate, 'pickrate': pickrate, 'kda': kda}
-
-    def _update_vids(self, r=None, force_update=False, last_saved_pth=constant.YT_LINK_PATH):
-        if not force_update:
-            if os.path.exists(last_saved_pth):
-                file_old = is_file_old(last_saved_pth, self.update_after)
-                if not file_old:
-                    print("Loading from saved YT links (file not old)")
-                    self.load_last_saved_link(last_saved_pth)
-                    return
-                else:
-                    print("File outdated, updating to latest ")
-
-        if r is None:
-            try:
-                all_vid_info = ytvideo.get_video_links()
-                self.update_hero_win_rate()
-            except Exception as e:
-                print("Failed to update: ", e)
-                if os.path.exists(last_saved_pth):
-                    self.load_last_saved_link(last_saved_pth)
-                return
-        else:
-            all_vid_info = r
-        self._init_heros()
-        videos_info = []
-        for vid_info in all_vid_info:
-            heroname, playername, position, mmr = self.extract_info(vid_info['description'])
-            if heroname is None:
-                print("No hero name")
-            heroname = camel_case(heroname)
-            link = vid_info['link']
-            published = vid_info['published']
-            infos = {'heroname': heroname, 'player': playername,'mmr': mmr, 'link': link, 'published': published, 'position': position}
-            videos_info.append(infos)
-
-        self.all_video_info = sorted(videos_info, key=itemgetter('published'), reverse=True)
-
-        for info in self.all_video_info:
-            heroname = info['heroname']
-            self.hero_perspective_info[heroname].append(info)
-
-        with open(last_saved_pth, 'w') as fp:
-            json.dump(self.hero_perspective_info, fp, indent=4, default=str)
-
-        with open(constant.ALL_YT_LINK_PATH, 'w') as fp:
-            json.dump(self.all_video_info, fp, indent=4, default=str)
 
     def pretty_text_for_hero(self, heroname, max_row=12):
         # final_string = f"```diff\n-{heroname} Perspective: ```\n"
@@ -221,25 +154,12 @@ class PlayersPerspective:
         return embed
 
     def get_perspective(self, argument, is_admin=False):
-        if 'update' in argument.lower() and is_admin:
-            print("Force update")
-            self._update_vids(force_update=True)
-            embed = discord.Embed(description='Update Youtube links Successfull', color=discord.Color.green())
-            return True, '', embed
-
-        if not self.first_update: # update only during the first call
-            self._update_vids()
+        if os.path.exists(constant.YT_LINK_PATH) and is_file_old(constant.YT_LINK_PATH, self.update_after):
             self.update_hero_win_rate()
-            self.last_update = datetime.now()
-            self.first_update = True
-        else:
-            current_time = datetime.now()
-            time_diff = (current_time - self.last_update).total_seconds()
-            if time_diff >= self.update_after:
-                self._update_vids()
-                self.last_update = datetime.now()
+            self.load_last_saved_link()
 
         heroname = argument
+        # get latest uploaded videos
         if len(heroname) < 1:
             text = self.pretty_text_latest_vid()
             embed = self.embed_message('latest', text)
@@ -250,6 +170,7 @@ class PlayersPerspective:
         if not flag:
             return False, heroname, ''
 
+        # Get YT videos based on hero
         heroname = d2pt_hero_names[heroname]
         text = self.pretty_text_for_hero(heroname)
         embed = self.embed_message(heroname, text)
@@ -259,7 +180,7 @@ class PlayersPerspective:
 if __name__ == '__main__':
     # print(camel_case("queen of pain"))
     pp = PlayersPerspective()
-    flag, result, embed = pp.get_perspective('od')
+    flag, result, embed = pp.get_perspective('pa')
     print(flag, embed.description)
     # t = pp.get_perspective("")
     # print(t)
