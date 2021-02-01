@@ -35,7 +35,7 @@ def camel_case(txt):
 
 class PlayersPerspective:
 
-    def __init__(self, update_after=100000): # update after every 5 hours
+    def __init__(self, update_after=14400): # update after every 5 hours
         self.first_update = False
         self.update_after = update_after
         self.update_hero_win_rate()
@@ -178,9 +178,8 @@ class PlayersPerspective:
 
 
 if __name__ == '__main__':
-    # print(camel_case("queen of pain"))
     pp = PlayersPerspective()
-    flag, result, embed = pp.get_perspective('pa')
+    flag, result, embed = pp.get_perspective('timber')
     print(flag, embed.description)
     # t = pp.get_perspective("")
     # print(t)
