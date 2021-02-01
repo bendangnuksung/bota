@@ -50,7 +50,7 @@ def extract_info(description):
     return heroname, playername, position, mmr
 
 
-def update_video_links(update_after=7200):
+def update_video_links(update_after=14000):
     file_path = constant.YT_LINK_PATH
 
     if os.path.exists(file_path) and not is_file_old(file_path, update_after):
@@ -89,3 +89,5 @@ def update_video_links(update_after=7200):
     return True
 
 
+if __name__ == '__main__':
+    update_video_links(1000)

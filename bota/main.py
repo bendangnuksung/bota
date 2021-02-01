@@ -105,7 +105,7 @@ bot.remove_command(name='help')
 async def on_ready():
     global GUILDS
     GUILDS = bot.guilds
-    await bot.change_presence(activity=discord.Game(name="Dota2, NEW UPDATE Type '!pers HeroName'"))
+    await bot.change_presence(activity=discord.Game(name="UPDATE:Type !pers"))
     print(f"Logged in as {bot.user}")
 
 

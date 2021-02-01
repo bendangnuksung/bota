@@ -35,7 +35,7 @@ def camel_case(txt):
 
 class PlayersPerspective:
 
-    def __init__(self, update_after=7200): # update after every 5 hours
+    def __init__(self, update_after=14000): # update after every 5 hours
         self.first_update = False
         self.update_after = update_after
         self.update_hero_win_rate()
