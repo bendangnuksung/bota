@@ -77,8 +77,9 @@ def update_images():
     loop = asyncio.get_event_loop()
     start = datetime.now()
     get_current_trend()
-    print("Updating YT links:")
+    background_logger.info("Updating YT links:")
     update_yt_links = update_video_links()
+    background_logger.info(f"YT update Flag: {update_yt_links}")
     meta_r = get_meta(early_update=True, use_outdated_photo_if_fails=False)
     meta_r = 'Unsuccessful' if meta_r is None else 'Success'
     meta_r = f"META: {meta_r}"

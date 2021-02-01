@@ -35,7 +35,7 @@ def camel_case(txt):
 
 class PlayersPerspective:
 
-    def __init__(self, update_after=14400): # update after every 5 hours
+    def __init__(self, update_after=7200): # update after every 5 hours
         self.first_update = False
         self.update_after = update_after
         self.update_hero_win_rate()
@@ -154,9 +154,10 @@ class PlayersPerspective:
         return embed
 
     def get_perspective(self, argument, is_admin=False):
-        if os.path.exists(constant.YT_LINK_PATH) and is_file_old(constant.YT_LINK_PATH, self.update_after):
-            self.update_hero_win_rate()
-            self.load_last_saved_link()
+        if os.path.exists(constant.YT_LINK_PATH):
+            if is_file_old(constant.YT_LINK_PATH, self.update_after):
+                self.update_hero_win_rate()
+                self.load_last_saved_link()
 
         heroname = argument
         # get latest uploaded videos

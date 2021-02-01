@@ -127,7 +127,8 @@ def is_file_old(file_path, sec_threshold):
 		return True
 	current_ctime = datetime.now().timestamp()
 	file_ctime = os.path.getmtime(file_path)
-	if (current_ctime - file_ctime) < sec_threshold:
+	time_diff = (current_ctime - file_ctime)
+	if time_diff < sec_threshold:
 		return False
 	return True
 
