@@ -1,5 +1,189 @@
 [
     {
+        "heroname": "Alchemist",
+        "player": "drew",
+        "mmr": "8577",
+        "link": "https://www.youtube.com/watch?v=CkP6SstNO1U",
+        "published": "2021-02-02 00:00:00",
+        "position": "4"
+    },
+    {
+        "heroname": "Ancient Apparition",
+        "player": "fly",
+        "mmr": "8632",
+        "link": "https://www.youtube.com/watch?v=Wyyn7-5bi8E",
+        "published": "2021-02-02 00:00:00",
+        "position": "5"
+    },
+    {
+        "heroname": "Tinker",
+        "player": "xneverluv-",
+        "mmr": "none",
+        "link": "https://www.youtube.com/watch?v=InRkGHGVlF4",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
+        "heroname": "Tiny",
+        "player": "daxak",
+        "mmr": "8790",
+        "link": "https://www.youtube.com/watch?v=W_fmPjANCRo",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
+        "heroname": "Treant Protector",
+        "player": "ninjaboogie",
+        "mmr": "8239",
+        "link": "https://www.youtube.com/watch?v=e4GiDD7YsRc",
+        "published": "2021-02-01 00:00:00",
+        "position": "5"
+    },
+    {
+        "heroname": "Troll Warlord",
+        "player": "raven",
+        "mmr": "9078",
+        "link": "https://www.youtube.com/watch?v=tWNn5KVSEEc",
+        "published": "2021-02-01 00:00:00",
+        "position": "1"
+    },
+    {
+        "heroname": "Tusk",
+        "player": "handsken",
+        "mmr": "8541",
+        "link": "https://www.youtube.com/watch?v=isRMclg2TcY",
+        "published": "2021-02-01 00:00:00",
+        "position": "4"
+    },
+    {
+        "heroname": "Underlord",
+        "player": "khezu",
+        "mmr": "9371",
+        "link": "https://www.youtube.com/watch?v=g0OvChoIzU8",
+        "published": "2021-02-01 00:00:00",
+        "position": "3"
+    },
+    {
+        "heroname": "Undying",
+        "player": "febby",
+        "mmr": "7971",
+        "link": "https://www.youtube.com/watch?v=Nmlule9_LHc",
+        "published": "2021-02-01 00:00:00",
+        "position": "5"
+    },
+    {
+        "heroname": "Ursa",
+        "player": "nothingtosay",
+        "mmr": "9066",
+        "link": "https://www.youtube.com/watch?v=ruOZklhOxus",
+        "published": "2021-02-01 00:00:00",
+        "position": "1"
+    },
+    {
+        "heroname": "Vengeful Spirit",
+        "player": "kuku",
+        "mmr": "8415",
+        "link": "https://www.youtube.com/watch?v=FNYZWamEEjU",
+        "published": "2021-02-01 00:00:00",
+        "position": "3"
+    },
+    {
+        "heroname": "Venomancer",
+        "player": "skiter",
+        "mmr": "8060",
+        "link": "https://www.youtube.com/watch?v=78_zCAC0d7o",
+        "published": "2021-02-01 00:00:00",
+        "position": "3"
+    },
+    {
+        "heroname": "Viper",
+        "player": "gpk (smurf)",
+        "mmr": "9213",
+        "link": "https://www.youtube.com/watch?v=BIhHxpiiU7o",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
+        "heroname": "Visage",
+        "player": "jabz",
+        "mmr": "7931",
+        "link": "https://www.youtube.com/watch?v=GjKFBt_f4ys",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
+        "heroname": "Void Spirit",
+        "player": "armel",
+        "mmr": "8919",
+        "link": "https://www.youtube.com/watch?v=CLYEvcb5jNA",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
+        "heroname": "Warlock",
+        "player": "topson (smurf)",
+        "mmr": "7396",
+        "link": "https://www.youtube.com/watch?v=xBf9y9zh7Bc",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
+        "heroname": "Weaver",
+        "player": "resolut1on",
+        "mmr": "8422",
+        "link": "https://www.youtube.com/watch?v=SGgpIHW_IuY",
+        "published": "2021-02-01 00:00:00",
+        "position": "1"
+    },
+    {
+        "heroname": "Windranger",
+        "player": "nana",
+        "mmr": "8721",
+        "link": "https://www.youtube.com/watch?v=_SkFQ1ANCZ4",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
+        "heroname": "Abaddon",
+        "player": "k1 hector (smurf 2)",
+        "mmr": "8352",
+        "link": "https://www.youtube.com/watch?v=V-wp2rVed3s",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
+        "heroname": "Winter Wyvern",
+        "player": "daxak",
+        "mmr": "9099",
+        "link": "https://www.youtube.com/watch?v=1jeHns8vu2E",
+        "published": "2021-02-01 00:00:00",
+        "position": "1"
+    },
+    {
+        "heroname": "Witch Doctor",
+        "player": "iceiceice",
+        "mmr": "7949",
+        "link": "https://www.youtube.com/watch?v=L97Gfy4IS4M",
+        "published": "2021-02-01 00:00:00",
+        "position": "3"
+    },
+    {
+        "heroname": "Wraith King",
+        "player": "gabbi",
+        "mmr": "8340",
+        "link": "https://www.youtube.com/watch?v=Q2XYZYPUsuk",
+        "published": "2021-02-01 00:00:00",
+        "position": "1"
+    },
+    {
+        "heroname": "Zeus",
+        "player": "xcalibur",
+        "mmr": "8427",
+        "link": "https://www.youtube.com/watch?v=GOH4DxIx0Uc",
+        "published": "2021-02-01 00:00:00",
+        "position": "2"
+    },
+    {
         "heroname": "Shadow Shaman",
         "player": "gh",
         "mmr": "8421",
