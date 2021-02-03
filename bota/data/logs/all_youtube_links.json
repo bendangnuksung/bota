@@ -1,5 +1,45 @@
 [
     {
+        "heroname": "Crystal Maiden",
+        "player": "dubu",
+        "mmr": "9532",
+        "link": "https://www.youtube.com/watch?v=AUVV65TibE4",
+        "published": "2021-02-03 00:00:00",
+        "position": "5"
+    },
+    {
+        "heroname": "Dark Seer",
+        "player": "mind_control",
+        "mmr": "9087",
+        "link": "https://www.youtube.com/watch?v=DXzaTEftmOM",
+        "published": "2021-02-03 00:00:00",
+        "position": "3"
+    },
+    {
+        "heroname": "Dark Willow",
+        "player": "crit",
+        "mmr": "8490",
+        "link": "https://www.youtube.com/watch?v=lVi0EU_QwdU",
+        "published": "2021-02-03 00:00:00",
+        "position": "4"
+    },
+    {
+        "heroname": "Dazzle",
+        "player": "funn1k",
+        "mmr": "9210",
+        "link": "https://www.youtube.com/watch?v=yB3taAuNQjM",
+        "published": "2021-02-03 00:00:00",
+        "position": "3"
+    },
+    {
+        "heroname": "Death Prophet",
+        "player": "gorgc",
+        "mmr": "9575",
+        "link": "https://www.youtube.com/watch?v=qL7GekpX01k",
+        "published": "2021-02-03 00:00:00",
+        "position": "3"
+    },
+    {
         "heroname": "Alchemist",
         "player": "drew",
         "mmr": "8577",
