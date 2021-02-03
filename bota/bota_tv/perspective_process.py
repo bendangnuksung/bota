@@ -131,6 +131,7 @@ class PlayersPerspective:
                             f'  `MMR:` {data["mmr"]} ' \
                             f'  `{final_ago} {day_string} ago`' \
                             f'   __**[LINK]({data["link"]})**__\n\n'
+        final_string += f"To get Perspective of specific heroes, type `!pers HeroName`"
         return final_string
 
     def embed_message(self, hero_name, text):

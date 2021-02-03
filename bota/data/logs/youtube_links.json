@@ -72,6 +72,14 @@
     "Anti-Mage": [
         {
             "heroname": "Anti-Mage",
+            "player": "nothingtosay",
+            "mmr": "8409",
+            "link": "https://www.youtube.com/watch?v=lRueVIHaWlg",
+            "published": "2021-02-02 00:00:00",
+            "position": "1"
+        },
+        {
+            "heroname": "Anti-Mage",
             "player": "daxak",
             "mmr": "8416",
             "link": "https://www.youtube.com/watch?v=xduBBO_qCGk",
@@ -88,6 +96,14 @@
         }
     ],
     "Arc Warden": [
+        {
+            "heroname": "Arc Warden",
+            "player": "daxak",
+            "mmr": "8578",
+            "link": "https://www.youtube.com/watch?v=yFUBu6aMItw",
+            "published": "2021-02-02 00:00:00",
+            "position": "1"
+        },
         {
             "heroname": "Arc Warden",
             "player": "raven",
@@ -108,6 +124,14 @@
     "Axe": [
         {
             "heroname": "Axe",
+            "player": "saberlight-",
+            "mmr": "8781",
+            "link": "https://www.youtube.com/watch?v=eOdffg3_-iU",
+            "published": "2021-02-02 00:00:00",
+            "position": "3"
+        },
+        {
+            "heroname": "Axe",
             "player": "scofield",
             "mmr": "8112",
             "link": "https://www.youtube.com/watch?v=OpfPG1u-gJc",
@@ -124,6 +148,14 @@
         }
     ],
     "Bane": [
+        {
+            "heroname": "Bane",
+            "player": "saksa",
+            "mmr": "8822",
+            "link": "https://www.youtube.com/watch?v=yGpvmC6HCL4",
+            "published": "2021-02-02 00:00:00",
+            "position": "4"
+        },
         {
             "heroname": "Bane",
             "player": "7mad",
@@ -144,6 +176,14 @@
     "Batrider": [
         {
             "heroname": "Batrider",
+            "player": "gpk",
+            "mmr": "9169",
+            "link": "https://www.youtube.com/watch?v=bCw1A7w20E4",
+            "published": "2021-02-02 00:00:00",
+            "position": "4"
+        },
+        {
+            "heroname": "Batrider",
             "player": "qojqva",
             "mmr": "8274",
             "link": "https://www.youtube.com/watch?v=soNgsj36UeA",
@@ -160,6 +200,14 @@
         }
     ],
     "Beastmaster": [
+        {
+            "heroname": "Beastmaster",
+            "player": "rodjer",
+            "mmr": "8667",
+            "link": "https://www.youtube.com/watch?v=zmaB_I9chLc",
+            "published": "2021-02-02 00:00:00",
+            "position": "3"
+        },
         {
             "heroname": "Beastmaster",
             "player": "khezu",
@@ -180,6 +228,14 @@
     "Bloodseeker": [
         {
             "heroname": "Bloodseeker",
+            "player": "inyourdream",
+            "mmr": "8643",
+            "link": "https://www.youtube.com/watch?v=x7rExF4OTHY",
+            "published": "2021-02-02 00:00:00",
+            "position": "1"
+        },
+        {
+            "heroname": "Bloodseeker",
             "player": "drew",
             "mmr": "8436",
             "link": "https://www.youtube.com/watch?v=yLXei7TUE58",
@@ -196,6 +252,14 @@
         }
     ],
     "Bounty Hunter": [
+        {
+            "heroname": "Bounty Hunter",
+            "player": "aramis",
+            "mmr": "8334",
+            "link": "https://www.youtube.com/watch?v=6gEboKzrI0o",
+            "published": "2021-02-02 00:00:00",
+            "position": "4"
+        },
         {
             "heroname": "Bounty Hunter",
             "player": "resolut1on",
@@ -216,6 +280,14 @@
     "Brewmaster": [
         {
             "heroname": "Brewmaster",
+            "player": "sonneiko",
+            "mmr": "8896",
+            "link": "https://www.youtube.com/watch?v=OKJDe_Jtl28",
+            "published": "2021-02-02 00:00:00",
+            "position": "5"
+        },
+        {
+            "heroname": "Brewmaster",
             "player": "iceiceice",
             "mmr": "8610",
             "link": "https://www.youtube.com/watch?v=saCQ2E1XHSQ",
@@ -232,6 +304,14 @@
         }
     ],
     "Bristleback": [
+        {
+            "heroname": "Bristleback",
+            "player": "limmp",
+            "mmr": "9179",
+            "link": "https://www.youtube.com/watch?v=LvVkF7pO54k",
+            "published": "2021-02-02 00:00:00",
+            "position": "2"
+        },
         {
             "heroname": "Bristleback",
             "player": "armel",
@@ -252,6 +332,14 @@
     "Broodmother": [
         {
             "heroname": "Broodmother",
+            "player": "gpk (smurf)",
+            "mmr": "9011",
+            "link": "https://www.youtube.com/watch?v=ZC4N2P56guc",
+            "published": "2021-02-02 00:00:00",
+            "position": "2"
+        },
+        {
+            "heroname": "Broodmother",
             "player": "gpk",
             "mmr": "9266",
             "link": "https://www.youtube.com/watch?v=XkNBiLppaVg",
@@ -268,6 +356,14 @@
         }
     ],
     "Centaur Warrunner": [
+        {
+            "heroname": "Centaur Warrunner",
+            "player": "khezu",
+            "mmr": "8640",
+            "link": "https://www.youtube.com/watch?v=reHOpOLT1zM",
+            "published": "2021-02-02 00:00:00",
+            "position": "3"
+        },
         {
             "heroname": "Centaur Warrunner",
             "player": "general",
@@ -289,6 +385,14 @@
         {
             "heroname": "Chaos Knight",
             "player": "badman",
+            "mmr": "7212",
+            "link": "https://www.youtube.com/watch?v=CM-7G3al04s",
+            "published": "2021-02-02 00:00:00",
+            "position": "1"
+        },
+        {
+            "heroname": "Chaos Knight",
+            "player": "badman",
             "mmr": "8143",
             "link": "https://www.youtube.com/watch?v=vZ1umDWBVss",
             "published": "2021-01-26 00:00:00",
@@ -304,6 +408,14 @@
         }
     ],
     "Chen": [
+        {
+            "heroname": "Chen",
+            "player": "lil",
+            "mmr": "9092",
+            "link": "https://www.youtube.com/watch?v=1ZOtNBdWBDs",
+            "published": "2021-02-02 00:00:00",
+            "position": "4"
+        },
         {
             "heroname": "Chen",
             "player": "bulba",
@@ -324,6 +436,14 @@
     "Clinkz": [
         {
             "heroname": "Clinkz",
+            "player": "crit",
+            "mmr": "8178",
+            "link": "https://www.youtube.com/watch?v=shdQfOKz8As",
+            "published": "2021-02-02 00:00:00",
+            "position": "1"
+        },
+        {
+            "heroname": "Clinkz",
             "player": "daxak",
             "mmr": "8137",
             "link": "https://www.youtube.com/watch?v=-k1QynDScXs",
@@ -340,6 +460,14 @@
         }
     ],
     "Clockwerk": [
+        {
+            "heroname": "Clockwerk",
+            "player": "scofield",
+            "mmr": "9007",
+            "link": "https://www.youtube.com/watch?v=xnMSVkAeO_M",
+            "published": "2021-02-02 00:00:00",
+            "position": "4"
+        },
         {
             "heroname": "Clockwerk",
             "player": "synderen",
