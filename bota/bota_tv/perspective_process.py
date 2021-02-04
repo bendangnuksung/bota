@@ -8,9 +8,9 @@ from bota import constant
 from bota.utility.general import is_file_old
 import os
 import json
-from operator import itemgetter
 from bs4 import BeautifulSoup as bs
 import requests
+from bota.bota_tv.download_latest_yt_links import pull_latest_yt_links_from_github_gist
 
 
 ytvideo = YoutubeVideo()
@@ -35,7 +35,8 @@ def camel_case(txt):
 
 class PlayersPerspective:
 
-    def __init__(self, update_after=14000): # update after every 5 hours
+    def __init__(self, update_after=7200): # update after every 5 hours
+        pull_latest_yt_links_from_github_gist()
         self.first_update = False
         self.update_after = update_after
         self.update_hero_win_rate()
@@ -49,6 +50,8 @@ class PlayersPerspective:
             self.hero_perspective_info[heroname] = []
 
     def load_last_saved_link(self):
+        print("updating YT links from github gist")
+        pull_latest_yt_links_from_github_gist()
         f = open(constant.YT_LINK_PATH)
         self.hero_perspective_info = json.load(f)
 
@@ -181,7 +184,7 @@ class PlayersPerspective:
 
 if __name__ == '__main__':
     pp = PlayersPerspective()
-    flag, result, embed = pp.get_perspective('timber')
+    flag, result, embed = pp.get_perspective('abba')
     print(flag, embed.description)
     # t = pp.get_perspective("")
     # print(t)

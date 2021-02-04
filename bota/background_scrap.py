@@ -9,7 +9,6 @@ from datetime import datetime
 import argparse
 from argparse import RawTextHelpFormatter
 import subprocess
-from bota.bota_tv.update_video_links import update_video_links
 
 
 parser = argparse.ArgumentParser(description='Script to scrap data everyday at a particular time',
@@ -77,9 +76,6 @@ def update_images():
     loop = asyncio.get_event_loop()
     start = datetime.now()
     get_current_trend()
-    background_logger.info("Updating YT links:")
-    update_yt_links = update_video_links()
-    background_logger.info(f"YT update Flag: {update_yt_links}")
     meta_r = get_meta(early_update=True, use_outdated_photo_if_fails=False)
     meta_r = 'Unsuccessful' if meta_r is None else 'Success'
     meta_r = f"META: {meta_r}"
@@ -92,7 +88,6 @@ def update_images():
 
     end = datetime.now()
     stats = f"{'*'*50} \n Update Completed \n" \
-            f"YT link updated: {update_yt_links}\n" \
             f" Total Time taken: {((end-start).total_seconds()) / 60} min \n" \
             f"Start time: {start.strftime('%H:%M:%S')} \n" \
             f"End time: {end.strftime('%H:%M:%S')} \n" \
