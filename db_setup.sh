@@ -3,8 +3,8 @@
 
 # Install DB requirements
 sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo apt-get install libpq-dev python-dev
+sudo apt install -y postgresql postgresql-contrib
+sudo apt-get install -y libpq-dev python-dev
 
 # Default password for user postgres
 echo "Setting up Postgres password, database and table"

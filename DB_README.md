@@ -12,6 +12,7 @@ sudo -u postgres psql
 # Copy tables to /tmp/ 
 COPY user_info TO '/tmp/user_info.csv' DELIMITER ',' CSV HEADER;
 COPY alias TO '/tmp/alias.csv' DELIMITER ',' CSV HEADER;
+COPY guild TO '/tmp/guild.csv' DELIMITER ',' CSV HEADER;
 ```
 
 ### Import tables
@@ -27,4 +28,5 @@ sudo -u postgres psql
 # Make sure the tables does not have duplicates with the csv or it will fail 
 COPY user_info FROM '/tmp/user_info.csv' DELIMITER ',' CSV HEADER;
 COPY alias FROM '/tmp/alias.csv' DELIMITER ',' CSV HEADER;
+COPY guild FROM '/tmp/guild.csv' DELIMITER ',' CSV HEADER;
 ```
