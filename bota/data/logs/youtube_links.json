@@ -618,6 +618,14 @@
     "Disruptor": [
         {
             "heroname": "Disruptor",
+            "player": "cematheslayer",
+            "mmr": "8389",
+            "link": "https://www.youtube.com/watch?v=jeQ4lajJxy8",
+            "published": "2021-02-03 00:00:00",
+            "position": "3"
+        },
+        {
+            "heroname": "Disruptor",
             "player": "march",
             "mmr": "9150",
             "link": "https://www.youtube.com/watch?v=CYlfr30HhAY",
@@ -634,6 +642,14 @@
         }
     ],
     "Doom": [
+        {
+            "heroname": "Doom",
+            "player": "iceiceice",
+            "mmr": "8451",
+            "link": "https://www.youtube.com/watch?v=gn8dA2O2Tdc",
+            "published": "2021-02-03 00:00:00",
+            "position": "3"
+        },
         {
             "heroname": "Doom",
             "player": "gpk",
@@ -654,6 +670,14 @@
     "Dragon Knight": [
         {
             "heroname": "Dragon Knight",
+            "player": "limmp",
+            "mmr": "8687",
+            "link": "https://www.youtube.com/watch?v=lXC7SUgs4gA",
+            "published": "2021-02-03 00:00:00",
+            "position": "2"
+        },
+        {
+            "heroname": "Dragon Knight",
             "player": "crystallize",
             "mmr": "9033",
             "link": "https://www.youtube.com/watch?v=J24eF72j0XM",
@@ -672,6 +696,14 @@
     "Drow Ranger": [
         {
             "heroname": "Drow Ranger",
+            "player": "topson (smurf)",
+            "mmr": "7045",
+            "link": "https://www.youtube.com/watch?v=B45I5Saq2dk",
+            "published": "2021-02-03 00:00:00",
+            "position": "3"
+        },
+        {
+            "heroname": "Drow Ranger",
             "player": "solo",
             "mmr": "7339",
             "link": "https://www.youtube.com/watch?v=AV1CEr9hynU",
@@ -688,6 +720,14 @@
         }
     ],
     "Earth Spirit": [
+        {
+            "heroname": "Earth Spirit",
+            "player": "crit",
+            "mmr": "8187",
+            "link": "https://www.youtube.com/watch?v=MiPbMb1YFyU",
+            "published": "2021-02-03 00:00:00",
+            "position": "2"
+        },
         {
             "heroname": "Earth Spirit",
             "player": "taiga",
@@ -709,6 +749,14 @@
         {
             "heroname": "Earthshaker",
             "player": "saksa (smurf)",
+            "mmr": "9003",
+            "link": "https://www.youtube.com/watch?v=aqN3x9Asl4k",
+            "published": "2021-02-03 00:00:00",
+            "position": "4"
+        },
+        {
+            "heroname": "Earthshaker",
+            "player": "saksa (smurf)",
             "mmr": "8510",
             "link": "https://www.youtube.com/watch?v=Zs38QfjKpP0",
             "published": "2021-01-26 00:00:00",
@@ -724,6 +772,14 @@
         }
     ],
     "Elder Titan": [
+        {
+            "heroname": "Elder Titan",
+            "player": "sonneiko",
+            "mmr": "8847",
+            "link": "https://www.youtube.com/watch?v=i4_mkX2vClU",
+            "published": "2021-02-03 00:00:00",
+            "position": "5"
+        },
         {
             "heroname": "Elder Titan",
             "player": "resolut1on",
@@ -744,6 +800,14 @@
     "Ember Spirit": [
         {
             "heroname": "Ember Spirit",
+            "player": "timado (smurf)",
+            "mmr": "8972",
+            "link": "https://www.youtube.com/watch?v=cdXo81_uP5I",
+            "published": "2021-02-03 00:00:00",
+            "position": "2"
+        },
+        {
+            "heroname": "Ember Spirit",
             "player": "mikoto",
             "mmr": "8924",
             "link": "https://www.youtube.com/watch?v=FAaHIW16V-w",
@@ -762,6 +826,14 @@
     "Enchantress": [
         {
             "heroname": "Enchantress",
+            "player": "fly",
+            "mmr": "7937",
+            "link": "https://www.youtube.com/watch?v=-RA944D7tYg",
+            "published": "2021-02-03 00:00:00",
+            "position": "5"
+        },
+        {
+            "heroname": "Enchantress",
             "player": "ppd",
             "mmr": "8372",
             "link": "https://www.youtube.com/watch?v=V_1p1ysVTcY",
@@ -778,6 +850,14 @@
         }
     ],
     "Enigma": [
+        {
+            "heroname": "Enigma",
+            "player": "zai",
+            "mmr": "8860",
+            "link": "https://www.youtube.com/watch?v=Wn4bfyMCff8",
+            "published": "2021-02-03 00:00:00",
+            "position": "3"
+        },
         {
             "heroname": "Enigma",
             "player": "general",
