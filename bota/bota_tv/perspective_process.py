@@ -102,7 +102,7 @@ class PlayersPerspective:
 
         return final_string
 
-    def pretty_text_latest_vid(self, max_row=15):
+    def pretty_text_latest_vid(self, max_row=14):
         final_string = ""
         for i, data in enumerate(self.all_video_info, 1):
             if i >= max_row:

@@ -645,7 +645,7 @@ async def agha(ctx):
     return True, command_called
 
 
-@bot.command(aliases=['per', 'pers', 'PERS', 'Perspective', 'PERSPECTIVE'])
+@bot.command(aliases=['per', 'pers', 'PER', 'PERS', 'Perspective', 'PERSPECTIVE'])
 async def perspective(ctx):
     is_admin = False
     user_id = str(ctx.message.author).strip()
