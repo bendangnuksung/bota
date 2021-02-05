@@ -26,6 +26,8 @@ from bota.web_scrap.aghanim_process import Agha
 from bota.utility.main_utils import prefix_validation_correct, add_footer_requested_by_username, \
     embed_txt_message, get_infos_from_msg
 
+from discord.ext.commands import CommandNotFound
+
 
 import argparse
 
@@ -866,6 +868,13 @@ async def updateblock(ctx):
     update_txt = " ".join(update_txt)
     UPDATE_BLOCK = update_txt
     await ctx.send('Updated Block message')
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return
+    raise error
 
 
 # Messager user
