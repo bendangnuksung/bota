@@ -41,6 +41,7 @@ SCRAP_LOG_PATH = os.path.join(REPO_PATH, SCRAP_LOG_PATH)
 # yt link path
 YT_LINK_PATH = os.path.join(REPO_PATH, 'data/logs/youtube_links.json')
 ALL_YT_LINK_PATH = os.path.join(REPO_PATH, 'data/logs/all_youtube_links.json')
+YT_GIST_ID = "7feeb3f31eb81c78db1b3edf3ae1b0c2"
 
 
 # Dota 2 ProTracker
