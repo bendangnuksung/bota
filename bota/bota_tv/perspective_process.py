@@ -85,7 +85,8 @@ class PlayersPerspective:
             except:
                 published_data = data['published']
             now = datetime.now()
-            days_ago = (now - published_data).days
+            days_ago = (now - published_data).days - 1
+            days_ago = 0 if days_ago < 0 else days_ago
 
             if days_ago < 31:
                 final_ago = days_ago
@@ -106,7 +107,7 @@ class PlayersPerspective:
         return final_string
 
     def pretty_text_latest_vid(self, max_row=14):
-        final_string = ""
+        final_string = f"To get Perspective of specific heroes, type **`!pers HeroName`**\n"
         for i, data in enumerate(self.all_video_info, 1):
             if i >= max_row:
                 break
@@ -116,7 +117,8 @@ class PlayersPerspective:
             except:
                 published_data = data['published']
             now = datetime.now()
-            days_ago = (now - published_data).days
+            days_ago = (now - published_data).days - 1
+            days_ago = 0 if days_ago < 0 else days_ago
 
             if days_ago < 31:
                 final_ago = days_ago
@@ -134,7 +136,6 @@ class PlayersPerspective:
                             f'  `MMR:` {data["mmr"]} ' \
                             f'  `{final_ago} {day_string} ago`' \
                             f'   __**[LINK]({data["link"]})**__\n\n'
-        final_string += f"To get Perspective of specific heroes, type `!pers HeroName`"
         return final_string
 
     def embed_message(self, hero_name, text):
