@@ -75,7 +75,7 @@ hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'b
                          'io', 'jakiro', 'keeper-of-the-light', 'kunkka', 'lich', 'lina', 'lion', 'mirana', 'nyx-assassin',
                          'ogre-magi', 'omniknight', 'oracle', 'phoenix', 'pudge', 'rubick', 'sand-king', 'shadow-demon',
                          'shadow-shaman', 'silencer', 'skywrath-mage', 'snapfire', 'tiny', 'treant-protector', 'tusk',
-                         'undying', 'vengeful-spirit', 'venomancer', 'visage', 'warlock', 'windranger', 'winter-wyvern', 'witch-doctor'],
+                         'undying', 'vengeful-spirit', 'venomancer', 'visage', 'warlock', 'windranger', 'winter-wyvern', 'witch-doctor', 'hoodwink'],
 
              'pusher': ['anti-mage', 'arc-warden', 'beastmaster', 'broodmother', 'chen', 'death-prophet', 'dragon-knight',
                         'drow-ranger', 'enchantress', 'enigma', 'invoker', 'jakiro', 'juggernaut', 'leshrac', 'lone-druid',
@@ -87,14 +87,15 @@ hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'b
                      'lone-druid', 'magnus', 'medusa', 'meepo', 'mirana', 'monkey-king', 'morphling', 'necrophos',
                      'outworld-destroyer', 'puck', 'pugna', 'queen-of-pain', 'razor', 'rubick', 'shadow-fiend', 'silencer',
                      'skywrath-mage', 'sniper', 'storm-spirit', 'templar-assassin', 'timbersaw', 'tinker', 'tiny', 'venomancer',
-                     'viper', 'visage', 'void-spirit', 'windranger', 'zeus'],
+                     'viper', 'visage', 'void-spirit', 'windranger', 'zeus', 'dawnbreaker', 'hoodwink'],
 
              'offlane': ['abaddon', 'axe', 'batrider', 'beastmaster', 'brewmaster', 'bristleback', 'centaur-warrunner',
                      'clockwerk', 'dark-seer', 'doom', 'dragon-knight', 'earthshaker', 'elder-titan', 'enchantress',
                      'enigma', 'kunkka', 'legion-commander', 'lone-druid', 'magnus', 'mars', 'natures-prophet',
                      'necrophos', 'night-stalker', 'nyx-assassin', 'ogre-magi', 'omniknight', 'pangolier', 'phoenix',
                      'puck', 'pudge', 'pugna', 'razor', 'sand-king', 'slardar', 'spirit-breaker', 'tidehunter', 'timbersaw',
-                     'treant-protector', 'tusk', 'underlord', 'undying', 'venomancer', 'viper', 'visage'],
+                     'treant-protector', 'tusk', 'underlord', 'undying', 'venomancer', 'viper', 'visage', 'dawnbreaker',
+                     'hoodwink'],
 
              'safelane': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'chaos-knight', 'clinkz', 'drow-ranger',
                       'faceless-void', 'gyrocopter', 'juggernaut', 'lifestealer', 'lone-druid', 'luna', 'lycan', 'medusa',
