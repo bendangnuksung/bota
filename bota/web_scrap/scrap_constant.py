@@ -208,7 +208,7 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'enc': 'enchantress', 'mber': 'ember-spirit', 'amber': 'ember-spirit', 'dz': 'dazzle',
                            'br': 'batrider', 'snap': 'snapfire', 'snap fire': 'snapfire', 'void spirit': 'void-spirit',
                            'hw': 'hoodwink', 'wood': 'hoodwink', 'wink': 'hoodwink', 'dawn': 'dawnbreaker',
-                           'dawnbreak': 'dawnbreaker'
+                           'dawnbreak': 'dawnbreaker', 'db': 'dawnbreaker'
                            }
 
 
