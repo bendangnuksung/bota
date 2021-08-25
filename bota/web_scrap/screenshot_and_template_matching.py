@@ -22,7 +22,8 @@ def take_screenshot(url, path_to_save):
     # print(dirname, ' | ', filename)
     # print(url)
     try:
-        os.system(f'webscreenshot {url} -o {dirname}')
+        # os.system(f'webscreenshot {url} -o {dirname}')
+        os.system(f'webscreenshot -r chromium --window-size 1200,5000 {url} -o {dirname}')
         shutil.move(os.path.join(dirname, filename_generated), path_to_save)
 
     except Exception as e:
@@ -32,7 +33,7 @@ def take_screenshot(url, path_to_save):
     return flag, summary
 
 
-def get_template_match_coords(image, template_image, threshold=0.8):
+def get_template_match_coords(image, template_image, threshold=0.4):
     if len(image.shape) > 2:
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -50,8 +51,8 @@ def get_template_match_coords(image, template_image, threshold=0.8):
     return xmin, ymin
 
 
-def crop_screenshots(image, template_image, offset_x, offset_y, offset_width, offset_height):
-    x, y = get_template_match_coords(image, template_image)
+def crop_screenshots(image, template_image, offset_x, offset_y, offset_width, offset_height, threshold=0.7):
+    x, y = get_template_match_coords(image, template_image, threshold=threshold)
     # cv2.rectangle(image, (x, y), (x + template_image.shape[1], y + template_image.shape[0]), (0, 255, 0), 2)
     # display(image)
     xmin = x + offset_x

@@ -110,6 +110,9 @@ def render_mpl_table(data, icon_list=[], title=None, image_path=CT_IMAGE_PATH, c
 			cell.set_facecolor(header_color)
 		else:
 			cell.set_facecolor(row_colors[k[0]%len(row_colors) ])
+	dir_path = os.path.dirname(image_path)
+	if not os.path.isdir(dir_path):
+		os.makedirs(dir_path)
 	plt.savefig(image_path)
 	plt.clf()
 	return image_path

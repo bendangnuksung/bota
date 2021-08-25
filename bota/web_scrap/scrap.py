@@ -269,13 +269,13 @@ def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_
             talent_crop = crop_screenshots(talent_image, talent_template_image, offset_x=constant.TALENT_OFFSET_X,
                                                                                 offset_y=constant.TALENT_OFFSET_Y,
                                                                                 offset_height=constant.TALENT_OFFSET_HEIGHT,
-                                                                                offset_width=constant.TALENT_OFFSET_WIDTH)
+                                                                                offset_width=constant.TALENT_OFFSET_WIDTH, threshold=0.7)
 
             skill_image = cv2.imread(skill_screenshot_path)
             skill_crop = crop_screenshots(skill_image, skill_template_image, offset_height=constant.SKILL_OFFSET_HEIGHT,
                                                                              offset_x=constant.SKILL_OFFSET_X,
                                                                              offset_y=constant.SKILL_OFFSET_Y,
-                                                                             offset_width=constant.SKILL_OFFSET_WIDTH)
+                                                                             offset_width=constant.SKILL_OFFSET_WIDTH, threshold=0.4)
 
             hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
             hero_icon = cv2.imread(hero_icon_path)
