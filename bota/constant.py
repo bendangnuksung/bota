@@ -103,6 +103,7 @@ TEMP_IMAGE_PATH = os.path.join(REPO_PATH, TEMP_IMAGE_PATH)
 
 DOTABUFF_URL = 'https://www.dotabuff.com'
 DOTABUFF_PLAYER_URL = 'https://www.dotabuff.com/players/'
+DOTABUFF_ITEM_IMAGE_URL = 'https://www.dotabuff.com/assets/items/'
 
 FONT_ROBOTO_PATH = os.path.join(REPO_PATH, 'font/Roboto-Regular.ttf')
 

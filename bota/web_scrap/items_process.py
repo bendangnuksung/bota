@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup as bs
-
+import urllib.request
 from bota.utility.general import get_html_text
 from bota.web_scrap import scrap_constant
 from bota import constant
@@ -9,6 +9,8 @@ import re
 import cv2
 from bota.image_processing import addImageWatermark, write_text_pil, add_border_to_image
 import difflib
+import requests
+import shutil
 
 
 def display(img):
@@ -18,17 +20,51 @@ def display(img):
     plt.show()
 
 
-def find_item(item):
-    found_item = False
-    item = item.lower().strip()
-    item = re.sub('[^a-z- ]', '', item)
-    item = item.replace(' ', '-')
+def find_close_item(item):
     close_matches = difflib.get_close_matches(item, scrap_constant.ITEM_NAMES)
     if not len(close_matches):
-        return found_item, ''
+        return False, ''
     if item == close_matches[0]:
         return True, close_matches[0]
     return False, close_matches[0]
+
+
+def find_item(item):
+    item = item.lower().strip()
+    item = re.sub('[^a-z- ]', '', item)
+    item = item.replace(' ', '-')
+
+    found_item, close_match = find_close_item(item)
+    if not found_item:
+        download_item_image(item)
+    found_item, close_match = find_close_item(item)
+
+    return found_item, close_match
+
+
+def download_image(url, save_path):
+    header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)\
+            AppleWebKit/537.36 (KHTML, like Gecko) Cafari/537.36'}
+    r = requests.get(url, stream=True, headers=header)
+    r.raw.decode_content = True
+    with open(save_path, 'wb') as f:
+        shutil.copyfileobj(r.raw, f)
+
+
+def download_item_image(item):
+    item = item + '.jpg'
+    url = constant.DOTABUFF_ITEM_IMAGE_URL + item
+    save_path = os.path.join(constant.REPO_PATH, constant.ITEM_ICON_PATH)
+    save_path = os.path.join(save_path, item)
+    try:
+        download_image(url, save_path)
+        # urllib.request.urlretrieve(url, save_path)
+        image = cv2.imread(save_path)
+        new_save_path = save_path.replace('.jpg', '.png')
+        cv2.imwrite(new_save_path, image)
+        os.remove(save_path)
+    except Exception as e:
+        print("Failed Downloading item image: ", item, e)
 
 
 def make_item_image(infos, hero_name):
