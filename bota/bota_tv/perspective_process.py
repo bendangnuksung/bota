@@ -52,11 +52,11 @@ class PlayersPerspective:
     def load_last_saved_link(self):
         print("updating YT links from github gist")
         pull_latest_yt_links_from_github_gist()
-        f = open(constant.YT_LINK_PATH)
-        self.hero_perspective_info = json.load(f)
+        with open(constant.YT_LINK_PATH) as f:
+            self.hero_perspective_info = json.load(f)
 
-        f = open(constant.ALL_YT_LINK_PATH)
-        self.all_video_info = json.load(f)
+        with open(constant.ALL_YT_LINK_PATH) as f:
+            self.all_video_info = json.load(f)
 
     def update_hero_win_rate(self, url="https://www.dotabuff.com/heroes/winning?date=week"):
         self.heroes_win_rate = {}

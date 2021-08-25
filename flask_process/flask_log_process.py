@@ -33,7 +33,9 @@ def save_command_logs(log):
 def get_command_log_tail(n):
     lines = []
     path = logs_constant.LOG_PATH
-    for i, line in enumerate(reversed(list(open(path)))):
+    with open(path) as f:
+        file = f
+    for i, line in enumerate(reversed(list(file))):
         if i >=n:
             break
         line = f'{i+1}. ' + line

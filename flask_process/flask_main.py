@@ -22,8 +22,11 @@ def check_enough_memory(min_free_mb_ram=10):
             value = int(attrs[1])
             value = value / 1000
             if value > min_free_mb_ram:
+                file.close()
                 return True
+            file.close()
             return False
+    file.close()
     return True
 
 
