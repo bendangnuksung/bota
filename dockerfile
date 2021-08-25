@@ -3,9 +3,7 @@ from python:3.7.7
 RUN git clone https://github.com/bendangnuksung/bota.git
 
 # make Directories
-RUN mkdir bota/bota/data/counter_heroes bota/bota/data/good_against_heroes
-RUN mkdir bota/bota/data/guide_build bota/bota/data/items_build bota/bota/data/steam_user bota/bota/data/temp_images bota/bota/data/logs
-
+RUN mkdir bota/bota/data/steam_user
 
 # Apt setup
 RUN apt-get update && \
@@ -29,6 +27,14 @@ RUN git clone https://github.com/joshuaduffy/dota2api.git && \
 RUN apt-get install -y xvfb && \
     apt-get install -y phantomjs
 
+RUN cd bota/ && \
+    git pull && \
+    export PYTHONPATH=$PYTHONPATH:$pwd && \
+    python bota/background_scrap.py
 
-# sudo docker build -f dockerfile -t DOCKERNAME:TAGNAME .
+
+ENTRYPOINT ./bota/run_bota_docker.sh
+
+
+# sudo docker build --network host -f dockerfile -t DOCKERNAME:TAGNAME .
 # 
