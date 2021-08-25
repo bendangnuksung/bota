@@ -16,3 +16,4 @@ webscreenshot==2.94
 opencv-python==4.4.0.46
 pycryptodome
 youtube_dl
+tqdm

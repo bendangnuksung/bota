@@ -9,7 +9,7 @@ from datetime import datetime
 import argparse
 from argparse import RawTextHelpFormatter
 import subprocess
-
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description='Script to scrap data everyday at a particular time',
                                  formatter_class=RawTextHelpFormatter,)
@@ -80,7 +80,7 @@ def update_images():
     meta_r = 'Unsuccessful' if meta_r is None else 'Success'
     meta_r = f"META: {meta_r}"
     background_logger.info(meta_r)
-    for i, hero_name in enumerate(heroes_names):
+    for i, hero_name in enumerate(tqdm(heroes_names)):
         iter_text = f"{i + 1}/{len(heroes_names)}, Hero: {hero_name}"
         print(iter_text)
         background_logger.info(iter_text)
