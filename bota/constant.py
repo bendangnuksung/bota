@@ -224,10 +224,10 @@ GUIDE_URL_TALENT = 'https://www.dotabuff.com/heroes/<hero_name>/builds'
 TALENT_SELECTOR = 'body > div.container-outer.seemsgood > div.skin-container > div.container-inner.container-inner-content > div.content-inner > div.row-12.hero-abilities > div.col-8 > section:nth-child(1) > article'
 TALENT_TEMPLATE_PATH = 'data/template_image/talent_build_template.png'
 TALENT_TEMPLATE_PATH = os.path.join(REPO_PATH, TALENT_TEMPLATE_PATH)
-TALENT_OFFSET_X = 40
+TALENT_OFFSET_X = 70
 TALENT_OFFSET_Y = 0
-TALENT_OFFSET_HEIGHT = 342
-TALENT_OFFSET_WIDTH = 660
+TALENT_OFFSET_HEIGHT = 332
+TALENT_OFFSET_WIDTH = 1020
 
 GUIDE_URL_SKILL = 'https://www.dotabuff.com/heroes/<hero_name>'
 SKILL_SELECTOR = 'body > div.container-outer.seemsgood > div.skin-container > div.container-inner.container-inner-content > div.content-inner > div:nth-child(2) > div:nth-child(5) > div.build'

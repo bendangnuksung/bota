@@ -22,8 +22,8 @@ def take_screenshot(url, path_to_save):
     # print(dirname, ' | ', filename)
     # print(url)
     try:
-        # os.system(f'webscreenshot {url} -o {dirname}')
-        os.system(f'webscreenshot -r chromium --window-size 1200,5000 {url} -o {dirname}')
+        os.system(f'webscreenshot {url} -o {dirname}')
+        # os.system(f'webscreenshot -r chromium --window-size 1200,5000 {url} -o {dirname}')
         shutil.move(os.path.join(dirname, filename_generated), path_to_save)
 
     except Exception as e:

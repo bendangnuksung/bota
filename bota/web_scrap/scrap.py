@@ -490,7 +490,8 @@ def get_meta(early_update=False, use_outdated_photo_if_fails=True):
 
 
 if __name__ == '__main__':
-    get_meta()
+    get_skill_build('!skill riki')
+    # get_meta()
     # print(get_item_build('!good enchan'))
     # get_protracker_hero("!pro slark")
     # get_counter_hero('!counter axe mid')
