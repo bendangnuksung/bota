@@ -107,7 +107,7 @@ if args['mode'] == 2 or args['mode'] == '2' or args['mode'] == '3' or args['mode
     update_images()
     print("Finished One Time update")
 
-if args['mode'] != '3' or args['mode'] != 3:
+if args['mode'] != '3':
     while True:
         update_images()
         time.sleep(UPDATE_INTERVAL-5) # wait 1 minute
