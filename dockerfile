@@ -32,6 +32,12 @@ RUN cd bota/ && \
     export PYTHONPATH=$PYTHONPATH:$pwd && \
     python bota/background_scrap.py --mode 3
 
+# install chromium
+RUN apt-get install -y chromium-chromedriver && \
+    apt install chromium-browser && \
+    snap install chromium
+
+
 
 ENTRYPOINT ./bota/run_bota_docker.sh
 
