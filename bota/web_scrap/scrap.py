@@ -14,7 +14,7 @@ from bota.web_scrap.reddit_process import scrap_reddit_dota
 from bota.applications.steam_user_db import UserDB, AliasDB
 from bota.web_scrap.protracker_process import DotaProTracker
 from bota.web_scrap.scrap_constant import hero_role, hero_role_alternative_names, hero_role_colors
-from bota.web_scrap.screenshot_and_template_matching import take_screenshot, crop_screenshots
+from bota.web_scrap.screenshot_and_template_matching import take_screenshot, crop_screenshots, is_template_exists
 
 user_db = UserDB()
 alias = AliasDB()
@@ -23,6 +23,7 @@ d2pt = DotaProTracker()
 talent_template_image = cv2.imread(constant.TALENT_TEMPLATE_PATH, 0)
 skill_template_image = cv2.imread(constant.SKILL_TEMPLATE_PATH, 0)
 meta_template_image = cv2.imread(constant.META_TEMPLATE_IMAGE, 0)
+blank_template_image = cv2.imread(constant.BLANK_TEMPLATE_IMAGE, 0)
 
 
 def check_if_role_given(message):
@@ -157,7 +158,6 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
                 my_image_path = os.path.join(constant.COUNTER_HERO_IMAGE_PATH, hero_name + '_' + i_role + '.jpg')
                 cv2.imwrite(my_image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY), 70])
 
-
         counter_heroes = prune_heroes(all_counter_heroes, given_hero_roles=[role])
         counter_heroes_image_path = get_icon_path(counter_heroes, icon_size='big')
         hero_image_path = get_icon_path([hero_name], icon_size='big')[0]
@@ -251,7 +251,12 @@ def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_
     if early_update:
         threshold_update_time = threshold_update_time - constant.EARLY_BY
     if not is_file_old(guide_image_path, threshold_update_time) or (given_hero is None and os.path.exists(guide_image_path)):
-        return True, hero_name, guide_image_path
+        image = cv2.imread(guide_image_path)
+        bad_image_flag = is_template_exists(image, blank_template_image)
+        if not bad_image_flag:
+            return True, hero_name, guide_image_path
+        else:
+            os.remove(guide_image_path)
 
     url_skill = constant.GUIDE_URL_SKILL.replace('<hero_name>', hero_name)
 
@@ -490,7 +495,7 @@ def get_meta(early_update=False, use_outdated_photo_if_fails=True):
 
 
 if __name__ == '__main__':
-    get_skill_build('!skill riki')
+    get_skill_build('!skill pangolier')
     # get_meta()
     # print(get_item_build('!good enchan'))
     # get_protracker_hero("!pro slark")

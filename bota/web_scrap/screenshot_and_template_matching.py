@@ -33,6 +33,22 @@ def take_screenshot(url, path_to_save):
     return flag, summary
 
 
+def is_template_exists(image, template_image, threshold=0.8):
+    if len(image.shape) > 2:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    if len(template_image.shape) > 2:
+        template_image = cv2.cvtColor(template_image, cv2.COLOR_BGR2GRAY)
+    res = cv2.matchTemplate(image, template_image, cv2.TM_CCOEFF_NORMED)
+    loc = np.where(res >= threshold)
+
+    exists = False
+    for _ in zip(*loc[::-1]):
+        exists = True
+        break
+    return exists
+
+
 def get_template_match_coords(image, template_image, threshold=0.4):
     if len(image.shape) > 2:
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
