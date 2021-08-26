@@ -28,16 +28,12 @@ RUN apt-get install -y xvfb && \
     apt-get install -y phantomjs
 
 # install chromium
-RUN apt install -y chromium-chromedriver && \
-    snap install chromium
+RUN apt-get install -y chromium
 
 RUN cd bota/ && \
     git pull && \
     export PYTHONPATH=$PYTHONPATH:$pwd && \
     python bota/background_scrap.py --mode 3
-
-
-
 
 
 ENTRYPOINT ./bota/run_bota_docker.sh
