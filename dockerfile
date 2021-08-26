@@ -27,15 +27,17 @@ RUN git clone https://github.com/joshuaduffy/dota2api.git && \
 RUN apt-get install -y xvfb && \
     apt-get install -y phantomjs
 
+# install chromium
+RUN apt-get install -y chromium-chromedriver && \
+    apt install chromium-browser && \
+    snap install chromium
+
 RUN cd bota/ && \
     git pull && \
     export PYTHONPATH=$PYTHONPATH:$pwd && \
     python bota/background_scrap.py --mode 3
 
-# install chromium
-RUN apt-get install -y chromium-chromedriver && \
-    apt install chromium-browser && \
-    snap install chromium
+
 
 
 
