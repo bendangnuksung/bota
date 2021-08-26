@@ -33,10 +33,10 @@ RUN apt-get install -y chromium && \
     apt-get install -y ./google-chrome-stable_current_amd64.deb && \
     rm google-chrome-stable_current_amd64.deb
 
-RUN cd bota/ && \
-    git pull && \
-    export PYTHONPATH=$PYTHONPATH:$pwd && \
-    python bota/background_scrap.py --mode 3
+# RUN cd bota/ && \
+#     git pull && \
+#     export PYTHONPATH=$PYTHONPATH:$pwd && \
+#     python bota/background_scrap.py --mode 3
 
 
 ENTRYPOINT ./bota/run_bota_docker.sh
