@@ -28,8 +28,7 @@ RUN apt-get install -y xvfb && \
     apt-get install -y phantomjs
 
 # install chromium
-RUN apt-get install -y chromium-chromedriver && \
-    apt install chromium-browser && \
+RUN apt install -y chromium-chromedriver && \
     snap install chromium
 
 RUN cd bota/ && \
