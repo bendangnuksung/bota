@@ -33,6 +33,7 @@ def find_item(item):
     item = item.lower().strip()
     item = re.sub('[^a-z- ]', '', item)
     item = item.replace(' ', '-')
+    item = item.rstrip('-')
 
     found_item, close_match = find_close_item(item)
     if not found_item:
