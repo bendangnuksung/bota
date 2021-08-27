@@ -3,6 +3,7 @@ from logging.handlers import RotatingFileHandler
 import time
 from bota.web_scrap.scrap import get_item_build, get_skill_build, get_current_trend, get_counter_hero, get_good_against, get_meta
 from bota.web_scrap.scrap_constant import heroes_names, hero_role
+from bota.web_scrap.screenshot_and_template_matching import destroy_sel_driver
 from bota.constant import SCRAP_LOG_PATH
 import asyncio
 from datetime import datetime
@@ -10,6 +11,7 @@ import argparse
 from argparse import RawTextHelpFormatter
 import subprocess
 from tqdm import tqdm
+
 
 parser = argparse.ArgumentParser(description='Script to scrap data everyday at a particular time',
                                  formatter_class=RawTextHelpFormatter,)
@@ -98,6 +100,7 @@ def update_images():
     background_logger.info(stats)
     subprocess.run(["pkill", "chrome"])
     LAST_UPDATE = datetime.now()
+    destroy_sel_driver()
     return
 
 

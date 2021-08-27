@@ -251,36 +251,33 @@ def get_skill_build(query, hero=None, early_update=False, use_outdated_photo_if_
     if early_update:
         threshold_update_time = threshold_update_time - constant.EARLY_BY
     if not is_file_old(guide_image_path, threshold_update_time) or (given_hero is None and os.path.exists(guide_image_path)):
-        image = cv2.imread(guide_image_path)
-        bad_image_flag = is_template_exists(image, blank_template_image)
-        if not bad_image_flag:
-            return True, hero_name, guide_image_path
-        else:
-            os.remove(guide_image_path)
+        return True, hero_name, guide_image_path
 
     url_skill = constant.GUIDE_URL_SKILL.replace('<hero_name>', hero_name)
 
-    skill_filename = hero + '_skill.jpg'
+    skill_filename = hero + '_skill.png'
     skill_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, skill_filename)
     flag_1, exception_summary = take_screenshot(url_skill, skill_screenshot_path)
+    # flag_1 = True
 
     if flag_1:
-        talent_filename = hero + '_talent.jpg'
+        talent_filename = hero + '_talent.png'
         talent_screenshot_path = os.path.join(constant.TEMP_IMAGE_PATH, talent_filename)
         url_talent = constant.GUIDE_URL_TALENT.replace('<hero_name>', hero_name)
         flag_2, exception_summary = take_screenshot(url_talent, talent_screenshot_path)
+        # flag_2 = True
         if flag_2:
             talent_image = cv2.imread(talent_screenshot_path)
             talent_crop = crop_screenshots(talent_image, talent_template_image, offset_x=constant.TALENT_OFFSET_X,
                                                                                 offset_y=constant.TALENT_OFFSET_Y,
                                                                                 offset_height=constant.TALENT_OFFSET_HEIGHT,
-                                                                                offset_width=constant.TALENT_OFFSET_WIDTH, threshold=0.7)
+                                                                                offset_width=constant.TALENT_OFFSET_WIDTH, threshold=0.6)
 
             skill_image = cv2.imread(skill_screenshot_path)
             skill_crop = crop_screenshots(skill_image, skill_template_image, offset_height=constant.SKILL_OFFSET_HEIGHT,
                                                                              offset_x=constant.SKILL_OFFSET_X,
                                                                              offset_y=constant.SKILL_OFFSET_Y,
-                                                                             offset_width=constant.SKILL_OFFSET_WIDTH, threshold=0.4)
+                                                                             offset_width=constant.SKILL_OFFSET_WIDTH, threshold=0.6)
 
             hero_icon_path = os.path.join(constant.ICON_PATH_BIG, hero_name + '.png')
             hero_icon = cv2.imread(hero_icon_path)
@@ -495,7 +492,7 @@ def get_meta(early_update=False, use_outdated_photo_if_fails=True):
 
 
 if __name__ == '__main__':
-    get_skill_build('!skill pangolier')
+    get_skill_build('!skill clinks')
     # get_meta()
     # print(get_item_build('!good enchan'))
     # get_protracker_hero("!pro slark")

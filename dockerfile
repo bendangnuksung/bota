@@ -25,7 +25,8 @@ RUN git clone https://github.com/joshuaduffy/dota2api.git && \
 
 ## webscreenshot
 RUN apt-get install -y xvfb && \
-    apt-get install -y phantomjs
+    apt-get install -y phantomjs && \
+    apt-get install firefox-geckodriver
 
 # install chromium
 RUN apt-get install -y chromium && \

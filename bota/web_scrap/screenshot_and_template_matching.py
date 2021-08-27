@@ -4,7 +4,15 @@ from bota import constant
 import numpy as np
 import shutil
 import matplotlib.pyplot as plt
+from selenium.webdriver.firefox.options import Options
+from selenium import webdriver
 
+# import sys
+# from PyQt5.QtWidgets import QApplication
+# from PyQt5.QtCore import Qt, QUrl, QTimer
+# from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
+
+blank_template_image = cv2.imread(constant.BLANK_TEMPLATE_IMAGE, 0)
 current_file_path = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -13,17 +21,89 @@ def display(img):
     plt.show()
 
 
-def take_screenshot(url, path_to_save):
+# # https://stackoverflow.com/questions/55231170/taking-a-screenshot-of-a-web-page-in-pyqt5
+# class Screenshot(QWebEngineView):
+#     def capture(self, url, output_file):
+#         self.output_file = output_file
+#         self.load(QUrl(url))
+#         self.loadFinished.connect(self.on_loaded)
+#         # Create hidden view without scrollbars
+#         self.setAttribute(Qt.WA_DontShowOnScreen)
+#         self.page().settings().setAttribute(
+#             QWebEngineSettings.ShowScrollBars, False)
+#         self.show()
+#
+#     def on_loaded(self):
+#         size = self.page().contentsSize().toSize()
+#         self.resize(size)
+#         # Wait for resize
+#         QTimer.singleShot(1000, self.take_screenshot)
+#
+#     def take_screenshot(self):
+#         self.grab().save(self.output_file, b'PNG')
+#         self.app.quit()
+#
+#
+# app = QApplication([])
+# s = Screenshot()
+# s.app = app
+
+
+driver = None
+
+
+def initialise_sel_driver():
+    global driver
+    options = Options()
+    options.headless = True
+    if driver is None:
+        driver = webdriver.Firefox(options=options)
+
+
+def destroy_sel_driver():
+    global driver
+    if driver is not None:
+        driver.quit()
+
+
+def sel_screenshot(url, save_path):
+    global driver
+    if driver is None:
+        initialise_sel_driver()
+    driver.get(url)
+    el = driver.find_element_by_tag_name('body')
+    el.screenshot(save_path)
+
+
+def take_screenshot(url, path_to_save, mode='sel'):
+    # global s, app
     flag = True
     summary = ''
     dirname = os.path.dirname(path_to_save)
     filename_generated = url.replace('.com/', '.com_443/').replace('://', '_').replace('/', '_') + '.png'
 
-    # print(dirname, ' | ', filename)
-    # print(url)
     try:
-        os.system(f'webscreenshot {url} -o {dirname}')
-        # os.system(f'webscreenshot -r chromium --window-size 1200,5000 {url} -o {dirname}')
+        bad_image_flag = False
+        if mode == 'chromium':
+            os.system(f'webscreenshot -r chromium --window-size 1200,5000 {url} -o {dirname}')
+            # image = cv2.imread(os.path.join(dirname, filename_generated))
+            # bad_image_flag = is_template_exists(image, blank_template_image)
+
+        elif mode == 'phantomjs':
+            os.system(f'webscreenshot {url} -o {dirname}')
+
+        # # if (mode == 'pyqt' or mode == 'chromium') and bad_image_flag:
+        # elif mode == 'pyqt':
+        #     filename_generated = os.path.basename(path_to_save)
+        #     s.capture(url, path_to_save)
+        #     app.exec_()
+        #     # pyqt_screenshot(url , path_to_save)
+        #     # s.capture(u, 'C:/Users/user/Desktop/web_page.png')
+
+        elif mode == 'sel':
+            filename_generated = os.path.basename(path_to_save)
+            sel_screenshot(url, path_to_save)
+
         shutil.move(os.path.join(dirname, filename_generated), path_to_save)
 
     except Exception as e:
@@ -88,7 +168,7 @@ if __name__ == '__main__':
     skill_template_image = cv2.imread(constant.SKILL_TEMPLATE_PATH, 0)
     meta_template_image = cv2.imread(constant.META_TEMPLATE_IMAGE, 0)
 
-    test_type = 'meta' # skill, talent, meta
+    test_type = 'talent' # skill, talent, meta
     save_image = True
     is_display = True
 
