@@ -149,6 +149,9 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
 
     try:
         all_counter_heroes = scrap_hero_counters(hero_name)
+        if not len(all_counter_heroes) and os.path.exists(image_path):
+            return True, hero_name, image_path
+
         if is_request_from_bg_process:
             for i_role in hero_role:
                 counter_heroes = prune_heroes(all_counter_heroes, given_hero_roles=[i_role])
@@ -206,6 +209,8 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
 
     try:
         all_good_against_heroes = scrap_hero_counters(hero_name, is_counter=False)
+        if not len(all_good_against_heroes) and os.path.exists(image_path):
+            return True, hero_name, image_path
 
         if is_request_from_bg_process:
             for i_role in hero_role.keys():

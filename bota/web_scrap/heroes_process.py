@@ -77,7 +77,7 @@ def scrap_heroes_info(hero_name):
 
 def scrap_hero_counters(hero_name, is_counter=True):
     url = os.path.join(scrap_constant.heroes_pre_url, hero_name + "/counters")
-    r = requests.get(url, headers=scrap_constant.browser_headers)
+    r = requests.get(url, headers=scrap_constant.browser_headers_mix)
     html = r.text
     heroes = extract_counter_hero_from_html(html)
     if is_counter == False:
@@ -101,9 +101,14 @@ def get_current_hero_trends():
 
 if __name__ == '__main__':
     # r = scrap_heroes_info('axe')
-    scrap_hero_counters('axe')
-    r = find_hero_name('brood')
-    print(r)
+    all_heroes = scrap_constant.heroes_names
+    for hero in all_heroes:
+        print("*"*10)
+        print(hero)
+        r = scrap_hero_counters(hero)
+        print(r)
+    # r = find_hero_name('brood')
+    # print(r)
 
 
 

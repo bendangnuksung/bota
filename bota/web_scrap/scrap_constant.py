@@ -6,6 +6,12 @@ import os
 ##### General
 browser_headers = {'user-agent': 'Mozilla/5.0'}
 browser_headers_chrome = {'user-agent': 'Chrome/75.0.3770.80-1'}
+browser_headers_mix = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'}
+
+browser_headers_list = [{'user-agent': 'Mozilla/5.0', 'referer': 'https://google.com'},
+                        {'user-agent': 'Chrome/75.0.3770.80-1', 'referer': 'https://google.com'},
+                        {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'},
+                        ]
 
 ##### character_icons Info constant
 heroes_pre_url = 'https://www.dotabuff.com/heroes/'
@@ -39,7 +45,7 @@ hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'b
                        'queen-of-pain', 'razor', 'riki', 'shadow-fiend', 'silencer', 'slardar', 'slark', 'sniper', 'spectre',
                        'spirit-breaker', 'storm-spirit', 'sven', 'templar-assassin', 'terrorblade', 'tinker', 'tiny',
                        'troll-warlord', 'ursa', 'viper', 'visage', 'void-spirit', 'weaver', 'windranger', 'wraith-king',
-                       'dawnbreaker'],
+                       ],
 
              'nuker': ['alchemist', 'ancient-apparition', 'arc-warden', 'bane', 'beastmaster', 'brewmaster', 'bristleback',
                        'centaur-warrunner', 'clockwerk', 'crystal-maiden', 'dark-willow', 'dazzle', 'death-prophet',
