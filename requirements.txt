@@ -19,3 +19,4 @@ youtube_dl
 tqdm
 PyQt5
 PyQtWebEngine
+selenium==3.141.0
