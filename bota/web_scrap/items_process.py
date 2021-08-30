@@ -11,6 +11,7 @@ from bota.image_processing import addImageWatermark, write_text_pil, add_border_
 import difflib
 import requests
 import shutil
+from bota.web_scrap.screenshot_and_template_matching import get_html_using_vpn, destroy_sel_driver
 
 
 def display(img):
@@ -183,6 +184,13 @@ def scrap_item_info(hero_name):
     soup = bs(html, "html.parser")
 
     item_build_tag_list = soup.findAll(constant.ITEM_FIRST_STAGE_TAG[0], constant.ITEM_FIRST_STAGE_TAG[1])
+    if len(item_build_tag_list):
+        html = get_html_using_vpn(hero_url)
+        soup = bs(html, "html.parser")
+        item_build_tag_list = soup.findAll(constant.ITEM_FIRST_STAGE_TAG[0], constant.ITEM_FIRST_STAGE_TAG[1])
+    else:
+        destroy_sel_driver()
+
     for item in item_build_tag_list:
         result = {}
 
