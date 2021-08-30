@@ -184,7 +184,7 @@ def scrap_item_info(hero_name):
     soup = bs(html, "html.parser")
 
     item_build_tag_list = soup.findAll(constant.ITEM_FIRST_STAGE_TAG[0], constant.ITEM_FIRST_STAGE_TAG[1])
-    if len(item_build_tag_list):
+    if not len(item_build_tag_list):
         html = get_html_using_vpn(hero_url)
         soup = bs(html, "html.parser")
         item_build_tag_list = soup.findAll(constant.ITEM_FIRST_STAGE_TAG[0], constant.ITEM_FIRST_STAGE_TAG[1])
@@ -218,9 +218,15 @@ def scrap_item_info(hero_name):
             c = '.'
             for i in range(len(item_tag)):
                 if i < len(time_tag):
-                    item_build_dict[time_tag[i].string] = item_tag[i].attrs[constant.ITEM_KEYWORD_TITLE]
+                    item_name = item_tag[i].attrs[constant.ITEM_KEYWORD_TITLE]
+                    if item_name == '':
+                        item_name = item_tag[i].attrs[constant.ITEM_KEYWORD_OLD_TITLE]
+                    item_build_dict[time_tag[i].string] = item_name
                 else:
-                    item_build_dict[c] = item_tag[i].attrs[constant.ITEM_KEYWORD_TITLE]
+                    item_name = item_tag[i].attrs[constant.ITEM_KEYWORD_TITLE]
+                    if item_name == '':
+                        item_name = item_tag[i].attrs[constant.ITEM_KEYWORD_OLD_TITLE]
+                    item_build_dict[c] = item_name
                     c += '.'
             # for itm, time in zip(item_tag, time_tag):
             #     item_build_dict[time.string] = itm.attrs[constant.ITEM_KEYWORD_TITLE]
@@ -272,7 +278,7 @@ def scrap_item_info(hero_name):
 
 
 if __name__ == '__main__':
-    rs = scrap_item_info('pudge')
+    rs = scrap_item_info('abaddon')
     for r in rs:
         print(r)
     # rs = [{'player_name': 'Hope', 'player_id': '245655553', 'item_build': {'15:52': 'Battle Fury', '20:38': 'Manta Style', '26:18': 'Eye of Skadi', '31:13': 'Butterfly', '36:54': 'Abyssal Blade', '48:35': 'Assault Cuirass'}, 'region': 'SE Asia', 'rank': '20', 'medal': 'ancient vii'},
