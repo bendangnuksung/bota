@@ -6,11 +6,10 @@ import shutil
 import matplotlib.pyplot as plt
 from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
+import time
+from bs4 import BeautifulSoup as bs
+from selenium.webdriver.common.keys import Keys
 
-# import sys
-# from PyQt5.QtWidgets import QApplication
-# from PyQt5.QtCore import Qt, QUrl, QTimer
-# from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 
 blank_template_image = cv2.imread(constant.BLANK_TEMPLATE_IMAGE, 0)
 current_file_path = os.path.dirname(os.path.realpath(__file__))
@@ -50,24 +49,143 @@ def display(img):
 
 
 driver = None
+vpn_driver = False
 
 
-def initialise_sel_driver():
-    global driver
-    options = Options()
-    options.headless = True
+def get_my_ip(driver):
+    url = 'https://www.whatismyip.com/'
+    driver.get(url)
+    soup = bs(driver.page_source, 'html.parser')
+    group_list = soup.find_all('li', {'class': 'list-group-item py-1'})
+    text = []
+    for l in group_list:
+        text.append(l.text)
+    text = "\n".join(text)
+    return text
+
+
+def activate_vpn(driver, firefox=False):
+    if not firefox:
+        driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
+        driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
+        driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
+        driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
+        element = driver.find_element_by_xpath("/html/body/app-root/main/app-home/div/div[2]/div[3]/a/img[1]")
+        time.sleep(2.5)
+        element.click()
+
+    if firefox:
+        driver.get("about:memory")
+        element = driver.find_element_by_xpath('//*[@id="measureButton"]')
+        element.click()
+        time.sleep(1.5)
+        source = driver.page_source
+        soup = bs(source, 'html.parser')
+        extensions = soup.find_all('span', {'class': 'mrName', 'title': 'WebExtensions that are active in this session'})
+        final_url = None
+        for ext in extensions:
+            text = ext.text
+            text = text.strip()
+            texts = text.split(',')
+            name = texts[1]
+            if 'ZenMate' in name:
+                url_text = texts[2]
+                url = url_text.replace('baseURL=', '')
+                url = url[:-1] + "index.html"
+                final_url = url
+                break
+
+        driver.get(final_url)
+        driver.get(final_url)
+        driver.get(final_url)
+        driver.get(final_url)
+        # xpath = "/html/body/app-root/main/app-home/div/div[2]/div[3]/a"
+        # element = driver.find_element_by_xpath(xpath)
+
+        element = driver.find_element_by_class_name('inactive-shield')
+        driver.execute_script("arguments[0].click();", element)
+
+        time.sleep(3.5)
+        element.click()
+
+    ip_info = get_my_ip(driver)
+    print("#"*30)
+    print(ip_info)
+    print("#" * 30)
+
+
+def initialise_sel_driver(firefox=True):
+    global driver, vpn_driver
     if driver is None:
-        driver = webdriver.Firefox(options=options)
+        if firefox:
+            options = Options()
+            options.headless = True
+            driver = webdriver.Firefox(options=options)
+            driver.install_addon(constant.FIREFOX_AD_BLOCK)
+            driver.install_addon(constant.FIREFOX_ZENMATE, temporary=True)
+            driver.get("about:support")
+            addons = driver.find_element_by_xpath('//*[contains(text(),"Add-ons") and not(contains(text(),"with"))]')
+            # scrolling to the section on the support page that lists installed extension
+            driver.execute_script("arguments[0].scrollIntoView();", addons)
+
+            # close all other tabs
+            num_of_tabs = 3 if vpn_driver else 2
+            for x in range(1, num_of_tabs):
+                driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 'W')
+
+            if vpn_driver:
+                print("@" * 40)
+                print("Activate VPN: ")
+                activate_vpn(driver, firefox=True)
+                print("@" * 40)
+            else:
+                print("@" * 40)
+                print('VPN Disabled')
+                print("@" * 40)
+
+        else:
+            # options = Options()
+            # # options.headless = True
+            # options.add_argument('--headless')
+            # driver = webdriver.Chrome(chrome_options=options)
+            # options = webdriver.ChromeOptions()
+
+            chrome_options = webdriver.ChromeOptions()
+            # chrome_options.add_argument("--window-size=1920,1080")
+            # chrome_options.add_argument("--disable-extensions")
+            # chrome_options.add_argument("--proxy-server='direct://'")
+            # chrome_options.add_argument("--proxy-bypass-list=*")
+            # chrome_options.add_argument("--start-maximized")
+            # # chrome_options.add_argument('--headless')
+            # chrome_options.add_argument('--disable-gpu')
+            # chrome_options.add_argument('--disable-dev-shm-usage')
+            # chrome_options.add_argument('--no-sandbox')
+            # chrome_options.add_argument('--ignore-certificate-errors')
+            # options.chrome_options('--headless')
+
+            # chrome_options.add_extension('/home/ben/Downloads/zenmate.crx')
+            chrome_options.add_argument('--headless')
+            driver = webdriver.Chrome(options=chrome_options)
+            activate_vpn(driver)
+            pass
+            # driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
 
 
 def destroy_sel_driver():
     global driver
     if driver is not None:
         driver.quit()
+        del driver
+        driver = None
 
 
-def sel_screenshot(url, save_path):
-    global driver
+def sel_screenshot(url, save_path, switch_mode=False):
+    global driver, vpn_driver
+
+    if switch_mode:
+        destroy_sel_driver()
+        vpn_driver = not vpn_driver
+
     if driver is None:
         initialise_sel_driver()
     driver.get(url)
@@ -83,7 +201,6 @@ def take_screenshot(url, path_to_save, mode='sel'):
     filename_generated = url.replace('.com/', '.com_443/').replace('://', '_').replace('/', '_') + '.png'
 
     try:
-        bad_image_flag = False
         if mode == 'chromium':
             os.system(f'webscreenshot -r chromium --window-size 1200,5000 {url} -o {dirname}')
             # image = cv2.imread(os.path.join(dirname, filename_generated))
@@ -92,17 +209,12 @@ def take_screenshot(url, path_to_save, mode='sel'):
         elif mode == 'phantomjs':
             os.system(f'webscreenshot {url} -o {dirname}')
 
-        # # if (mode == 'pyqt' or mode == 'chromium') and bad_image_flag:
-        # elif mode == 'pyqt':
-        #     filename_generated = os.path.basename(path_to_save)
-        #     s.capture(url, path_to_save)
-        #     app.exec_()
-        #     # pyqt_screenshot(url , path_to_save)
-        #     # s.capture(u, 'C:/Users/user/Desktop/web_page.png')
-
         elif mode == 'sel':
             filename_generated = os.path.basename(path_to_save)
             sel_screenshot(url, path_to_save)
+            screenshot_flag = is_screenshot_good(path_to_save)
+            if not screenshot_flag:
+                sel_screenshot(url, path_to_save, switch_mode=True)
 
         shutil.move(os.path.join(dirname, filename_generated), path_to_save)
 
@@ -127,6 +239,13 @@ def is_template_exists(image, template_image, threshold=0.8):
         exists = True
         break
     return exists
+
+
+def is_screenshot_good(file_path, min_size=127098):
+    file_size = os.path.getsize(file_path)
+    if file_size < min_size:
+        return False
+    return True
 
 
 def get_template_match_coords(image, template_image, threshold=0.4):

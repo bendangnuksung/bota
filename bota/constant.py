@@ -44,6 +44,11 @@ ALL_YT_LINK_PATH = os.path.join(REPO_PATH, 'data/logs/all_youtube_links.json')
 YT_GIST_ID = "7feeb3f31eb81c78db1b3edf3ae1b0c2"
 
 
+# Extensions path
+FIREFOX_AD_BLOCK = os.path.join(REPO_PATH, 'extensions/adblock_firefox.xpi')
+FIREFOX_ZENMATE = os.path.join(REPO_PATH, 'extensions/zenmate_7.6.0.0-fx_firefox.xpi')
+
+
 # Dota 2 ProTracker
 D2PT_HERO_UPDATE_THRESHOLD = 600 # 10 min
 D2PT_WEBSITE_URL = 'http://www.dota2protracker.com/'
