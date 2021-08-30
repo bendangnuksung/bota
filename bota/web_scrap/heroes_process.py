@@ -1,5 +1,6 @@
 import re, requests
 from bota.web_scrap import scrap_constant
+from bota.web_scrap.screenshot_and_template_matching import get_html_using_vpn, destroy_sel_driver
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup as bs
@@ -80,6 +81,13 @@ def scrap_hero_counters(hero_name, is_counter=True):
     r = requests.get(url, headers=scrap_constant.browser_headers_mix)
     html = r.text
     heroes = extract_counter_hero_from_html(html)
+
+    if not len(heroes):
+        html = get_html_using_vpn(url)
+        heroes = extract_counter_hero_from_html(html)
+    else:
+        destroy_sel_driver()
+
     if is_counter == False:
         heroes = heroes[::-1]
     return heroes
@@ -100,15 +108,15 @@ def get_current_hero_trends():
 
 
 if __name__ == '__main__':
-    # r = scrap_heroes_info('axe')
+    # r = scrap_heroes_info('zeus')
     all_heroes = scrap_constant.heroes_names
     for hero in all_heroes:
-        print("*"*10)
+        print("*"*30)
         print(hero)
         r = scrap_hero_counters(hero)
         print(r)
+        r = scrap_hero_counters(hero, is_counter=False)
+        print(r)
     # r = find_hero_name('brood')
     # print(r)
-
-
 

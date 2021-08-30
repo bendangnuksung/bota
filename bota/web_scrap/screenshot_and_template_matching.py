@@ -52,6 +52,21 @@ driver = None
 vpn_driver = False
 
 
+def get_html_using_vpn(url):
+    global driver, vpn_driver
+    if vpn_driver is False:
+        destroy_sel_driver()
+        vpn_driver = not vpn_driver
+
+    if driver is None:
+        initialise_sel_driver()
+
+    driver.get(url)
+    text = driver.page_source
+    return text
+    # soup = bs(driver.page_source, 'html.parser')
+
+
 def get_my_ip(driver):
     url = 'https://www.whatismyip.com/'
     driver.get(url)
