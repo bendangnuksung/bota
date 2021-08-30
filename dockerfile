@@ -2,9 +2,6 @@ from python:3.7.7
 
 RUN git clone https://github.com/bendangnuksung/bota.git
 
-# make Directories
-RUN mkdir -p bota/bota/data/steam_user bota/bota/data/counter_heroes bota/bota/data/good_against_heroes bota/bota/data/guide_build
-
 # Apt setup
 RUN apt-get update && \
     pip install --upgrade pip && \
@@ -48,17 +45,23 @@ RUN apt-get install -y chromium && \
     apt-get install -y ./google-chrome-stable_current_amd64.deb && \
     rm google-chrome-stable_current_amd64.deb
 
-RUN cd bota/ && \
-    git pull && \
-    pip install -r requirements.txt
-
-# Run scrap during building
-# RUN cd bota/ && \
-#     export PYTHONPATH=$PYTHONPATH:$pwd && \
-#     python bota/background_scrap.py --mode 3
-
 ENTRYPOINT ./bota/run_bota_docker.sh
 
+RUN cd bota/ && \
+    git pull
+RUN pip install -r bota/requirements.txt
+# make Directories
+RUN mkdir -p bota/bota/data/steam_user
+RUN mkdir -p bota/bota/data/counter_heroes
+RUN mkdir -p bota/bota/data/good_against_heroes
+RUN mkdir -p bota/bota/data/guide_build
+RUN mkdir -p bota/bota/data/items_build
+
+
+# run scrap during building
+RUN cd bota/ && \
+    export PYTHONPATH=$PYTHONPATH:$pwd && \
+    sh run_scrap.sh 3
 
 # sudo docker build --network host -f dockerfile -t DOCKERNAME:TAGNAME .
 # 
