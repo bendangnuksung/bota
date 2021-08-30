@@ -32,7 +32,7 @@ def find_close_item(item):
 
 def find_item(item):
     item = item.lower().strip()
-    item = re.sub('[^a-z- ]', '', item)
+    item = re.sub('[^a-z-0-9 ]', '', item)
     item = item.replace(' ', '-')
     item = item.rstrip('-')
 
@@ -293,7 +293,7 @@ def scrap_item_info(hero_name):
 
 
 if __name__ == '__main__':
-    rs = scrap_item_info('sand-king')
+    rs = scrap_item_info('keeper-of-the-light')
     for r in rs:
         print(r)
     # rs = [{'player_name': 'Hope', 'player_id': '245655553', 'item_build': {'15:52': 'Battle Fury', '20:38': 'Manta Style', '26:18': 'Eye of Skadi', '31:13': 'Butterfly', '36:54': 'Abyssal Blade', '48:35': 'Assault Cuirass'}, 'region': 'SE Asia', 'rank': '20', 'medal': 'ancient vii'},
