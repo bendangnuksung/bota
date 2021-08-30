@@ -254,10 +254,25 @@ def scrap_item_info(hero_name):
 
         # Get Player Rank and Medal
         player_url = constant.DOTABUFF_PLAYER_URL + result[constant.ITEM_KEYWORD_PLAYER_ID]
-        html = get_html_text(player_url)
-        player_soup = bs(html, 'html.parser')
-        rank_info = player_soup.findAll(constant.ITEM_PLAYER_RANK_INFO_TAG[0], constant.ITEM_PLAYER_RANK_INFO_TAG[1])[0]
-        rank_title = rank_info.attrs[constant.ITEM_KEYWORD_TITLE].lower()
+
+        got_data_flag = False
+        rank_title = None
+        try:
+            html = get_html_text(player_url)
+            player_soup = bs(html, 'html.parser')
+            rank_info = player_soup.findAll(constant.ITEM_PLAYER_RANK_INFO_TAG[0], constant.ITEM_PLAYER_RANK_INFO_TAG[1])[0]
+            rank_title = rank_info.attrs[constant.ITEM_KEYWORD_TITLE].lower()
+            got_data_flag = True
+        except:
+            got_data_flag = False
+        finally:
+            if not got_data_flag:
+                html = get_html_using_vpn(hero_url)
+                player_soup = bs(html, 'html.parser')
+                rank_info = \
+                player_soup.findAll(constant.ITEM_PLAYER_RANK_INFO_TAG[0], constant.ITEM_PLAYER_RANK_INFO_TAG[1])[0]
+                rank_title = rank_info.attrs[constant.ITEM_KEYWORD_TITLE].lower()
+
         if constant.ITEM_RANK_PRE_CHAR in rank_title:
             for i, char in enumerate(rank_title):
                 if constant.ITEM_RANK_PRE_CHAR == char:
@@ -278,7 +293,7 @@ def scrap_item_info(hero_name):
 
 
 if __name__ == '__main__':
-    rs = scrap_item_info('abaddon')
+    rs = scrap_item_info('sand-king')
     for r in rs:
         print(r)
     # rs = [{'player_name': 'Hope', 'player_id': '245655553', 'item_build': {'15:52': 'Battle Fury', '20:38': 'Manta Style', '26:18': 'Eye of Skadi', '31:13': 'Butterfly', '36:54': 'Abyssal Blade', '48:35': 'Assault Cuirass'}, 'region': 'SE Asia', 'rank': '20', 'medal': 'ancient vii'},
