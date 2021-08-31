@@ -85,8 +85,8 @@ def scrap_hero_counters(hero_name, is_counter=True):
     if not len(heroes):
         html = get_html_using_vpn(url)
         heroes = extract_counter_hero_from_html(html)
-    else:
-        destroy_sel_driver()
+    # else:
+    #     destroy_sel_driver()
 
     if is_counter == False:
         heroes = heroes[::-1]
@@ -115,8 +115,8 @@ if __name__ == '__main__':
         print(hero)
         r = scrap_hero_counters(hero)
         print(r)
-        r = scrap_hero_counters(hero, is_counter=False)
-        print(r)
+        # r = scrap_hero_counters(hero, is_counter=False)
+        # print(r)
     # r = find_hero_name('brood')
     # print(r)
 

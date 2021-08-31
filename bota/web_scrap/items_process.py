@@ -188,8 +188,8 @@ def scrap_item_info(hero_name):
         html = get_html_using_vpn(hero_url)
         soup = bs(html, "html.parser")
         item_build_tag_list = soup.findAll(constant.ITEM_FIRST_STAGE_TAG[0], constant.ITEM_FIRST_STAGE_TAG[1])
-    else:
-        destroy_sel_driver()
+    # else:
+    #     destroy_sel_driver()
 
     for item in item_build_tag_list:
         result = {}
@@ -293,7 +293,7 @@ def scrap_item_info(hero_name):
 
 
 if __name__ == '__main__':
-    rs = scrap_item_info('keeper-of-the-light')
+    rs = scrap_item_info('lifestealer')
     for r in rs:
         print(r)
     # rs = [{'player_name': 'Hope', 'player_id': '245655553', 'item_build': {'15:52': 'Battle Fury', '20:38': 'Manta Style', '26:18': 'Eye of Skadi', '31:13': 'Butterfly', '36:54': 'Abyssal Blade', '48:35': 'Assault Cuirass'}, 'region': 'SE Asia', 'rank': '20', 'medal': 'ancient vii'},

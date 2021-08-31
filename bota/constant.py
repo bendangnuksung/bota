@@ -47,6 +47,8 @@ YT_GIST_ID = "7feeb3f31eb81c78db1b3edf3ae1b0c2"
 # Extensions path
 FIREFOX_AD_BLOCK = os.path.join(REPO_PATH, 'extensions/adblock_firefox.xpi')
 FIREFOX_ZENMATE = os.path.join(REPO_PATH, 'extensions/zenmate_7.6.0.0-fx_firefox.xpi')
+FIREFOX_IDC_COOKIES = os.path.join(REPO_PATH, 'extensions/i_dont_care_about_cookies-3.3.2-an+fx.xpi')
+FIREFOX_HOXX = os.path.join(REPO_PATH, 'extensions/hoxx_vpn_proxy-3.11.0-fx.xpi')
 
 
 # Dota 2 ProTracker

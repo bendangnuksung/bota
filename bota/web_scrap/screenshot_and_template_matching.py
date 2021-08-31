@@ -1,4 +1,6 @@
 import os
+import random
+
 import cv2
 from bota import constant
 import numpy as np
@@ -50,6 +52,7 @@ def display(img):
 
 driver = None
 vpn_driver = False
+vpn_driver = True
 
 
 def get_html_using_vpn(url):
@@ -68,15 +71,125 @@ def get_html_using_vpn(url):
 
 
 def get_my_ip(driver):
-    url = 'https://www.whatismyip.com/'
+    print("Getting IP info ....")
+    url = 'https://www.ipaddress.my/'
     driver.get(url)
     soup = bs(driver.page_source, 'html.parser')
-    group_list = soup.find_all('li', {'class': 'list-group-item py-1'})
+    table = soup.find('table', {'class': 'table'})
+    list = table.find_all('tr')
+
     text = []
-    for l in group_list:
-        text.append(l.text)
+    wanted_index = [0, 5, 12] # 0: IP, 5: Country, 12: Proxy host
+    try:
+        for i, l in enumerate(list):
+            if i in wanted_index:
+                value = l.find_all('td')
+                key = str(value[0].string)
+                value = str(value[1].string)
+                key_value = f"{key} : {value}"
+                text.append(key_value)
+    except Exception as e:
+        print("Failed in IP info: ", e)
+
     text = "\n".join(text)
     return text
+
+
+def get_extension_url(soup, extension_name, html_pagename):
+    extensions = soup.find_all('span', {'class': 'mrName', 'title': 'WebExtensions that are active in this session'})
+    final_url = None
+    for ext in extensions:
+        text = ext.text
+        text = text.strip()
+        texts = text.split(',')
+        name = texts[1]
+        if extension_name in name:
+            url_text = texts[2]
+            url = url_text.replace('baseURL=', '')
+            url = url[:-1] + html_pagename
+            final_url = url
+            break
+    return final_url
+
+
+def zenmate_connect(soup, driver):
+    try:
+        print("CONNECTING TO ZENMATE")
+        final_url = get_extension_url(soup, 'ZenMate', "index.html")
+
+        driver.get(final_url)
+        driver.get(final_url)
+        driver.get(final_url)
+        driver.get(final_url)
+        # xpath = "/html/body/app-root/main/app-home/div/div[2]/div[3]/a"
+        # element = driver.find_element_by_xpath(xpath)
+
+        element = driver.find_element_by_class_name('inactive-shield')
+        driver.execute_script("arguments[0].click();", element)
+
+        time.sleep(3.5)
+        element.click()
+        print("✓ SUCCESSFUL ✓")
+        return True, ''
+    except Exception as e:
+        print("✖ FAILED ✖: ", e)
+        return False, e
+
+
+def hoxx_connect(soup, driver):
+    email = "botahoxx@gmail.com"
+    passwd = "bota@123"
+    print("CONNECTING TO HOXX")
+    try:
+        final_url = get_extension_url(soup, 'Hoxx VPN Proxy', "popup.html")
+        driver.get(final_url)
+        time.sleep(0.5)
+
+        language_xpath = '/html/body/div/div[1]/div[2]/div/div[2]/ul/li[1]'
+        element = driver.find_element_by_xpath(language_xpath)
+        element.click()
+        time.sleep(1)
+
+        username_xpath = '//*[@id="email-input"]'
+        passwd_xpath = '//*[@id="password-input"]'
+        login_xpath = '/html/body/div/div/div[2]/div[1]/div[3]/button/span'
+
+        driver.find_element_by_xpath(username_xpath).send_keys(email)
+        driver.find_element_by_xpath(passwd_xpath).send_keys(passwd)
+        driver.find_element_by_xpath(login_xpath).click()
+        time.sleep(0.5)
+
+        soup = bs(driver.page_source, 'html.parser')
+        free_server_list = soup.find('ul', {'id': 'free-serverlist-ul'})
+        regions = free_server_list.find_all('li')
+        regions_ids_names = {}
+
+        for region in regions:
+            id = region.attrs['id']
+            region_name = region['serverlabel']
+            # regions_ids_names.append([id, region_name])
+            regions_ids_names[region_name.lower()] = id
+
+        wanted_region_sequence = ['singapore', 'germany', 'japan']
+        wanted_region = list(regions_ids_names.keys())[0]
+        for r in  wanted_region_sequence:
+            if r in regions_ids_names:
+                wanted_region = r
+                break
+
+        server_xpath = f'//*[@id="{regions_ids_names[wanted_region]}"]'
+        select_region = wanted_region
+
+        driver.find_element_by_xpath(server_xpath).click()
+        time.sleep(7)
+
+        # server_id_list =
+        print("Connnected to ", select_region)
+        print("✓ SUCCESSFUL ✓")
+        return True, ""
+    except Exception as e:
+        print("✖ FAILED ✖ :", e)
+        return False, e
 
 
 def activate_vpn(driver, firefox=False):
@@ -96,32 +209,10 @@ def activate_vpn(driver, firefox=False):
         time.sleep(1.5)
         source = driver.page_source
         soup = bs(source, 'html.parser')
-        extensions = soup.find_all('span', {'class': 'mrName', 'title': 'WebExtensions that are active in this session'})
-        final_url = None
-        for ext in extensions:
-            text = ext.text
-            text = text.strip()
-            texts = text.split(',')
-            name = texts[1]
-            if 'ZenMate' in name:
-                url_text = texts[2]
-                url = url_text.replace('baseURL=', '')
-                url = url[:-1] + "index.html"
-                final_url = url
-                break
 
-        driver.get(final_url)
-        driver.get(final_url)
-        driver.get(final_url)
-        driver.get(final_url)
-        # xpath = "/html/body/app-root/main/app-home/div/div[2]/div[3]/a"
-        # element = driver.find_element_by_xpath(xpath)
-
-        element = driver.find_element_by_class_name('inactive-shield')
-        driver.execute_script("arguments[0].click();", element)
-
-        time.sleep(3.5)
-        element.click()
+        flag, exception_summary = zenmate_connect(soup, driver)
+        if not flag:
+            flag, exception_summary = hoxx_connect(soup, driver)
 
     ip_info = get_my_ip(driver)
     print("#"*30)
@@ -129,15 +220,17 @@ def activate_vpn(driver, firefox=False):
     print("#" * 30)
 
 
-def initialise_sel_driver(firefox=True):
+def initialise_sel_driver(firefox=True, headless=True):
     global driver, vpn_driver
     if driver is None:
         if firefox:
             options = Options()
-            options.headless = True
+            options.headless = headless
             driver = webdriver.Firefox(options=options)
             driver.install_addon(constant.FIREFOX_AD_BLOCK)
             driver.install_addon(constant.FIREFOX_ZENMATE, temporary=True)
+            driver.install_addon(constant.FIREFOX_IDC_COOKIES, temporary=True)
+            driver.install_addon(constant.FIREFOX_HOXX, temporary=True)
             driver.get("about:support")
             addons = driver.find_element_by_xpath('//*[contains(text(),"Add-ons") and not(contains(text(),"with"))]')
             # scrolling to the section on the support page that lists installed extension
@@ -150,7 +243,7 @@ def initialise_sel_driver(firefox=True):
 
             if vpn_driver:
                 print("@" * 40)
-                print("Activate VPN: ")
+                print("Activating VPN: ")
                 activate_vpn(driver, firefox=True)
                 print("@" * 40)
             else:
