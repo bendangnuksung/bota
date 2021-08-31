@@ -52,7 +52,7 @@ def display(img):
 
 driver = None
 vpn_driver = False
-vpn_driver = True
+# vpn_driver = True
 
 
 def get_html_using_vpn(url):
