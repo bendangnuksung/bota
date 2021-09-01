@@ -259,7 +259,7 @@ def activate_vpn(driver, firefox=False):
     print("#" * 30)
 
 
-def initialise_sel_driver(firefox=True, headless=False):
+def initialise_sel_driver(firefox=True, headless=True):
     global driver, vpn_driver
     if driver is None:
         if firefox:
