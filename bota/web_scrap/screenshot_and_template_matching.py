@@ -12,6 +12,7 @@ import time
 from bs4 import BeautifulSoup as bs
 from selenium.webdriver.common.keys import Keys
 from datetime import datetime
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 blank_template_image = cv2.imread(constant.BLANK_TEMPLATE_IMAGE, 0)
@@ -215,14 +216,17 @@ def hoxx_connect(soup, driver):
         return False, e
 
 
-def close_tabs(driver, n):
+def close_other_tabs(driver):
     # close all other tabs
     # num_of_tabs = 3 if vpn_driver else 2
+    n = len(driver.window_handles)
     for x in range(1, n):
         driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 'W')
 
 
 def activate_vpn(driver, firefox=False):
+    ip_info_no_vpn = get_my_ip(driver)
+    print("Current IP info: \n", ip_info_no_vpn)
     if not firefox:
         driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
         driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
@@ -233,19 +237,26 @@ def activate_vpn(driver, firefox=False):
         element.click()
 
     if firefox:
-        driver.get("about:memory")
-        time.sleep(1.5)
-        n_tabs = len(driver.window_handles)
-        if n_tabs > 1:
-            close_tabs(driver, n_tabs)
+        # driver.get("about:memory")
+        # time.sleep(1.5)
         while True:
             try:
+                close_other_tabs(driver)
+                driver.get("about:memory")
+                time.sleep(1.5)
                 driver.find_element_by_xpath('//*[@id="measureButton"]').click()
+                time.sleep(1.5)
+                try:
+                    driver.find_element_by_class_name('filterInput')
+                except:
+                    driver.find_element_by_xpath('//*[@id="measureButton"]').click()
+                    time.sleep(1.5)
+                driver.find_element_by_class_name('filterInput')
                 break
-            except:
+            except Exception as e:
                 continue
 
-        time.sleep(1.5)
+        # time.sleep(1.5)
         source = driver.page_source
         soup = bs(source, 'html.parser')
 
@@ -254,6 +265,8 @@ def activate_vpn(driver, firefox=False):
             flag, exception_summary = hoxx_connect(soup, driver)
 
     ip_info = get_my_ip(driver)
+    if ip_info == ip_info_no_vpn:
+        print("------Failed to connect to VPN------")
     print("#"*30)
     print(ip_info)
     print("#" * 30)
@@ -265,16 +278,19 @@ def initialise_sel_driver(firefox=True, headless=True):
         if firefox:
             options = Options()
             options.headless = headless
-            driver = webdriver.Firefox(options=options)
+            caps = DesiredCapabilities().FIREFOX
+            caps["pageLoadStrategy"] = "eager"
+            # caps["pageLoadStrategy"] = "normal"
+            driver = webdriver.Firefox(options=options, capabilities=caps)
             driver.install_addon(constant.FIREFOX_AD_BLOCK)
             driver.install_addon(constant.FIREFOX_ZENMATE, temporary=True)
-            driver.install_addon(constant.FIREFOX_IDC_COOKIES, temporary=True)
+            # driver.install_addon(constant.FIREFOX_IDC_COOKIES, temporary=True)
             driver.install_addon(constant.FIREFOX_HOXX, temporary=True)
             driver.get("about:support")
             addons = driver.find_element_by_xpath('//*[contains(text(),"Add-ons") and not(contains(text(),"with"))]')
             # scrolling to the section on the support page that lists installed extension
             driver.execute_script("arguments[0].scrollIntoView();", addons)
-            close_tabs(driver, 2)
+            close_other_tabs(driver)
 
             if vpn_driver or headless is False:
                 print("@" * 40)

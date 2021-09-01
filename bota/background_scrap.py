@@ -56,11 +56,11 @@ def run_func_in_exception_block(hero_name, loop):
             returned_kwargs = scrap_function('', hero=hero_name, use_outdated_photo_if_fails=False)
         flag, exception_reason = returned_kwargs[0], returned_kwargs[-1]
         if flag:
-            log_info = f"\t{key} : Success"
+            log_info = f"\t{key} : SUCCESSFUL ✓"
             print(log_info)
             background_logger.info(log_info)
         else:
-            log_info = f"\t{key} : Unsuccessful, Reason: {exception_reason}"
+            log_info = f"\t{key} : FAILED ✖✖, Reason: {exception_reason}"
             print(log_info)
             background_logger.info(log_info)
             subprocess.run(["pkill", "chrome"])
