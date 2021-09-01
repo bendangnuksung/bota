@@ -262,16 +262,19 @@ def scrap_item_info(hero_name):
             player_soup = bs(html, 'html.parser')
             rank_info = player_soup.findAll(constant.ITEM_PLAYER_RANK_INFO_TAG[0], constant.ITEM_PLAYER_RANK_INFO_TAG[1])[0]
             rank_title = rank_info.attrs[constant.ITEM_KEYWORD_TITLE].lower()
+            if rank_title == '':
+                rank_title = rank_info.attrs[constant.ITEM_KEYWORD_OLD_TITLE].lower()
             got_data_flag = True
         except:
             got_data_flag = False
         finally:
             if not got_data_flag:
-                html = get_html_using_vpn(hero_url)
+                html = get_html_using_vpn(player_url)
                 player_soup = bs(html, 'html.parser')
-                rank_info = \
-                player_soup.findAll(constant.ITEM_PLAYER_RANK_INFO_TAG[0], constant.ITEM_PLAYER_RANK_INFO_TAG[1])[0]
+                rank_info = player_soup.findAll(constant.ITEM_PLAYER_RANK_INFO_TAG[0], constant.ITEM_PLAYER_RANK_INFO_TAG[1])[0]
                 rank_title = rank_info.attrs[constant.ITEM_KEYWORD_TITLE].lower()
+                if rank_title == '':
+                    rank_title = rank_info.attrs[constant.ITEM_KEYWORD_OLD_TITLE].lower()
 
         if constant.ITEM_RANK_PRE_CHAR in rank_title:
             for i, char in enumerate(rank_title):
