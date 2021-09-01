@@ -11,6 +11,7 @@ from selenium import webdriver
 import time
 from bs4 import BeautifulSoup as bs
 from selenium.webdriver.common.keys import Keys
+from datetime import datetime
 
 
 blank_template_image = cv2.imread(constant.BLANK_TEMPLATE_IMAGE, 0)
@@ -146,17 +147,39 @@ def hoxx_connect(soup, driver):
         time.sleep(0.5)
 
         language_xpath = '/html/body/div/div[1]/div[2]/div/div[2]/ul/li[1]'
-        element = driver.find_element_by_xpath(language_xpath)
-        element.click()
+        start = datetime.now()
+        max_wait_language_popup = 30
+        while True:
+            try:
+                driver.find_element_by_xpath(language_xpath).click()
+                break
+            except:
+                time_taken = (datetime.now() - start).total_seconds()
+                if time_taken > max_wait_language_popup:
+                    break
+                else:
+                    continue
         time.sleep(1)
 
         username_xpath = '//*[@id="email-input"]'
         passwd_xpath = '//*[@id="password-input"]'
         login_xpath = '/html/body/div/div/div[2]/div[1]/div[3]/button/span'
 
-        driver.find_element_by_xpath(username_xpath).send_keys(email)
-        driver.find_element_by_xpath(passwd_xpath).send_keys(passwd)
-        driver.find_element_by_xpath(login_xpath).click()
+        language_xpath = '/html/body/div/div[1]/div[2]/div/div[2]/ul/li[1]'
+        start = datetime.now()
+        max_wait_login_popup = 5
+        while True:
+            try:
+                driver.find_element_by_xpath(username_xpath).send_keys(email)
+                driver.find_element_by_xpath(passwd_xpath).send_keys(passwd)
+                driver.find_element_by_xpath(login_xpath).click()
+                break
+            except:
+                time_taken = (datetime.now() - start).total_seconds()
+                if time_taken > max_wait_login_popup:
+                    break
+                else:
+                    continue
         time.sleep(0.5)
 
         soup = bs(driver.page_source, 'html.parser')
@@ -192,6 +215,13 @@ def hoxx_connect(soup, driver):
         return False, e
 
 
+def close_tabs(driver, n):
+    # close all other tabs
+    # num_of_tabs = 3 if vpn_driver else 2
+    for x in range(1, n):
+        driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 'W')
+
+
 def activate_vpn(driver, firefox=False):
     if not firefox:
         driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
@@ -204,8 +234,17 @@ def activate_vpn(driver, firefox=False):
 
     if firefox:
         driver.get("about:memory")
-        element = driver.find_element_by_xpath('//*[@id="measureButton"]')
-        element.click()
+        time.sleep(1.5)
+        n_tabs = len(driver.window_handles)
+        if n_tabs > 1:
+            close_tabs(driver, n_tabs)
+        while True:
+            try:
+                driver.find_element_by_xpath('//*[@id="measureButton"]').click()
+                break
+            except:
+                continue
+
         time.sleep(1.5)
         source = driver.page_source
         soup = bs(source, 'html.parser')
@@ -220,7 +259,7 @@ def activate_vpn(driver, firefox=False):
     print("#" * 30)
 
 
-def initialise_sel_driver(firefox=True, headless=True):
+def initialise_sel_driver(firefox=True, headless=False):
     global driver, vpn_driver
     if driver is None:
         if firefox:
@@ -235,13 +274,9 @@ def initialise_sel_driver(firefox=True, headless=True):
             addons = driver.find_element_by_xpath('//*[contains(text(),"Add-ons") and not(contains(text(),"with"))]')
             # scrolling to the section on the support page that lists installed extension
             driver.execute_script("arguments[0].scrollIntoView();", addons)
+            close_tabs(driver, 2)
 
-            # close all other tabs
-            num_of_tabs = 3 if vpn_driver else 2
-            for x in range(1, num_of_tabs):
-                driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 'W')
-
-            if vpn_driver:
+            if vpn_driver or headless is False:
                 print("@" * 40)
                 print("Activating VPN: ")
                 activate_vpn(driver, firefox=True)
