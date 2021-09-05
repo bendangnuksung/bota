@@ -71,7 +71,7 @@ HERO_SHORT_NAME_NOTE = "**NOTE**: Can use short Hero Names, !counter anti mage  
 # UPDATE_BLOCK = f'Watch Pro PLayer Perspective **@1440p60** on **YouTube** using: **`!pers HeroName`**\n' \
 #                f'Please do __**[Subscribe Channel](https://www.youtube.com/channel/UCnby5VqRpcJ-qzyhAp2cTAQ)**__ to show support😊'
 
-UPDATE_BLOCK = f''
+UPDATE_BLOCK = f'...'
 
 UPDATE_BLOCK_LIST=\
              ["`01-FEB-2021`: Watch Pro PLayer Perspective @1440p60 on **YouTube** **`!pers HeroName`**",
