@@ -152,6 +152,9 @@ def get_counter_hero(query, hero=None, early_update=False, use_outdated_photo_if
         if not len(all_counter_heroes) and os.path.exists(image_path):
             return True, hero_name, image_path
 
+        assert len(all_counter_heroes)
+        assert all_counter_heroes is not None
+
         if is_request_from_bg_process:
             for i_role in hero_role:
                 counter_heroes = prune_heroes(all_counter_heroes, given_hero_roles=[i_role])
@@ -211,6 +214,9 @@ def get_good_against(query, hero=None, early_update=False, use_outdated_photo_if
         all_good_against_heroes = scrap_hero_counters(hero_name, is_counter=False)
         if not len(all_good_against_heroes) and os.path.exists(image_path):
             return True, hero_name, image_path
+
+        assert len(all_good_against_heroes)
+        assert all_good_against_heroes is not None
 
         if is_request_from_bg_process:
             for i_role in hero_role.keys():
@@ -497,11 +503,11 @@ def get_meta(early_update=False, use_outdated_photo_if_fails=True):
 
 
 if __name__ == '__main__':
-    get_skill_build('!skill clinks')
+    # get_skill_build('!skill mirana')
     # get_meta()
-    # print(get_item_build('!good enchan'))
+    # print(get_item_build('!item medusa'))
     # get_protracker_hero("!pro slark")
-    # get_counter_hero('!counter axe mid')
+    get_counter_hero('!counter zeus')
     # exit()
     # r = get_skill_build('!skill slark', use_outdated_photo_if_fails=False)
     # r = get_item_build('!item viper')
