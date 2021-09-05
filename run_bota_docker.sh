@@ -17,6 +17,6 @@ screen -S scrap -d -m sh run_scrap.sh
 
 while true
 do
-#  git pull origin master
+  git pull origin master
   sh run_bota.sh
 done
