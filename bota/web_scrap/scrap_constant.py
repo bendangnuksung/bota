@@ -45,6 +45,7 @@ hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'b
                        'queen-of-pain', 'razor', 'riki', 'shadow-fiend', 'silencer', 'slardar', 'slark', 'sniper', 'spectre',
                        'spirit-breaker', 'storm-spirit', 'sven', 'templar-assassin', 'terrorblade', 'tinker', 'tiny',
                        'troll-warlord', 'ursa', 'viper', 'visage', 'void-spirit', 'weaver', 'windranger', 'wraith-king',
+                       'marci'
                        ],
 
              'nuker': ['alchemist', 'ancient-apparition', 'arc-warden', 'bane', 'beastmaster', 'brewmaster', 'bristleback',
@@ -81,7 +82,8 @@ hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'b
                          'io', 'jakiro', 'keeper-of-the-light', 'kunkka', 'lich', 'lina', 'lion', 'mirana', 'nyx-assassin',
                          'ogre-magi', 'omniknight', 'oracle', 'phoenix', 'pudge', 'rubick', 'sand-king', 'shadow-demon',
                          'shadow-shaman', 'silencer', 'skywrath-mage', 'snapfire', 'tiny', 'treant-protector', 'tusk',
-                         'undying', 'vengeful-spirit', 'venomancer', 'visage', 'warlock', 'windranger', 'winter-wyvern', 'witch-doctor', 'hoodwink'],
+                         'undying', 'vengeful-spirit', 'venomancer', 'visage', 'warlock', 'windranger', 'winter-wyvern',
+                         'witch-doctor', 'hoodwink', 'marci'],
 
              'pusher': ['anti-mage', 'arc-warden', 'beastmaster', 'broodmother', 'chen', 'death-prophet', 'dragon-knight',
                         'drow-ranger', 'enchantress', 'enigma', 'invoker', 'jakiro', 'juggernaut', 'leshrac', 'lone-druid',
@@ -101,12 +103,12 @@ hero_role = {'carry': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'b
                      'necrophos', 'night-stalker', 'nyx-assassin', 'ogre-magi', 'omniknight', 'pangolier', 'phoenix',
                      'puck', 'pudge', 'pugna', 'razor', 'sand-king', 'slardar', 'spirit-breaker', 'tidehunter', 'timbersaw',
                      'treant-protector', 'tusk', 'underlord', 'undying', 'venomancer', 'viper', 'visage', 'dawnbreaker',
-                     'hoodwink'],
+                     'hoodwink', 'marci'],
 
              'safelane': ['alchemist', 'anti-mage', 'arc-warden', 'bloodseeker', 'chaos-knight', 'clinkz', 'drow-ranger',
                       'faceless-void', 'gyrocopter', 'juggernaut', 'lifestealer', 'lone-druid', 'luna', 'lycan', 'medusa',
                       'monkey-king', 'morphling', 'naga-siren', 'phantom-assassin', 'phantom-lancer', 'razor', 'riki', 'slark',
-                      'sniper', 'spectre', 'sven', 'terrorblade', 'troll-warlord', 'ursa', 'weaver', 'wraith-king']
+                      'sniper', 'spectre', 'sven', 'terrorblade', 'troll-warlord', 'ursa', 'weaver', 'wraith-king', 'marci']
 
 
              }
@@ -126,7 +128,7 @@ heroes_names = ['abaddon', 'alchemist', 'ancient-apparition', 'anti-mage', 'arc-
                 'spirit-breaker', 'storm-spirit', 'sven', 'techies', 'templar-assassin', 'terrorblade', 'tidehunter',
                 'timbersaw', 'tinker', 'tiny', 'treant-protector', 'troll-warlord', 'tusk', 'underlord', 'undying', 'ursa',
                 'vengeful-spirit', 'venomancer', 'viper', 'visage', 'void-spirit','warlock', 'weaver', 'windranger',
-                'winter-wyvern', 'witch-doctor', 'wraith-king', 'zeus', 'dawnbreaker']
+                'winter-wyvern', 'witch-doctor', 'wraith-king', 'zeus', 'dawnbreaker', 'marci']
 
 
 heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancient-apparition', 'am':'anti-mage',
@@ -214,7 +216,7 @@ heroes_name_alternative = {'abba': 'abaddon', 'alche':'alchemist', 'aa': 'ancien
                            'enc': 'enchantress', 'mber': 'ember-spirit', 'amber': 'ember-spirit', 'dz': 'dazzle',
                            'br': 'batrider', 'snap': 'snapfire', 'snap fire': 'snapfire', 'void spirit': 'void-spirit',
                            'hw': 'hoodwink', 'wood': 'hoodwink', 'wink': 'hoodwink', 'dawn': 'dawnbreaker',
-                           'dawnbreak': 'dawnbreaker', 'db': 'dawnbreaker'
+                           'dawnbreak': 'dawnbreaker', 'db': 'dawnbreaker', 'marc': 'marci', 'marce': 'marci', 'mrci': 'marci'
                            }
 
 
@@ -340,7 +342,7 @@ d2pt_hero_names = {'abaddon': 'Abaddon', 'alchemist': 'Alchemist', 'ancient-appa
                    'venomancer': 'Venomancer', 'viper': 'Viper', 'visage': 'Visage', 'warlock': 'Warlock',
                    'weaver': 'Weaver', 'windranger': 'Windranger', 'winter-wyvern': 'Winter Wyvern',
                    'witch-doctor': 'Witch Doctor', 'wraith-king': 'Wraith King', 'zeus': 'Zeus', 'void-spirit': 'Void Spirit',
-                   'snapfire': 'Snapfire', 'dawnbreaker': 'Dawnbreaker'}
+                   'snapfire': 'Snapfire', 'dawnbreaker': 'Dawnbreaker', 'marci': 'Marci'}
 
 
 d2pt_to_dotabuff = {}
