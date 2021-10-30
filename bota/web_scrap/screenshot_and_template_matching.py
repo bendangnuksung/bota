@@ -226,6 +226,9 @@ def close_other_tabs(driver):
 
 def activate_vpn(driver, firefox=False):
     ip_info_no_vpn = get_my_ip(driver)
+    tried_zenmate = False
+    tried_hoxx = False
+    soup = None
     print("Current IP info: \n", ip_info_no_vpn)
     if not firefox:
         driver.get('chrome-extension://fdcgdnkidjaadafnichfpabhfomcebme/index.html')
@@ -261,12 +264,22 @@ def activate_vpn(driver, firefox=False):
         soup = bs(source, 'html.parser')
 
         flag, exception_summary = zenmate_connect(soup, driver)
+        tried_zenmate = True
         if not flag:
             flag, exception_summary = hoxx_connect(soup, driver)
+            tried_hoxx = True
 
     ip_info = get_my_ip(driver)
     if ip_info == ip_info_no_vpn:
-        print("------Failed to connect to VPN------")
+        # print("------Failed to connect to VPN------")
+        if not tried_zenmate:
+            flag, exception_summary = zenmate_connect(soup, driver)
+        if not tried_hoxx:
+            flag, exception_summary = hoxx_connect(soup, driver)
+        ip_info = get_my_ip(driver)
+        if ip_info == ip_info_no_vpn:
+            print("------Failed to connect to VPN------")
+
     print("#"*30)
     print(ip_info)
     print("#" * 30)
