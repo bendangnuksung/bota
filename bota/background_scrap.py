@@ -32,6 +32,8 @@ SCRAP_FUNCTIONS_THAT_NEED_LOOP = []
 #
 formatter = logging.Formatter('%(asctime)s - %(message)s', '%d-%m %H:%M')
 
+EVEN_ONE_FAILED = False
+
 
 def setup_logger(name, log_file, level=logging.INFO):
     """Function setup as many loggers as you want"""
@@ -49,6 +51,7 @@ background_logger = setup_logger('background_logger', SCRAP_LOG_PATH)
 
 
 def run_func_in_exception_block(hero_name, loop):
+    global EVEN_ONE_FAILED
     for key, scrap_function in SCREEN_SHOT_SCRAP_FUNCTIONS.items():
         if key in SCRAP_FUNCTIONS_THAT_NEED_LOOP:
             returned_kwargs = loop.run_until_complete(scrap_function('', hero=hero_name, use_outdated_photo_if_fails=False))
@@ -61,6 +64,7 @@ def run_func_in_exception_block(hero_name, loop):
             background_logger.info(log_info)
         else:
             log_info = f"\t{key} : FAILED ✖✖, Reason: {exception_reason}"
+            EVEN_ONE_FAILED = True
             print(log_info)
             background_logger.info(log_info)
             subprocess.run(["pkill", "chrome"])
@@ -109,6 +113,10 @@ if args['mode'] == 2 or args['mode'] == '2' or args['mode'] == '3' or args['mode
     print("Running One Time update:")
     update_images()
     print("Finished One Time update")
+
+    if (args['mode'] == '3' or args['mode'] == 3) and EVEN_ONE_FAILED:
+        print("One of the scrap functions failed. Exiting")
+        exit(1)
 
 if args['mode'] != '3':
     while True:

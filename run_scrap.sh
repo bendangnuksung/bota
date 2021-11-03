@@ -11,5 +11,16 @@ if [ -z "$1" ]
       sleep 120
     done
 else
-  python3 bota/background_scrap.py -m 3
+  # run one time background scrap mostly for docker build
+  while :
+  do
+    echo "One time background scraping"
+    python3 bota/background_scrap.py -m 3
+    if [[ $? = 0 ]]; then
+        echo "**** Success ****"
+        break
+    else
+        echo "**** Restarting. One Failed **** : $?"
+    fi
+  done
 fi
