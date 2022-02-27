@@ -339,7 +339,7 @@ def activate_vpn(driver, firefox=False):
     print("#" * 30)
 
 
-def initialise_sel_driver(firefox=True, headless=False):
+def initialise_sel_driver(firefox=True, headless=True):
     global driver, vpn_driver
     if driver is None:
         if firefox:
@@ -349,7 +349,7 @@ def initialise_sel_driver(firefox=True, headless=False):
             caps["pageLoadStrategy"] = "eager"
             # caps["pageLoadStrategy"] = "normal"
             driver = webdriver.Firefox(options=options, capabilities=caps)
-            # driver.install_addon(constant.FIREFOX_AD_BLOCK)
+            driver.install_addon(constant.FIREFOX_AD_BLOCK)
             driver.install_addon(constant.FIREFOX_ZENMATE, temporary=True)
             # driver.install_addon(constant.FIREFOX_IDC_COOKIES, temporary=True)
             driver.install_addon(constant.FIREFOX_HOXX, temporary=True)
