@@ -15,12 +15,19 @@ else
   while :
   do
     echo "One time background scraping"
-    python3 bota/background_scrap.py -m 3
-    if [[ $? = 0 ]]; then
-        echo "**** Success ****"
+#    python3 bota/background_scrap.py -m 3
+#    if [[ $? = 0 ]]; then
+#        echo "**** Success ****"
+#        break
+#    else
+#        echo "**** Restarting. One Failed **** : $?"
+#    fi
+    if python3 bota/background_scrap.py -m 3; then
+        echo "Success"
         break
     else
-        echo "**** Restarting. One Failed **** : $?"
+        echo "Restarting, failure in scrapping "
     fi
+
   done
 fi
