@@ -119,10 +119,11 @@ if args['mode'] == 2 or args['mode'] == '2' or args['mode'] == '3' or args['mode
         print("One of the scrap functions failed. Exiting")
         print("#" * 50)
         exit(1)
-    else:
+    elif (args['mode'] == '3' or args['mode'] == 3) and not EVEN_ONE_FAILED:
         print("-" * 50)
         print("Successful One time Update")
         print("#" * 50)
+        exit(0)
 
 if args['mode'] != '3':
     while True:
