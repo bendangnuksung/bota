@@ -56,6 +56,40 @@ driver = None
 vpn_driver = False
 # vpn_driver = True
 
+ZENMATE_COUNTRY_LOG_PATH = 'zenmate_country_log.txt'
+
+def zenmate_pick_unused_country(countries):
+    country_used = []
+    if os.path.exists(ZENMATE_COUNTRY_LOG_PATH):
+        with open(ZENMATE_COUNTRY_LOG_PATH, 'r') as f:
+            cc = f.readlines()
+            for c in cc:
+                if "There are no servers for the moment" == c:
+                    continue
+                country_used.append(c.strip())
+
+    best_country = None
+    for country in countries:
+        if country in country_used:
+            continue
+        best_country = country
+        country_used.append(country)
+        break
+
+    if best_country is None:
+        for country in country_used:
+            if country in countries:
+                best_country = country
+                break
+        del country_used[country_used.index(best_country)]
+        country_used.append(best_country)
+
+    with open(ZENMATE_COUNTRY_LOG_PATH, 'w') as f:
+        text = "\n".join(country_used)
+        f.write(text)
+
+    return best_country
+
 
 def get_html_using_vpn(url):
     global driver, vpn_driver
@@ -123,13 +157,33 @@ def zenmate_connect(soup, driver):
         driver.get(final_url)
         driver.get(final_url)
         driver.get(final_url)
+
+        time.sleep(4)
+        final_url = final_url.replace('index.html', '#/servers')
+        driver.get(final_url)
+        time.sleep(4)
         # xpath = "/html/body/app-root/main/app-home/div/div[2]/div[3]/a"
         # element = driver.find_element_by_xpath(xpath)
 
-        element = driver.find_element_by_class_name('inactive-shield')
-        driver.execute_script("arguments[0].click();", element)
 
-        time.sleep(3.5)
+        ## selecting country
+        element = driver.find_element_by_xpath('/html/body/app-root/main/app-servers/div/div[4]/mat-tab-group/div/mat-tab-body[1]/div/div/div[1]/app-servers-list')
+        countries = element.text
+        # driver.execute_script('arguments[0].outerHTML = arguments[0].outerHTML.replace(/app-servers-list/g, "div")', element)
+
+        countries = countries.split("\n")
+        best_country = zenmate_pick_unused_country(countries)
+        best_country_index = countries.index(best_country) + 1
+        print("Selecting country: ", best_country)
+        selected_country_xpath = f'/html/body/app-root/main/app-servers/div/div[4]/mat-tab-group/div/mat-tab-body[1]/div/div/div[1]/app-servers-list/div[{best_country_index}]/p/span'
+
+        element = driver.find_element_by_xpath(selected_country_xpath)
+        # driver.execute_script("arguments[0].click();", element)
+        # element = driver.find_element_by_class_name('inactive-shield')
+        # driver.execute_script("arguments[0].click();", element)
+
+        time.sleep(1)
+        # close_other_tabs(driver)
         element.click()
         print("✓ SUCCESSFUL ✓")
         return True, ''
@@ -285,7 +339,7 @@ def activate_vpn(driver, firefox=False):
     print("#" * 30)
 
 
-def initialise_sel_driver(firefox=True, headless=True):
+def initialise_sel_driver(firefox=True, headless=False):
     global driver, vpn_driver
     if driver is None:
         if firefox:
@@ -295,7 +349,7 @@ def initialise_sel_driver(firefox=True, headless=True):
             caps["pageLoadStrategy"] = "eager"
             # caps["pageLoadStrategy"] = "normal"
             driver = webdriver.Firefox(options=options, capabilities=caps)
-            driver.install_addon(constant.FIREFOX_AD_BLOCK)
+            # driver.install_addon(constant.FIREFOX_AD_BLOCK)
             driver.install_addon(constant.FIREFOX_ZENMATE, temporary=True)
             # driver.install_addon(constant.FIREFOX_IDC_COOKIES, temporary=True)
             driver.install_addon(constant.FIREFOX_HOXX, temporary=True)
