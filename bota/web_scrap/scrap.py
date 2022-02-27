@@ -485,7 +485,7 @@ def get_meta(early_update=False, use_outdated_photo_if_fails=True):
         url = constant.META_URL
         take_screenshot(url, meta_image_path)
         image = cv2.imread(meta_image_path)
-        cropped_image = crop_screenshots(image, meta_template_image, x, y, offset_height=height, offset_width=width)
+        cropped_image = crop_screenshots(image, meta_template_image, x, y, offset_height=height, offset_width=width, threshold=0.63)
         xmin, ymin, xmax, ymax = constant.META_HERO_SPLIT_1_COORDS
         image_1 = cropped_image[ymin:ymax, xmin:xmax]
         xmin, ymin, xmax, ymax = constant.META_HERO_SPLIT_2_COORDS
@@ -504,10 +504,10 @@ def get_meta(early_update=False, use_outdated_photo_if_fails=True):
 
 if __name__ == '__main__':
     # get_skill_build('!skill mirana')
-    # get_meta()
+    get_meta()
     # print(get_item_build('!item medusa'))
     # get_protracker_hero("!pro slark")
-    get_counter_hero('!counter zeus')
+    # get_counter_hero('!counter zeus')
     # exit()
     # r = get_skill_build('!skill slark', use_outdated_photo_if_fails=False)
     # r = get_item_build('!item viper')
