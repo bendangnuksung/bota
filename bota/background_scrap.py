@@ -115,8 +115,14 @@ if args['mode'] == 2 or args['mode'] == '2' or args['mode'] == '3' or args['mode
     print("Finished One Time update")
 
     if (args['mode'] == '3' or args['mode'] == 3) and EVEN_ONE_FAILED:
+        print("#"*50)
         print("One of the scrap functions failed. Exiting")
+        print("#" * 50)
         exit(1)
+    else:
+        print("-" * 50)
+        print("Successful One time Update")
+        print("#" * 50)
 
 if args['mode'] != '3':
     while True:
