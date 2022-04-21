@@ -34,9 +34,12 @@ class Agha():
 
                 skill_name = a[1].string
                 try:
-                    skill_image_url = info.find('img').attrs['src']
-                except Exception:
-                    skill_image_url = ''
+                    skill_image_url = info.find('img').attrs['data-src']
+                except:
+                    try:
+                        skill_image_url = info.find('img').attrs['src']
+                    except:
+                        skill_image_url = ''
                 temp_desc = info.find_all('b')
                 key_desc = {}
                 for desc in temp_desc:
